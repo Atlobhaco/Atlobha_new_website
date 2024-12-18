@@ -1,0 +1,23 @@
+@use "../../styles/variables.scss" as *;
+
+.langSwitcher {
+  button {
+    outline: unset;
+    border: unset;
+    // padding: 0.5rem 1rem;
+    color: #eeeeee;
+    background-color: #496e2d;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    &:hover {
+      //   text-decoration: underline;
+      opacity: 0.9;
+    }
+  }
+}

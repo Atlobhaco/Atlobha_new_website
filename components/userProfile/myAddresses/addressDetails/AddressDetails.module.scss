@@ -1,0 +1,52 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.heading {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.locationBox {
+  padding: 5px 15px;
+  border-radius: 20px;
+  background: #f9f9f9;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-bottom: 16px;
+  &Header {
+    font-size: 16px;
+    font-weight: 700;
+  }
+  &SubHeader {
+    color: #6b7280;
+    font-weight: 400;
+    font-size: 14px;
+  }
+}
+
+.locationName {
+  font-weight: 500;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.locationsHolder {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  span {
+    cursor: pointer;
+    background: #e6e6e6;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  &Active {
+    background: rgba(255, 212, 0, 0.3) !important;
+    border: 1px solid $primary;
+  }
+}

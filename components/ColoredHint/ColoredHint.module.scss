@@ -1,0 +1,55 @@
+@import "../../styles/mixins.scss";
+@import "../../styles/variables.scss";
+
+.hint {
+  //   background-color: #e7f5ff;
+  display: flex;
+  padding: 24px 16px;
+  @include mobile-screen-style {
+    padding: 16px;
+  }
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  border-radius: 10px;
+  flex-wrap: wrap;
+  &-text {
+    // background-color: red;
+    display: flex;
+    // flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    &_header {
+      color: #ee772f;
+      font-size: 24px;
+      font-weight: 700;
+
+      @include mobile-screen-style {
+        font-size: 14px;
+      }
+    }
+    &_sub {
+      color: #374151;
+      font-size: 20px;
+      font-weight: 500;
+      @include mobile-screen-style {
+        font-size: 10px;
+      }
+    }
+  }
+  &-icon {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    transform: rotate(180deg);
+	cursor: pointer;
+    &:lang(ar) {
+      transform: rotate(0deg);
+    }
+  }
+}
