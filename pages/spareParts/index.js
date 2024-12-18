@@ -20,6 +20,7 @@ const style = {
   marginTop: "32px",
 };
 
+
 function SpareParts() {
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
