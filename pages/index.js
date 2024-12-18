@@ -36,7 +36,7 @@ export default function Home() {
     //   }}
     >
       <MetaTags title="طلبات المتجر" content="طلبات المتجر" />
-      <div className="container mb-5 pb-5">
+      {/* <div className="container mb-5 pb-5">
         <div className="row" style={style}>
           <div className="col-12">
             <QuickChoose />
@@ -64,7 +64,7 @@ export default function Home() {
             <ProductCard imgPath="/imgs/no-prod-img.svg" hasNum={true} />
           </div>
         </div>
-      </div>
+      </div> */}
 
       <SharedBtn />
       <LanguageSwitcher />

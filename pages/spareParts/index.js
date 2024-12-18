@@ -27,7 +27,7 @@ function SpareParts() {
   return (
     <Box>
       <MetaTags title="تسعير قطع الغيار" content="تسعير قطع الغيار" />
-      <div className="container pb-5 mb-5">
+      {/* <div className="container pb-5 mb-5">
         <div className="row" style={style}>
           <div className="col-12">
             <ColoredHint
@@ -83,7 +83,7 @@ function SpareParts() {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* popup for how to make price */}
       <DialogCentered

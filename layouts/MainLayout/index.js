@@ -50,7 +50,7 @@ function Layout({ children }) {
       >
         {children}
       </Box>
-      {!isMobile && <Footer />}
+      {/* {!isMobile && <Footer />} */}
       <DialogCentered
         open={openCategories}
         setOpen={setOpenCategories}
