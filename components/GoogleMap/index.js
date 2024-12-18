@@ -1,6 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import {
   GoogleMap,
   LoadScriptNext,
@@ -35,13 +41,32 @@ const GoogleMapComponent = React.memo(
     const autocompleteRef = useRef(null);
     const { t, locale } = useLocalization();
     console.log("lngLatLocation", lngLatLocation);
-    const containerStyle = {
-      width: "100%",
-      height: isMobile ? "450px" : customHeight,
-    };
+
+    // Memoize container style based on screen size
+    const containerStyle = useMemo(
+      () => ({
+        width: "100%",
+        height: isMobile ? "450px" : customHeight,
+      }),
+      [isMobile, customHeight]
+    );
+
+    // Memoize the button style to avoid recalculation
+    const buttonStyle = useMemo(
+      () => ({
+        position: "absolute",
+        bottom: "15px",
+        right: "10px",
+        padding: isMobile ? "8px" : "10px",
+        border: "1px solid #B7B7B5",
+        borderRadius: "10px",
+        background: "#FBFBFB",
+        boxShadow: "10px 1px 2px 0px rgba(18, 26, 43, 0.05)",
+      }),
+      [isMobile]
+    );
 
     //   auto detect user location  when map opened
-    //   set lat lng  when edit
     const onLoadMap = useCallback(
       (map) => {
         mapRef.current = map;
@@ -72,13 +97,9 @@ const GoogleMapComponent = React.memo(
         } else {
           setLngLatLocation(lngLatLocation);
           fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
-          //   if (map && lngLatLocation) {
-          //     map?.panTo(lngLatLocation || { lat: "", lng: "" });
-          //     map?.setZoom(17);
-          //   }
         }
       },
-      [lngLatLocation, map]
+      [lngLatLocation, map, idAddress, setLngLatLocation]
     );
 
     useEffect(() => {
@@ -219,7 +240,6 @@ const GoogleMapComponent = React.memo(
                 placeholder={t.search}
                 style={{
                   width: "90%",
-                  //   right: "5%",
                   height: "44px",
                   padding: "0 35px",
                   marginBottom: "10px",
@@ -271,49 +291,13 @@ const GoogleMapComponent = React.memo(
                   position={lngLatLocation}
                   icon={customIcon} // Apply custom icon to the draggable marker
                 />
-                {/* <div
-                style={{
-                  background: "#FFD400",
-                  position: "relative",
-                  top: "28%",
-                  width: "fit-content",
-                  margin: "auto",
-                  padding: isMobile ? "5px" : "13px 8px",
-                  borderRadius: "14px",
-                  boxShadow: "0px 2.065px 7.226px 0px rgba(0, 0, 0, 0.25)",
-                  fontSize: isMobile ? "12px" : "20px",
-                  fontWeight: "500",
-                  color: "#374151",
-                  textAlign: "center",
-                }}
-              >
-                <ErrorOutlineIcon
-                  sx={{
-                    ml: isMobile ? 0 : 1,
-                    width: isMobile ? "15px" : "auto",
-                  }}
-                />
-                {t.noDeliveryHere}
-              </div> */}
               </>
             )}
           </GoogleMap>
         </LoadScriptNext>
 
         {/* Locate Me Button */}
-        <button
-          onClick={handleLocateMe}
-          style={{
-            position: "absolute",
-            bottom: "15px",
-            right: "10px",
-            padding: isMobile ? "8px" : "10px",
-            border: "1px solid #B7B7B5",
-            borderRadius: "10px",
-            background: "#FBFBFB",
-            boxShadow: "10px 1px 2px 0px rgba(18, 26, 43, 0.05)",
-          }}
-        >
+        <button onClick={handleLocateMe} style={buttonStyle}>
           <MyLocationIcon
             style={{
               width: isMobile ? "20px" : "30px",

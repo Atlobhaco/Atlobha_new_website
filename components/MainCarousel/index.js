@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 // import MyLoader from "../ContentLoader";
 import Carousel from "react-bootstrap/Carousel";
@@ -22,6 +22,23 @@ function MainCarousel() {
       imgPath: "/imgs/carousel-2.svg",
     },
   ];
+
+  const carouselItems = useMemo(() => {
+    return adsData?.map((item) => (
+      <Carousel.Item key={item?.imgPath}>
+        <div
+          className="carousel-item-wrapper"
+          style={{
+            minWidth: "100%",
+            minHeight: "100%",
+            background: `center / contain no-repeat url(${item?.imgPath})`,
+          }}
+        ></div>
+        <div className="overlay-carousel"></div>
+      </Carousel.Item>
+    ));
+  }, [adsData]); // Only re-run when adsData changes
+
   return (
     <Carousel fade slide={true} className="main-carousel" interval={null}>
       {false ? (
@@ -34,19 +51,7 @@ function MainCarousel() {
           ></Box>
         </Carousel.Item>
       ) : (
-        adsData?.map((item) => (
-          <Carousel.Item key={item?.imgPath}>
-            <div
-              className="carousel-item-wrapper"
-              style={{
-                minWidth: "100%",
-                minHeight: "100%",
-                background: `center / contain no-repeat url(${item?.imgPath})`,
-              }}
-            ></div>
-            <div className="overlay-carousel"></div>
-          </Carousel.Item>
-        ))
+        carouselItems
       )}
     </Carousel>
   );
