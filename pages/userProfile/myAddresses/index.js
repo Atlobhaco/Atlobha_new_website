@@ -78,7 +78,7 @@ function MyAddresses() {
             <Box>
               <SharedBtn
                 onClick={() => {
-                  router.push("/userProfile/myAddresses/addNewAddressProfile");
+                  router.push("/userProfile/myAddresses/addNewAddress");
                 }}
                 className="big-main-btn"
                 text="addNewAddress"
