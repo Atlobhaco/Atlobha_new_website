@@ -155,8 +155,8 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
           <Box sx={secondHeader}>المزيد من الخدمات</Box>
         </Grid>
         <Grid item size={{ xs: 4, md: 2 }}>
-          <Box sx={{ ...sectionService, background: "red" }}>
-            <Box sx={sectionServiceTitle}>المساعدة علي الطريق</Box>
+          <Box sx={{ ...sectionService, background: "#ff6c6c" }}>
+            <Box sx={sectionServiceTitle}>Test BG</Box>
             <Box sx={imgBoxStyle}>
               <Image
                 alt="img"
