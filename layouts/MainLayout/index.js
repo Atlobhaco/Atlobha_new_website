@@ -42,7 +42,7 @@ function Layout({ children }) {
       )}
       <Box
         sx={{
-          marginBottom: isMobile ? "100px" : "0px",
+          marginBottom: isMobile ? "100px" : "50px",
           maxWidth: "90vw",
           marginRight: "auto",
           marginLeft: "auto",
