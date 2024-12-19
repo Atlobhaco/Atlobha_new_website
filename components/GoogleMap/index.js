@@ -246,7 +246,9 @@ const GoogleMapComponent = React.memo(
                   borderRadius: "8px",
                   outline: "none",
                   position: "absolute",
-                  ...(locale === "ar" ? { left: "10%" } : { right: "5%" }),
+                  ...(locale === "ar"
+                    ? { left: "10%", right: "4%" }
+                    : { right: "5%" }),
                   border: "1px solid #D1D5DB",
                   boxShadow: "0px 1px 2px 0px rgba(18, 26, 43, 0.05)",
                 }}

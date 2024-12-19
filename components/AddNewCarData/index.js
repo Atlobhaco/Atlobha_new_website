@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormNewCar from "./formNewCar";
 import * as Yup from "yup";
-import { Divider, Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import useLocalization from "@/config/hooks/useLocalization";
 import VinNumIInfo from "../VinNumInfo";
@@ -91,9 +91,7 @@ function AddNewCarData({
         }, 500);
       }
 
-      toast.success(
-        editableCar?.id ? t.editedSuccessfully : t.carAddedSuccess
-      );
+      toast.success(editableCar?.id ? t.editedSuccessfully : t.carAddedSuccess);
       callUserVehicles();
       formikRef?.current?.resetForm();
       setAddPayload(false);
