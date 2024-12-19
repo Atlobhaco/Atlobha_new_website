@@ -110,9 +110,9 @@ function AddNewCarData({
   return (
     <div className="row">
       {hideDividerAndShowBtn && (
-        <Grid2 size={{ xs: 12 }}>
+        <div className="col-12">
           <Divider sx={{ background: "#EAECF0", mb: 3 }} />
-        </Grid2>
+        </div>
       )}
       <div className="col-md-6">
         <div className="row">
