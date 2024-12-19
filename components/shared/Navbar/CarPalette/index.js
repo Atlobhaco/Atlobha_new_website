@@ -109,9 +109,10 @@ function CarPalette() {
   };
 
   //   call user vehicle when component render
+  //   this return 404 when first render
   useEffect(() => {
     if (isAuth()) {
-      callUserVehicles();
+      //   callUserVehicles();
     }
   }, []);
 

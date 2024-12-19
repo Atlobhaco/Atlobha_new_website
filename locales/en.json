@@ -81,5 +81,13 @@
   "addAddress": "Add address",
   "addressAddedSuccess": "Address Saved Successfully!",
   "carAddedSuccess": "Car Saved Successfully!",
-  "addressAsDefault": "Default Address"
+  "addressAsDefault": "Default Address",
+  "wantSpareParts": "Do you want spare parts?",
+  "sparePartPricing": "Spare parts pricing",
+  "bestPriceForYou": "The best prices for you!",
+  "free": "Free",
+  "store": "Store",
+  "allCarsNeed": "All your car needs and more",
+  "freeDilevery": "Free delivery",
+  "moreServices": "More services"
 }

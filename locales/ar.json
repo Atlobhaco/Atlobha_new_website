@@ -81,5 +81,13 @@
   "addAddress": "إضافة عنوان",
   "addressAddedSuccess": "تم اضافة العنوان بنجاح!",
   "carAddedSuccess": "تم اضافة السيارة بنجاح!",
-  "addressAsDefault": "تعيين كعنوان افتراضي"
+  "addressAsDefault": "تعيين كعنوان افتراضي",
+  "wantSpareParts": "هل تريد قطع غيار؟",
+  "sparePartPricing": "تسعير قطع الغيار",
+  "bestPriceForYou": "افضل الاسعار نلاقيها لك!",
+  "free": "مجاني",
+  "store": "المتجر",
+  "allCarsNeed": "كل احتياجات سياراتك و اكثر",
+  "freeDilevery": "توصيل مجاني",
+  "moreServices": "المزيد من الخدمات"
 }

@@ -59,7 +59,7 @@ function Layout({ children }) {
             ? style["custom-style-popup-mobile"]
             : style["custom-style-popup"]
         }`}
-        title="هل تريد قطع غيار؟"
+        title={t.wantSpareParts}
         subtitle={false}
         content={
           <CategoriesPopupcontent

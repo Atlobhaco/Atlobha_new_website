@@ -11,3 +11,5 @@ export const ADDRESSES = "/addresses";
 export const ADDRESS = "/address";
 export const DELETE = "/delete";
 export const DEFAULT = "/default";
+export const APP_SECTIONS = "/app-sections";
+export const APP_SECTIONS_GROUPS = "/app-section-groups";
