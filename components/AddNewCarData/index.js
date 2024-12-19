@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import FormNewCar from "./formNewCar";
 import * as Yup from "yup";
-import { Box, Divider } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import { Box, Divider, Grid2 } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
 import VinNumIInfo from "../VinNumInfo";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -111,9 +110,9 @@ function AddNewCarData({
   return (
     <div className="row">
       {hideDividerAndShowBtn && (
-        <Grid size={{ xs: 12 }}>
+        <Grid2 size={{ xs: 12 }}>
           <Divider sx={{ background: "#EAECF0", mb: 3 }} />
-        </Grid>
+        </Grid2>
       )}
       <div className="col-md-6">
         <div className="row">
