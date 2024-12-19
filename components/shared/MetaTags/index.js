@@ -4,7 +4,7 @@ import Head from "next/head";
 function MetaTags({
   title = "Title",
   content = "content of the page",
-  icon = "/logo/logo-sm.svg",
+  icon = "/logo/road-atlobha-text.svg",
 }) {
   return (
     <Head>

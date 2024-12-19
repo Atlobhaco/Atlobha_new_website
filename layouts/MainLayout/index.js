@@ -32,7 +32,7 @@ function Layout({ children }) {
 
   return (
     <div>
-      <MetaTags title="Atlobha-اطلبها" icon="/logo/logo-sm.svg" />
+      <MetaTags title="Atlobha-اطلبها" icon="/logo/road-atlobha-text.svg" />
       <Navbar setOpenCategories={setOpenCategories} />
       {isMobile && (
         <FootNavbar
