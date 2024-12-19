@@ -9,13 +9,6 @@ import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 
-const boxSub = {
-  fontSize: "10px",
-  fontWeight: "400",
-  color: "#6B7280",
-  marginBottom: "5px",
-};
-
 const active = {
   border: "1px solid #F9DD4B",
 };
@@ -37,7 +30,7 @@ const secondHeader = {
 
 function CategoriesPopupcontent({ activeSection, setActiveSection }) {
   const router = useRouter();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [appGroups, setAppGroups] = useState([]);
 
@@ -71,7 +64,7 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
   };
 
   const boxHeader = {
-    fontSize: isMobile ? "14px" : "20px",
+    fontSize: isMobile ? "12px" : "20px",
     fontWeight: "500",
     color: "black",
     marginBottom: "5px",
@@ -80,12 +73,12 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
   const menuImgStyle = {
     position: isMobile && "relative",
     top: isMobile && "-24px",
-    left: isMobile && "5%",
+    left: isMobile && locale === "ar" ? "5%" : "-11px",
   };
 
   const sectionServiceTitle = {
     color: "black",
-    fontSize: "14px",
+    fontSize: isMobile ? "13px" : "14px",
     fontWeight: isMobile ? "500" : "500",
     overflow: "hidden",
     display: "-webkit-box",
@@ -94,6 +87,14 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
     lineHeight: "1.4",
     width: "100%",
     paddingTop: "5px",
+  };
+
+  const boxSub = {
+    fontSize: "10px",
+    fontWeight: "400",
+    color: "#6B7280",
+    marginBottom: "5px",
+    height: isMobile ? "23px" : "auto",
   };
 
   const { data } = useCustomQuery({
