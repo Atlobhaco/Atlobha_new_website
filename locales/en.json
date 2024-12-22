@@ -2,7 +2,7 @@
   "atlobhaPlus": "Atlobha +",
   "info": "Info",
   "search": "Search here",
-  "addRequest": "Start adding",
+  "addRequest": "Start adding pricing process",
   "makeSpare": "Request parts pricing",
   "addNewCar": "Add new car",
   "addNewCarProfile": "Add new car",
@@ -89,5 +89,16 @@
   "store": "Store",
   "allCarsNeed": "All your car needs and more",
   "freeDilevery": "Free delivery",
-  "moreServices": "More services"
+  "moreServices": "More services",
+  "whatIsPricing": "What is the spare parts pricing process in Atlobha?",
+  "addNameNum": "Add the name or number of the spare parts for your car, and attach an image if available.",
+  "searchForItems": "Our team will search for the parts from trusted dealerships and price them at the best available market rates.",
+  "informYouWhenDone": "You will be notified when the pricing process is complete. Confirm your request to proceed with the order.",
+  "ConfirmThePricing": "Upon confirmation, payment and delivery details will be finalized, and the parts will be sent to your provided address.",
+  "needMoreInfo": "I want more information about it.",
+  "howPricingMade": "How does the pricing process work?",
+  "discoverPricingMade": "Discover how the pricing process works at Atlobha to assist you in the best way.",
+  "addPartForPricing": "Add a piece to pricing",
+  "nameNumPrice": "Name and number for piece",
+  "noOptions": "No options available"
 }

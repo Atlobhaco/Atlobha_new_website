@@ -2,7 +2,9 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import CarouselHowPricing from "./CarouselHowPricing";
+import useLocalization from "@/config/hooks/useLocalization";
 
 const closeHolder = {
   display: "flex",
@@ -11,7 +13,14 @@ const closeHolder = {
 };
 
 function HowMakePrice({ setOpenhowPricing }) {
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleSelect = (selectedIndex) => {
+    setActiveIndex(selectedIndex);
+  };
 
   const header = {
     mt: 2,
@@ -58,60 +67,65 @@ function HowMakePrice({ setOpenhowPricing }) {
           width={53}
           height={37}
         />
-        <Box component="span">ماهي تسعير قطع الغيار في اطلبها؟</Box>
+        <Box component="span">{t.whatIsPricing}</Box>
       </Box>
-      <Box sx={contentData}>
+      <Box
+        sx={{ ...contentData, fontWeight: activeIndex === 0 ? "700" : "500" }}
+      >
         <Image
-          src="/icons/white-circle-check.svg"
+          src={`/icons/${
+            activeIndex === 0 ? "yellow-circle" : "white-circle"
+          }-check.svg`}
           alt="check"
           width={18}
           height={18}
         />
-        اضف اسم او رقم القطعه الخاصه بسيارتك مع ارفاق صوره ان وجد
+        {t.addNameNum}
       </Box>
-      <Box sx={{ ...contentData, fontWeight: "700" }}>
+      <Box
+        sx={{ ...contentData, fontWeight: activeIndex === 1 ? "700" : "500" }}
+      >
         <Image
-          src="/icons/yellow-circle-check.svg"
+          src={`/icons/${
+            activeIndex === 1 ? "yellow-circle" : "white-circle"
+          }-check.svg`}
           alt="check"
           width={18}
           height={18}
         />
-        سيتم البحث عن القطع من قبل فريق اطلبها عند الوكلاء المعتمدين و تسعير
-        القطع باقل سعر موجود ف السوق{" "}
+        {t.searchForItems}
       </Box>
-      <Box sx={contentData}>
+      <Box
+        sx={{ ...contentData, fontWeight: activeIndex === 2 ? "700" : "500" }}
+      >
         <Image
-          src="/icons/white-circle-check.svg"
+          src={`/icons/${
+            activeIndex === 2 ? "yellow-circle" : "white-circle"
+          }-check.svg`}
           alt="check"
           width={18}
           height={18}
         />
-        سيتم اعلامك عند الانتهاء من التسعير وذلك ليتم تاكيد الطلب من جهتك ، و
-        اتمام عمليه الدفع{" "}
+        {t.informYouWhenDone}
       </Box>
-      <Box sx={contentData}>
+      <Box
+        sx={{ ...contentData, fontWeight: activeIndex === 3 ? "700" : "500" }}
+      >
         <Image
-          src="/icons/white-circle-check.svg"
+          src={`/icons/${
+            activeIndex === 3 ? "yellow-circle" : "white-circle"
+          }-check.svg`}
           alt="check"
           width={18}
           height={18}
         />
-        عند تاكيد الطلب و اتمام عمليه الدفع سيتم شحن القطع الي العنوان الذي
-        اخترته
+        {t.ConfirmThePricing}
       </Box>
 
-      <Box>
-        <Image
-          style={{
-            width: "100%",
-            marginTop: "20px",
-          }}
-          src="/imgs/pricing-done.svg"
-          alt="close"
-          width={335}
-          height={200}
-        />
-      </Box>
+      <CarouselHowPricing
+        handleSelect={handleSelect}
+        activeIndex={activeIndex}
+      />
 
       <Box
         sx={{
@@ -122,9 +136,11 @@ function HowMakePrice({ setOpenhowPricing }) {
           className="big-main-btn"
           customClass="w-100"
           text="addRequest"
+          onClick={() => setOpenhowPricing(false)}
         />
       </Box>
       <Box
+        onClick={() => setOpenhowPricing(false)}
         sx={{
           margin: "20px 0px",
           textAlign: "center",
@@ -134,7 +150,7 @@ function HowMakePrice({ setOpenhowPricing }) {
           cursor: "pointer",
         }}
       >
-        اريد معلومات اكثر عنها
+        {t.needMoreInfo}
       </Box>
     </Box>
   );

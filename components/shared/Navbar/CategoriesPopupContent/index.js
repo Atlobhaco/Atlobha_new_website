@@ -28,7 +28,11 @@ const secondHeader = {
   color: "black",
 };
 
-function CategoriesPopupcontent({ activeSection, setActiveSection }) {
+function CategoriesPopupcontent({
+  activeSection,
+  setActiveSection,
+  setOpenCategories = () => {},
+}) {
   const router = useRouter();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -153,6 +157,7 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
             onClick={() => {
               setActiveSection(true);
               router.push("/spareParts");
+              setOpenCategories(false);
             }}
           >
             <Box>
@@ -176,6 +181,7 @@ function CategoriesPopupcontent({ activeSection, setActiveSection }) {
             onClick={() => {
               setActiveSection(false);
               router.push("/");
+              setOpenCategories(false);
             }}
           >
             <Box>

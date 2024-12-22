@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Slide } from "@mui/material";
+import { Box, Slide } from "@mui/material";
 import { useRouter } from "next/router";
 import { makeStyles } from "@mui/styles";
 import Button from "@mui/material/Button";
@@ -69,13 +69,12 @@ const useStyles = makeStyles((isMobile) => ({
   title: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    fontSize: "1.1em",
-    fontWeight: "700",
+    fontSize: isMobile ? "20px" : "20px",
+    fontWeight: isMobile ? "700" : "500",
   },
   subTitle: {
-    fontSize: "0.75em",
-    fontWeight: "600",
+    fontSize: isMobile ? "1.2rem" : "16rem",
+    fontWeight: "500",
   },
 }));
 function DialogMultiDirection({
@@ -92,6 +91,7 @@ function DialogMultiDirection({
   closeAction = () => {},
   customClass = "",
   slideFnUp = null,
+  hasCloseIcon = true,
 }) {
   const { isMobile } = useScreenSize();
   const classes = useStyles(isMobile);
@@ -122,22 +122,34 @@ function DialogMultiDirection({
       aria-describedby="general-dialog"
     >
       {appearTitleAndSub ? (
-        <DialogTitle className={classes.container}>
-          <div className={classes.title}>
+        <DialogTitle
+          sx={{
+            padding: !title ? "5px 24px" : "16px 24px",
+          }}
+          className={classes.container}
+        >
+          <Box
+            className={classes.title}
+            sx={{
+              justifyContent: !title ? "flex-end" : "space-between",
+            }}
+          >
             {title}
-            <IconButton
-              edge="end"
-              color="inherit"
-              className={classes.closeButton}
-              onClick={() => {
-                handleClose();
-                closeAction();
-              }}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+            {hasCloseIcon && (
+              <IconButton
+                edge="end"
+                color="inherit"
+                className={classes.closeButton}
+                onClick={() => {
+                  handleClose();
+                  closeAction();
+                }}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
+          </Box>
           {subtitle && <div className={classes.subTitle}>{subtitle}</div>}
         </DialogTitle>
       ) : (

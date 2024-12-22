@@ -3,15 +3,25 @@ import React from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SparePartItem from "./SparePartItem";
+import { useDispatch, useSelector } from "react-redux";
+import { setSelectedSparePart } from "@/redux/reducers/addSparePartsReducer";
 
-function AddsparePart() {
+function AddsparePart({ setOpenPricingDialog }) {
   const { isMobile } = useScreenSize();
+  const dispatch = useDispatch();
+  const { selectedParts } = useSelector((state) => state.addSpareParts);
+    // dispatch(
+  	// setSelectedSparePart({
+  	//   data: { id: 1, qty: 0 },
+  	// })
+    // );
+  console.log("selectedParts", selectedParts);
   return (
     <Box
       sx={{
         background: isMobile ? "white" : "#F8F8F8",
         padding: "15px",
-		borderRadius: !isMobile ? "20px" : "unset",
+        borderRadius: !isMobile ? "20px" : "unset",
         borderBottom: isMobile ? "3px solid #F8F8F8" : "unset",
       }}
     >
@@ -52,6 +62,7 @@ function AddsparePart() {
             }}
           />
           <Box
+            // onClick={() => setOpenPricingDialog(true)}
             sx={{
               pt: 1,
             }}
@@ -62,7 +73,7 @@ function AddsparePart() {
         </Box>
       </Box>
       <Box sx={{ mt: 2 }}>
-        {["1", "2", "3"]?.map(() => (
+        {[]?.map(() => (
           <SparePartItem />
         ))}
       </Box>

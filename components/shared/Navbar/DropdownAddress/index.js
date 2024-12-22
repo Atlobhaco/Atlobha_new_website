@@ -55,23 +55,33 @@ function DropDownAddress() {
   return (
     <Box>
       {selectedAddress?.id || defaultAddress?.id ? (
-        <Box
-          sx={{
-            color: "#6B7280",
-            fontSize: "16px",
-            fontWeight: "400",
-            width: "fit-content",
-            cursor: "pointer",
-            maxWidth: "30vw",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
-          }}
-          onClick={handleOpen}
-        >
-          {selectedAddress?.address ||
-            defaultAddress?.address ||
-            t.noAddressSelected}
+        <Box sx={{ display: "flex" }}>
+          <Box
+            sx={{
+              color: "#6B7280",
+              fontSize: "16px",
+              fontWeight: "400",
+              width: "fit-content",
+              cursor: "pointer",
+              maxWidth: "30vw",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+            onClick={handleOpen}
+          >
+            {selectedAddress?.address ||
+              defaultAddress?.address ||
+              t.noAddressSelected}{" "}
+          </Box>
+
+          <KeyboardArrowDownIcon
+            style={{
+              color: "#6B7280",
+              left: locale === "ar" ? "7px" : "unset",
+              right: locale !== "ar" ? "7px" : "unset",
+            }}
+          />
         </Box>
       ) : (
         <Box

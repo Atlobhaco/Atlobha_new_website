@@ -8,6 +8,7 @@ import SharedToggle from "../shared/SharedToggle";
 import { useDispatch, useSelector } from "react-redux";
 import { useModelsQuery } from "@/config/network/Shared/lookupsDataHelper";
 import { setModels } from "@/redux/reducers/LookupsReducer";
+import SharedAutoComplete from "../SharedAutoComplete";
 
 function FormNewCar({
   initialValues,
@@ -48,7 +49,7 @@ function FormNewCar({
           setFieldTouched,
         }) => {
           // Log errors to the console
-          //   console.log("Formik Errors:", errors);
+          //   console.log("Formik values:", values);
 
           return (
             <Form>
@@ -83,7 +84,7 @@ function FormNewCar({
                     label={t.model}
                     showAstrick
                     items={models}
-					disabled={editableCar?.id}
+                    disabled={editableCar?.id}
                   />
                 </div>
                 <div className="col-12 mt-3">
@@ -97,7 +98,7 @@ function FormNewCar({
                     label={t.year}
                     showAstrick
                     items={years}
-					disabled={editableCar?.id}
+                    disabled={editableCar?.id}
                   />
                 </div>
 

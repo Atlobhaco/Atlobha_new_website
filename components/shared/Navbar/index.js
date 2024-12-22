@@ -86,7 +86,7 @@ function Navbar({ setOpenCategories }) {
     >
       <Box className={`${style["navbar-container"]}`}>
         <Box sx={firstPartStyle}>
-          {hideInSparePartsPage && <DropDownAddress />}
+          <DropDownAddress />
           <Image
             alt="logo"
             width={isMobile ? 84 : 130}
@@ -99,27 +99,28 @@ function Navbar({ setOpenCategories }) {
           {isMobile && hideInSparePartsPage && <CarPalette />}
         </Box>
         <Box sx={secondPartStyle}>
+		<LanguageSwitcher />
+
           {!isMobile && (
             <>
-              <LanguageSwitcher />
               <IconInsideCircle
                 hasText={false}
                 onClick={() => setOpenCategories(true)}
               />
-              <IconInsideCircle
+              {/* <IconInsideCircle
                 hasText={false}
                 iconUrl="/icons/search-black.svg"
               />
               <IconInsideCircle
                 hasText={false}
                 iconUrl="/icons/basket-black.svg"
-              />
+              /> */}
             </>
           )}
-          <SharedBtn
+          {/* <SharedBtn
             text="atlobhaPlus"
             customClass={`${isMobile ? style["mobile-btn"] : ""}`}
-          />
+          /> */}
 
           <div>
             <IconButton

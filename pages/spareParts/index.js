@@ -15,42 +15,45 @@ import HowMakePrice from "@/components/spareParts/HowMakePrice";
 import SharedBtn from "@/components/shared/SharedBtn";
 import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymentMethodsImgs";
 import PartsImages from "@/components/spareParts/PartsImages";
+import useLocalization from "@/config/hooks/useLocalization";
+import AddPartDialogContent from "@/components/spareParts/AddPartDialogContent";
 
 const style = {
   marginTop: "32px",
 };
 
-
 function SpareParts() {
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
+  const [openPricingDialog, setOpenPricingDialog] = useState(false);
 
   return (
     <Box>
-      <MetaTags title="تسعير قطع الغيار" content="تسعير قطع الغيار" />
+      <MetaTags title={t.sparePartPricing} content={t.discoverPricingMade} />
       <div className="container pb-5 mb-5">
         <div className="row" style={style}>
           <div className="col-12">
             <ColoredHint
               bgColor="#FEFCED"
-              header="كيف تتم عملية التسعير؟"
-              subHeader="اكتشف كيف تتم عملية التسعير في اطلبها لنساعدك بأفضل طريقة"
+              header={t.howPricingMade}
+              subHeader={t.discoverPricingMade}
               iconPath="/icons/money.svg"
               onClick={() => setOpenhowPricing(true)}
             />
           </div>
         </div>
-        {/* <div className="row">
+        <div className="row">
           <div className="col-md-8 col-12 mt-4">
-            <AddsparePart />
-            <div className="mt-4">
+            <AddsparePart setOpenPricingDialog={setOpenPricingDialog} />
+            {/* <div className="mt-4">
               <PromoCodeSpare />
             </div>
             <div className="mt-4">
               <SharedTextArea />
-            </div>
+            </div> */}
           </div>
-          <div className="col-md-4 col-12 mt-4">
+          {/* <div className="col-md-4 col-12 mt-4">
             <PaymentMethodSpare />
             {!isMobile && (
               <Box sx={{ margin: "30px 0px" }}>
@@ -62,9 +65,9 @@ function SpareParts() {
               </Box>
             )}
             {!isMobile && <AvailablePaymentMethodsImgs />}
-          </div>
+          </div> */}
         </div>
-        <div
+        {/* <div
           className="row"
           style={{
             marginTop: "48px",
@@ -94,6 +97,16 @@ function SpareParts() {
         hasCloseIcon
         customClass={!isMobile ? "sm-popup-width" : ""}
         content={<HowMakePrice setOpenhowPricing={setOpenhowPricing} />}
+      />
+
+      <DialogMultiDirection
+        open={openPricingDialog}
+        setOpen={setOpenPricingDialog}
+        customClass="reverse-position"
+        title={false}
+        subtitle={false}
+        slideFnUp={true}
+        content={<AddPartDialogContent />}
       />
     </Box>
   );

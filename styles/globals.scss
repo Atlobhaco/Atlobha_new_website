@@ -320,3 +320,12 @@ div[aria-label="number input"] {
 .pac-container.pac-logo {
   z-index: 9999;
 }
+
+.reverse-position {
+  left: unset !important;
+  right: 0px;
+  &:lang(ar) {
+    left: 0px !important;
+    right: unset;
+  }
+}

@@ -24,7 +24,7 @@ const useStyles = makeStyles(({ isMobile, title }) => ({
   centerDesign: {
     bottom: "0px",
     minWidth: "60vw",
-    maxHeight: "90vh !important",
+    maxHeight: "90vh",
     minHeight: "72vh",
     left: "0",
     right: "0",
@@ -47,7 +47,6 @@ const useStyles = makeStyles(({ isMobile, title }) => ({
     display: "flex",
     flexDirection: "column",
     position: "relative",
-    // padding: ,
   }),
   title: {
     display: "flex",

@@ -1,4 +1,5 @@
 @use "../../styles/variables.scss" as *;
+@use "../../styles/mixins.scss" as *;
 
 .langSwitcher {
   button {
@@ -9,6 +10,10 @@
     background-color: #496e2d;
     width: 38px;
     height: 38px;
+    @include mobile-screen-style {
+      width: 21px;
+      height: 21px;
+    }
     border-radius: 50%;
     font-size: 11px;
     display: flex;

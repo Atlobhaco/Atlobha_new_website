@@ -43,7 +43,7 @@ export function addAddressQuery({
   t = () => {},
 }) {
   return useCustomQuery({
-    name: "setDefaultCar",
+    name: "setDefaultAddress",
     url: `${USERS}/${user?.data?.user?.id}${ADDRESSES}`,
     refetchOnWindowFocus: false,
     enabled: false,

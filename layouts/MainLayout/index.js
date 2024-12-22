@@ -65,6 +65,7 @@ function Layout({ children }) {
           <CategoriesPopupcontent
             activeSection={activeSection}
             setActiveSection={setActiveSection}
+            setOpenCategories={setOpenCategories}
           />
         }
       />

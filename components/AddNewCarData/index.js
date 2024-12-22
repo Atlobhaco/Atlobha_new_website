@@ -66,7 +66,7 @@ function AddNewCarData({
   });
 
   const { data, refetch: addCar } = useCustomQuery({
-    name: ["addNewCar", addPayload],
+    name: ["addNewCarData", addPayload],
     url: `${
       editableCar?.id
         ? `${USERS}/${user?.data?.user?.id}${VEHICLES}/${editableCar?.id}`
@@ -85,9 +85,9 @@ function AddNewCarData({
       // make car default by update it after success adding
       if (addPayload?.is_default && res) {
         setSelectedCar(res);
-        setTimeout(() => {
-          callUserDefaultCar();
-        }, 500);
+        // setTimeout(() => {
+        //   callUserDefaultCar();
+        // }, 500);
       }
 
       toast.success(editableCar?.id ? t.editedSuccessfully : t.carAddedSuccess);
