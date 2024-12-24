@@ -3,6 +3,7 @@ import { TextField, InputAdornment, Tooltip, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search"; // Example icon
 import Image from "next/image";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function SharedTextField({
   label = "label-here",
@@ -23,8 +24,10 @@ function SharedTextField({
   plusMinusInput = false,
   rightIcon = false,
   actionClickrightIcon = () => {},
+  customPadding = null,
 }) {
   const { isMobile } = useScreenSize();
+  const { locale } = useLocalization();
 
   return (
     <Box
@@ -56,6 +59,7 @@ function SharedTextField({
         name={name}
         value={value}
         onChange={handleChange}
+		onKeyDown={handleChange}
         onBlur={handleBlur}
         variant="outlined"
         fullWidth
@@ -65,7 +69,7 @@ function SharedTextField({
             <InputAdornment
               position="end"
               sx={{
-                margin: plusMinusInput ? "unset" : "8px",
+                margin: plusMinusInput || !imgIcon ? "unset" : "8px",
               }}
               onClick={actionClickIcon}
             >
@@ -122,9 +126,14 @@ function SharedTextField({
             },
           },
           "& .MuiInputBase-input": {
-            padding: "0 2px", // Adjust padding for input text
+            padding: customPadding ? customPadding : "0 2px", // Adjust padding for input text
             color: "#6B7280",
-            textAlign: plusMinusInput ? "center" : "start",
+            textAlign:
+              customPadding && locale == "ar"
+                ? "end"
+                : plusMinusInput
+                ? "center"
+                : "start",
           },
         }}
       />

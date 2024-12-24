@@ -31,8 +31,22 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
+const codeNum = {
+  position: "absolute",
+  top: "0px",
+  height: "44px",
+  background: "transparent",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderTopRightRadius: "8px",
+  borderBottomRightRadius: "8px",
+  padding: "0px 3px",
+  left: "0px",
+};
+
 function Login({ showBtn = false, open = false, setOpen = () => {} }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   const [timer, setTimer] = useState(120);
@@ -60,6 +74,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
           .required(t.required)
           .test("is-valid-phone", t.invalid_phone, function (value) {
             const { country } = this.parent;
+            console.log("value-validate", value);
             return validatePhoneNumber(value, country);
           })
       : Yup.string(),
@@ -80,29 +95,33 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
     },
   });
 
+
   const handleInputChange = (e) => {
-    let value = e.target.value.replace(/\s/g, "");
-    if (value?.includes("+")) {
-      value = value.replace("+", "").replace(/\s/g, "");
-    }
+    let value = e.target.value;
+    // if (value?.includes("+")) {
+    //   value = value.replace("+", "").replace(/\s/g, "");
+    // }
     // Check if the value contains only numbers
     const isNumeric = /^\d+$/.test(value);
 
     // Toggle input type based on value
     if (value) {
+    //   formik.handleChange(e);
+    //   formik.handleBlur(e);
       formik.setErrors({});
       setTextInput(!isNumeric);
       if (isNumeric) {
+        // console.log("value", value);
         formik.setFieldValue("phone", value);
       } else {
-        formik.setFieldValue("text_input", value.replace(/\d+/g, ""));
+        formik.setFieldValue("text_input", value);
       }
-      formik.handleChange(e);
     }
-    formik.handleChange(e);
+    // formik.handleChange(e);
+    // formik.handleBlur(e);
 
-    formik.setFieldTouched("text_input", true);
-    formik.setFieldTouched("phone", true);
+    // formik.setFieldTouched("text_input", true);
+    // formik.setFieldTouched("phone", true);
 
     // Update formik values
   };
@@ -213,15 +232,27 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               <Divider>{t.or}</Divider>
             </Root>
             <Box sx={containerStyle}>
-              <Box sx={{ mt: 2 }}>
-                {textInput ? (
+              <Box sx={{ mt: 2, position: "relative" }}>
+                {true ? (
                   <SharedTextField
+                    customPadding={`${textInput ? "" : "0px 42px"}`}
                     placeholder={t.emailOrPhone}
-                    handleChange={handleInputChange} // Custom handler
+                    handleChange={(e) => {
+                      formik.handleChange(e);
+                      handleInputChange(e);
+                    }} // Custom handler
                     handleBlur={formik.handleBlur}
-                    error={formik.errors["text_input"]}
-                    name="text_input"
-                    value={formik.values?.text_input || ""}
+                    error={
+                      textInput
+                        ? formik.errors["text_input"]
+                        : formik.errors["phone"]
+                    }
+                    name={`${textInput ? "text_input" : "phone"}`}
+                    value={
+                      textInput
+                        ? formik.values?.text_input
+                        : formik.values?.phone
+                    }
                     setFieldValue={formik.setFieldValue}
                     label={false}
                     imgIcon={false}
@@ -237,6 +268,11 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
                     name="phone"
                     handleInputChange={handleInputChange}
                   />
+                )}
+                {!textInput && (
+                  <Box sx={codeNum}>
+                    {locale === "en" && "+"}966{locale === "ar" && "+"}
+                  </Box>
                 )}
               </Box>
               <Box sx={{ mt: 4 }}>

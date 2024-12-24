@@ -62,7 +62,7 @@ function AddsparePart({ setOpenPricingDialog }) {
             }}
           />
           <Box
-            onClick={() => setOpenPricingDialog(true)}
+            // onClick={() => setOpenPricingDialog(true)}
             sx={{
               pt: 1,
             }}
