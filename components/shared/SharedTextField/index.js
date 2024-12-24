@@ -59,7 +59,7 @@ function SharedTextField({
         name={name}
         value={value}
         onChange={handleChange}
-		onKeyDown={handleChange}
+        onKeyDown={handleChange}
         onBlur={handleBlur}
         variant="outlined"
         fullWidth
@@ -111,7 +111,8 @@ function SharedTextField({
         }}
         sx={{
           "& .MuiOutlinedInput-root": {
-            height: "44px", // Set the height of the input
+            background: rightIcon ? "white" : "unset",
+            height: isMobile && rightIcon ? "31px" : "44px", // Set the height of the input
             borderRadius: "8px", // Set border radius
             paddingRight: "8px", // Adjust padding for the icon
             paddingLeft: rightIcon ? "8px" : "inherit", // Adjust padding for the icon
@@ -126,6 +127,7 @@ function SharedTextField({
             },
           },
           "& .MuiInputBase-input": {
+            fontSize: isMobile ? "13px" : "16px",
             padding: customPadding ? customPadding : "0 2px", // Adjust padding for input text
             color: "#6B7280",
             textAlign:

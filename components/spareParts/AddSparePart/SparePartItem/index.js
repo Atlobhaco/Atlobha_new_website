@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function SparePartItem() {
+function SparePartItem({ data }) {
   const { isMobile } = useScreenSize();
 
   const imgHolderStyle = {
@@ -18,31 +18,33 @@ function SparePartItem() {
 
   const noImgStyle = {
     borderRadius: isMobile ? "8px" : "20px",
-    opacity: "0.2",
-    width: "37px",
+    opacity: "1",
+    width: "100%",
+    height: "100%",
     margin: "auto",
   };
 
   return (
     <Box
+      key={data?.id}
       sx={{
         display: "flex",
         alignItems: "flex-start",
         gap: "12px",
-        marginBottom: "20px",
+        marginBottom: "40px",
       }}
     >
       <Box sx={imgHolderStyle}>
         <Image
-          src="/imgs/ar-en-atlobha.svg"
-          width={isMobile ? 50 : 62}
-          height={isMobile ? 50 : 62}
+          src={data?.imgSrc ? data?.imgSrc : "/imgs/no-img-holder.svg"}
+          width={isMobile ? 50 : 100}
+          height={isMobile ? 50 : 100}
           alt="spare-part"
           style={noImgStyle}
         />
       </Box>
       <Box>
-        <AddRemoveSparePart />
+        <AddRemoveSparePart data={data} />
       </Box>
     </Box>
   );

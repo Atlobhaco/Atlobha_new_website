@@ -30,6 +30,7 @@ function AddsparePart({ setOpenPricingDialog }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
+          mb: 3,
         }}
       >
         <Box
@@ -62,7 +63,7 @@ function AddsparePart({ setOpenPricingDialog }) {
             }}
           />
           <Box
-            // onClick={() => setOpenPricingDialog(true)}
+            onClick={() => setOpenPricingDialog(true)}
             sx={{
               pt: 1,
             }}
@@ -73,8 +74,8 @@ function AddsparePart({ setOpenPricingDialog }) {
         </Box>
       </Box>
       <Box sx={{ mt: 2 }}>
-        {[]?.map(() => (
-          <SparePartItem />
+        {selectedParts?.map((data) => (
+          <SparePartItem data={data} />
         ))}
       </Box>
     </Box>

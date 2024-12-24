@@ -85,6 +85,45 @@ function AddPartDialogContent() {
 
   console.log("selectedParts", selectedParts);
 
+  const handleChangeInput = (e) => {
+    const inputValue = +e?.target?.value;
+    setAddedPart({
+      ...addedPart,
+      quantity: inputValue,
+    });
+  };
+
+  const handleBlurInput = (e) => {
+    if (!+e?.target?.value || +e?.target?.value === 0) {
+      setAddedPart({
+        ...addedPart,
+        quantity: 1,
+        name: "",
+      });
+    }
+  };
+
+  const deleteMinus = (e) => {
+    // handle the zero to remove it
+    if (+addedPart?.quantity <= 1) {
+      return setAddedPart({
+        ...addedPart,
+        quantity: 1,
+        name: "",
+      });
+    }
+    setAddedPart({
+      ...addedPart,
+      quantity: +addedPart?.quantity - 1,
+    });
+  };
+
+  const increaseValue = (e) => {
+    setAddedPart({
+      ...addedPart,
+      quantity: +addedPart?.quantity + 1,
+    });
+  };
   return (
     <Box>
       <Box sx={header}>{t.addPartForPricing}</Box>
@@ -132,6 +171,10 @@ function AddPartDialogContent() {
               defaultValue={defaultValue}
               value={addedPart}
               setValue={setAddedPart}
+              handleChange={handleChangeInput}
+              handleBlur={handleBlurInput}
+              actionClickrightIcon={deleteMinus}
+              actionClickIcon={increaseValue}
             />
           ) : null}
         </Box>

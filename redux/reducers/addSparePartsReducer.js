@@ -20,14 +20,14 @@ export const addSparePartsReducer = createSlice({
         (part) => part.id === incomingPart.id
       );
 
-      if (incomingPart.qty === 0) {
-        // Remove the part if qty is 0
+      if (incomingPart.delete) {
+        // force delete for the part
         if (existingIndex !== -1) {
           state.selectedParts.splice(existingIndex, 1);
         }
       } else if (existingIndex !== -1) {
-        // Update qty if the part already exists
-        state.selectedParts[existingIndex].qty = incomingPart.qty;
+        // Update quantity if the part already exists
+        state.selectedParts[existingIndex].quantity = incomingPart.quantity;
       } else {
         // Add the new part
         state.selectedParts.push(incomingPart);
