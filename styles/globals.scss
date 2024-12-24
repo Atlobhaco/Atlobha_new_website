@@ -329,3 +329,18 @@ div[aria-label="number input"] {
     right: unset;
   }
 }
+
+// input hold the new added spare part
+.input-text {
+  width: 100%;
+  height: 44px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0px 10px;
+  &:focus,
+  &:hover {
+    border: 1px solid $primary;
+    border-radius: 8px;
+    outline: unset;
+  }
+}

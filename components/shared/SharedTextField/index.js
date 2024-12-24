@@ -2,6 +2,7 @@ import React from "react";
 import { TextField, InputAdornment, Tooltip, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search"; // Example icon
 import Image from "next/image";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function SharedTextField({
   label = "label-here",
@@ -18,12 +19,18 @@ function SharedTextField({
   toolTipTitle = "title",
   placeholder = "placeHolder",
   actionClickIcon = () => {},
+  hasMargin = true,
+  plusMinusInput = false,
+  rightIcon = false,
+  actionClickrightIcon = () => {},
 }) {
+  const { isMobile } = useScreenSize();
+
   return (
     <Box
       sx={{
         position: "relative",
-        marginBottom: "16px",
+        marginBottom: hasMargin ? "16px" : "0px",
       }}
     >
       <Box
@@ -49,13 +56,19 @@ function SharedTextField({
         name={name}
         value={value}
         onChange={handleChange}
-		onBlur={handleBlur}
+        onBlur={handleBlur}
         variant="outlined"
         fullWidth
         placeholder={placeholder} // Add a placeholder instead of a label
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end" onClick={actionClickIcon}>
+            <InputAdornment
+              position="end"
+              sx={{
+                margin: plusMinusInput ? "unset" : "8px",
+              }}
+              onClick={actionClickIcon}
+            >
               {imgIcon && (
                 <Tooltip title={toolTipTitle}>
                   {/* <SearchIcon style={{ cursor: "pointer" }} /> */}
@@ -63,8 +76,29 @@ function SharedTextField({
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={imgIcon}
-                    width={20}
-                    height={20}
+                    width={isMobile ? 15 : 20}
+                    height={isMobile ? 15 : 20}
+                  />
+                </Tooltip>
+              )}
+            </InputAdornment>
+          ),
+          startAdornment: (
+            <InputAdornment
+              sx={{
+                margin: plusMinusInput || !rightIcon ? "unset" : "8px",
+              }}
+              position="end"
+              onClick={actionClickrightIcon}
+            >
+              {rightIcon && (
+                <Tooltip title={toolTipTitle}>
+                  <Image
+                    style={{ cursor: "pointer" }}
+                    alt="img"
+                    src={+value <= 1 ? "/icons/trash-icon.svg" : rightIcon}
+                    width={isMobile ? 15 : 20}
+                    height={isMobile ? 15 : 20}
                   />
                 </Tooltip>
               )}
@@ -76,6 +110,7 @@ function SharedTextField({
             height: "44px", // Set the height of the input
             borderRadius: "8px", // Set border radius
             paddingRight: "8px", // Adjust padding for the icon
+            paddingLeft: rightIcon ? "8px" : "inherit", // Adjust padding for the icon
             "& fieldset": {
               borderColor: error ? "#EB3C24 !important" : "#D1D5DB", // Default border color
             },
@@ -87,8 +122,9 @@ function SharedTextField({
             },
           },
           "& .MuiInputBase-input": {
-            padding: "0 14px", // Adjust padding for input text
+            padding: "0 2px", // Adjust padding for input text
             color: "#6B7280",
+            textAlign: plusMinusInput ? "center" : "start",
           },
         }}
       />

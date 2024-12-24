@@ -10,11 +10,11 @@ function AddsparePart({ setOpenPricingDialog }) {
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
   const { selectedParts } = useSelector((state) => state.addSpareParts);
-    // dispatch(
-  	// setSelectedSparePart({
-  	//   data: { id: 1, qty: 0 },
-  	// })
-    // );
+  // dispatch(
+  // setSelectedSparePart({
+  //   data: { id: 1, qty: 0 },
+  // })
+  // );
   console.log("selectedParts", selectedParts);
   return (
     <Box
@@ -62,7 +62,7 @@ function AddsparePart({ setOpenPricingDialog }) {
             }}
           />
           <Box
-            // onClick={() => setOpenPricingDialog(true)}
+            onClick={() => setOpenPricingDialog(true)}
             sx={{
               pt: 1,
             }}

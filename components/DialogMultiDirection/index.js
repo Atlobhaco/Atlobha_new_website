@@ -36,7 +36,7 @@ const useStyles = makeStyles((isMobile) => ({
   paperEn: {
     position: "absolute !important",
     bottom: "0px",
-    width: "50vw",
+    width: "30vw",
     minHeight: "100vh",
     left: "0px",
     margin: "unset !important",
@@ -44,7 +44,7 @@ const useStyles = makeStyles((isMobile) => ({
   paperAr: {
     position: "absolute !important",
     bottom: "0px",
-    width: "50vw",
+    width: "30vw",
     minHeight: "100vh",
     right: "0px",
     margin: "unset !important",

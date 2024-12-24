@@ -100,5 +100,9 @@
   "discoverPricingMade": "اكتشف كيف تتم عملية التسعير في اطلبها لنساعدك بأفضل طريقة",
   "addPartForPricing": "إضافة قطعة للتسعير",
   "nameNumPrice": "اسم أو رقم القطعة",
-  "noOptions": "لا يوجد نتائج"
+  "noOptions": "لا يوجد نتائج",
+  "optionalUploadImg": "تحميل الصورة ( إختياري )",
+  "addPart": "إضافة القطعة",
+  "fileNotSupported": "صيغة الملف غير مقبولة",
+  "fileSizeLarge": "حجم الملف كبير"
 }

@@ -20,8 +20,8 @@ const LanguageSwitcher = () => {
           <Image
             src="/icons/lang-en.svg"
             alt="ar"
-            width={isMobile ?324 : 40}
-            height={isMobile ? 23 : 40}
+            width={isMobile ? 22 : 40}
+            height={isMobile ? 22 : 40}
           />
         </button>
       ) : (
@@ -29,8 +29,8 @@ const LanguageSwitcher = () => {
           <Image
             src="/icons/lang-ar.svg"
             alt="ar"
-            width={isMobile ? 23 : 40}
-            height={isMobile ? 23 : 40}
+            width={isMobile ? 22 : 40}
+            height={isMobile ? 22 : 40}
           />
         </button>
       )}

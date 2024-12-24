@@ -100,5 +100,9 @@
   "discoverPricingMade": "Discover how the pricing process works at Atlobha to assist you in the best way.",
   "addPartForPricing": "Add a piece to pricing",
   "nameNumPrice": "Name and number for piece",
-  "noOptions": "No options available"
+  "noOptions": "No options available",
+  "optionalUploadImg": "Upload image (optional)",
+  "addPart": "Add part",
+  "fileNotSupported": "File type not supported",
+  "fileSizeLarge": "File size is large"
 }
