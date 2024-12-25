@@ -10,6 +10,7 @@ import {
   getUserCurrentLocation,
   translateAddressName,
 } from "@/constants/helpers";
+import { toast } from "react-toastify";
 
 const header = {
   fontSize: "20px",
@@ -37,6 +38,7 @@ function ShowAddressesFromNavbarMobile() {
         })
       );
     } catch (error) {
+      toast.error(error);
       console.error(error);
     }
   };
