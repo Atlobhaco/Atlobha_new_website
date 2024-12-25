@@ -337,6 +337,9 @@ div[aria-label="number input"] {
   border: 1px solid #d1d5db;
   border-radius: 8px;
   padding: 0px 10px;
+  @include mobile-screen-style {
+    height: 32px;
+  }
   &:focus,
   &:hover {
     border: 1px solid $primary;

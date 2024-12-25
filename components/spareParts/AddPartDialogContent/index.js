@@ -83,8 +83,6 @@ function AddPartDialogContent() {
     });
   };
 
-  console.log("selectedParts", selectedParts);
-
   const handleChangeInput = (e) => {
     const inputValue = +e?.target?.value;
     setAddedPart({

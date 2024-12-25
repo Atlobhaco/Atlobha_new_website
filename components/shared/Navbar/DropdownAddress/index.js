@@ -29,6 +29,12 @@ function DropDownAddress() {
   const open = Boolean(anchorEl);
   const [canAddAddress, setCanAddAddress] = useState(false);
 
+  const handleOpenProgrmatically = (event) => {
+    if (!event.isTrusted) {
+      return setOpenAddNewAddress(true);
+    }
+  };
+
   const handleOpen = (event) => {
     if (!isAuth()) {
       setOpenLogin(true);
@@ -53,7 +59,10 @@ function DropDownAddress() {
   };
 
   return (
-    <Box>
+    <Box
+      id="openAddAddressModalProgramatically"
+      onClick={handleOpenProgrmatically}
+    >
       {selectedAddress?.id || defaultAddress?.id ? (
         <Box sx={{ display: "flex" }}>
           <Box
@@ -76,6 +85,7 @@ function DropDownAddress() {
           </Box>
 
           <KeyboardArrowDownIcon
+            onClick={handleOpen}
             style={{
               color: "#6B7280",
               left: locale === "ar" ? "7px" : "unset",

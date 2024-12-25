@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { Box, Typography } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import Image from "next/image";
 
 const imgHolderStyle = {
   border: "2px dashed #ccc",
@@ -137,16 +138,19 @@ const ImageUploader = ({
           onClick={() => handleClearImage()}
           sx={{
             position: "absolute",
-            top: "3px",
+            bottom: "3px",
             cursor: "pointer",
             left: "3px",
+            background: "white",
+            padding: "8px 10px",
+            borderRadius: "50%",
           }}
         >
-          <HighlightOffIcon
-            sx={{
-              width: "30px",
-              height: "30px",
-            }}
+          <Image
+            src="/icons/trash-icon.svg"
+            width={20}
+            height={20}
+            alt="trash"
           />
         </Box>
       )}

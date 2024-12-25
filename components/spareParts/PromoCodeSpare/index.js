@@ -3,9 +3,16 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setPromoCodeForSpareParts } from "@/redux/reducers/addSparePartsReducer";
+import useLocalization from "@/config/hooks/useLocalization";
 
-function PromoCodeSpare({ value = true }) {
+function PromoCodeSpare({ confirmed = false }) {
+  const dispatch = useDispatch();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const { promoCode } = useSelector((state) => state.addSpareParts);
+
   return (
     <Box
       sx={{
@@ -28,7 +35,7 @@ function PromoCodeSpare({ value = true }) {
             fontWeight: "500",
           }}
         >
-          كود الخصم
+          {t.promoCode}
         </Box>
         <Box
           sx={{
@@ -37,22 +44,35 @@ function PromoCodeSpare({ value = true }) {
             cursor: "pointer",
           }}
         >
-          <Box component="span">عرض الكل</Box>
-          <Image alt="img" src="/icons/arrow-left.svg" width={16} height={16} />
+          <Box component="span">{t.showAll}</Box>
+          <Image
+            alt="img"
+            src="/icons/arrow-left.svg"
+            width={16}
+            height={16}
+            style={{
+              transform: `rotate(${locale === "ar" ? "0deg" : "180deg"})`,
+              marginInlineStart: "5px",
+            }}
+          />
         </Box>
       </Box>
       <Box>
         <TextField
           variant="outlined"
-          placeholder="أدخل الرمز الترويجي"
+          placeholder={t.promoCodePlaceHolder}
           fullWidth
-          disabled={value}
+          disabled={confirmed}
+          onChange={(e) => {
+            dispatch(setPromoCodeForSpareParts({ data: e?.target?.value }));
+          }}
+          value={promoCode || ""}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
                   alt="img"
-                  src={`/icons/${value ? "green-tick.svg" : "promo.svg"}`}
+                  src={`/icons/${confirmed ? "green-tick.svg" : "promo.svg"}`}
                   width={24}
                   height={24}
                 />
@@ -64,21 +84,28 @@ function PromoCodeSpare({ value = true }) {
                   style={{
                     fontSize: "16px",
                     fontWeight: "500",
-                    color: value ? "#EB3C24" : "black",
+                    color: confirmed ? "#EB3C24" : "black",
                     cursor: "pointer",
                   }}
+                  onClick={() => {
+                    if (confirmed) {
+                      dispatch(setPromoCodeForSpareParts({ data: null }));
+                    } else {
+                      // happen when add  activate code
+                    }
+                  }}
                 >
-                  {value ? "Delete" : "تفعيل"}
+                  {confirmed ? t.delete : t.activate}
                 </span>
               </InputAdornment>
             ),
           }}
           sx={{
             "& .MuiOutlinedInput-root": {
-              height: "48px",
+              height: "44px",
               borderRadius: "8px",
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: value && "#1FB256", // Set hover border color
+                borderColor: confirmed && "#1FB256", // Set hover border color
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "black", // Change border color to red when focused
@@ -91,7 +118,7 @@ function PromoCodeSpare({ value = true }) {
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderRadius: "8px",
-              border: value && "1px solid #1FB256",
+              border: confirmed && "1px solid #1FB256",
             },
             "& .MuiInputBase-input": {
               color: "black", // Ensure text color is black

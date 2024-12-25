@@ -128,7 +128,7 @@ function SharedTextField({
           },
           "& .MuiInputBase-input": {
             fontSize: isMobile ? "13px" : "16px",
-            padding: customPadding ? customPadding : "0 2px", // Adjust padding for input text
+            padding: customPadding ? customPadding : "0 24px", // Adjust padding for input text
             color: "#6B7280",
             textAlign:
               customPadding && locale == "ar"

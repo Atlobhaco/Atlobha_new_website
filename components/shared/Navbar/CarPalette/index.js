@@ -39,6 +39,13 @@ function CarPalette() {
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const open = Boolean(anchorEl);
 
+  const handleOpenProgrmatically = (event) => {
+    if (!event.isTrusted) {
+      callBrands();
+      return setOpenAddNewCar(true);
+    }
+  };
+
   const handleOpen = (event) => {
     if (!isAuth()) {
       setOpenLogin(true);
@@ -132,7 +139,11 @@ function CarPalette() {
 
   return (
     <>
-      <Box sx={mainComponent}>
+      <Box
+        sx={mainComponent}
+        id="openAddCarModalProgramatically"
+        onClick={handleOpenProgrmatically}
+      >
         <Box sx={paletteImg}>
           <Image
             alt="logo"
@@ -152,6 +163,10 @@ function CarPalette() {
                 width={isMobile ? 30 : 43}
                 height={isMobile ? 30 : 43}
                 src={selectedCar?.brand?.image || defaultCar?.brand?.image}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                }}
               />
             </Box>
             <Box sx={textStyle}>

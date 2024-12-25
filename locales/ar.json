@@ -104,5 +104,17 @@
   "optionalUploadImg": "تحميل الصورة ( إختياري )",
   "addPart": "إضافة القطعة",
   "fileNotSupported": "صيغة الملف غير مقبولة",
-  "fileSizeLarge": "حجم الملف كبير"
+  "fileSizeLarge": "حجم الملف كبير",
+  "sparePartsDetaiils": "بيانات قطع الغيار",
+  "addSparePart": "أضف قطعة غيار",
+  "promoCode": "كود الخصم",
+  "showAll": "عرض الكل",
+  "promoCodePlaceHolder": "أدخل الرمز الترويجي",
+  "activate": "تفعيل",
+  "delete": "حذف",
+  "addComment": "اكتب هنا",
+  "availablePaymentsMethods": "طرق الدفع المتاحة",
+  "paymentMethod": "طريقة الدفع",
+  "determinePaymentMethod": "سيتم تحديد طريقة الدفع لاحقآ بعد تسعير القطع",
+  "partsAreOriginal": "جميع القطع اصليه مضمونه بضمان شركاء اطلبها"
 }

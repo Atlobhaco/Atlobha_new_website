@@ -1,8 +1,11 @@
+import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
 function AvailablePaymentMethodsImgs() {
+  const { t } = useLocalization();
+  
   return (
     <Box>
       <Box
@@ -13,7 +16,7 @@ function AvailablePaymentMethodsImgs() {
           fontWeight: "700",
         }}
       >
-        طرق الدفع المتاحة
+        {t.availablePaymentsMethods}
       </Box>
       <Box
         sx={{

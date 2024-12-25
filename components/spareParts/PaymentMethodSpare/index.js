@@ -2,9 +2,11 @@ import { Box } from "@mui/material";
 import React from "react";
 import ErrorIcon from "@mui/icons-material/Error";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function PaymentMethodSpare() {
   const { isMobile } = useScreenSize();
+  const { t } = useLocalization();
 
   return (
     <Box>
@@ -15,13 +17,13 @@ function PaymentMethodSpare() {
           mb: 1,
         }}
       >
-        طريقة الدفع
+        {t.paymentMethod}
       </Box>
       <Box
         sx={{
           background: "rgba(224, 110, 14, 0.10)",
           color: "#E06E0E",
-          height: "40px",
+          minHeight: "40px",
           padding: isMobile ? "8px 15px" : "8px 20px",
           borderRadius: "10px",
           display: "flex",
@@ -33,7 +35,7 @@ function PaymentMethodSpare() {
         }}
       >
         <ErrorIcon />
-        سيتم تحديد طريقة الدفع لاحقآ بعد تسعير القطع
+        {t.determinePaymentMethod}
       </Box>
     </Box>
   );

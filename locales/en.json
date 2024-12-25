@@ -3,7 +3,7 @@
   "info": "Info",
   "search": "Search here",
   "addRequest": "Start adding pricing process",
-  "makeSpare": "Request parts pricing",
+  "makeSpare": "Request Spare Parts Pricing",
   "addNewCar": "Add new car",
   "addNewCarProfile": "Add new car",
   "carDetails": "Car details",
@@ -104,5 +104,18 @@
   "optionalUploadImg": "Upload image (optional)",
   "addPart": "Add part",
   "fileNotSupported": "File type not supported",
-  "fileSizeLarge": "File size is large"
+  "fileSizeLarge": "File size is large",
+  "sparePartsDetaiils": "Spare Part Details",
+  "addSparePart": "Add Spare Part",
+  "promoCode": "Promo Code",
+  "showAll": "Show All",
+  "promoCodePlaceHolder": "Add Promo Code",
+  "activate": "Activate",
+  "delete": "Delete",
+  "addComment": "Add Comment",
+  "writeHere": "Write Here",
+  "availablePaymentsMethods": "Available Payment Methods",
+  "paymentMethod": "Payment Method",
+  "determinePaymentMethod": "Payment method will be determined later after pricing the parts.",
+  "partsAreOriginal": "All parts are original and guaranteed by Atlobha’s partners."
 }

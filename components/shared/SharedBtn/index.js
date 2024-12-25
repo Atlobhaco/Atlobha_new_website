@@ -16,12 +16,14 @@ function SharedBtn({
   comAfterText,
   type = "button",
   customStyle = null,
+  id = "",
 }) {
   const { t } = useLocalization();
   const localizedText = text && (resolveNestedKey(t, text) || text);
 
   return (
     <button
+      id={id}
       style={customStyle}
       type={type}
       disabled={disabled}

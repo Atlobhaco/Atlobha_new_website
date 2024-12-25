@@ -1,9 +1,11 @@
+import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
 function PartsImages() {
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
 
   return (
@@ -16,7 +18,7 @@ function PartsImages() {
           fontSize: isMobile ? "10px" : "30px",
         }}
       >
-        جميع القطع اصليه مضمونه بضمان شركاء اطلبها
+        {t.partsAreOriginal}
       </Box>
       <Box
         sx={{

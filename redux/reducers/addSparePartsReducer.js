@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   allSpareParts: [],
   selectedParts: [],
+  promoCode: null,
 };
 
 export const addSparePartsReducer = createSlice({
@@ -33,10 +34,16 @@ export const addSparePartsReducer = createSlice({
         state.selectedParts.push(incomingPart);
       }
     },
+    setPromoCodeForSpareParts: (state, action) => {
+      state.promoCode = action.payload?.data || null;
+    },
   },
 });
 
-export const { setAllSpareParts, setSelectedSparePart } =
-  addSparePartsReducer.actions;
+export const {
+  setAllSpareParts,
+  setSelectedSparePart,
+  setPromoCodeForSpareParts,
+} = addSparePartsReducer.actions;
 
 export default addSparePartsReducer.reducer;

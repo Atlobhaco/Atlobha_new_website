@@ -17,6 +17,10 @@ import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymen
 import PartsImages from "@/components/spareParts/PartsImages";
 import useLocalization from "@/config/hooks/useLocalization";
 import AddPartDialogContent from "@/components/spareParts/AddPartDialogContent";
+import { useSelector } from "react-redux";
+import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
+import Login from "@/components/Login";
+import { isAuth } from "@/config/hooks/isAuth";
 
 const style = {
   marginTop: "32px",
@@ -27,6 +31,54 @@ function SpareParts() {
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
   const [openPricingDialog, setOpenPricingDialog] = useState(false);
+  const { selectedParts } = useSelector((state) => state.addSpareParts);
+  const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+
+  const { selectedCar, defaultCar, allCars } = useSelector(
+    (state) => state.selectedCar
+  );
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
+
+  const handleRequestSparePart = () => {
+    if (!isAuth()) {
+      return setOpenLogin(true); // Open login modal if no user is authenticated
+    }
+
+    const triggers = [
+      {
+        condition: !selectedCar?.id && !defaultCar?.id,
+        elementId: "openAddCarModalProgramatically",
+      },
+      {
+        condition: !selectedAddress?.id && !defaultAddress?.id,
+        elementId: "openAddAddressModalProgramatically",
+      },
+    ];
+
+    for (const { condition, elementId } of triggers) {
+      if (condition) {
+        document.getElementById(elementId)?.click();
+        return;
+      }
+    }
+    console.log("add spare part");
+  };
+
+  const returnConfirmBtn = () => {
+    return (
+      <SharedBtn
+        className="big-main-btn"
+        customClass="w-100"
+        text="makeSpare"
+        disabled={!selectedParts?.length}
+        onClick={() => {
+          handleRequestSparePart();
+        }}
+      />
+    );
+  };
 
   return (
     <Box>
@@ -50,19 +102,13 @@ function SpareParts() {
               <PromoCodeSpare />
             </div>
             <div className="mt-4">
-              <SharedTextArea />
+              <SharedTextArea label={t.addComment} placeholder={t.writeHere} />
             </div> */}
           </div>
           {/* <div className="col-md-4 col-12 mt-4">
             <PaymentMethodSpare />
             {!isMobile && (
-              <Box sx={{ margin: "30px 0px" }}>
-                <SharedBtn
-                  className="big-main-btn"
-                  customClass="w-100"
-                  text="makeSpare"
-                />
-              </Box>
+              <Box sx={{ margin: "30px 0px" }}>{returnConfirmBtn()}</Box>
             )}
             {!isMobile && <AvailablePaymentMethodsImgs />}
           </div> */}
@@ -76,14 +122,7 @@ function SpareParts() {
           <div className="col-12 text-center">
             <PartsImages />
             {isMobile && (
-              <Box sx={{ marginTop: "30px" }}>
-                <SharedBtn
-                  disabled={true}
-                  className="big-main-btn"
-                  customClass="w-100"
-                  text="makeSpare"
-                />
-              </Box>
+              <Box sx={{ marginTop: "30px" }}>{returnConfirmBtn()}</Box>
             )}
           </div>
         </div> */}
@@ -99,15 +138,18 @@ function SpareParts() {
         content={<HowMakePrice setOpenhowPricing={setOpenhowPricing} />}
       />
 
+      {/* dialog to add new spare parts info and image */}
       <DialogMultiDirection
         open={openPricingDialog}
         setOpen={setOpenPricingDialog}
         customClass="reverse-position"
         title={false}
         subtitle={false}
-        slideFnUp={true}
+        customTransition={true}
         content={<AddPartDialogContent />}
       />
+
+      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
     </Box>
   );
 }

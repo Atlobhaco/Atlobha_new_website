@@ -25,10 +25,19 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   );
 });
 
-const CustomTransitionUp = React.forwardRef(function Transition(props, ref) {
+const reverseTransition = React.forwardRef(function Transition(props, ref) {
   const { locale } = useRouter();
   const { isMobile } = useScreenSize();
 
+  return (
+    <Slide
+      direction={isMobile ? "up" : locale === "ar" ? "right" : "left"}
+      ref={ref}
+      {...props}
+    />
+  );
+});
+const CustomTransitionUp = React.forwardRef(function Transition(props, ref) {
   return <Slide direction={"up"} ref={ref} {...props} />;
 });
 
@@ -92,6 +101,7 @@ function DialogMultiDirection({
   customClass = "",
   slideFnUp = null,
   hasCloseIcon = true,
+  customTransition = false,
 }) {
   const { isMobile } = useScreenSize();
   const classes = useStyles(isMobile);
@@ -113,7 +123,13 @@ function DialogMultiDirection({
         }`,
       }}
       open={open}
-      TransitionComponent={slideFnUp ? CustomTransitionUp : Transition}
+      TransitionComponent={
+        customTransition
+          ? reverseTransition
+          : slideFnUp
+          ? CustomTransitionUp
+          : Transition
+      }
       keepMounted
       onClose={() => {
         handleClose();

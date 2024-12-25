@@ -5,17 +5,14 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SparePartItem from "./SparePartItem";
 import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSparePart } from "@/redux/reducers/addSparePartsReducer";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function AddsparePart({ setOpenPricingDialog }) {
-  const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
+  const { t } = useLocalization();
+  const { isMobile } = useScreenSize();
   const { selectedParts } = useSelector((state) => state.addSpareParts);
-  // dispatch(
-  // setSelectedSparePart({
-  //   data: { id: 1, qty: 0 },
-  // })
-  // );
-  console.log("selectedParts", selectedParts);
+
   return (
     <Box
       sx={{
@@ -30,20 +27,20 @@ function AddsparePart({ setOpenPricingDialog }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          mb: 3,
+          mb: selectedParts?.length ? 3 : 0,
         }}
       >
         <Box
           sx={{
-            fontSize: isMobile ? "16px" : "20px",
+            fontSize: isMobile ? "15px" : "20px",
             fontWeight: "500",
           }}
         >
-          بيانات قطع الغيار
+          {t.sparePartsDetaiils}
         </Box>
         <Box
           sx={{
-            fontSize: isMobile ? "14px" : "16px",
+            fontSize: isMobile ? "12px" : "16px",
             fontWeight: "500",
             color: "#1FB256",
             display: "flex",
@@ -63,17 +60,17 @@ function AddsparePart({ setOpenPricingDialog }) {
             }}
           />
           <Box
-            onClick={() => setOpenPricingDialog(true)}
+            // onClick={() => setOpenPricingDialog(true)}
             sx={{
-              pt: 1,
+              pt: isMobile ? 0 : 1,
             }}
             component="span"
           >
-            أضف قطعة غيار
+            {t.addSparePart}
           </Box>
         </Box>
       </Box>
-      <Box sx={{ mt: 2 }}>
+      <Box sx={{ mt: selectedParts?.length ? 2 : 0 }}>
         {selectedParts?.map((data) => (
           <SparePartItem data={data} />
         ))}
