@@ -30,16 +30,24 @@ function ShowAddressesFromNavbarMobile() {
   const Addresses = allAddresses?.length ? allAddresses : [];
 
   const handleCheckboxChange = async (addressSelected) => {
-    try {
-      const location = await getUserCurrentLocation();
+    if (addressSelected?.id === "currentLocation") {
+      try {
+        const location = await getUserCurrentLocation();
+        dispatch(
+          setSelectedAddress({
+            data: { ...addressSelected, ...location },
+          })
+        );
+      } catch (error) {
+        toast.error(error);
+        console.error(error);
+      }
+    } else {
       dispatch(
         setSelectedAddress({
-          data: { ...addressSelected, ...location },
+          data: { ...addressSelected },
         })
       );
-    } catch (error) {
-      toast.error(error);
-      console.error(error);
     }
   };
 
