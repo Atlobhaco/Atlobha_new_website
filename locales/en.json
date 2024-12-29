@@ -117,5 +117,16 @@
   "availablePaymentsMethods": "Available Payment Methods",
   "paymentMethod": "Payment Method",
   "determinePaymentMethod": "Payment method will be determined later after pricing the parts.",
-  "partsAreOriginal": "All parts are original and guaranteed by Atlobha’s partners."
+  "partsAreOriginal": "All parts are original and guaranteed by Atlobha’s partners.",
+  "copySuccess": "Success Copy",
+  "goMain": "Go To Main",
+  "promoNotFound": "Promo code not valid",
+  "thankYou": "Thank you !",
+  "orderNum": "Order number",
+  "confirmMessage": "You will receive a confirmation email once you use it. If you have an account, the order will appear there once you receive the email.",
+  "deliveryAddress": "Delivery address",
+  "deliveryTime": "Expected delivery date",
+  "dateLater": "The delivery date will be determined later after the order is confirmed.",
+  "partsData": "Spare parts data",
+  "piece": "Piece"
 }

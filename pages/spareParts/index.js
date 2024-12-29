@@ -7,39 +7,78 @@ import SharedTextArea from "@/components/shared/SharedTextArea";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import DialogCentered from "@/components/DialogCentered";
-import DialogLeftRight from "@/components/DialogLeftRight";
 import DialogMultiDirection from "@/components/DialogMultiDirection";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import Image from "next/image";
 import HowMakePrice from "@/components/spareParts/HowMakePrice";
 import SharedBtn from "@/components/shared/SharedBtn";
 import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymentMethodsImgs";
 import PartsImages from "@/components/spareParts/PartsImages";
 import useLocalization from "@/config/hooks/useLocalization";
 import AddPartDialogContent from "@/components/spareParts/AddPartDialogContent";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import Login from "@/components/Login";
 import { isAuth } from "@/config/hooks/isAuth";
+import { ORDERS, SPARE_PARTS, USERS } from "@/config/endPoints/endPoints";
+import { useAuth } from "@/config/providers/AuthProvider";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
 
 const style = {
   marginTop: "32px",
 };
 
 function SpareParts() {
+  const { user } = useAuth();
+  const router = useRouter();
+  const dispatch = useDispatch();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
   const [openPricingDialog, setOpenPricingDialog] = useState(false);
   const { selectedParts } = useSelector((state) => state.addSpareParts);
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+  const [promoCodeId, setPromoCodeId] = useState(false);
 
-  const { selectedCar, defaultCar, allCars } = useSelector(
-    (state) => state.selectedCar
-  );
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+
+  const { data, refetch: addPricing } = useCustomQuery({
+    name: "makePricingRequest",
+    url: `${SPARE_PARTS}${USERS}/${user?.data?.user?.id}${ORDERS}`,
+    refetchOnWindowFocus: false,
+    enabled: false,
+    method: "post",
+    body: {
+      address: {
+        id: selectedAddress?.id || defaultAddress?.id,
+      },
+      vehicle: {
+        id: selectedCar?.id || defaultCar?.id,
+      },
+      parts: selectedParts?.map((part) => ({
+        ...part,
+        image_path: part?.imgPathForBe || "",
+      })),
+      promo_code: {
+        id: promoCodeId,
+      },
+    },
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      router.push(`/spareParts/confirmation/${res?.id}`);
+      selectedParts?.map((singlePart) =>
+        dispatch(addOrUpdateSparePart({ ...singlePart, delete: true }))
+      );
+    },
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error || t.someThingWrong);
+    },
+  });
 
   const handleRequestSparePart = () => {
     if (!isAuth()) {
@@ -63,7 +102,7 @@ function SpareParts() {
         return;
       }
     }
-    console.log("add spare part");
+    addPricing();
   };
 
   const returnConfirmBtn = () => {
@@ -98,22 +137,25 @@ function SpareParts() {
         <div className="row">
           <div className="col-md-8 col-12 mt-4">
             <AddsparePart setOpenPricingDialog={setOpenPricingDialog} />
-            {/* <div className="mt-4">
-              <PromoCodeSpare />
+            <div className="mt-4">
+              <PromoCodeSpare
+                promoCodeId={promoCodeId}
+                setPromoCodeId={setPromoCodeId}
+              />
             </div>
             <div className="mt-4">
               <SharedTextArea label={t.addComment} placeholder={t.writeHere} />
-            </div> */}
+            </div>
           </div>
-          {/* <div className="col-md-4 col-12 mt-4">
+          <div className="col-md-4 col-12 mt-4">
             <PaymentMethodSpare />
             {!isMobile && (
               <Box sx={{ margin: "30px 0px" }}>{returnConfirmBtn()}</Box>
             )}
             {!isMobile && <AvailablePaymentMethodsImgs />}
-          </div> */}
+          </div>
         </div>
-        {/* <div
+        <div
           className="row"
           style={{
             marginTop: "48px",
@@ -125,7 +167,7 @@ function SpareParts() {
               <Box sx={{ marginTop: "30px" }}>{returnConfirmBtn()}</Box>
             )}
           </div>
-        </div> */}
+        </div>
       </div>
 
       {/* popup for how to make price */}

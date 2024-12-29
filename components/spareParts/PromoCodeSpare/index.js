@@ -1,17 +1,40 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, InputAdornment, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPromoCodeForSpareParts } from "@/redux/reducers/addSparePartsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { PROMO_CODES } from "@/config/endPoints/endPoints";
+import { toast } from "react-toastify";
 
-function PromoCodeSpare({ confirmed = false }) {
+function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
   const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { promoCode } = useSelector((state) => state.addSpareParts);
+
+  const { refetch: checkPromo } = useCustomQuery({
+    name: "checkPromoCode",
+    url: `${PROMO_CODES}/${promoCode}`,
+    refetchOnWindowFocus: false,
+    enabled: false,
+    retry: 0,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      if (res?.can_be_redeemed) {
+        setPromoCodeId(res?.id);
+      } else {
+        toast.error(t.promoNotFound);
+      }
+    },
+    onError: (err) => {
+      if (err?.status) {
+        toast.error(t.promoNotFound);
+      }
+    },
+  });
 
   return (
     <Box
@@ -37,7 +60,7 @@ function PromoCodeSpare({ confirmed = false }) {
         >
           {t.promoCode}
         </Box>
-        <Box
+        {/* <Box
           sx={{
             fontSize: isMobile ? "10px" : "12px",
             fontWeight: "500",
@@ -55,14 +78,14 @@ function PromoCodeSpare({ confirmed = false }) {
               marginInlineStart: "5px",
             }}
           />
-        </Box>
+        </Box> */}
       </Box>
       <Box>
         <TextField
           variant="outlined"
           placeholder={t.promoCodePlaceHolder}
           fullWidth
-          disabled={confirmed}
+          disabled={promoCodeId ? true : false}
           onChange={(e) => {
             dispatch(setPromoCodeForSpareParts({ data: e?.target?.value }));
           }}
@@ -72,7 +95,7 @@ function PromoCodeSpare({ confirmed = false }) {
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
                   alt="img"
-                  src={`/icons/${confirmed ? "green-tick.svg" : "promo.svg"}`}
+                  src={`/icons/${promoCodeId ? "green-tick.svg" : "promo.svg"}`}
                   width={24}
                   height={24}
                 />
@@ -84,18 +107,25 @@ function PromoCodeSpare({ confirmed = false }) {
                   style={{
                     fontSize: "16px",
                     fontWeight: "500",
-                    color: confirmed ? "#EB3C24" : "black",
+                    color: promoCodeId
+                      ? "#EB3C24"
+                      : promoCode?.length >= 3
+                      ? "black"
+                      : "grey",
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    if (confirmed) {
+                    if (promoCodeId) {
+                      setPromoCodeId(false);
                       dispatch(setPromoCodeForSpareParts({ data: null }));
                     } else {
-                      // happen when add  activate code
+                      if (promoCode?.length >= 3) {
+                        checkPromo();
+                      }
                     }
                   }}
                 >
-                  {confirmed ? t.delete : t.activate}
+                  {promoCodeId ? t.delete : t.activate}
                 </span>
               </InputAdornment>
             ),
@@ -105,7 +135,7 @@ function PromoCodeSpare({ confirmed = false }) {
               height: "44px",
               borderRadius: "8px",
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: confirmed && "#1FB256", // Set hover border color
+                borderColor: promoCodeId ? "#1FB256" : "", // Set hover border color
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "black", // Change border color to red when focused
@@ -118,7 +148,7 @@ function PromoCodeSpare({ confirmed = false }) {
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderRadius: "8px",
-              border: confirmed && "1px solid #1FB256",
+              border: promoCodeId ? "1px solid #1FB256" : "",
             },
             "& .MuiInputBase-input": {
               color: "black", // Ensure text color is black

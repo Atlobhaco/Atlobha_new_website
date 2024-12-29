@@ -31,20 +31,6 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-const codeNum = {
-  position: "absolute",
-  top: "0px",
-  height: "44px",
-  background: "transparent",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderTopRightRadius: "8px",
-  borderBottomRightRadius: "8px",
-  padding: "0px 3px",
-  left: "0px",
-};
-
 function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -53,6 +39,21 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   const [otpView, setOtpView] = useState(false);
   const [textInput, setTextInput] = useState(true); // Default view is text field
   const [otpPayload, setOtpPayload] = useState(false);
+
+  const codeNum = {
+    position: "absolute",
+    top: "0px",
+    height: "44px",
+    background: "transparent",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderTopRightRadius: "8px",
+    borderBottomRightRadius: "8px",
+    padding: isMobile ? "0px 6px" : "0px 3px",
+    left: "0px",
+    fontSize: isMobile ? "13px" : "16px",
+  };
 
   const initialValues = {
     text_input: "",
@@ -95,7 +96,6 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
     },
   });
 
-
   const handleInputChange = (e) => {
     let value = e.target.value;
     // if (value?.includes("+")) {
@@ -106,8 +106,8 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
 
     // Toggle input type based on value
     if (value) {
-    //   formik.handleChange(e);
-    //   formik.handleBlur(e);
+      //   formik.handleChange(e);
+      //   formik.handleBlur(e);
       formik.setErrors({});
       setTextInput(!isNumeric);
       if (isNumeric) {

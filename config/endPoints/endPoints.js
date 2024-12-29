@@ -13,3 +13,7 @@ export const DELETE = "/delete";
 export const DEFAULT = "/default";
 export const APP_SECTIONS = "/app-sections";
 export const APP_SECTIONS_GROUPS = "/app-section-groups";
+export const PROMO_CODES = "/promo-codes";
+export const SPARE_PARTS = "/spare-parts";
+export const ORDERS = "/orders";
+export const MEDIA = "/media";

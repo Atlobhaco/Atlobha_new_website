@@ -1,13 +1,10 @@
 import InputAddRemove from "@/components/InputAddRemove";
-import SharedAutoComplete from "@/components/SharedAutoComplete";
 import ImageUploader from "@/components/shared/ImageUploader";
 import SharedBtn from "@/components/shared/SharedBtn";
-import SharedDropDown from "@/components/shared/SharedDropDown";
-import SharedTextField from "@/components/shared/SharedTextField";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { setSelectedSparePart } from "@/redux/reducers/addSparePartsReducer";
-import { Autocomplete, Box, TextField } from "@mui/material";
+import { fetchPartDetails } from "@/redux/reducers/addSparePartsReducer";
+import { Box, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -18,11 +15,14 @@ function AddPartDialogContent() {
   const { isMobile } = useScreenSize();
 
   const { brands } = useSelector((state) => state.lookups);
-  const { selectedParts } = useSelector((state) => state.addSpareParts);
+  const { selectedParts, isLoading } = useSelector(
+    (state) => state.addSpareParts
+  );
 
   const defaultValue = {
     quantity: 1,
     imgSrc: "",
+    imgFile: "",
     id: null,
     name: "",
   };
@@ -53,14 +53,14 @@ function AddPartDialogContent() {
     if (file) {
       // Validate file type
       const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-      if (!validTypes.includes(file.type)) {
+      if (!validTypes.includes(file?.type)) {
         toast.error(t.fileNotSupported);
         return;
       }
     }
 
     const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-    if (file.size > maxSize) {
+    if (file?.size > maxSize) {
       toast.error(t.fileSizeLarge);
       return;
     }
@@ -71,6 +71,8 @@ function AddPartDialogContent() {
       setAddedPart({
         ...addedPart,
         imgSrc: imageUrl,
+        imgName: file?.name,
+        imgFile: file,
       });
       console.log("Uploaded Image:", file);
     }
@@ -80,6 +82,7 @@ function AddPartDialogContent() {
     setAddedPart({
       ...addedPart,
       imgSrc: "",
+      imgFile: "",
     });
   };
 
@@ -190,13 +193,10 @@ function AddPartDialogContent() {
           className="big-main-btn"
           customClass="w-100"
           text="addPart"
+          compBeforeText={isLoading && <CircularProgress size={10} />}
           disabled={addedPart?.name?.length < 3 || +addedPart?.quantity === 0}
           onClick={() => {
-            dispatch(
-              setSelectedSparePart({
-                data: addedPart,
-              })
-            );
+            dispatch(fetchPartDetails(addedPart));
             setAddedPart(defaultValue);
           }}
         />

@@ -1,0 +1,225 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.confirmation {
+  //   background-color: red;
+  padding: 32px 0px;
+  &_thank {
+    display: flex;
+    height: 102px;
+    padding: 16px;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    align-self: stretch;
+    border-radius: 20px;
+    background: #edfef2;
+    color: #1fb256;
+    text-align: center;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 38px; /* 126.667% */
+    letter-spacing: -0.6px;
+    @include mobile-screen-style {
+      height: auto;
+      padding: 0px;
+      background-color: unset;
+    }
+  }
+}
+
+.numberSection {
+  padding: 32px 0px;
+  &_num {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    &-holder {
+      color: #6b7280;
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 36px; /* 142.857% */
+      @include mobile-screen-style {
+        font-size: 14px;
+      }
+    }
+    &-id {
+      color: #232323;
+      font-size: 29px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 44px; /* 150% */
+      @include mobile-screen-style {
+        font-size: 16px;
+      }
+    }
+  }
+  &_hint {
+    color: #6b7280;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    @include mobile-screen-style {
+      font-size: 14px;
+    }
+  }
+  @include mobile-screen-style {
+    border-bottom: 4px solid #f6f6f6;
+  }
+}
+
+.deliverySec {
+  display: flex;
+  padding: 16px 13px;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: stretch;
+  margin-bottom: 32px;
+
+  &_address {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    &-holder {
+      color: #232323;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px;
+      letter-spacing: -0.4px;
+      @include mobile-screen-style {
+        font-size: 14px;
+      }
+    }
+    &-location {
+      color: #6b7280;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px; /* 150% */
+      @include mobile-screen-style {
+        font-size: 14px;
+      }
+    }
+  }
+  @include mobile-screen-style {
+    border-bottom: 4px solid #f6f6f6;
+  }
+}
+
+.timeSec {
+  display: flex;
+  padding: 16px 13px;
+  align-items: flex-start;
+  gap: 10px;
+  align-self: stretch;
+  margin-bottom: 32px;
+
+  &_appoin {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    &-holder {
+      color: #232323;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px;
+      letter-spacing: -0.4px;
+      @include mobile-screen-style {
+        font-size: 14px;
+      }
+    }
+    &-date {
+      display: flex;
+      gap: 10px;
+      color: #429df8;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 20px; /* 142.857% */
+      border-radius: 8px;
+      background: rgba(196, 225, 253, 0.1);
+      padding: 7px 4px;
+      @include mobile-screen-style {
+        font-size: 11px;
+      }
+    }
+  }
+  @include mobile-screen-style {
+    border-bottom: 4px solid #f6f6f6;
+  }
+}
+.details {
+  margin-bottom: 32px;
+  padding: 16px 13px;
+
+  &-header {
+    display: flex;
+    gap: 10px;
+    color: #232323;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 30px; /* 150% */
+    letter-spacing: -0.4px;
+    margin-bottom: 10px;
+    @include mobile-screen-style {
+      font-size: 14px;
+    }
+  }
+  &-parts {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    &_imgHolder {
+      border-radius: "20px";
+      overflow: "hidden";
+      width: "62px";
+      height: "62px";
+      background: "#E6E6E6";
+      display: "flex";
+    }
+    &_details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      &-name {
+        color: #232323;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px; /* 150% */
+        @include mobile-screen-style {
+          font-size: 14px;
+        }
+      }
+      &-qty {
+        display: flex;
+        width: 100px;
+        height: 38px;
+        padding: 8px 11px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        background: #fff;
+        box-shadow: 0px 1px 2px 0px rgba(18, 26, 43, 0.05);
+        color: #1fb256;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+        @include mobile-screen-style {
+          font-size: 14px;
+          height: 30px;
+        }
+      }
+    }
+  }
+  @include mobile-screen-style {
+    border-bottom: 4px solid #f6f6f6;
+  }
+}

@@ -3,7 +3,7 @@ import React from "react";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import InputAddRemove from "@/components/InputAddRemove";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedSparePart } from "@/redux/reducers/addSparePartsReducer";
+import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
 
 function AddRemoveSparePart({ data }) {
   const { isMobile } = useScreenSize();
@@ -17,9 +17,7 @@ function AddRemoveSparePart({ data }) {
 
   const updateSparePart = (quantity, extra = {}) => {
     dispatch(
-      setSelectedSparePart({
-        data: { ...selectedSparePart, quantity, ...extra },
-      })
+      addOrUpdateSparePart({ ...selectedSparePart, quantity, ...extra })
     );
   };
 
@@ -28,8 +26,12 @@ function AddRemoveSparePart({ data }) {
     if (!+e.target.value) updateSparePart(0, { name: "", delete: true });
   };
   const deleteMinus = () => {
-    const newQuantity = Math.max(1, +selectedSparePart?.quantity - 1);
-    updateSparePart(newQuantity, { name: newQuantity === 1 ? "" : null });
+    const newQuantity = +selectedSparePart?.quantity - 1;
+    console.log("newQuantity", newQuantity);
+    updateSparePart(newQuantity, {
+      name: +newQuantity === 1 ? "" : null,
+      delete: +newQuantity === 0 ? true : false,
+    });
   };
   const increaseValue = () => updateSparePart(+selectedSparePart?.quantity + 1);
 

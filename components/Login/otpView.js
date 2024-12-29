@@ -56,6 +56,15 @@ function OtpView({
     return () => clearInterval(blinkInterval); // Clear blinking interval on unmount
   }, [isBlinking]);
 
+  //  auto confirm otp
+  useEffect(() => {
+    if (otpCode?.length === 6) {
+      setTimeout(() => {
+        recallLogin();
+      }, 500);
+    }
+  }, [otpCode]);
+
   const {
     data: loginRes,
     refetch: recallLogin,
@@ -67,7 +76,7 @@ function OtpView({
     otpCode,
     setOpen,
     dispatch,
-	login
+    login,
   });
 
   return (
@@ -113,7 +122,9 @@ function OtpView({
             label={false}
             imgIcon={false}
             value={otpCode}
-            handleChange={(e) => setOtpCode(e?.target?.value)}
+            handleChange={(e) => {
+              setOtpCode(e?.target?.value);
+            }}
           />
         </Box>
         <Box
