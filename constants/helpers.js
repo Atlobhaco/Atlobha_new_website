@@ -22,7 +22,6 @@ export const getUserCurrentLocation = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
           };
-          console.log("Location:", location);
           resolve(location);
         },
         (err) => {

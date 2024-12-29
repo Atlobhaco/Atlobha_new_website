@@ -27,7 +27,6 @@ function AddRemoveSparePart({ data }) {
   };
   const deleteMinus = () => {
     const newQuantity = +selectedSparePart?.quantity - 1;
-    console.log("newQuantity", newQuantity);
     updateSparePart(newQuantity, {
       name: +newQuantity === 1 ? "" : null,
       delete: +newQuantity === 0 ? true : false,

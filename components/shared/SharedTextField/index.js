@@ -131,7 +131,7 @@ function SharedTextField({
             padding: customPadding ? customPadding : "0 24px", // Adjust padding for input text
             color: "#6B7280",
             textAlign:
-              customPadding && locale == "ar"
+              customPadding && !plusMinusInput && locale == "ar"
                 ? "end"
                 : plusMinusInput
                 ? "center"

@@ -41,7 +41,7 @@ function SpareParts() {
   const { selectedParts } = useSelector((state) => state.addSpareParts);
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const [promoCodeId, setPromoCodeId] = useState(false);
-
+  const [comment, setComment] = useState("");
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
@@ -67,6 +67,7 @@ function SpareParts() {
       promo_code: {
         id: promoCodeId,
       },
+      notes: comment,
     },
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
@@ -144,7 +145,12 @@ function SpareParts() {
               />
             </div>
             <div className="mt-4">
-              <SharedTextArea label={t.addComment} placeholder={t.writeHere} />
+              <SharedTextArea
+                value={comment}
+                label={t.addComment}
+                placeholder={t.writeHere}
+                handleChange={(e) => setComment(e?.target?.value)}
+              />
             </div>
           </div>
           <div className="col-md-4 col-12 mt-4">

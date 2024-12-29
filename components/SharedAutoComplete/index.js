@@ -34,7 +34,7 @@ function SharedAutoComplete({
     handleChange(event);
   };
 
-  console.log("value", value);
+
   return (
     <Box sx={{ direction: locale === "ar" ? "rtl" : "ltr" }}>
       <Box

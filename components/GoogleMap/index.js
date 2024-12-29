@@ -40,7 +40,7 @@ const GoogleMapComponent = React.memo(
     const [map, setMap] = useState(null);
     const autocompleteRef = useRef(null);
     const { t, locale } = useLocalization();
-    console.log("lngLatLocation", lngLatLocation);
+    // console.log("lngLatLocation", lngLatLocation);
 
     // Memoize container style based on screen size
     const containerStyle = useMemo(

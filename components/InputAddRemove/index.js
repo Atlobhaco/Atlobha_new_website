@@ -24,6 +24,7 @@ function InputAddRemove({
         handleBlur={handleBlur}
         actionClickrightIcon={actionClickrightIcon}
         actionClickIcon={actionClickIcon}
+        customPadding="0px 3px"
       />
     </div>
   );

@@ -75,7 +75,6 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
           .required(t.required)
           .test("is-valid-phone", t.invalid_phone, function (value) {
             const { country } = this.parent;
-            console.log("value-validate", value);
             return validatePhoneNumber(value, country);
           })
       : Yup.string(),

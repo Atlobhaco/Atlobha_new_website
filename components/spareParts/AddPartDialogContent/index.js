@@ -43,7 +43,6 @@ function AddPartDialogContent() {
   };
 
   const handleChange = (e, newValue) => {
-    console.log("newValue", newValue);
     setSearchFor(newValue?.id || "");
   };
 
@@ -74,7 +73,6 @@ function AddPartDialogContent() {
         imgName: file?.name,
         imgFile: file,
       });
-      console.log("Uploaded Image:", file);
     }
   };
 

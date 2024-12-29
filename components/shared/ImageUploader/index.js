@@ -55,9 +55,7 @@ const ImageUploader = ({
   });
 
   // Form submission
-  const handleSubmit = (values) => {
-    console.log("Uploaded File:", values.image);
-  };
+  const handleSubmit = (values) => {};
 
   return formik ? (
     <Form>
