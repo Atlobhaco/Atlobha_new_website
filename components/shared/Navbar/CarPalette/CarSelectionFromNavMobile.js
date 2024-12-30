@@ -86,7 +86,9 @@ function CarSelectionFromNavMobile() {
                 alignItems: "center",
                 width: isMobile ? "30px" : "48px",
                 height: isMobile ? "30px" : "48px",
+                cursor: "pointer",
               }}
+              onClick={() => handleCheckboxChange(car)}
             >
               <Image
                 alt={car?.brand?.name}
@@ -112,7 +114,12 @@ function CarSelectionFromNavMobile() {
                 alignItems: "center",
               }}
             >
-              <Box>
+              <Box
+                sx={{
+                  cursor: "pointer",
+                }}
+                onClick={() => handleCheckboxChange(car)}
+              >
                 <Typography
                   sx={{
                     fontSize: isMobile ? "12px" : "16px",

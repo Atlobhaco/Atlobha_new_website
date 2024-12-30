@@ -108,13 +108,13 @@ function ShowAddressesFromNavbarMobile() {
             sx={{
               flexGrow: 1,
               textAlign: "right",
-              //   background: "red",
               display: "flex",
               gap: "15px",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
-            <Box>
+            <Box onClick={() => handleCheckboxChange(address)}>
               <Typography
                 sx={{
                   fontSize: isMobile ? "12px" : "16px",
@@ -205,9 +205,17 @@ function ShowAddressesFromNavbarMobile() {
             display: "flex",
             gap: "15px",
             alignItems: "center",
+            cursor: "pointer",
           }}
         >
-          <Box>
+          <Box
+            onClick={() =>
+              handleCheckboxChange({
+                id: "currentLocation",
+                address: t.noAddressSelected,
+              })
+            }
+          >
             <Typography
               sx={{
                 fontSize: isMobile ? "12px" : "16px",

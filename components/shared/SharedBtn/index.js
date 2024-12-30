@@ -17,6 +17,7 @@ function SharedBtn({
   type = "button",
   customStyle = null,
   id = "",
+  replaceText = false,
 }) {
   const { t } = useLocalization();
   const localizedText = text && (resolveNestedKey(t, text) || text);
@@ -30,7 +31,7 @@ function SharedBtn({
       onClick={onClick}
       className={`btn ${style[className]} ${customClass}`}
     >
-      {compBeforeText} {localizedText} {comAfterText}
+      {compBeforeText} {replaceText || localizedText} {comAfterText}
     </button>
   );
 }

@@ -1,19 +1,22 @@
 import useLocalization from "@/config/hooks/useLocalization";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
 function AvailablePaymentMethodsImgs() {
   const { t } = useLocalization();
-  
+  const { isMobile } = useScreenSize();
+
   return (
     <Box>
       <Box
         sx={{
           textAlign: "center",
           color: "#6B7280",
-          fontSize: "20px",
+          fontSize: isMobile ? "16px" : "20px",
           fontWeight: "700",
+          mt: isMobile ? 2 : 0,
         }}
       >
         {t.availablePaymentsMethods}
@@ -28,17 +31,27 @@ function AvailablePaymentMethodsImgs() {
           mt: 1,
         }}
       >
-        <Image src={"/imgs/stc.svg"} alt="stc" width={63} height={20} />
-        <Image src={"/imgs/tabby.svg"} alt="tabby" width={57} height={20} />
+        <Image
+          src={"/imgs/stc.svg"}
+          alt="stc"
+          width={isMobile ? 35 : 63}
+          height={20}
+        />
+        <Image
+          src={"/imgs/tabby.svg"}
+          alt="tabby"
+          width={isMobile ? 35 : 57}
+          height={20}
+        />
         <Image
           src={"/imgs/apple-pay.svg"}
           alt="apple-pay"
-          width={58}
+          width={isMobile ? 35 : 58}
           height={20}
         />
-        <Image src={"/imgs/mada.svg"} alt="mada" width={59} height={20} />
-        <Image src={"/imgs/visa.svg"} alt="visa" width={58} height={20} />
-        <Image src={"/imgs/master.svg"} alt="master" width={39} height={20} />
+        <Image src={"/imgs/mada.svg"} alt="mada" width={isMobile ? 35 : 59} height={20} />
+        <Image src={"/imgs/visa.svg"} alt="visa" width={isMobile ? 35 : 58} height={20} />
+        <Image src={"/imgs/master.svg"} alt="master" width={isMobile ? 35 : 39} height={20} />
       </Box>
     </Box>
   );

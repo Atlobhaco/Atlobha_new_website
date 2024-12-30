@@ -129,7 +129,9 @@ function CarSelectionFromNavbarWeb({
                 alignItems: "center",
                 width: isMobile ? "30px" : "48px",
                 height: isMobile ? "30px" : "48px",
+                cursor: "pointer",
               }}
+              onClick={() => handleCheckboxChange(car)}
             >
               <Image
                 alt={car?.brand?.name}
@@ -149,13 +151,17 @@ function CarSelectionFromNavbarWeb({
               sx={{
                 flexGrow: 1,
                 textAlign: "right",
-                //   background: "red",
                 display: "flex",
                 gap: "15px",
                 alignItems: "center",
               }}
             >
-              <Box>
+              <Box
+                sx={{
+                  cursor: "pointer",
+                }}
+                onClick={() => handleCheckboxChange(car)}
+              >
                 <Typography
                   sx={{
                     fontSize: isMobile ? "12px" : "16px",
@@ -209,6 +215,9 @@ function CarSelectionFromNavbarWeb({
               width={20}
               height={20}
               src="/icons/location-green.svg"
+              style={{
+                marginBottom: "4px",
+              }}
             />
           }
         />

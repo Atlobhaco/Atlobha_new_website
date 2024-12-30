@@ -100,7 +100,7 @@ function DialogCentered({
       }}
       aria-describedby="general-dialog"
     >
-      {isMobile && (
+      {/* {isMobile && (
         <Box className="d-flex align-items-center justify-content-center">
           <Box
             sx={{
@@ -113,7 +113,7 @@ function DialogCentered({
             }}
           ></Box>
         </Box>
-      )}
+      )} */}
       {showTitle && (
         <DialogTitle
           sx={{

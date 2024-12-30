@@ -4,7 +4,7 @@ import MetaTags from "@/components/shared/MetaTags";
 import PaymentMethodSpare from "@/components/spareParts/PaymentMethodSpare";
 import PromoCodeSpare from "@/components/spareParts/PromoCodeSpare";
 import SharedTextArea from "@/components/shared/SharedTextArea";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import DialogCentered from "@/components/DialogCentered";
 import DialogMultiDirection from "@/components/DialogMultiDirection";
@@ -47,7 +47,11 @@ function SpareParts() {
     (state) => state.selectedAddress
   );
 
-  const { data, refetch: addPricing } = useCustomQuery({
+  const {
+    data,
+    refetch: addPricing,
+    isLoading,
+  } = useCustomQuery({
     name: "makePricingRequest",
     url: `${SPARE_PARTS}${USERS}/${user?.data?.user?.id}${ORDERS}`,
     refetchOnWindowFocus: false,
@@ -77,7 +81,11 @@ function SpareParts() {
       );
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.first_error || t.someThingWrong);
+      toast.error(
+        err?.response?.data?.first_error ||
+          err?.response?.data?.error ||
+          t.someThingWrong
+      );
     },
   });
 
@@ -113,6 +121,9 @@ function SpareParts() {
         customClass="w-100"
         text="makeSpare"
         disabled={!selectedParts?.length}
+        compBeforeText={
+          isLoading && <CircularProgress color="inherit" size={10} />
+        }
         onClick={() => {
           handleRequestSparePart();
         }}
@@ -158,13 +169,13 @@ function SpareParts() {
             {!isMobile && (
               <Box sx={{ margin: "30px 0px" }}>{returnConfirmBtn()}</Box>
             )}
-            {!isMobile && <AvailablePaymentMethodsImgs />}
+            <AvailablePaymentMethodsImgs />
           </div>
         </div>
         <div
           className="row"
           style={{
-            marginTop: "48px",
+            marginTop: isMobile ? "30px" : "48px",
           }}
         >
           <div className="col-12 text-center">

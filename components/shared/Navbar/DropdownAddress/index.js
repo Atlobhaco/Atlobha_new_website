@@ -147,6 +147,9 @@ function DropDownAddress() {
                   width={20}
                   height={20}
                   src="/icons/location-green.svg"
+                  style={{
+                    marginBottom: "4px",
+                  }}
                 />
               }
             />

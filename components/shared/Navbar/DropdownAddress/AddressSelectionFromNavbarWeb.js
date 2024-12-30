@@ -168,13 +168,13 @@ function AddressSelectionFromNavbarWeb({
               sx={{
                 flexGrow: 1,
                 textAlign: "right",
-                //   background: "red",
                 display: "flex",
                 gap: "15px",
                 alignItems: "center",
+                cursor: "pointer",
               }}
             >
-              <Box>
+              <Box onClick={() => handleCheckboxChange(address)}>
                 <Typography
                   sx={{
                     fontSize: isMobile ? "12px" : "16px",
@@ -218,7 +218,6 @@ function AddressSelectionFromNavbarWeb({
           </Box>
         ))}
         <Box
-          //   key={address.id}
           sx={{
             display: "flex",
             alignItems: "center",
@@ -265,9 +264,17 @@ function AddressSelectionFromNavbarWeb({
               display: "flex",
               gap: "15px",
               alignItems: "center",
+              cursor: "pointer",
             }}
           >
-            <Box>
+            <Box
+              onClick={() =>
+                handleCheckboxChange({
+                  id: "currentLocation",
+                  address: t.noAddressSelected,
+                })
+              }
+            >
               <Typography
                 sx={{
                   fontSize: isMobile ? "12px" : "16px",
@@ -275,6 +282,7 @@ function AddressSelectionFromNavbarWeb({
                   display: "flex",
                   gap: "10px",
                   alignItems: "center",
+                  paddingTop: "4px",
                 }}
               >
                 {t.currentLocation}
@@ -307,6 +315,9 @@ function AddressSelectionFromNavbarWeb({
               width={20}
               height={20}
               src="/icons/location-green.svg"
+              style={{
+                marginBottom: "4px",
+              }}
             />
           }
         />
