@@ -34,6 +34,7 @@ function CategoriesPopupcontent({
   setOpenCategories = () => {},
 }) {
   const router = useRouter();
+  const { route } = router;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [appGroups, setAppGroups] = useState([]);
@@ -168,9 +169,17 @@ function CategoriesPopupcontent({
                   (!activeSection && group?.id === 2 && active)),
               }}
               onClick={() => {
+                if (
+                  (route === "/spareParts" && +group?.id === 1) ||
+                  (route === "/" && +group?.id === 2)
+                ) {
+                  return setOpenCategories(false);
+                }
                 setActiveSection(group?.id === 2 ? false : true);
                 router.push(group?.id === 2 ? "/" : "/spareParts");
-                setOpenCategories(false);
+                setTimeout(() => {
+                  setOpenCategories(false);
+                }, 100);
               }}
             >
               <Box>

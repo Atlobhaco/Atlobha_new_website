@@ -17,7 +17,7 @@ import Login from "@/components/Login";
 function Layout({ children }) {
   const { t } = useLocalization();
   const router = useRouter();
-  const { locale, route } = router;
+  const { route } = router;
   const { isMobile } = useScreenSize();
   const [openCategories, setOpenCategories] = useState(false);
   const [activeSection, setActiveSection] = useState(true);
