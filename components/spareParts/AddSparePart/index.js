@@ -57,6 +57,7 @@ function AddsparePart({ setOpenPricingDialog }) {
               color: "#1FB256",
               height: "20px",
               width: "20px",
+              marginBottom: "4px",
             }}
           />
           <Box
