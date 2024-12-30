@@ -1,9 +1,11 @@
+import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 
 function CarouselHowPricing({ handleSelect, activeIndex }) {
+  const { locale } = useLocalization();
   const [hovered, setHovered] = useState(false);
   const [carouselInterval, setCarouselInterval] = useState(3000); // Default interval is 3 seconds
 
@@ -68,7 +70,7 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
               fontSize: "45px",
             }}
           >
-            ›
+            {locale === "ar" ? "›" : "‹"}
           </span>
         }
         nextIcon={
@@ -86,7 +88,7 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
               fontSize: "45px",
             }}
           >
-            ‹
+            {locale !== "ar" ? "›" : "‹"}
           </span>
         }
       >
