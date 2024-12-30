@@ -19,38 +19,38 @@ const header = {
 };
 
 function ShowAddressesFromNavbarMobile() {
-  const { t } = useLocalization();
+  // Hooks must always be at the top and in the same order
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
+  const { t, locale } = useLocalization();
 
   const { allAddresses, selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
 
-  const Addresses = allAddresses?.length ? allAddresses : [];
+  //   const Addresses = allAddresses?.length ? allAddresses : [];
 
   const handleCheckboxChange = async (addressSelected) => {
-    if (addressSelected?.id === "currentLocation") {
-      try {
+    try {
+      if (addressSelected?.id === "currentLocation") {
         const location = await getUserCurrentLocation();
         dispatch(
           setSelectedAddress({
             data: { ...addressSelected, ...location },
           })
         );
-      } catch (error) {
-        toast.error(error);
-        console.error(error);
+      } else {
+        dispatch(
+          setSelectedAddress({
+            data: { ...addressSelected },
+          })
+        );
       }
-    } else {
-      dispatch(
-        setSelectedAddress({
-          data: { ...addressSelected },
-        })
-      );
+    } catch (error) {
+      toast.error(error.message || "An error occurred");
+      console.error(error);
     }
   };
-
   return (
     <Box
       sx={{
@@ -62,7 +62,7 @@ function ShowAddressesFromNavbarMobile() {
       }}
     >
       <Box sx={header}>{!!allAddresses?.length && t.deliveryAddresses}</Box>
-      {Addresses.map((address) => (
+      {allAddresses.map((address) => (
         <Box
           key={address.id}
           sx={{
@@ -79,7 +79,7 @@ function ShowAddressesFromNavbarMobile() {
             data={address}
           />
 
-          {/* Car Logo */}
+          {/* Address Icon */}
           <Box
             sx={{
               display: "flex",
@@ -97,13 +97,14 @@ function ShowAddressesFromNavbarMobile() {
               style={{
                 width: "auto",
                 height: "auto",
-                maxHeight: isMobile ? "20px" : "20px",
-                maxWidth: isMobile ? "20px" : "20px",
+                maxHeight: "20px",
+                maxWidth: "20px",
                 marginTop: "1px",
               }}
             />
           </Box>
-          {/* Car Details */}
+
+          {/* Address Details */}
           <Box
             sx={{
               flexGrow: 1,
@@ -124,7 +125,9 @@ function ShowAddressesFromNavbarMobile() {
                   alignItems: "center",
                 }}
               >
-                {translateAddressName(address?.name)}
+                {typeof translateAddressName === "function"
+                  ? translateAddressName(address?.name, locale)
+                  : address?.name}
                 {!!address?.is_default && (
                   <Box
                     sx={{
@@ -134,7 +137,6 @@ function ShowAddressesFromNavbarMobile() {
                       fontSize: isMobile ? "12px" : "16px",
                       fontWeight: "400",
                       borderRadius: "50px",
-                      // height: "26px",
                       display: "flex",
                       alignItems: "center",
                     }}
@@ -157,8 +159,8 @@ function ShowAddressesFromNavbarMobile() {
           </Box>
         </Box>
       ))}
+      {/* Current Location Section */}
       <Box
-        //   key={address.id}
         sx={{
           display: "flex",
           alignItems: "center",
@@ -173,7 +175,7 @@ function ShowAddressesFromNavbarMobile() {
           data={{ id: "currentLocation", address: t.noAddressSelected }}
         />
 
-        {/* Car Logo */}
+        {/* GPS Icon */}
         <Box
           sx={{
             display: "flex",
@@ -191,17 +193,18 @@ function ShowAddressesFromNavbarMobile() {
             style={{
               width: "auto",
               height: "auto",
-              maxHeight: isMobile ? "20px" : "20px",
-              maxWidth: isMobile ? "20px" : "20px",
+              maxHeight: "20px",
+              maxWidth: "20px",
               marginTop: "1px",
             }}
           />
         </Box>
+
+        {/* Current Location Details */}
         <Box
           sx={{
             flexGrow: 1,
             textAlign: "right",
-            //   background: "red",
             display: "flex",
             gap: "15px",
             alignItems: "center",
@@ -227,16 +230,6 @@ function ShowAddressesFromNavbarMobile() {
             >
               {t.currentLocation}
             </Typography>
-            {/* <Typography
-			  sx={{
-				fontSize: isMobile ? "12px" : "16px",
-				fontWeight: 400,
-				textAlign: "start",
-				color: "#6B7280",
-			  }}
-			>
-			  {address?.address}
-			</Typography> */}
           </Box>
         </Box>
       </Box>

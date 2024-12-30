@@ -26,7 +26,7 @@ function SingleAddressItem({
   const { user } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   const [addressIdDefault, setAddressIdDefault] = useState(false);
@@ -140,7 +140,7 @@ function SingleAddressItem({
                   gap: "10px",
                 }}
               >
-                {translateAddressName(address?.name) || address?.id}
+                {translateAddressName(address?.name, locale) || address?.id}
                 {!!address?.is_default && (
                   <Box
                     sx={{

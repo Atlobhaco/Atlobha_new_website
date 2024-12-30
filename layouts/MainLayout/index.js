@@ -19,7 +19,7 @@ function Layout({ children }) {
   const router = useRouter();
   const { locale, route } = router;
   const { isMobile } = useScreenSize();
-  const [openCategories, setOpenCategories] = useState(true);
+  const [openCategories, setOpenCategories] = useState(false);
   const [activeSection, setActiveSection] = useState(true);
 
   useEffect(() => {

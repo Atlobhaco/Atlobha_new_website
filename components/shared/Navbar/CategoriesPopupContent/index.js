@@ -37,6 +37,7 @@ function CategoriesPopupcontent({
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [appGroups, setAppGroups] = useState([]);
+  const [mainGroups, setMainGroups] = useState([]);
 
   const sectionService = {
     display: "flex",
@@ -109,6 +110,8 @@ function CategoriesPopupcontent({
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       setAppGroups(res);
+      setMainGroups(res);
+      setOpenCategories(true);
     },
     onError: () => {
       toast.error(t.someThingWrong);
@@ -117,15 +120,15 @@ function CategoriesPopupcontent({
 
   const returnImgDependOnId = (id) => {
     switch (id) {
-      case 6:
+      case 15:
         return "/imgs/test-1.svg";
-      case 5:
+      case 14:
         return "/imgs/najm.svg";
-      case 3:
+      case 8:
         return "/imgs/maintenznce.svg";
-      case 7:
+      case 12:
         return "/imgs/road-help.svg";
-      case 4:
+      case 9:
         return "/imgs/conz.svg";
       default:
         return "/imgs/remote-car.svg";
@@ -133,15 +136,15 @@ function CategoriesPopupcontent({
   };
   const returnBgColorDependOnId = (id) => {
     switch (id) {
-      case 6:
+      case 15:
         return "#FFDDEC";
-      case 5:
+      case 14:
         return "#E9FAEF";
-      case 3:
+      case 8:
         return "#E7F5FF";
-      case 7:
+      case 12:
         return "#F3F0FF";
-      case 4:
+      case 9:
         return "#FFE4DD";
       default:
         return "#DDECFF";
@@ -151,31 +154,51 @@ function CategoriesPopupcontent({
     <Box>
       <Grid container spacing={2}>
         {/* First row with two columns */}
-        <Grid item size={{ xs: 6, md: 6 }} marginTop={isMobile ? 0 : 2}>
-          <Box
-            sx={{ ...boxStyle, ...(activeSection ? active : {}) }}
-            onClick={() => {
-              setActiveSection(true);
-              router.push("/spareParts");
-              setOpenCategories(false);
-            }}
+        {mainGroups?.map((group) => (
+          <Grid
+            key={group?.id}
+            item
+            size={{ xs: 6, md: 6 }}
+            marginTop={isMobile ? 0 : 2}
           >
-            <Box>
-              <Box sx={boxHeader}>{t.sparePartPricing}</Box>
-              <Box sx={boxSub}>{t.bestPriceForYou}</Box>
-              <Box sx={{ ...coloredBox, background: "#EB3C24" }}>{t.free}</Box>
+            <Box
+              sx={{
+                ...boxStyle,
+                ...((activeSection && group?.id === 1 && active) ||
+                  (!activeSection && group?.id === 2 && active)),
+              }}
+              onClick={() => {
+                setActiveSection(group?.id === 2 ? false : true);
+                router.push(group?.id === 2 ? "/" : "/spareParts");
+                setOpenCategories(false);
+              }}
+            >
+              <Box>
+                <Box sx={boxHeader}>{group?.title}</Box>
+                <Box sx={boxSub}>
+                  {group?.id === 2 ? t.allCarsNeed : t.bestPriceForYou}
+                </Box>
+                <Box
+                  sx={{
+                    ...coloredBox,
+                    background: group?.id === 2 ? "#6FBC36" : "#EB3C24",
+                  }}
+                >
+                  {group?.id === 2 ? t.freeDilevery : t.free}
+                </Box>
+              </Box>
+              <Box sx={menuImgStyle}>
+                <Image
+                  alt="img"
+                  src="/icons/menu-1.svg"
+                  height={100}
+                  width={160}
+                />
+              </Box>
             </Box>
-            <Box sx={menuImgStyle}>
-              <Image
-                alt="img"
-                src="/icons/menu-1.svg"
-                height={100}
-                width={160}
-              />
-            </Box>
-          </Box>
-        </Grid>
-        <Grid item size={6} marginTop={isMobile ? 0 : 2}>
+          </Grid>
+        ))}
+        {/* <Grid item size={6} marginTop={isMobile ? 0 : 2}>
           <Box
             sx={{ ...boxStyle, ...(!activeSection ? active : {}) }}
             onClick={() => {
@@ -200,26 +223,30 @@ function CategoriesPopupcontent({
               />
             </Box>{" "}
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
       {/* Second row */}
       <Grid container spacing={2} marginTop={isMobile ? 2 : 5}>
         <Grid item size={12}>
           <Box sx={secondHeader}>{t.moreServices}</Box>
         </Grid>
-        {appGroups?.map((group) => (
-          <Grid item size={{ xs: 4, md: 2 }}>
-            <Box
-              sx={{
-                ...sectionService,
-                background: `url(${returnImgDependOnId(group?.id)})`,
-                backgroundColor: `${returnBgColorDependOnId(group?.id)}`,
-              }}
-            >
-              <Box sx={sectionServiceTitle}>{group?.title}</Box>
-            </Box>
-          </Grid>
-        ))}
+        {appGroups?.map((group) =>
+          group?.sections?.map((section, index) => (
+            <Grid item key={`${section?.id}-${index}`} size={{ xs: 4, md: 2 }}>
+              <Box
+                sx={{
+                  ...sectionService,
+                  background: `url(${returnImgDependOnId(section?.id)})`,
+                  backgroundColor:
+                    section?.background_color ||
+                    returnBgColorDependOnId(section?.id),
+                }}
+              >
+                <Box sx={sectionServiceTitle}>{section?.title}</Box>
+              </Box>
+            </Grid>
+          ))
+        )}
       </Grid>
     </Box>
   );

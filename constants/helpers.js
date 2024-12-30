@@ -37,9 +37,7 @@ export const getUserCurrentLocation = () => {
   }
 };
 
-export const translateAddressName = (name) => {
-  const { locale } = useLocalization();
-
+export const translateAddressName = (name, locale) => {
   switch (name) {
     case "Home":
       return locale === "en" ? name : "المنزل";
