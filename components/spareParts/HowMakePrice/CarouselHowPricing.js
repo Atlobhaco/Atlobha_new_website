@@ -49,10 +49,46 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
         fade
         slide={true}
         interval={hovered ? null : carouselInterval} // Dynamic interval based on hover and state
-        controls={false}
+        // controls={false}
         indicators={false}
         activeIndex={activeIndex}
         onSelect={handleSelect}
+        prevIcon={
+          <span
+            className="custom-prev-icon"
+            style={{
+              display: "inline-block",
+              width: "30px",
+              height: "30px",
+              backgroundColor: "transparent",
+              borderRadius: "50%",
+              lineHeight: "30px",
+              textAlign: "center",
+              color: "#000",
+              fontSize: "45px",
+            }}
+          >
+            ›
+          </span>
+        }
+        nextIcon={
+          <span
+            className="custom-next-icon"
+            style={{
+              display: "inline-block",
+              width: "30px",
+              height: "30px",
+              backgroundColor: "transparent",
+              borderRadius: "50%",
+              lineHeight: "30px",
+              textAlign: "center",
+              color: "#000",
+              fontSize: "45px",
+            }}
+          >
+            ‹
+          </span>
+        }
       >
         {slides.map((slide, index) => (
           <Carousel.Item
