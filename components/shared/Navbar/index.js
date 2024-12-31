@@ -161,6 +161,7 @@ function Navbar({ setOpenCategories }) {
                     ? {
                         right: isMobile ? "5vw !important" : "2vw !important",
                         left: "unset !important",
+                        minWidth: isMobile ? "80px" : "120px",
                       }
                     : { left: "0vw !important" }),
                   width: "fit-content",
@@ -169,7 +170,10 @@ function Navbar({ setOpenCategories }) {
             >
               {menuUserIcon?.map((singleData) => (
                 <MenuItem
-                  sx={{ fontSize: isMobile ? "11px" : "15px" }}
+                  sx={{
+                    fontSize: isMobile ? "11px" : "15px",
+                    minHeight: isMobile ? "30px !important" : "48px !important",
+                  }}
                   onClick={singleData?.onClick}
                 >
                   {singleData?.name}

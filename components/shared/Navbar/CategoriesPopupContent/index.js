@@ -179,7 +179,7 @@ function CategoriesPopupcontent({
                 router.push(group?.id === 2 ? "/" : "/spareParts");
                 setTimeout(() => {
                   setOpenCategories(false);
-                }, 100);
+                }, 150);
               }}
             >
               <Box>
