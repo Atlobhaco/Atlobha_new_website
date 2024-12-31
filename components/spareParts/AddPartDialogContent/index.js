@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-function AddPartDialogContent() {
+function AddPartDialogContent({ setOpenPricingDialog }) {
   const { t } = useLocalization();
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -178,7 +178,14 @@ function AddPartDialogContent() {
           ) : null}
         </Box>
       </Box>
-      <Box sx={{ mt: 4 }}>
+      <Box
+        sx={{
+          mt: 4,
+          width: isMobile ? "100%" : "65%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <ImageUploader
           uploadedImage={addedPart?.imgSrc}
           handleImageUpload={handleImageUpload}
@@ -186,7 +193,14 @@ function AddPartDialogContent() {
           placeholder={t.optionalUploadImg}
         />
       </Box>
-      <Box sx={{ mt: 4 }}>
+      <Box
+        sx={{
+          mt: 4,
+          width: isMobile ? "100%" : "56%",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
         <SharedBtn
           className="big-main-btn"
           customClass="w-100"
@@ -196,6 +210,7 @@ function AddPartDialogContent() {
           onClick={() => {
             dispatch(fetchPartDetails(addedPart));
             setAddedPart(defaultValue);
+            setOpenPricingDialog(false);
           }}
         />
       </Box>

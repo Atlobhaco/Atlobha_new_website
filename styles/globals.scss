@@ -224,6 +224,14 @@ a {
   padding-top: 3px;
 }
 
+.minimize-center-dialog-width {
+  min-width: 40vw !important;
+  min-height: fit-content !important;
+  @include mobile-screen-style {
+    width: unset;
+  }
+}
+
 .modal-login-width-web {
   min-width: 30vw !important;
   min-height: fit-content !important;
@@ -347,5 +355,48 @@ div[aria-label="number input"] {
     border: 1px solid $primary;
     border-radius: 8px;
     outline: unset;
+  }
+}
+
+// login input num 966 style
+.code-num {
+  position: absolute;
+  top: 0px;
+  height: 44px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px 7px;
+  @include mobile-screen-style {
+    padding: 0px 6px;
+    font-size: 13px;
+  }
+  left: 0px;
+  font-size: 16px;
+
+  &::after {
+    content: "";
+    position: relative;
+    top: 0;
+    right: -4px;
+    left: unset;
+    width: 1px;
+    height: 65%;
+    background-color: grey;
+    @include mobile-screen-style {
+      right: -8px;
+      left: unset;
+    }
+  }
+  &:lang(ar) {
+    &::after {
+      right: -111% !important;
+      left: unset !important;
+      @include mobile-screen-style {
+        right: -130% !important;
+        left: unset !important;
+      }
+    }
   }
 }

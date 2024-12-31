@@ -37,7 +37,7 @@ function Navbar({ setOpenCategories }) {
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
   const router = useRouter();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const hideInSparePartsPage = router?.pathname?.includes("spare");
 
@@ -99,7 +99,7 @@ function Navbar({ setOpenCategories }) {
           {isMobile && hideInSparePartsPage && <CarPalette />}
         </Box>
         <Box sx={secondPartStyle}>
-		<LanguageSwitcher />
+          <LanguageSwitcher />
 
           {!isMobile && (
             <>
@@ -157,11 +157,21 @@ function Navbar({ setOpenCategories }) {
               PaperProps={{
                 sx: {
                   ml: 3,
+                  ...(locale !== "ar"
+                    ? {
+                        right: isMobile ? "5vw !important" : "2vw !important",
+                        left: "unset !important",
+                      }
+                    : { left: "0vw !important" }),
+                  width: "fit-content",
                 },
               }}
             >
               {menuUserIcon?.map((singleData) => (
-                <MenuItem onClick={singleData?.onClick}>
+                <MenuItem
+                  sx={{ fontSize: isMobile ? "11px" : "15px" }}
+                  onClick={singleData?.onClick}
+                >
                   {singleData?.name}
                 </MenuItem>
               ))}

@@ -40,21 +40,6 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   const [textInput, setTextInput] = useState(true); // Default view is text field
   const [otpPayload, setOtpPayload] = useState(false);
 
-  const codeNum = {
-    position: "absolute",
-    top: "0px",
-    height: "44px",
-    background: "transparent",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderTopRightRadius: "8px",
-    borderBottomRightRadius: "8px",
-    padding: isMobile ? "0px 6px" : "0px 3px",
-    left: "0px",
-    fontSize: isMobile ? "13px" : "16px",
-  };
-
   const initialValues = {
     text_input: "",
     phone: "",
@@ -234,7 +219,11 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               <Box sx={{ mt: 2, position: "relative" }}>
                 {true ? (
                   <SharedTextField
-                    customPadding={`${textInput ? "" : "0px 42px"}`}
+                    customPadding={`${
+                      formik?.values?.phone?.length && !textInput
+                        ? "0px 55px"
+                        : ""
+                    }`}
                     placeholder={t.emailOrPhone}
                     handleChange={(e) => {
                       formik.handleChange(e);
@@ -256,6 +245,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
                     label={false}
                     imgIcon={false}
                     toolTipTitle={t.vinNumHint}
+                    alignPosition={locale === "en" ? "start" : "end"}
                   />
                 ) : (
                   <SharedPhoneInput
@@ -268,8 +258,8 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
                     handleInputChange={handleInputChange}
                   />
                 )}
-                {!textInput && (
-                  <Box sx={codeNum}>
+                {!textInput && formik?.values?.phone && (
+                  <Box className="code-num" lang={locale}>
                     {locale === "en" && "+"}966{locale === "ar" && "+"}
                   </Box>
                 )}

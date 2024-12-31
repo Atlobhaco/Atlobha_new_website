@@ -30,7 +30,9 @@ function ColoredHint({
           />
         </Box>
         <Box>
-          <Box className={`${style["hint-text_header"]}`}>{header}</Box>
+          <Box className={`${style["hint-text_header"]}`} onClick={onClick}>
+            {header}
+          </Box>
           <Box className={`${style["hint-text_sub"]}`}>{subHeader}</Box>
         </Box>
       </Box>

@@ -25,6 +25,7 @@ function SharedTextField({
   rightIcon = false,
   actionClickrightIcon = () => {},
   customPadding = null,
+  alignPosition = false,
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -130,12 +131,13 @@ function SharedTextField({
             fontSize: isMobile ? "13px" : "16px",
             padding: customPadding ? customPadding : "0 24px", // Adjust padding for input text
             color: "#6B7280",
-            textAlign:
-              customPadding && !plusMinusInput && locale == "ar"
-                ? "end"
-                : plusMinusInput
-                ? "center"
-                : "start",
+            textAlign: alignPosition
+              ? alignPosition
+              : customPadding && !plusMinusInput && locale == "ar"
+              ? "end"
+              : plusMinusInput
+              ? "center"
+              : "start",
           },
         }}
       />

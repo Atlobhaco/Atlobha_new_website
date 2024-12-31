@@ -198,14 +198,16 @@ function SpareParts() {
       />
 
       {/* dialog to add new spare parts info and image */}
-      <DialogMultiDirection
+      <DialogCentered
         open={openPricingDialog}
         setOpen={setOpenPricingDialog}
-        customClass="reverse-position"
         title={false}
         subtitle={false}
         customTransition={true}
-        content={<AddPartDialogContent />}
+        customClass="minimize-center-dialog-width"
+        content={
+          <AddPartDialogContent setOpenPricingDialog={setOpenPricingDialog} />
+        }
       />
 
       <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />

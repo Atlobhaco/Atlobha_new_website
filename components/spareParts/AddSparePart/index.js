@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -11,7 +11,9 @@ function AddsparePart({ setOpenPricingDialog }) {
   const dispatch = useDispatch();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
-  const { selectedParts } = useSelector((state) => state.addSpareParts);
+  const { selectedParts, isLoading } = useSelector(
+    (state) => state.addSpareParts
+  );
 
   return (
     <Box
@@ -52,14 +54,18 @@ function AddsparePart({ setOpenPricingDialog }) {
             },
           }}
         >
-          <AddCircleOutlineIcon
-            style={{
-              color: "#1FB256",
-              height: "20px",
-              width: "20px",
-              marginBottom: "4px",
-            }}
-          />
+          {isLoading ? (
+            <CircularProgress size={18} />
+          ) : (
+            <AddCircleOutlineIcon
+              style={{
+                color: "#1FB256",
+                height: "20px",
+                width: "20px",
+                marginBottom: "4px",
+              }}
+            />
+          )}
           <Box
             onClick={() => setOpenPricingDialog(true)}
             sx={{
@@ -67,7 +73,7 @@ function AddsparePart({ setOpenPricingDialog }) {
             }}
             component="span"
           >
-            {t.addSparePart}
+            {isLoading ? t.willAdd : t.addSparePart}
           </Box>
         </Box>
       </Box>
