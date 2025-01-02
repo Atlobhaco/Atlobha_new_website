@@ -144,6 +144,10 @@ function AddPartDialogContent({ setOpenPricingDialog }) {
             items={[]}
           /> */}
           <input
+            style={{
+              background: "white",
+              color: "black",
+            }}
             type="text"
             className="input-text"
             value={addedPart?.name}

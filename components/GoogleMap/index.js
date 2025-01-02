@@ -239,6 +239,8 @@ const GoogleMapComponent = React.memo(
                 type="text"
                 placeholder={t.search}
                 style={{
+                  background: "white",
+                  color: "black",
                   width: "90%",
                   height: "44px",
                   padding: "0 35px",
