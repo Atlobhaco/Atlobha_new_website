@@ -83,9 +83,12 @@ function SingleCarItem({ car, setDeleteCarId, isLoading, deleteCarId }) {
               sx={{
                 fontSize: isMobile ? "12px" : "16px",
                 fontWeight: 500,
+                textAlign: "start",
+                display: "flex",
+                flexWrap: "wrap",
               }}
             >
-              {car?.brand?.name}
+              {car?.brand?.name} {car?.model?.name}
             </Typography>
             <Typography
               sx={{

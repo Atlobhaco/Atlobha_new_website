@@ -60,7 +60,7 @@ function MyAddresses() {
   });
 
   return (
-    <div className="container pt-3">
+    <div className="container-fluid pt-3">
       <div className="row mb-2">
         <BreadCrumb />
       </div>

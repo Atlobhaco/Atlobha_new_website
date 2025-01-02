@@ -166,9 +166,10 @@ function CarSelectionFromNavbarWeb({
                   sx={{
                     fontSize: isMobile ? "12px" : "16px",
                     fontWeight: 500,
+                    textAlign: "start",
                   }}
                 >
-                  {car?.brand?.name}
+                  {car?.brand?.name} {car?.model?.name}
                 </Typography>
                 <Typography
                   sx={{

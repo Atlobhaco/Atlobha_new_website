@@ -126,7 +126,7 @@ function CarSelectionFromNavMobile() {
                     fontWeight: 500,
                   }}
                 >
-                  {car?.brand?.name}
+                  {car?.brand?.name} {car?.model?.name}
                 </Typography>
                 <Typography
                   sx={{

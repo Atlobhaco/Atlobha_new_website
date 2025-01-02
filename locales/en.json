@@ -30,7 +30,9 @@
     "search": "Search",
     "check": "Check",
     "edit": "Edit",
-    "save": "Save"
+    "save": "Save",
+    "delete": "Delete",
+    "details": "Details"
   },
   "loginNow": "Register or log in to start exploring",
   "appleLogin": "Register via Apple",
@@ -129,5 +131,7 @@
   "deliveryTime": "Expected delivery date",
   "dateLater": "The delivery date will be determined later after the order is confirmed.",
   "partsData": "Spare parts data",
-  "piece": "Piece"
+  "piece": "Piece",
+  "sar": "SAR",
+  "joinNow": "Join now !"
 }
