@@ -66,8 +66,8 @@ export default function Home() {
         </div>
       </div> */}
 
-      {/* <SharedBtn /> */}
-      {/* <LanguageSwitcher /> */}
+      <SharedBtn />
+      <LanguageSwitcher />
       <IconInsideCircle
         hasText={"info"}
         width="90px"
