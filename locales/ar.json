@@ -132,5 +132,12 @@
   "partsData": "بيانات قطع الغيار",
   "piece": "قطعة",
   "sar": "ر.س",
-  "joinNow": "اشترك الان!"
+  "joinNow": "اشترك الان!",
+  "editInfo": "تعديل حسابي",
+  "myOrders": "طلباتي",
+  "myCards": "بطاقاتي",
+  "Cars":"سياراتي",
+  "addresses":"عناويني",
+  "showAndEditProfile": "اظهر وعدل ملفك الشخصي",
+  "balanceProfile": "رصيد حسابي علي اطلبها"
 }

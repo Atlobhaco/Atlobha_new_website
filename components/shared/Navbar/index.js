@@ -19,6 +19,10 @@ import { logout } from "@/redux/reducers/authReducer";
 import { isAuth } from "@/config/hooks/isAuth";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import Login from "@/components/Login";
+import UserBalanceHolder from "@/components/userProfile/userBalanceholder/userBalanceHolder";
+import { USERS } from "@/config/endPoints/endPoints";
+import { useAuth } from "@/config/providers/AuthProvider";
+import useCustomQuery from "@/config/network/Apiconfig";
 
 const firstPartStyle = {
   display: "flex",
@@ -32,14 +36,19 @@ const secondPartStyle = {
   gap: "10px",
 };
 
-function Navbar({ setOpenCategories }) {
+function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const dispatch = useDispatch();
+  const { user } = useAuth();
+
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
   const router = useRouter();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const hideInSparePartsPage = router?.pathname?.includes("spare");
+  const hideComponent = hideNavbarInUrls.some((url) =>
+    router?.pathname?.includes(url)
+  );
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedSection, setSelectedSection] = useState("1");
@@ -51,20 +60,74 @@ function Navbar({ setOpenCategories }) {
     setAnchorEl(null);
   };
 
+  const { data } = useCustomQuery({
+    name: "userInfoForNavbar",
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    staleTime: 5 * 60 * 1000,
+    enabled: user?.data?.user?.id ? true : false,
+  });
+
   const menuUserIcon = [
     ...(isAuth()
       ? [
           {
-            name: t.profile,
+            component: <UserBalanceHolder data={data} removeStyle />,
             onClick: () => {
-              router.push("/userProfile");
+              router.push("/userProfile/editInfo");
               handleClose();
             },
           },
+          ...[
+            {
+              src: "/icons/address-yellow.svg",
+              name: t.addresses,
+              num: 0,
+              onClick: () => {
+                router.push("/userProfile/myAddresses");
+                handleClose();
+              },
+            },
+            {
+              src: "/icons/orders-yellow.svg",
+              name: t.myOrders,
+              num: 0,
+            },
+            {
+              src: "/icons/car-yellow.svg",
+              name: t.Cars,
+              num: 0,
+              onClick: () => {
+                router.push("/userProfile/myCars");
+                handleClose();
+              },
+            },
+            {
+              src: "/icons/wallet-yellow.svg",
+              name: t.myCards,
+              num: 0,
+            },
+          ],
+          //   {
+          //     name: t.profile,
+          //     onClick: () => {
+          //       router.push("/userProfile");
+          //       handleClose();
+          //     },
+          //   },
         ]
       : []),
     {
-      name: isAuth() ? t.logout : t.login,
+      component: isAuth() ? (
+        <div className={`${style["logout-btn"]}`}>{t.logout}</div>
+      ) : (
+        <UserBalanceHolder data={data} removeStyle />
+      ),
+      onClick: () => {
+        router.push("/userProfile/editInfo");
+        handleClose();
+      },
       onClick: () => {
         if (isAuth()) {
           dispatch(logout());
@@ -81,21 +144,31 @@ function Navbar({ setOpenCategories }) {
     <Box
       className={`${style["navbar"]}`}
       sx={{
-        background: "#FFF5EF",
+        background: hideComponent ? "#F6F6F6" : "#FFF5EF",
+        padding: isMobile
+          ? "10px 20px 16px 20px"
+          : hideComponent
+          ? "24px 65px"
+          : "10px 62px 5px 62px",
       }}
     >
       <Box className={`${style["navbar-container"]}`}>
         <Box sx={firstPartStyle}>
-          <DropDownAddress />
+          {!hideComponent && <DropDownAddress />}
           <Image
             alt="logo"
-            width={isMobile ? 84 : 130}
-            height={isMobile ? 33 : 49}
+            width={isMobile ? 80 : 130}
+            height={isMobile ? 20 : 49}
             src="/logo/atlobha-ar-en.svg"
+            onClick={() => router.push("/")}
           />
           {!isMobile && hideInSparePartsPage && <CarPalette />}
-          <AdvertiseHint />
-          <HeaderPage />
+          {!hideComponent && (
+            <>
+              <AdvertiseHint />
+              <HeaderPage />
+            </>
+          )}
           {isMobile && hideInSparePartsPage && <CarPalette />}
         </Box>
         <Box sx={secondPartStyle}>
@@ -165,25 +238,42 @@ function Navbar({ setOpenCategories }) {
                       }
                     : { left: "0vw !important" }),
                   width: "fit-content",
+                  padding: "20px",
+                  minWidth: "23vw",
                 },
               }}
             >
               {menuUserIcon?.map((singleData) => (
                 <MenuItem
                   sx={{
+                    color: "#232323",
+                    fontWeight: "500",
+                    padding: "0px",
+                    mb: 1,
                     fontSize: isMobile ? "11px" : "15px",
                     minHeight: isMobile ? "30px !important" : "48px !important",
                   }}
                   onClick={singleData?.onClick}
                 >
-                  {singleData?.name}
+                  {singleData?.src && (
+                    <Image
+                      style={{
+                        margin: "0px 10px",
+                      }}
+                      src={singleData?.src}
+                      alt="icon"
+                      width={isMobile ? 20 : 30}
+                      height={isMobile ? 20 : 30}
+                    />
+                  )}
+                  {singleData?.component || singleData?.name}
                 </MenuItem>
               ))}
             </Menu>
           </div>
         </Box>
       </Box>
-      {!isMobile && !hideInSparePartsPage && (
+      {!isMobile && !hideInSparePartsPage && !hideComponent && (
         <Box className={`${style["searching"]}`}>
           <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
           <Box className={`${style["searching-sub"]}`}>
@@ -198,12 +288,14 @@ function Navbar({ setOpenCategories }) {
           </Box>
         </Box>
       )}
-      <Box className={`${style["sections"]}`}>
-        <SectionsNav
-          selectedSection={selectedSection}
-          setSelectedSection={setSelectedSection}
-        />
-      </Box>
+      {!hideComponent && (
+        <Box className={`${style["sections"]}`}>
+          <SectionsNav
+            selectedSection={selectedSection}
+            setSelectedSection={setSelectedSection}
+          />
+        </Box>
+      )}
       <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
     </Box>
   );

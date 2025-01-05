@@ -15,6 +15,7 @@ import {
   useModelsQuery,
   userBrandsQuery,
 } from "@/config/network/Shared/lookupsDataHelper";
+import UserProfile from "../..";
 
 function EditCarProfile() {
   const formikRef = useRef();
@@ -71,18 +72,27 @@ function EditCarProfile() {
   }, [id]);
 
   return (
-    <div className="container-fluid pt-3">
-      <div className="row mb-2">
-        <BreadCrumb />
-      </div>
-      <div className="row mb-2">
-        <div className="col-12 mt-4">
-          <AddNewCarData
-            formikRef={formikRef}
-            hideDividerAndShowBtn={false}
-            clickTooltipOpenVinHint={clickTooltipOpenVinHint}
-            editableCar={editableCar}
-          />
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
+        )}
+        <div className="col-md-8 col-12 pt-4">
+          <div className="row mb-2">
+            <BreadCrumb />
+          </div>
+          <div className="row mb-2">
+            <div className="col-12 mt-4">
+              <AddNewCarData
+                formikRef={formikRef}
+                hideDividerAndShowBtn={false}
+                clickTooltipOpenVinHint={clickTooltipOpenVinHint}
+                editableCar={editableCar}
+              />
+            </div>
+          </div>
         </div>
       </div>
 

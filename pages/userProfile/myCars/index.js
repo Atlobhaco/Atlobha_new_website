@@ -21,6 +21,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { USERS, VEHICLES } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import SingleCarItem from "@/components/userProfile/myCars/singleCarItem";
+import UserProfile from "..";
 
 const flexBox = {
   display: "flex",
@@ -72,62 +73,71 @@ function MyCars() {
   });
 
   return (
-    <div className="container-fluid pt-3">
-      <div className="row mb-2">
-        <BreadCrumb />
-      </div>
-      {!!allCars?.length && (
-        <div className="row mb-4">
-          <Box sx={flexBox}>
-            <Box
-              sx={{
-                fontSize: "20px",
-                fontWeight: "500",
-              }}
-            >
-              {t.carList}
-            </Box>
-            <Box>
-              <SharedBtn
-                onClick={() => {
-                  router.push("/userProfile/myCars/addNewCarProfile");
-                }}
-                className="big-main-btn"
-                text="addNewCar"
-                compBeforeText={
-                  <Image
-                    alt="add"
-                    width={20}
-                    height={20}
-                    src="/icons/addInsideCircle.svg"
-                  />
-                }
-              />
-            </Box>
-          </Box>
-        </div>
-      )}
-      <div className="row mb-2">
-        {allCars?.length ? (
-          allCars?.map((car) => (
-            <div className="col-12" key={car?.id}>
-              <SingleCarItem
-                car={car}
-                setDeleteCarId={setDeleteCarId}
-                isLoading={isLoading}
-                deleteCarId={deleteCarId}
-              />
-            </div>
-          ))
-        ) : (
-          <Box
-            sx={{
-              padding: isMobile ? "80px  20px" : "150px  80px",
-            }}
-          >
-            <NoCarAdded />
-          </Box>
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
         )}
+        <div className="col-md-8 col-12 pt-4">
+          <div className="row">
+            <BreadCrumb />
+          </div>
+          {!!allCars?.length && (
+            <div className="row mb-4">
+              <Box sx={flexBox}>
+                <Box
+                  sx={{
+                    fontSize: "20px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {t.carList}
+                </Box>
+                <Box>
+                  <SharedBtn
+                    onClick={() => {
+                      router.push("/userProfile/myCars/addNewCarProfile");
+                    }}
+                    className="big-main-btn"
+                    text="addNewCar"
+                    compBeforeText={
+                      <Image
+                        alt="add"
+                        width={20}
+                        height={20}
+                        src="/icons/addInsideCircle.svg"
+                      />
+                    }
+                  />
+                </Box>
+              </Box>
+            </div>
+          )}
+          <div className="row mb-2">
+            {allCars?.length ? (
+              allCars?.map((car) => (
+                <div className="col-12" key={car?.id}>
+                  <SingleCarItem
+                    car={car}
+                    setDeleteCarId={setDeleteCarId}
+                    isLoading={isLoading}
+                    deleteCarId={deleteCarId}
+                  />
+                </div>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  padding: isMobile ? "80px  20px" : "150px  80px",
+                }}
+              >
+                <NoCarAdded />
+              </Box>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

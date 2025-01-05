@@ -18,6 +18,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import UserProfile from "..";
 
 const flexBox = {
   display: "flex",
@@ -60,62 +61,71 @@ function MyAddresses() {
   });
 
   return (
-    <div className="container-fluid pt-3">
-      <div className="row mb-2">
-        <BreadCrumb />
-      </div>
-      {!!allAddresses?.length && (
-        <div className="row mb-4">
-          <Box sx={flexBox}>
-            <Box
-              sx={{
-                fontSize: "20px",
-                fontWeight: "500",
-              }}
-            >
-              {t.addressesList}
-            </Box>
-            <Box>
-              <SharedBtn
-                onClick={() => {
-                  router.push("/userProfile/myAddresses/addNewAddress");
-                }}
-                className="big-main-btn"
-                text="addNewAddress"
-                compBeforeText={
-                  <Image
-                    alt="add"
-                    width={20}
-                    height={20}
-                    src="/icons/addInsideCircle.svg"
-                  />
-                }
-              />
-            </Box>
-          </Box>
-        </div>
-      )}
-      <div className="row mb-2">
-        {allAddresses?.length ? (
-          allAddresses?.map((car) => (
-            <div className="col-12" key={car?.id}>
-              <SingleAddressItem
-                address={car}
-                setDeleteAddressId={setDeleteAddressId}
-                isLoading={isLoading}
-                deleteAddressId={deleteAddressId}
-              />
-            </div>
-          ))
-        ) : (
-          <Box
-            sx={{
-              padding: isMobile ? "80px  20px" : "150px  80px",
-            }}
-          >
-            <NoAddressAdded />
-          </Box>
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
         )}
+        <div className="col-md-8 col-12 pt-4">
+          <div className="row mb-2">
+            <BreadCrumb />
+          </div>
+          {!!allAddresses?.length && (
+            <div className="row mb-4">
+              <Box sx={flexBox}>
+                <Box
+                  sx={{
+                    fontSize: "20px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {t.addressesList}
+                </Box>
+                <Box>
+                  <SharedBtn
+                    onClick={() => {
+                      router.push("/userProfile/myAddresses/addNewAddress");
+                    }}
+                    className="big-main-btn"
+                    text="addNewAddress"
+                    compBeforeText={
+                      <Image
+                        alt="add"
+                        width={20}
+                        height={20}
+                        src="/icons/addInsideCircle.svg"
+                      />
+                    }
+                  />
+                </Box>
+              </Box>
+            </div>
+          )}
+          <div className="row mb-2">
+            {allAddresses?.length ? (
+              allAddresses?.map((car) => (
+                <div className="col-12" key={car?.id}>
+                  <SingleAddressItem
+                    address={car}
+                    setDeleteAddressId={setDeleteAddressId}
+                    isLoading={isLoading}
+                    deleteAddressId={deleteAddressId}
+                  />
+                </div>
+              ))
+            ) : (
+              <Box
+                sx={{
+                  padding: isMobile ? "80px  20px" : "150px  80px",
+                }}
+              >
+                <NoAddressAdded />
+              </Box>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

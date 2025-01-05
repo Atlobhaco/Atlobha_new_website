@@ -1,4 +1,5 @@
 import useLocalization from "@/config/hooks/useLocalization";
+import { UrlsSpecific } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -6,12 +7,16 @@ import React from "react";
 
 function BreadCrumb() {
   const router = useRouter();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   const routeName = router?.route?.split("/").filter(Boolean).length
     ? router?.route?.split("/").filter(Boolean)
     : ["mainPage"];
+  const routesToPreventclicks = UrlsSpecific;
+  const preventClick = routesToPreventclicks.some((url) =>
+    router?.pathname?.includes(url)
+  );
 
   const titleStyle = {
     fontWeight: "500",
@@ -43,7 +48,10 @@ function BreadCrumb() {
               ...titleStyle,
               color: index !== routeName?.length - 1 ? "#A1A1AA" : "#18181B",
             }}
-            onClick={() => onclick(singleRoute, index)}
+            // prevent click for some routes
+            onClick={() =>
+              (!preventClick || index !== 0) && onclick(singleRoute, index)
+            }
           >
             {t[singleRoute]}
             {index !== routeName?.length - 1 && <span className="mx-2">/</span>}
@@ -56,7 +64,7 @@ function BreadCrumb() {
           ...titleStyle,
           color: "#18181B",
         }}
-        onClick={() => onclick(routeName, 0)}
+        onClick={() => !preventClick && onclick(routeName, 0)}
       >
         {t[routeName]}
       </span>
@@ -69,7 +77,7 @@ function BreadCrumb() {
         alt="arrow"
         width={isMobile ? 14 : 18}
         height={isMobile ? 14 : 18}
-        className="ms-2 mb-1"
+        className={`${locale === "ar" ? "ms-2" : "me-2"}  mb-1`}
       />
       {renderTitleOfPages()}
     </div>

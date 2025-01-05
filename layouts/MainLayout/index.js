@@ -13,6 +13,7 @@ import CategoriesPopupcontent from "@/components/shared/Navbar/CategoriesPopupCo
 import { useRouter } from "next/router";
 import Footer from "@/components/shared/Footer";
 import Login from "@/components/Login";
+import { UrlsSpecific } from "@/constants/helpers";
 
 function Layout({ children }) {
   const { t } = useLocalization();
@@ -21,6 +22,7 @@ function Layout({ children }) {
   const { isMobile } = useScreenSize();
   const [openCategories, setOpenCategories] = useState(false);
   const [activeSection, setActiveSection] = useState(true);
+  const hideNavbarInUrls = UrlsSpecific;
 
   useEffect(() => {
     if (route === "/spareParts") {
@@ -33,7 +35,10 @@ function Layout({ children }) {
   return (
     <div>
       <MetaTags title="Atlobha-اطلبها" icon="/logo/road-atlobha-text.svg" />
-      <Navbar setOpenCategories={setOpenCategories} />
+      <Navbar
+        setOpenCategories={setOpenCategories}
+        hideNavbarInUrls={hideNavbarInUrls}
+      />
       {isMobile && (
         <FootNavbar
           setOpenCategories={setOpenCategories}
@@ -43,7 +48,7 @@ function Layout({ children }) {
       <Box
         sx={{
           marginBottom: isMobile ? "100px" : "50px",
-          maxWidth: "90vw",
+          maxWidth: hideNavbarInUrls ? "96%" : "90vw",
           marginRight: "auto",
           marginLeft: "auto",
         }}

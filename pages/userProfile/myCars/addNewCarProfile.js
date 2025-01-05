@@ -4,6 +4,7 @@ import AddNewCarData from "@/components/AddNewCarData";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import DialogCentered from "@/components/DialogCentered";
 import VinNumIInfo from "@/components/VinNumInfo";
+import UserProfile from "..";
 
 function AddNewCar() {
   const formikRef = useRef();
@@ -18,17 +19,26 @@ function AddNewCar() {
   };
 
   return (
-    <div className="container-fluid pt-3">
-      <div className="row mb-2">
-        <BreadCrumb />
-      </div>
-      <div className="row mb-2">
-        <div className="col-12 mt-4">
-          <AddNewCarData
-            formikRef={formikRef}
-            hideDividerAndShowBtn={false}
-            clickTooltipOpenVinHint={clickTooltipOpenVinHint}
-          />
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
+        )}
+        <div className="col-md-8 col-12 pt-4">
+          <div className="row">
+            <BreadCrumb />
+          </div>
+          <div className="row mb-2">
+            <div className="col-12 mt-4">
+              <AddNewCarData
+                formikRef={formikRef}
+                hideDividerAndShowBtn={false}
+                clickTooltipOpenVinHint={clickTooltipOpenVinHint}
+              />
+            </div>
+          </div>
         </div>
       </div>
 

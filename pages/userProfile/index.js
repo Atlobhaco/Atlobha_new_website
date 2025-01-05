@@ -13,27 +13,27 @@ import React, { useState } from "react";
 function UserProfile() {
   const router = useRouter();
   const { user } = useAuth();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const [quickSections, setQuickSections] = useState([
     {
       src: "/icons/wallet-yellow.svg",
-      title: "بطاقاتي",
+      title: t.myCards,
       num: 4,
     },
     {
       src: "/icons/car-yellow.svg",
-      title: "سياراتي",
+      title: t.Cars,
       num: 412,
       onClick: () => router.push("/userProfile/myCars"),
     },
     {
       src: "/icons/orders-yellow.svg",
-      title: "طلباتي",
+      title: t.myOrders,
       num: 40,
     },
     {
       src: "/icons/address-yellow.svg",
-      title: "عناويني",
+      title: t.addresses,
       num: 1,
       onClick: () => router.push("/userProfile/myAddresses"),
     },
@@ -44,28 +44,29 @@ function UserProfile() {
     url: `${USERS}/${user?.data?.user?.id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
+    staleTime: 5 * 60 * 1000,
+    enabled: user?.data?.user?.id ? true : false,
     onSuccess: (res) => {
-      console.log(res);
       setQuickSections([
         {
           src: "/icons/wallet-yellow.svg",
-          title: "بطاقاتي",
+          title: t.myCards,
           num: 0,
         },
         {
           src: "/icons/car-yellow.svg",
-          title: "سياراتي",
+          title: t.Cars,
           num: 10,
           onClick: () => router.push("/userProfile/myCars"),
         },
         {
           src: "/icons/orders-yellow.svg",
-          title: "طلباتي",
+          title: t.myOrders,
           num: res?.order_count,
         },
         {
           src: "/icons/address-yellow.svg",
-          title: "عناويني",
+          title: t.addresses,
           num: 1,
           onClick: () => router.push("/userProfile/myAddresses"),
         },
@@ -75,46 +76,39 @@ function UserProfile() {
   });
 
   return (
-    <Box>
-      <BreadCrumb />
-      <Box className="mb-3">UserProfile data will apear here</Box>
-      <Box onClick={() => router.push("/userProfile/myCars")}>
-        clik to go to cars
-      </Box>
+    <>
+      {/* <div className="col-12">
+        <AtlobhaPlusHint />
+      </div> */}
+      <Box
+        sx={{
+          boxShadow:
+            locale === "ar"
+              ? "-9px 0px 7px 0px rgba(0, 0, 0, 0.16)"
+              : "9px 0px 7px 0px rgba(0, 0, 0, 0.16)",
+        }}
+        className="col-12  p-3"
+      >
+        <Box sx={{ position: "absolute", top: "0px", zIndex: -1 }}>
+          <BreadCrumb />
+        </Box>
 
-      <Box onClick={() => router.push("/userProfile/myAddresses")}>
-        clik to go add address
+        <UserBalanceHolder data={data} />
+        <div className="row mt-3">
+          {quickSections?.map((sec) => (
+            <div key={sec?.title} className="col-md-6 col-6">
+              <BasicSections
+                src={sec?.src}
+                title={sec?.title}
+                num={sec?.num}
+                onClick={sec?.onClick}
+              />
+            </div>
+          ))}
+        </div>
       </Box>
-    </Box>
+    </>
   );
-
-//   return (
-//     <div className="container-fluid pt-3">
-//       <div className="row mb-2">
-//         <BreadCrumb />
-//       </div>
-//       <div className="row">
-//         <UserBalanceHolder data={data} />
-//       </div>
-//       <div className="row mt-3">
-//         {quickSections?.map((sec) => (
-//           <div key={sec?.title} className="col-md-3 col-6">
-//             <BasicSections
-//               src={sec?.src}
-//               title={sec?.title}
-//               num={sec?.num}
-//               onClick={sec?.onClick}
-//             />
-//           </div>
-//         ))}
-//       </div>
-//       <div className="row mt-3">
-//         <div className="col-12">
-//           <AtlobhaPlusHint />
-//         </div>
-//       </div>
-//     </div>
-//   );
 }
 
 export default UserProfile;

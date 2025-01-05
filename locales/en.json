@@ -133,5 +133,12 @@
   "partsData": "Spare parts data",
   "piece": "Piece",
   "sar": "SAR",
-  "joinNow": "Join now !"
+  "joinNow": "Join now !",
+  "editInfo": "Edit profile",
+  "myOrders": "Orders",
+  "myCards": "Cards",
+  "Cars":"Cars",
+  "addresses":"Addresses",
+  "showAndEditProfile": "View and edit profile",
+  "balanceProfile": "Account balance on Atlobha"
 }

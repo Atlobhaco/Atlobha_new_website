@@ -2,10 +2,10 @@
 @import "../../../styles/variables.scss";
 
 .navbar {
-  padding: 10px 62px 5px 62px;
-  @include mobile-screen-style {
-    padding: 10px 24px 16px 24px;
-  }
+  //   padding: 10px 62px 5px 62px;
+  //   @include mobile-screen-style {
+  //     padding: 10px 24px 16px 24px;
+  //   }
 
   max-width: 100vw;
   position: relative;
@@ -125,4 +125,15 @@
   height: 24px !important;
   border-radius: 37px !important;
   border: 1.5px solid #232323 !important;
+}
+
+.logout-btn {
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  background-color: white;
+  padding: 12px 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

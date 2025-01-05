@@ -47,3 +47,5 @@ export const translateAddressName = (name, locale) => {
       return name;
   }
 };
+
+export const UrlsSpecific = ["userProfile"];

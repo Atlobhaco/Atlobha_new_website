@@ -8,7 +8,7 @@ function BasicSections({ src, title, num, onClick = () => {} }) {
 
   const mainStyle = {
     background: "white",
-    padding: isMobile ? "16px 20px" : "23px 34px",
+    padding: isMobile ? "16px 20px" : "20px 20px",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",

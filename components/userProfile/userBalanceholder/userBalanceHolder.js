@@ -4,15 +4,23 @@ import Image from "next/image";
 import ActionButtons from "@/components/shared/actionButtons";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { useAuth } from "@/config/providers/AuthProvider";
+import { useRouter } from "next/router";
+import { Box } from "@mui/material";
 
-function UserBalanceHolder({ data }) {
-  const { t } = useLocalization();
+function UserBalanceHolder({ data, removeStyle = false }) {
+  const router = useRouter();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   return (
     <div className={`col-md-12`}>
-      <div className={`${style["holder"]}`}>
+      <Box
+        sx={{
+          border: removeStyle ? "unset" : "1px solid #f0f0f0",
+          padding: removeStyle ? "10px  0px" : "20px",
+        }}
+        className={`${style["holder"]}`}
+      >
         <div className={`${style["info"]}`}>
           <Image
             src="/imgs/user-profile.svg"
@@ -22,14 +30,25 @@ function UserBalanceHolder({ data }) {
           />
           <div>
             <div className={`${style["name"]}`}>{data?.name}</div>
-            <div className={`${style["hint"]}`}>اظهر وعدل ملفك الشخصي</div>
+            <div className={`${style["hint"]}`}>{t.showAndEditProfile}</div>
           </div>
         </div>
         <div className={`${style["edit"]}`}>
-          <ActionButtons type="edit" onClick={() => alert("clicked")} />
+          <ActionButtons
+            type="edit"
+            onClick={() => router.push("/userProfile/editInfo")}
+          />
         </div>
-      </div>
-      <div className={`${style["balance"]}`}>
+      </Box>
+      <Box
+        sx={{
+          borderBottomRightRadius: removeStyle ? "10px !important" : "unset",
+          borderBottomLeftRadius: removeStyle ? "10px !important" : "unset",
+          borderTopLeftRadius: removeStyle ? "10px" : "unset",
+          borderTopRightRadius: removeStyle ? "10px" : "unset",
+        }}
+        className={`${style["balance"]}`}
+      >
         <div className={`${style["text"]}`}>
           <Image
             src="/imgs/wallet-sm.svg"
@@ -37,10 +56,10 @@ function UserBalanceHolder({ data }) {
             height={isMobile ? 25 : 30}
             alt="wallet"
             style={{
-              marginBottom: "4px",
+              marginBottom: "3px",
             }}
           />
-          رصيد حسابي علي اطلبها{" "}
+          <Box sx={{ mt: 1 }}>{t.balanceProfile}</Box>
           <span>
             {data?.wallet_balance || 0} {t.sar}
           </span>
@@ -50,8 +69,11 @@ function UserBalanceHolder({ data }) {
           width={isMobile ? 8 : 12}
           height={12}
           alt="arrow"
+          style={{
+            transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
+          }}
         />
-      </div>
+      </Box>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
 } from "@/redux/reducers/selectedAddressReducer";
 import { useRouter } from "next/router";
 import useLocalization from "@/config/hooks/useLocalization";
+import UserProfile from "..";
 
 function AddNewAddressProfile() {
   const { user } = useAuth();
@@ -51,28 +52,37 @@ function AddNewAddressProfile() {
   });
 
   return (
-    <div className="container-fluid pt-3">
-      <div className="row mb-2">
-        <BreadCrumb />
-      </div>
-      <div className="row mb-2">
-        <div className={`col-md-8 col-12 ${isMobile ? "mb-3" : "mb-0"} `}>
-          <GoogleMapComponent
-            lngLatLocation={lngLatLocation}
-            setLngLatLocation={setLngLatLocation}
-            setLocationInfo={setLocationInfo}
-          />
-        </div>
-        <div className="col-md-4 col-12">
-          <AddressDetails
-            locationInfo={locationInfo}
-            setAddressNameOrCustom={setAddressNameOrCustom}
-            addressNameOrCustom={addressNameOrCustom}
-            setManualAddress={setManualAddress}
-            manualAddress={manualAddress}
-            lngLatLocation={lngLatLocation}
-            callAddNewAddress={callAddNewAddress}
-          />
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
+        )}
+        <div className="col-md-8  col-12 pt-4">
+          <div className="row mb-2">
+            <BreadCrumb />
+          </div>
+          <div className="row mb-2">
+            <div className={`col-md-8 col-12 ${isMobile ? "mb-3" : "mb-0"} `}>
+              <GoogleMapComponent
+                lngLatLocation={lngLatLocation}
+                setLngLatLocation={setLngLatLocation}
+                setLocationInfo={setLocationInfo}
+              />
+            </div>
+            <div className="col-md-4 col-12">
+              <AddressDetails
+                locationInfo={locationInfo}
+                setAddressNameOrCustom={setAddressNameOrCustom}
+                addressNameOrCustom={addressNameOrCustom}
+                setManualAddress={setManualAddress}
+                manualAddress={manualAddress}
+                lngLatLocation={lngLatLocation}
+                callAddNewAddress={callAddNewAddress}
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
