@@ -21,6 +21,7 @@ function DropDownAddress() {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const [addressModalKey, setAddressModalKey] = useState(Date.now());
   const [anchorEl, setAnchorEl] = useState(null);
   const [openAddNewAddress, setOpenAddNewAddress] = useState(false);
 
@@ -31,6 +32,7 @@ function DropDownAddress() {
 
   const handleOpenProgrmatically = (event) => {
     if (!event.isTrusted) {
+      setAddressModalKey(Date.now());
       return setOpenAddNewAddress(true);
     }
   };
@@ -166,6 +168,7 @@ function DropDownAddress() {
         hasCloseIcon
         content={
           <AddNewAddressFromNavbar
+            key={addressModalKey}
             ref={childRef}
             setCanAddAddress={setCanAddAddress}
             setOpenAddNewAddress={setOpenAddNewAddress}

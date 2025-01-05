@@ -18,6 +18,7 @@ import React, {
   useState,
 } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
+import { getUserCurrentLocation } from "@/constants/helpers";
 
 const AddNewAddressFromNavbar = forwardRef(
   ({ setCanAddAddress, setOpenAddNewAddress }, ref) => {
@@ -32,6 +33,7 @@ const AddNewAddressFromNavbar = forwardRef(
     }));
 
     const { user } = useAuth();
+    const [location, setLocation] = useState(null);
     const router = useRouter();
     const dispatch = useDispatch();
     const { t } = useLocalization();
@@ -44,6 +46,20 @@ const AddNewAddressFromNavbar = forwardRef(
       type: "Home",
       cutomName: "",
     });
+
+    // get user current location every render
+    useEffect(() => {
+      handleGetLocation();
+    });
+
+    const handleGetLocation = async () => {
+      try {
+        const currentLocation = await getUserCurrentLocation();
+        setLocation(currentLocation);
+      } catch (err) {
+        setError(err);
+      }
+    };
 
     const { refetch: callUserAddresses } = usersAddressesQuery({
       setAllAddresses,
@@ -64,6 +80,20 @@ const AddNewAddressFromNavbar = forwardRef(
       callUserAddresses,
       redirect: () => setOpenAddNewAddress(false),
       t,
+      returnDefaultValues: () => {
+        setLocationInfo(null);
+        setLngLatLocation(
+          location || {
+            lat: 24.7136, // Latitude of Riyadh
+            lng: 46.6753, // Longitude of Riyadh
+          }
+        );
+        setAddressNameOrCustom({
+          type: "Home",
+          cutomName: "",
+        });
+        setManualAddress("");
+      },
     });
 
     //   check can click save or no
@@ -81,7 +111,7 @@ const AddNewAddressFromNavbar = forwardRef(
       }
     }, [manualAddress, addressNameOrCustom, lngLatLocation, locationInfo]);
 
-    return (
+	return (
       <div className="container">
         <div className="row">
           <div className={`col-md-8 col-12 ${isMobile ? "mb-3" : "mb-0"} `}>

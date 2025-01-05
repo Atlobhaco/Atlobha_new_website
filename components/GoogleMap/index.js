@@ -40,7 +40,6 @@ const GoogleMapComponent = React.memo(
     const [map, setMap] = useState(null);
     const autocompleteRef = useRef(null);
     const { t, locale } = useLocalization();
-    // console.log("lngLatLocation", lngLatLocation);
 
     // Memoize container style based on screen size
     const containerStyle = useMemo(
@@ -67,47 +66,45 @@ const GoogleMapComponent = React.memo(
     );
 
     //   auto detect user location  when map opened
-    const onLoadMap = useCallback(
-      (map) => {
-        mapRef.current = map;
-        setMap(map);
-        if (!idAddress) {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-              (position) => {
-                const userLocation = {
-                  lat: position.coords.latitude,
-                  lng: position.coords.longitude,
-                };
-                setLngLatLocation(userLocation);
-                fetchLocationDetails(userLocation); // Fetch address details
-                if (map) {
-                  map.panTo(userLocation);
-                  map.setZoom(17);
-                }
-              },
-              () => {
-                setLngLatLocation(center);
-                fetchLocationDetails(center); // Fetch address details
+    const onLoadMap = useCallback((map) => {
+      mapRef.current = map;
+      setMap(map);
+      if (!idAddress) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setLngLatLocation(userLocation);
+              fetchLocationDetails(userLocation); // Fetch address details
+              if (map) {
+                map.panTo(userLocation);
+                map.setZoom(17);
               }
-            );
-          } else {
-            alert("Geolocation is not supported by this browser.");
-          }
+            },
+            () => {
+              setLngLatLocation(center);
+              fetchLocationDetails(center); // Fetch address details
+            }
+          );
         } else {
-          setLngLatLocation(lngLatLocation);
-          fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
+          alert("Geolocation is not supported by this browser.");
         }
-      },
-      [lngLatLocation, map, idAddress, setLngLatLocation]
-    );
+      } else {
+        setLngLatLocation(lngLatLocation);
+        fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
+      }
+    }, []);
 
     useEffect(() => {
-      if (map && lngLatLocation && idAddress) {
+      if (map && lngLatLocation) {
+        fetchLocationDetails(lngLatLocation);
         map?.panTo(lngLatLocation); // Center the map to the updated location
         map?.setZoom(17); // Optional: zoom in
       }
-    }, [lngLatLocation, map, idAddress]);
+    }, [lngLatLocation, map]);
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {

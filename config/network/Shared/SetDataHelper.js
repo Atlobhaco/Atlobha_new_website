@@ -41,6 +41,7 @@ export function addAddressQuery({
   callUserAddresses,
   redirect = () => {},
   t = () => {},
+  returnDefaultValues = () => {},
 }) {
   return useCustomQuery({
     name: "setDefaultAddress",
@@ -54,6 +55,7 @@ export function addAddressQuery({
       callUserAddresses();
       redirect();
       toast.success(t.addressAddedSuccess);
+      returnDefaultValues();
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
