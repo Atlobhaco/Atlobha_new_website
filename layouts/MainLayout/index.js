@@ -48,7 +48,7 @@ function Layout({ children }) {
       <Box
         sx={{
           marginBottom: isMobile ? "100px" : "50px",
-          maxWidth: hideNavbarInUrls ? "96%" : "90vw",
+          maxWidth: hideNavbarInUrls ? "98%" : "90vw",
           marginRight: "auto",
           marginLeft: "auto",
         }}

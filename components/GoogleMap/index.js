@@ -204,7 +204,7 @@ const GoogleMapComponent = React.memo(
         }
       } catch (error) {
         console.error("Error fetching location details:", error);
-        alert("Error fetching location details. Please try again.");
+        // alert("Error fetching location details. Please try again.");
       }
     };
 

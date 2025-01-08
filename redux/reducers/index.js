@@ -5,6 +5,7 @@ import LookupsReducer from "./LookupsReducer";
 import selectedCarReducer from "./selectedCarReducer";
 import selectedAddressReducer from "./selectedAddressReducer";
 import addSparePartsReducer from "./addSparePartsReducer";
+import quickSectionsProfile from "./quickSectionsProfile";
 // import yourReducer from "./yourReducer"; // Ensure the path is correct
 
 const rootReducer = combineReducers({
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   lookups: LookupsReducer,
   selectedAddress: selectedAddressReducer,
   addSpareParts: addSparePartsReducer,
+  quickSection: quickSectionsProfile,
 });
 
 export default rootReducer;

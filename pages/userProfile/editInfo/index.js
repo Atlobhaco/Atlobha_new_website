@@ -6,10 +6,10 @@ function EditInfo() {
   return (
     <div className="container-fluid">
       <div className="row mb-2">
-        <div className="col-md-5">
+        <div className="col-md-4">
           <UserProfile />
         </div>
-        <div className="col-md-7 col-12 pt-4">
+        <div className="col-md-8 col-12 pt-4">
           <div className="row">
             <BreadCrumb />
           </div>

@@ -169,7 +169,11 @@ function AddPartDialogContent({ setOpenPricingDialog }) {
           />
         </Box>
         <Box sx={{ width: "25%" }}>
-          {addedPart?.name?.length >= 3 ? (
+          <Box
+            sx={{
+              position: "relative",
+            }}
+          >
             <InputAddRemove
               defaultValue={defaultValue}
               value={addedPart}
@@ -179,15 +183,23 @@ function AddPartDialogContent({ setOpenPricingDialog }) {
               actionClickrightIcon={deleteMinus}
               actionClickIcon={increaseValue}
             />
-          ) : null}
+            {addedPart?.name?.length < 3 ? (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "0px",
+                  width: "100%",
+                  height: "100%",
+                }}
+              ></Box>
+            ) : null}
+          </Box>
         </Box>
       </Box>
       <Box
         sx={{
           mt: 4,
-          width: isMobile ? "100%" : "65%",
-          marginLeft: "auto",
-          marginRight: "auto",
+          width: isMobile ? "100%" : "70%",
         }}
       >
         <ImageUploader
@@ -200,9 +212,7 @@ function AddPartDialogContent({ setOpenPricingDialog }) {
       <Box
         sx={{
           mt: 4,
-          width: isMobile ? "100%" : "56%",
-          marginLeft: "auto",
-          marginRight: "auto",
+          width: isMobile ? "100%" : "70%",
         }}
       >
         <SharedBtn

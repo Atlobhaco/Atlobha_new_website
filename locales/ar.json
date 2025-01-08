@@ -55,7 +55,7 @@
   "noData": "لا يوجد اختيارات",
   "profile": "الحساب الشخصي",
   "mainPage": "الرئيسية",
-  "userProfile": "الحساب الشخصي",
+  "userProfile": "البروفايل",
   "carList": "قائمة سياراتي",
   "noCarFound": "لا يوجد سيارت مضافة حتي الان",
   "addOwnCar": "يمكنك اضافة سيارتك الخاص مع كل التفاصيل",
@@ -136,8 +136,11 @@
   "editInfo": "تعديل حسابي",
   "myOrders": "طلباتي",
   "myCards": "بطاقاتي",
-  "Cars":"سياراتي",
-  "addresses":"عناويني",
+  "Cars": "سياراتي",
+  "addresses": "عناويني",
   "showAndEditProfile": "اظهر وعدل ملفك الشخصي",
-  "balanceProfile": "رصيد حسابي علي اطلبها"
+  "balanceProfile": "رصيد حسابي علي اطلبها",
+  "tellFriends": "أخبر أصدقاءك",
+  "rateAtlobha": "قيم اطلبها",
+  "winPoints": "اكسب 250 نقطة"
 }

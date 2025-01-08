@@ -1,13 +1,24 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
-import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
-function BasicSections({ src, title, num, onClick = () => {} }) {
+function BasicSections({
+  src,
+  title,
+  num,
+  onClick = () => {},
+  path = "",
+  img,
+  activeSrc,
+}) {
+  const router = useRouter();
   const { isMobile } = useScreenSize();
 
   const mainStyle = {
-    background: "white",
+    background: router?.pathname?.includes(path)
+      ? "#FFD400 !important"
+      : "white",
     padding: isMobile ? "16px 20px" : "20px 20px",
     display: "flex",
     alignItems: "center",
@@ -19,6 +30,9 @@ function BasicSections({ src, title, num, onClick = () => {} }) {
     "&:hover": {
       background: "#f7f7f7e0",
       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    },
+    svg: {
+      fontSize: isMobile ? "20px" : "30px",
     },
   };
   const numStyle = {
@@ -33,7 +47,7 @@ function BasicSections({ src, title, num, onClick = () => {} }) {
     justifyContent: "center",
     fontSize: isMobile ? "12px" : "16px",
   };
-  
+
   return (
     <Box sx={mainStyle} onClick={onClick}>
       <Box
@@ -43,12 +57,7 @@ function BasicSections({ src, title, num, onClick = () => {} }) {
           gap: isMobile ? "5px" : "10px",
         }}
       >
-        <Image
-          src={src}
-          alt="icon"
-          width={isMobile ? 20 : 30}
-          height={isMobile ? 20 : 30}
-        />
+        {router?.pathname?.includes(path) ? activeSrc : src}
         <Box
           sx={{
             color: "#232323",

@@ -1,0 +1,45 @@
+@import "../../../styles/mixins.scss";
+@import "../../../styles/variables.scss";
+
+.setting {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f0f0f0;
+  background-color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  &:hover {
+    background-color: #f7f7f7e0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  .text {
+    color: #232323;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 3px 10px 0px 10px;
+    @include mobile-screen-style {
+      font-size: 13px;
+    }
+  }
+  .hint {
+    color: #429df8;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 3px 3px 0px 3px;
+    @include mobile-screen-style {
+      font-size: 11px;
+    }
+  }
+  .arrow {
+    &:lang(en) {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.active {
+  background-color: #ffd400 !important;
+}

@@ -79,7 +79,10 @@ function AddNewCarData({
     body: addPayload,
     retry: 0,
     onSuccess: (res) => {
-      if (editableCar?.id) {
+      if (
+        router?.pathname === "/userProfile/myCars/addNewCarProfile" ||
+        editableCar?.id
+      ) {
         router.push("/userProfile/myCars");
       }
       // make car default by update it after success adding

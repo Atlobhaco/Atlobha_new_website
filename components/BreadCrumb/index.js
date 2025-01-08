@@ -7,14 +7,14 @@ import React from "react";
 
 function BreadCrumb() {
   const router = useRouter();
-  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const { t, locale } = useLocalization();
 
   const routeName = router?.route?.split("/").filter(Boolean).length
     ? router?.route?.split("/").filter(Boolean)
     : ["mainPage"];
-  const routesToPreventclicks = UrlsSpecific;
-  const preventClick = routesToPreventclicks.some((url) =>
+	
+  const preventClick = UrlsSpecific.some((url) =>
     router?.pathname?.includes(url)
   );
 
@@ -50,7 +50,8 @@ function BreadCrumb() {
             }}
             // prevent click for some routes
             onClick={() =>
-              (!preventClick || index !== 0) && onclick(singleRoute, index)
+              (!preventClick || index !== 0 || isMobile) &&
+              onclick(singleRoute, index)
             }
           >
             {t[singleRoute]}
@@ -64,7 +65,7 @@ function BreadCrumb() {
           ...titleStyle,
           color: "#18181B",
         }}
-        onClick={() => !preventClick && onclick(routeName, 0)}
+        onClick={() => (!preventClick || isMobile) && onclick(routeName, 0)}
       >
         {t[routeName]}
       </span>

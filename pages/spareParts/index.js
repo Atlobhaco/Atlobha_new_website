@@ -88,7 +88,6 @@ function SpareParts() {
       );
     },
   });
-
   const handleRequestSparePart = () => {
     if (!isAuth()) {
       return setOpenLogin(true); // Open login modal if no user is authenticated
@@ -100,7 +99,9 @@ function SpareParts() {
         elementId: "openAddCarModalProgramatically",
       },
       {
-        condition: !selectedAddress?.id && !defaultAddress?.id,
+        condition:
+          (!selectedAddress?.id && defaultAddress?.id === "currentLocation") ||
+          !defaultAddress?.id,
         elementId: "openAddAddressModalProgramatically",
       },
     ];
@@ -199,6 +200,7 @@ function SpareParts() {
 
       {/* dialog to add new spare parts info and image */}
       <DialogCentered
+        hasCloseIcon={true}
         open={openPricingDialog}
         setOpen={setOpenPricingDialog}
         title={false}

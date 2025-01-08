@@ -23,6 +23,7 @@ import UserBalanceHolder from "@/components/userProfile/userBalanceholder/userBa
 import { USERS } from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
+import BlurText from "../BlurText";
 
 const firstPartStyle = {
   display: "flex",
@@ -75,7 +76,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           {
             component: <UserBalanceHolder data={data} removeStyle />,
             onClick: () => {
-              router.push("/userProfile/editInfo");
+              router.push(isMobile ? "/userProfile" : "/userProfile/editInfo");
               handleClose();
             },
           },
@@ -122,7 +123,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       component: isAuth() ? (
         <div className={`${style["logout-btn"]}`}>{t.logout}</div>
       ) : (
-        <UserBalanceHolder data={data} removeStyle />
+        <div>{t.login}</div>
       ),
       onClick: () => {
         router.push("/userProfile/editInfo");
@@ -130,6 +131,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       },
       onClick: () => {
         if (isAuth()) {
+          router.push("/");
           dispatch(logout());
           handleClose();
         } else {
@@ -238,8 +240,8 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                       }
                     : { left: "0vw !important" }),
                   width: "fit-content",
-                  padding: "20px",
-                  minWidth: "23vw",
+                  padding: isAuth() ? "20px" : "10px",
+                  minWidth: isAuth() ? "23vw" : "10vw",
                 },
               }}
             >
@@ -266,7 +268,16 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                       height={isMobile ? 20 : 30}
                     />
                   )}
-                  {singleData?.component || singleData?.name}
+                  {singleData?.component || (
+                    <BlurText
+                      text={singleData?.name}
+                      delay={5}
+                      animateBy="words"
+                      direction="top"
+                      onAnimationComplete={() => {}}
+                      className=""
+                    />
+                  )}
                 </MenuItem>
               ))}
             </Menu>

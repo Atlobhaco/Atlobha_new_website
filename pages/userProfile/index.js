@@ -1,4 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
+import ProfileSetting from "@/components/userProfile/ProfileSetting";
 import AtlobhaPlusHint from "@/components/userProfile/atlobhaPlusHint";
 import BasicSections from "@/components/userProfile/basicSections";
 import UserBalanceHolder from "@/components/userProfile/userBalanceholder/userBalanceHolder";
@@ -6,36 +7,73 @@ import { USERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
+import { setAllSections } from "@/redux/reducers/quickSectionsProfile";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Address from "../../public/icons/address-yellow.svg";
+import Wallet from "../../public/icons/wallet-yellow.svg";
+import Car from "../../public/icons/car-yellow.svg";
+import Order from "../../public/icons/orders-yellow.svg";
+import CarActive from "../../public/icons/car-active.svg";
+import AddressActive from "../../public/icons/address-active.svg";
+import YellowGift from "../../public/icons/yellow-gift.svg";
+import Rate from "../../public/icons/rate.svg";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function UserProfile() {
   const router = useRouter();
   const { user } = useAuth();
+  const dispatch = useDispatch();
+  const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
+  const { allsections } = useSelector((state) => state.quickSection);
+
+  const profileSections = [
+    {
+      iconSrc: <YellowGift />,
+      text: t.tellFriends,
+      hint: t.winPoints,
+      //   onClick: () => alert("clicked"),
+      path: "/userProfile/myAddresses",
+    },
+    {
+      iconSrc: <Rate />,
+      text: t.rateAtlobha,
+      //   onClick: () => alert("clicked"),
+      path: "",
+    },
+  ];
+
   const [quickSections, setQuickSections] = useState([
     {
-      src: "/icons/wallet-yellow.svg",
+      src: <Wallet />,
       title: t.myCards,
-      num: 4,
+      num: 0,
+      path: "wallet",
     },
     {
-      src: "/icons/car-yellow.svg",
+      activeSrc: <CarActive />,
+      src: <Car />,
       title: t.Cars,
-      num: 412,
+      num: 0,
       onClick: () => router.push("/userProfile/myCars"),
+      path: "myCars",
     },
     {
-      src: "/icons/orders-yellow.svg",
+      src: <Order />,
       title: t.myOrders,
-      num: 40,
+      num: 0,
+      path: "orders",
     },
     {
-      src: "/icons/address-yellow.svg",
+      activeSrc: <AddressActive />,
+      src: <Address />,
       title: t.addresses,
-      num: 1,
+      num: 0,
       onClick: () => router.push("/userProfile/myAddresses"),
+      path: "myAddresses",
     },
   ]);
 
@@ -44,36 +82,82 @@ function UserProfile() {
     url: `${USERS}/${user?.data?.user?.id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
-    staleTime: 5 * 60 * 1000,
+    // staleTime: 5 * 60 * 1000,
     enabled: user?.data?.user?.id ? true : false,
     onSuccess: (res) => {
+      dispatch(
+        setAllSections({
+          data: [
+            {
+              src: <Wallet />,
+              title: t.myCards,
+              num: 0,
+              path: "wallet",
+            },
+            {
+              activeSrc: <CarActive />,
+              src: <Car />,
+              title: t.Cars,
+              num: res?.vehicles_count,
+              //   onClick: () => router.push("/userProfile/myCars"),
+              path: "myCars",
+            },
+            {
+              src: <Order />,
+              title: t.myOrders,
+              num: res?.order_count,
+              path: "orders",
+            },
+            {
+              activeSrc: <AddressActive />,
+              src: <Address />,
+              title: t.addresses,
+              num: res?.addresses_count,
+              path: "myAddresses",
+            },
+          ],
+        })
+      );
       setQuickSections([
         {
-          src: "/icons/wallet-yellow.svg",
+          activeSrc: <CarActive />,
+          src: <Wallet />,
           title: t.myCards,
           num: 0,
+          path: "wallet",
         },
         {
-          src: "/icons/car-yellow.svg",
+          src: <Car />,
           title: t.Cars,
-          num: 10,
+          num: res?.vehicles_count,
           onClick: () => router.push("/userProfile/myCars"),
+          path: "myCars",
         },
         {
-          src: "/icons/orders-yellow.svg",
+          src: <Order />,
           title: t.myOrders,
           num: res?.order_count,
+          path: "orders",
         },
         {
-          src: "/icons/address-yellow.svg",
+          activeSrc: <AddressActive />,
+          src: <Address />,
           title: t.addresses,
-          num: 1,
+          num: res?.addresses_count,
           onClick: () => router.push("/userProfile/myAddresses"),
+          path: "myAddresses",
         },
       ]);
     },
     onError: () => {},
   });
+
+  //   no profile page in web must be has active child
+  useEffect(() => {
+    if (!isMobile && router.pathname === "/userProfile") {
+      router.push("/userProfile/editInfo/");
+    }
+  }, [isMobile]);
 
   return (
     <>
@@ -95,14 +179,25 @@ function UserProfile() {
 
         <UserBalanceHolder data={data} />
         <div className="row mt-3">
-          {quickSections?.map((sec) => (
-            <div key={sec?.title} className="col-md-6 col-6">
-              <BasicSections
-                src={sec?.src}
-                title={sec?.title}
-                num={sec?.num}
-                onClick={sec?.onClick}
-              />
+          {(allsections?.length ? allsections : quickSections)?.map(
+            (sec, index) => (
+              <div key={sec?.title} className="col-md-6 col-6">
+                <BasicSections
+                  src={sec?.src}
+                  activeSrc={sec?.activeSrc}
+                  title={sec?.title}
+                  num={sec?.num}
+                  onClick={quickSections[index]?.onClick}
+                  path={sec?.path}
+                />
+              </div>
+            )
+          )}
+        </div>
+        <div className="row mt-3">
+          {profileSections?.map((data) => (
+            <div className="col-md-12" key={data?.iconSrc}>
+              <ProfileSetting data={data} />
             </div>
           ))}
         </div>

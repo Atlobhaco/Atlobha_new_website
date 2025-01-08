@@ -9,8 +9,8 @@ import { Box } from "@mui/material";
 
 function UserBalanceHolder({ data, removeStyle = false }) {
   const router = useRouter();
-  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const { t, locale } = useLocalization();
 
   return (
     <div className={`col-md-12`}>
@@ -52,8 +52,8 @@ function UserBalanceHolder({ data, removeStyle = false }) {
         <div className={`${style["text"]}`}>
           <Image
             src="/imgs/wallet-sm.svg"
-            width={isMobile ? 25 : 30}
-            height={isMobile ? 25 : 30}
+            width={isMobile ? 20 : 30}
+            height={isMobile ? 20 : 30}
             alt="wallet"
             style={{
               marginBottom: "3px",
@@ -66,7 +66,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
         </div>
         <Image
           src="/icons/arrow-left-sm.svg"
-          width={isMobile ? 8 : 12}
+          width={isMobile ? 9 : 12}
           height={12}
           alt="arrow"
           style={{
