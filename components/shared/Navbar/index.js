@@ -80,43 +80,43 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               handleClose();
             },
           },
-          ...[
+        //   ...[
+        //     {
+        //       src: "/icons/address-yellow.svg",
+        //       name: t.addresses,
+        //       num: 0,
+        //       onClick: () => {
+        //         router.push("/userProfile/myAddresses");
+        //         handleClose();
+        //       },
+        //     },
+        //     {
+        //       src: "/icons/orders-yellow.svg",
+        //       name: t.myOrders,
+        //       num: 0,
+        //     },
+        //     {
+        //       src: "/icons/car-yellow.svg",
+        //       name: t.Cars,
+        //       num: 0,
+        //       onClick: () => {
+        //         router.push("/userProfile/myCars");
+        //         handleClose();
+        //       },
+        //     },
+        //     {
+        //       src: "/icons/wallet-yellow.svg",
+        //       name: t.myCards,
+        //       num: 0,
+        //     },
+        //   ],
             {
-              src: "/icons/address-yellow.svg",
-              name: t.addresses,
-              num: 0,
+              name: t.profile,
               onClick: () => {
-                router.push("/userProfile/myAddresses");
+                router.push("/userProfile");
                 handleClose();
               },
             },
-            {
-              src: "/icons/orders-yellow.svg",
-              name: t.myOrders,
-              num: 0,
-            },
-            {
-              src: "/icons/car-yellow.svg",
-              name: t.Cars,
-              num: 0,
-              onClick: () => {
-                router.push("/userProfile/myCars");
-                handleClose();
-              },
-            },
-            {
-              src: "/icons/wallet-yellow.svg",
-              name: t.myCards,
-              num: 0,
-            },
-          ],
-          //   {
-          //     name: t.profile,
-          //     onClick: () => {
-          //       router.push("/userProfile");
-          //       handleClose();
-          //     },
-          //   },
         ]
       : []),
     {
