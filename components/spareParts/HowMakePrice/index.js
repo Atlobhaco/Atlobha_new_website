@@ -125,6 +125,7 @@ function HowMakePrice({ setOpenhowPricing }) {
       <CarouselHowPricing
         handleSelect={handleSelect}
         activeIndex={activeIndex}
+        setActiveIndex={setActiveIndex}
       />
 
       <Box

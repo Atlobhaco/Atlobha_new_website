@@ -149,5 +149,12 @@
   "callUs": "Call us",
   "language": "Language",
   "country": "Coutntry",
-  "wantFreeDelivery": "Want free delivery? all orders"
+  "wantFreeDelivery": "Want free delivery? all orders",
+  "subscribeNow": "Subscribe now and enjoy benefits",
+  "communicate": "Contact us",
+  "returnPolicy": "Return policy",
+  "privacyPolicy": "Privacy policy",
+  "termsCondition": "Terms and conditions",
+  "version": "Version",
+  "atlobhaCopyright": "Atlobha. All rights reserved."
 }

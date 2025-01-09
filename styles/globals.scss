@@ -400,3 +400,18 @@ div[aria-label="number input"] {
     }
   }
 }
+
+// used in how to make pricing popup
+.carousel {
+  direction: rtl;
+}
+
+.carousel-control-prev {
+  right: 0 !important;
+  left: auto !important;
+}
+
+.carousel-control-next {
+  left: 0 !important;
+  right: auto !important;
+}

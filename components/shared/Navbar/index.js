@@ -24,6 +24,7 @@ import { USERS } from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
 
 const firstPartStyle = {
   display: "flex",
@@ -145,10 +146,10 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 
   const returnNavbarBg = () => {
     const sparePartColor = allGroups[0]?.sections?.find(
-      (sec) => sec?.type === "spare-parts"
+      (sec) => sec?.type === SPAREPARTS
     )?.background_color;
     const marketPlaceColor = allGroups[0]?.sections?.find(
-      (sec) => sec?.type === "marketplace"
+      (sec) => sec?.type === MARKETPLACE
     )?.background_color;
 
     if (router?.pathname === "/spareParts" || router?.pathname === "/") {
@@ -156,7 +157,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
         ? sparePartColor || "#FFF5EF"
         : marketPlaceColor || "#FFF5EF";
     } else {
-      hideComponent ? "#F6F6F6" : "#FFF5EF";
+      return hideComponent ? "#F6F6F6" : "#FFF5EF";
     }
   };
 

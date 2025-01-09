@@ -12,6 +12,7 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 import Address from "../../public/icons/address-yellow.svg";
 import Wallet from "../../public/icons/wallet-yellow.svg";
 import Car from "../../public/icons/car-yellow.svg";
@@ -20,7 +21,16 @@ import CarActive from "../../public/icons/car-active.svg";
 import AddressActive from "../../public/icons/address-active.svg";
 import YellowGift from "../../public/icons/yellow-gift.svg";
 import Rate from "../../public/icons/rate.svg";
-import useScreenSize from "@/constants/screenSize/useScreenSize";
+import Favourite from "../../public/icons/favourite.svg";
+import Savety from "../../public/icons/savety.svg";
+import HelpCenter from "../../public/icons/help-center.svg";
+import CallUs from "../../public/icons/call-us.svg";
+import Languages from "../../public/icons/languages.svg";
+import Country from "../../public/icons/country.svg";
+import SaudiaFlag from "../../public/icons/saudia-flag.svg";
+import LogoutIcon from "../../public/icons/logout-icon.svg";
+import { logout } from "@/redux/reducers/authReducer";
+import CommunicationSection from "@/components/userProfile/communicationSection";
 
 function UserProfile() {
   const router = useRouter();
@@ -36,12 +46,51 @@ function UserProfile() {
       text: t.tellFriends,
       hint: t.winPoints,
       //   onClick: () => alert("clicked"),
-      path: "/userProfile/myAddresses",
+      path: "",
     },
     {
       iconSrc: <Rate />,
       text: t.rateAtlobha,
       //   onClick: () => alert("clicked"),
+      path: "",
+    },
+    {
+      iconSrc: <Favourite />,
+      text: t.rateAtlobha,
+      //   onClick: () => alert("clicked"),
+      path: "",
+    },
+    {
+      iconSrc: <Savety />,
+      text: t.safety,
+      //   onClick: () => alert("clicked"),
+      path: "",
+    },
+    {
+      iconSrc: <HelpCenter />,
+      text: t.helpCenter,
+      //   onClick: () => alert("clicked"),
+      path: "",
+    },
+    {
+      iconSrc: <CallUs />,
+      text: t.callUs,
+      //   onClick: () => alert("clicked"),
+      path: "",
+      hideArrow: true,
+      hint: "15276",
+    },
+    {
+      iconSrc: <Languages />,
+      text: t.language,
+      //   onClick: () => alert("clicked"),
+      path: "",
+    },
+    {
+      iconSrc: <Country />,
+      text: t.country,
+      //   onClick: () => alert("clicked"),
+      hint: locale === "ar" ? <SaudiaFlag /> : <SaudiaFlag />,
       path: "",
     },
   ];
@@ -99,7 +148,6 @@ function UserProfile() {
               src: <Car />,
               title: t.Cars,
               num: res?.vehicles_count,
-              //   onClick: () => router.push("/userProfile/myCars"),
               path: "myCars",
             },
             {
@@ -161,19 +209,17 @@ function UserProfile() {
 
   return (
     <>
-      {/* <div className="col-12">
-        <AtlobhaPlusHint />
-      </div> */}
       <Box
         sx={{
+			// -2px -3px 8px rgba(0, 0, 0, 0.16)
           boxShadow:
             locale === "ar"
-              ? "-9px 0px 7px 0px rgba(0, 0, 0, 0.16)"
-              : "9px 0px 7px 0px rgba(0, 0, 0, 0.16)",
+              ? "-2px -3px 8px rgba(0, 0, 0, 0.16)"
+              : "2px -3px 8px 0px rgba(0, 0, 0, 0.16)",
         }}
-        className="col-12  p-3"
+        className="col-12  pb-0 p-3"
       >
-        <Box sx={{ position: "absolute", top: "0px", zIndex: -1 }}>
+        <Box sx={{ position: "absolute", top: "0px", visibility: "hidden" }}>
           <BreadCrumb />
         </Box>
 
@@ -196,10 +242,42 @@ function UserProfile() {
         </div>
         <div className="row mt-3">
           {profileSections?.map((data) => (
-            <div className="col-md-12" key={data?.iconSrc}>
+            <Box className="col-md-12" key={data?.iconSrc}>
               <ProfileSetting data={data} />
-            </div>
+            </Box>
           ))}
+          <Box
+            sx={{
+              padding: "20px 0px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "10px",
+              fontSize: "16px",
+              fontWeight: "500",
+              cursor: "pointer",
+              marginBottom: "10px",
+              "&:hover": {
+                backgroundColor: "#f7f7f7e0",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+              },
+            }}
+            onClick={() => {
+              router.push("/");
+              setTimeout(() => {
+                dispatch(logout());
+              }, 500);
+            }}
+            className="col-md-12"
+          >
+            <LogoutIcon /> {t.logout}
+          </Box>
+
+          <div className="col-12 mb-3">
+            <AtlobhaPlusHint />
+          </div>
+
+          <CommunicationSection />
         </div>
       </Box>
     </>

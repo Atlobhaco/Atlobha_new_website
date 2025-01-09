@@ -11,11 +11,11 @@ function ProfileSetting({ data }) {
 
   const svgHolder = {
     svg: {
-      fontSize: isMobile ? "20px" : "24px",
+      fontSize: isMobile ? "20px" : "27px",
       color: router?.pathname === data?.path ? "black" : "#FFD400",
     },
   };
-  
+
   return (
     <Box
       className={`${style["setting"]} ${
@@ -42,13 +42,15 @@ function ProfileSetting({ data }) {
       </Box>
       <Box>
         {data?.hint && <span className={`${style["hint"]}`}>{data?.hint}</span>}
-        <Image
-          src="/icons/arrow-left-sm.svg"
-          alt="icon"
-          width={12}
-          height={12}
-          className={`${style["arrow"]}`}
-        />
+        {!data?.hideArrow && (
+          <Image
+            src="/icons/arrow-left-sm.svg"
+            alt="icon"
+            width={12}
+            height={12}
+            className={`${style["arrow"]}`}
+          />
+        )}
       </Box>
     </Box>
   );

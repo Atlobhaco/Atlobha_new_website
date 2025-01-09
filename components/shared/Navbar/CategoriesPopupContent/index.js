@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { useDispatch } from "react-redux";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
 
 const active = {
   border: "1px solid #F9DD4B",
@@ -178,27 +179,20 @@ function CategoriesPopupcontent({
                 <Box
                   sx={{
                     ...boxStyle,
-                    ...((activeSection &&
-                      sec?.type === "spare-parts" &&
-                      active) ||
-                      (!activeSection &&
-                        sec?.type === "marketplace" &&
-                        active)),
+                    ...((activeSection && sec?.type === SPAREPARTS && active) ||
+                      (!activeSection && sec?.type === MARKETPLACE && active)),
                     background: sec?.background_color || "#FFF5EF",
                   }}
                   onClick={() => {
                     if (
-                      (route === "/spareParts" &&
-                        +sec?.type === "spare-parts") ||
-                      (route === "/" && +sec?.type === "marketplace")
+                      (route === "/spareParts" && +sec?.type === SPAREPARTS) ||
+                      (route === "/" && +sec?.type === MARKETPLACE)
                     ) {
                       return setOpenCategories(false);
                     }
-                    setActiveSection(
-                      sec?.type === "marketplace" ? false : true
-                    );
+                    setActiveSection(sec?.type === MARKETPLACE ? false : true);
                     router.push(
-                      sec?.type === "marketplace" ? "/" : "/spareParts"
+                      sec?.type === MARKETPLACE ? "/" : "/spareParts"
                     );
                     setTimeout(() => {
                       setOpenCategories(false);
@@ -208,7 +202,7 @@ function CategoriesPopupcontent({
                   <Box>
                     <Box sx={boxHeader}>{sec?.title}</Box>
                     <Box sx={boxSub}>
-                      {sec?.type === "marketplace"
+                      {sec?.type === MARKETPLACE
                         ? t.allCarsNeed
                         : t.bestPriceForYou}
                     </Box>
@@ -216,10 +210,10 @@ function CategoriesPopupcontent({
                       sx={{
                         ...coloredBox,
                         background:
-                          sec?.type === "marketplace" ? "#6FBC36" : "#EB3C24",
+                          sec?.type === MARKETPLACE ? "#6FBC36" : "#EB3C24",
                       }}
                     >
-                      {sec?.type === "marketplace" ? t.freeDilevery : t.free}
+                      {sec?.type === MARKETPLACE ? t.freeDilevery : t.free}
                     </Box>
                   </Box>
                   <Box sx={menuImgStyle}>

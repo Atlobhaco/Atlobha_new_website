@@ -49,3 +49,7 @@ export const translateAddressName = (name, locale) => {
 };
 
 export const UrlsSpecific = ["userProfile"];
+
+// constants words
+export const MARKETPLACE = "marketplace";
+export const SPAREPARTS = "spare-parts";

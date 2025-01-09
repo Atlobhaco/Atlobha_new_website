@@ -13,7 +13,7 @@ function BreadCrumb() {
   const routeName = router?.route?.split("/").filter(Boolean).length
     ? router?.route?.split("/").filter(Boolean)
     : ["mainPage"];
-	
+
   const preventClick = UrlsSpecific.some((url) =>
     router?.pathname?.includes(url)
   );
@@ -47,6 +47,10 @@ function BreadCrumb() {
             style={{
               ...titleStyle,
               color: index !== routeName?.length - 1 ? "#A1A1AA" : "#18181B",
+              cursor:
+                !preventClick || index !== 0 || isMobile
+                  ? "pointer"
+                  : "default",
             }}
             // prevent click for some routes
             onClick={() =>
@@ -64,6 +68,7 @@ function BreadCrumb() {
         style={{
           ...titleStyle,
           color: "#18181B",
+          cursor: !preventClick || isMobile ? "pointer" : "default",
         }}
         onClick={() => (!preventClick || isMobile) && onclick(routeName, 0)}
       >

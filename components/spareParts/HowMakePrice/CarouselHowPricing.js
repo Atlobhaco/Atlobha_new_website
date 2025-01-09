@@ -4,7 +4,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 
-function CarouselHowPricing({ handleSelect, activeIndex }) {
+function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
   const { locale } = useLocalization();
   const [hovered, setHovered] = useState(false);
   const [carouselInterval, setCarouselInterval] = useState(3000); // Default interval is 3 seconds
@@ -54,9 +54,16 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
         // controls={false}
         indicators={false}
         activeIndex={activeIndex}
-        onSelect={handleSelect}
+        // onSelect={handleSelect}
         prevIcon={
           <span
+            onClick={() =>
+              setActiveIndex((prevIndex) =>
+                locale === "en"
+                  ? (prevIndex + 1) % slides.length
+                  : (prevIndex - 1 + slides.length) % slides.length
+              )
+            }
             className="custom-prev-icon"
             style={{
               display: "inline-block",
@@ -70,11 +77,18 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
               fontSize: "45px",
             }}
           >
-            {locale === "ar" ? "›" : "‹"}
+            {/* {locale === "ar" ? "›" : "‹"} */}‹
           </span>
         }
         nextIcon={
           <span
+            onClick={() =>
+              setActiveIndex((prevIndex) => {
+                return locale === "en"
+                  ? (prevIndex - 1 + slides.length) % slides.length
+                  : (prevIndex + 1) % slides.length;
+              })
+            }
             className="custom-next-icon"
             style={{
               display: "inline-block",
@@ -88,7 +102,7 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
               fontSize: "45px",
             }}
           >
-            {locale !== "ar" ? "›" : "‹"}
+            {/* {locale !== "ar" ? "›" : "‹"} */}›
           </span>
         }
       >
@@ -121,10 +135,12 @@ function CarouselHowPricing({ handleSelect, activeIndex }) {
             key={index}
             onClick={() => handleButtonClick(index)} // Adjust interval on click
             style={{
-              width: "12px",
-              height: "12px",
+              width: "12px !important",
+              height: "12px !important",
+              maxWidth: "12px !important",
+              maxHeight: "12px !important",
               margin: "0 5px",
-              borderRadius: "50%",
+              borderRadius: "50% !important",
               border: "none",
               backgroundColor: activeIndex === index ? "#000" : "#ccc",
               cursor: "pointer",
