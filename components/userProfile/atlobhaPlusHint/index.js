@@ -43,7 +43,7 @@ function AtlobhaPlusHint() {
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: isMobile ? "5px" : "20px",
+          gap: isMobile ? "10px" : "20px",
           maxWidth: "70%",
           flexDirection: isMobile ? "row" : "column",
         }}

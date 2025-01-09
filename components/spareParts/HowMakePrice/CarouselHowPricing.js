@@ -135,12 +135,12 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
             key={index}
             onClick={() => handleButtonClick(index)} // Adjust interval on click
             style={{
-              width: "12px !important",
-              height: "12px !important",
-              maxWidth: "12px !important",
-              maxHeight: "12px !important",
+              width: "12px",
+              height: "12px",
+              maxWidth: "12px",
+              maxHeight: "12px",
               margin: "0 5px",
-              borderRadius: "50% !important",
+              borderRadius: "50%",
               border: "none",
               backgroundColor: activeIndex === index ? "#000" : "#ccc",
               cursor: "pointer",

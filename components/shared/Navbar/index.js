@@ -112,13 +112,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               num: 0,
             },
           ],
-          {
-            name: t.profile,
-            onClick: () => {
-              router.push("/userProfile");
-              handleClose();
-            },
-          },
+        //   {
+        //     name: t.profile,
+        //     onClick: () => {
+        //       router.push("/userProfile");
+        //       handleClose();
+        //     },
+        //   },
         ]
       : []),
     {
@@ -179,7 +179,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           <Image
             alt="logo"
             width={isMobile ? 80 : 130}
-            height={isMobile ? 20 : 49}
+            height={isMobile ? 25 : 49}
             src="/logo/atlobha-ar-en.svg"
             onClick={() => router.push("/")}
           />
