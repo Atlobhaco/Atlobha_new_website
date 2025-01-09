@@ -6,6 +6,7 @@ import selectedCarReducer from "./selectedCarReducer";
 import selectedAddressReducer from "./selectedAddressReducer";
 import addSparePartsReducer from "./addSparePartsReducer";
 import quickSectionsProfile from "./quickSectionsProfile";
+import appGroups from "./appGroups";
 // import yourReducer from "./yourReducer"; // Ensure the path is correct
 
 const rootReducer = combineReducers({
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   selectedAddress: selectedAddressReducer,
   addSpareParts: addSparePartsReducer,
   quickSection: quickSectionsProfile,
+  appGroups: appGroups,
 });
 
 export default rootReducer;

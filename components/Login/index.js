@@ -266,6 +266,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               </Box>
               <Box sx={{ mt: 4 }}>
                 <SharedBtn
+                  id="login-btn"
                   disabled={!formik.isValid || registerLoad || otpLoad}
                   text={registerLoad || otpLoad ? null : "continue"}
                   className="black-btn"

@@ -8,6 +8,8 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
+import { setAllGroups } from "@/redux/reducers/appGroups";
+import { useDispatch } from "react-redux";
 
 const active = {
   border: "1px solid #F9DD4B",
@@ -35,6 +37,7 @@ function CategoriesPopupcontent({
 }) {
   const router = useRouter();
   const { route } = router;
+  const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [appGroups, setAppGroups] = useState([]);
@@ -57,7 +60,7 @@ function CategoriesPopupcontent({
   };
 
   const boxStyle = {
-    background: "#FFF5EF",
+    // background: "#FFF5EF",
     borderRadius: "8px",
     padding: "10px",
     minHeight: "144px",
@@ -113,6 +116,7 @@ function CategoriesPopupcontent({
       setAppGroups(res);
       setMainGroups(res);
       setOpenCategories(true);
+      dispatch(setAllGroups(res));
     },
     onError: () => {
       toast.error(t.someThingWrong);
@@ -153,89 +157,100 @@ function CategoriesPopupcontent({
   };
   return (
     <Box>
-      <Grid container spacing={2}>
-        {/* First row with two columns */}
-        {mainGroups?.map((group) => (
-          <Grid
-            key={group?.id}
-            item
-            size={{ xs: 6, md: 6 }}
-            marginTop={isMobile ? 0 : 2}
-          >
-            <Box
-              sx={{
-                ...boxStyle,
-                ...((activeSection && group?.id === 1 && active) ||
-                  (!activeSection && group?.id === 2 && active)),
-              }}
-              onClick={() => {
-                if (
-                  (route === "/spareParts" && +group?.id === 1) ||
-                  (route === "/" && +group?.id === 2)
-                ) {
-                  return setOpenCategories(false);
-                }
-                setActiveSection(group?.id === 2 ? false : true);
-                router.push(group?.id === 2 ? "/" : "/spareParts");
-                setTimeout(() => {
-                  setOpenCategories(false);
-                }, 150);
-              }}
-            >
-              <Box>
-                <Box sx={boxHeader}>{group?.title}</Box>
-                <Box sx={boxSub}>
-                  {group?.id === 2 ? t.allCarsNeed : t.bestPriceForYou}
-                </Box>
+      {appGroups?.map((group, index) => (
+        <Grid
+          container
+          spacing={2}
+          marginTop={index > 0 ? (isMobile ? 2 : 5) : 0}
+        >
+          {/* First row with two columns */}
+          <Grid item size={12}>
+            <Box sx={secondHeader}>{group?.title}</Box>
+          </Grid>
+          {group?.sections?.map((sec, index) => {
+            return group?.position === 1 ? (
+              <Grid
+                key={sec?.id}
+                item
+                size={{ xs: 6, md: 6 }}
+                marginTop={isMobile ? 0 : 2}
+              >
                 <Box
                   sx={{
-                    ...coloredBox,
-                    background: group?.id === 2 ? "#6FBC36" : "#EB3C24",
+                    ...boxStyle,
+                    ...((activeSection &&
+                      sec?.type === "spare-parts" &&
+                      active) ||
+                      (!activeSection &&
+                        sec?.type === "marketplace" &&
+                        active)),
+                    background: sec?.background_color || "#FFF5EF",
+                  }}
+                  onClick={() => {
+                    if (
+                      (route === "/spareParts" &&
+                        +sec?.type === "spare-parts") ||
+                      (route === "/" && +sec?.type === "marketplace")
+                    ) {
+                      return setOpenCategories(false);
+                    }
+                    setActiveSection(
+                      sec?.type === "marketplace" ? false : true
+                    );
+                    router.push(
+                      sec?.type === "marketplace" ? "/" : "/spareParts"
+                    );
+                    setTimeout(() => {
+                      setOpenCategories(false);
+                    }, 150);
                   }}
                 >
-                  {group?.id === 2 ? t.freeDilevery : t.free}
+                  <Box>
+                    <Box sx={boxHeader}>{sec?.title}</Box>
+                    <Box sx={boxSub}>
+                      {sec?.type === "marketplace"
+                        ? t.allCarsNeed
+                        : t.bestPriceForYou}
+                    </Box>
+                    <Box
+                      sx={{
+                        ...coloredBox,
+                        background:
+                          sec?.type === "marketplace" ? "#6FBC36" : "#EB3C24",
+                      }}
+                    >
+                      {sec?.type === "marketplace" ? t.freeDilevery : t.free}
+                    </Box>
+                  </Box>
+                  <Box sx={menuImgStyle}>
+                    <Image
+                      alt="img"
+                      src="/icons/menu-1.svg"
+                      height={100}
+                      width={160}
+                    />
+                  </Box>
                 </Box>
-              </Box>
-              <Box sx={menuImgStyle}>
-                <Image
-                  alt="img"
-                  src="/icons/menu-1.svg"
-                  height={100}
-                  width={160}
-                />
-              </Box>
-            </Box>
-          </Grid>
-        ))}
-        {/* <Grid item size={6} marginTop={isMobile ? 0 : 2}>
-          <Box
-            sx={{ ...boxStyle, ...(!activeSection ? active : {}) }}
-            onClick={() => {
-              setActiveSection(false);
-              router.push("/");
-              setOpenCategories(false);
-            }}
-          >
-            <Box>
-              <Box sx={boxHeader}>{t.store}</Box>
-              <Box sx={boxSub}>{t.allCarsNeed}</Box>
-              <Box sx={{ ...coloredBox, background: "#6FBC36" }}>
-                {t.freeDilevery}
-              </Box>
-            </Box>
-            <Box sx={menuImgStyle}>
-              <Image
-                alt="img"
-                src="/icons/menu-1.svg"
-                height={100}
-                width={160}
-              />
-            </Box>{" "}
-          </Box>
-        </Grid> */}
-      </Grid>
+              </Grid>
+            ) : (
+              <Grid item key={`${sec?.id}-${index}`} size={{ xs: 4, md: 2 }}>
+                <Box
+                  sx={{
+                    ...sectionService,
+                    background: `url(${returnImgDependOnId(sec?.id)})`,
+                    backgroundColor:
+                      sec?.background_color || returnBgColorDependOnId(sec?.id),
+                  }}
+                >
+                  <Box sx={sectionServiceTitle}>{sec?.title}</Box>
+                </Box>
+              </Grid>
+            );
+          })}
+        </Grid>
+      ))}
       {/* Second row */}
-      <Grid container spacing={2} marginTop={isMobile ? 2 : 5}>
+      {/* <Grid container spacing={2} marginTop={isMobile ? 2 : 5}>
         <Grid item size={12}>
           <Box sx={secondHeader}>{t.moreServices}</Box>
         </Grid>
@@ -256,7 +271,7 @@ function CategoriesPopupcontent({
             </Grid>
           ))
         )}
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

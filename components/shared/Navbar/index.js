@@ -14,7 +14,7 @@ import IconInsideCircle from "@/components/IconInsideCircle";
 import SharedBtn from "../SharedBtn";
 import SharedInput from "../SharedInput";
 import CarPalette from "./CarPalette";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "@/redux/reducers/authReducer";
 import { isAuth } from "@/config/hooks/isAuth";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
@@ -50,6 +50,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const hideComponent = hideNavbarInUrls.some((url) =>
     router?.pathname?.includes(url)
   );
+  const { allGroups } = useSelector((state) => state.appGroups);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedSection, setSelectedSection] = useState("1");
@@ -80,50 +81,50 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               handleClose();
             },
           },
-        //   ...[
-        //     {
-        //       src: "/icons/address-yellow.svg",
-        //       name: t.addresses,
-        //       num: 0,
-        //       onClick: () => {
-        //         router.push("/userProfile/myAddresses");
-        //         handleClose();
-        //       },
-        //     },
-        //     {
-        //       src: "/icons/orders-yellow.svg",
-        //       name: t.myOrders,
-        //       num: 0,
-        //     },
-        //     {
-        //       src: "/icons/car-yellow.svg",
-        //       name: t.Cars,
-        //       num: 0,
-        //       onClick: () => {
-        //         router.push("/userProfile/myCars");
-        //         handleClose();
-        //       },
-        //     },
-        //     {
-        //       src: "/icons/wallet-yellow.svg",
-        //       name: t.myCards,
-        //       num: 0,
-        //     },
-        //   ],
+          ...[
             {
-              name: t.profile,
+              src: "/icons/address-yellow.svg",
+              name: t.addresses,
+              num: 0,
               onClick: () => {
-                router.push("/userProfile");
+                router.push("/userProfile/myAddresses");
                 handleClose();
               },
             },
+            {
+              src: "/icons/orders-yellow.svg",
+              name: t.myOrders,
+              num: 0,
+            },
+            {
+              src: "/icons/car-yellow.svg",
+              name: t.Cars,
+              num: 0,
+              onClick: () => {
+                router.push("/userProfile/myCars");
+                handleClose();
+              },
+            },
+            {
+              src: "/icons/wallet-yellow.svg",
+              name: t.myCards,
+              num: 0,
+            },
+          ],
+          {
+            name: t.profile,
+            onClick: () => {
+              router.push("/userProfile");
+              handleClose();
+            },
+          },
         ]
       : []),
     {
       component: isAuth() ? (
         <div className={`${style["logout-btn"]}`}>{t.logout}</div>
       ) : (
-        <div>{t.login}</div>
+        <div className="mx-2">{t.login}</div>
       ),
       onClick: () => {
         router.push("/userProfile/editInfo");
@@ -142,11 +143,28 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     },
   ];
 
+  const returnNavbarBg = () => {
+    const sparePartColor = allGroups[0]?.sections?.find(
+      (sec) => sec?.type === "spare-parts"
+    )?.background_color;
+    const marketPlaceColor = allGroups[0]?.sections?.find(
+      (sec) => sec?.type === "marketplace"
+    )?.background_color;
+
+    if (router?.pathname === "/spareParts" || router?.pathname === "/") {
+      return router?.pathname === "/spareParts"
+        ? sparePartColor || "#FFF5EF"
+        : marketPlaceColor || "#FFF5EF";
+    } else {
+      hideComponent ? "#F6F6F6" : "#FFF5EF";
+    }
+  };
+
   return (
     <Box
       className={`${style["navbar"]}`}
       sx={{
-        background: hideComponent ? "#F6F6F6" : "#FFF5EF",
+        background: returnNavbarBg(),
         padding: isMobile
           ? "10px 20px 16px 20px"
           : hideComponent
@@ -240,7 +258,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                       }
                     : { left: "0vw !important" }),
                   width: "fit-content",
-                  padding: isAuth() ? "20px" : "10px",
+                  padding: isAuth() ? "20px" : "5px",
                   minWidth: isAuth() ? "23vw" : "10vw",
                 },
               }}
