@@ -1,0 +1,65 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.status {
+  display: flex;
+  padding: 5.458px 10.917px;
+  justify-content: center;
+  align-items: center;
+  gap: 5.458px;
+  border-radius: 2729.237px;
+  background: #fff;
+  opacity: 0.8;
+}
+
+.text {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.svg {
+  font-size: 15px;
+}
+
+.image {
+  width: 24px;
+  height: 12px;
+}
+
+.new {
+  border: 1.365px solid #429df8;
+  box-shadow: 1.365px 2.729px 0px 0px #429df8;
+  color: #429df8;
+}
+
+.cancelled {
+  border: 1.365px solid #fa1a09;
+  box-shadow: 1.365px 2.729px 0px 0px #fa1a09;
+  color: #fa1a09;
+}
+
+.shipping {
+  border: 1.365px solid #f5d113;
+  box-shadow: 1.365px 2.729px 0px 0px #f5d113;
+  color: #f5d113;
+}
+
+.delivered {
+  border: 1.365px solid #5a9230;
+  box-shadow: 1.365px 2.729px 0px 0px #5a9230;
+  color: #5a9230;
+}
+
+.pay-pending {
+  border: 1.365px solid #fca004;
+  box-shadow: 1.365px 2.729px 0px 0px #fca004;
+  color: #fca004;
+}
+
+.incomplete {
+  border: 1.365px solid #373737;
+  box-shadow: 1.365px 2.729px 0px 0px #373737;
+  color: #373737;
+}

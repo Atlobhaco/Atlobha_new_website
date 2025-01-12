@@ -116,7 +116,8 @@ function UserProfile() {
       src: <Order />,
       title: t.myOrders,
       num: 0,
-      path: "orders",
+      onClick: () => router.push("/userProfile/myOrders"),
+      path: "myOrders",
     },
     {
       activeSrc: <AddressActive />,
@@ -157,7 +158,7 @@ function UserProfile() {
               src: <Order />,
               title: t.myOrders,
               num: res?.order_count,
-              path: "orders",
+              path: "myOrders",
             },
             {
               activeSrc: <AddressActive />,
@@ -189,7 +190,8 @@ function UserProfile() {
           src: <Order />,
           title: t.myOrders,
           num: res?.order_count,
-          path: "orders",
+          onClick: () => router.push("/userProfile/myOrders"),
+          path: "myOrders",
         },
         {
           activeSrc: <AddressActive />,

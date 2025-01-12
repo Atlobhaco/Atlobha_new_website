@@ -156,5 +156,17 @@
   "privacyPolicy": "Privacy policy",
   "termsCondition": "Terms and conditions",
   "version": "Version",
-  "atlobhaCopyright": "Atlobha. All rights reserved."
+  "atlobhaCopyright": "Atlobha. All rights reserved.",
+  "marketplace": "Marketplace",
+  "spareParts": "Spare parts",
+  "estimation": "Estimation order",
+  "new": "new",
+  "cancelled": "cancelled",
+  "shipping": "shipping",
+  "delivered": "delivered",
+  "waitConfirm": "waiting confirm",
+  "returnbale": "returned",
+  "orderType": "Order type",
+  "loadMore": "Load more",
+  "total": "Total"
 }

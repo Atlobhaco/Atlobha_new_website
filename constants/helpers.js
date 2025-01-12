@@ -50,6 +50,30 @@ export const translateAddressName = (name, locale) => {
 
 export const UrlsSpecific = ["userProfile"];
 
-// constants words
+/* -------------------------------------------------------------------------- */
+/*                       constants keyword along the app                      */
+/* -------------------------------------------------------------------------- */
+
 export const MARKETPLACE = "marketplace";
 export const SPAREPARTS = "spare-parts";
+export const ORDERSENUM = {
+  marketplace: "MarketplaceOrder",
+  spareParts: "SparePartsOrder",
+  estimation: "EstimationRequest",
+  maintenance: "MaintenanceReservation",
+  portable: "PortableMaintenanceReservation",
+  midEast: "MideastOrder",
+  majdou: "MajdouieMaintenanceReservation",
+};
+
+export const STATUS = {
+  new: "new",
+  received: "received",
+  payPending: "payment-pending",
+  confirmed: "confirmed",
+  shipping: "shipping",
+  delivered: "delivered",
+  cancelled: "cancelled",
+  incomplete: "incomplete",
+  returnable:'returnable'
+};

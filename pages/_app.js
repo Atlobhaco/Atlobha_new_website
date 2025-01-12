@@ -14,6 +14,9 @@ import { toast } from "react-toastify";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { BRANCHES } from "@/config/endPoints/endPoints";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
+import "moment/locale/ar";
+import moment from "moment";
+
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -22,6 +25,7 @@ const AppContent = ({ Component, pageProps }) => {
   const router = useRouter();
   const { locale, route } = router;
   const { user } = useAuth();
+  moment.locale(locale);
 
   useEffect(() => {
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";

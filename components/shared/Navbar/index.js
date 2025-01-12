@@ -96,6 +96,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               src: "/icons/orders-yellow.svg",
               name: t.myOrders,
               num: 0,
+              onClick: () => router.push("/userProfile/myOrders"),
             },
             {
               src: "/icons/car-yellow.svg",
@@ -112,13 +113,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               num: 0,
             },
           ],
-        //   {
-        //     name: t.profile,
-        //     onClick: () => {
-        //       router.push("/userProfile");
-        //       handleClose();
-        //     },
-        //   },
+          //   {
+          //     name: t.profile,
+          //     onClick: () => {
+          //       router.push("/userProfile");
+          //       handleClose();
+          //     },
+          //   },
         ]
       : []),
     {

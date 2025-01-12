@@ -155,5 +155,17 @@
   "privacyPolicy": "سياسة الخصوصية",
   "termsCondition": "الشروط والاحكام",
   "version": "الاصدار",
-  "atlobhaCopyright": "اطلبها . جميع الحقوق محفوظة"
+  "atlobhaCopyright": "اطلبها . جميع الحقوق محفوظة",
+  "marketplace": "المتجر",
+  "spareParts": "قطع غيار",
+  "estimation": "طلب تقدير",
+  "new": "جديد",
+  "cancelled": "ملغي",
+  "shipping": "جار التوصيل",
+  "delivered": "تم التوصيل",
+  "waitConfirm": "في إنتظار التأكيد",
+  "returnbale": "إرجاع",
+  "orderType": "نوع الطلب",
+  "loadMore": "تحميل المزيد",
+  "total": "الاجمالي"
 }
