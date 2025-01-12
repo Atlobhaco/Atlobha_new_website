@@ -17,7 +17,7 @@ function BasicSections({
 
   const mainStyle = {
     background: router?.pathname?.includes(path)
-      ? "#FFD400 !important"
+      ? "#232323 !important"
       : "white",
     padding: isMobile ? "16px 20px" : "20px 20px",
     display: "flex",
@@ -36,7 +36,7 @@ function BasicSections({
     },
   };
   const numStyle = {
-    background: "#000",
+    background: router?.pathname?.includes(path) ? "#374151" : "#000",
     padding: "2px",
     borderRadius: "50%",
     color: "#fff",
@@ -60,9 +60,11 @@ function BasicSections({
         {router?.pathname?.includes(path) ? activeSrc : src}
         <Box
           sx={{
-            color: "#232323",
             fontSize: isMobile ? "12px" : "17px",
             fontWeight: "500",
+            color: router?.pathname?.includes(path)
+              ? "#fff !important"
+              : "#232323",
           }}
         >
           {title}

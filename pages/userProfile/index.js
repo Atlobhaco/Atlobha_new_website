@@ -17,8 +17,9 @@ import Address from "../../public/icons/address-yellow.svg";
 import Wallet from "../../public/icons/wallet-yellow.svg";
 import Car from "../../public/icons/car-yellow.svg";
 import Order from "../../public/icons/orders-yellow.svg";
-import CarActive from "../../public/icons/car-active.svg";
-import AddressActive from "../../public/icons/address-active.svg";
+import CarActive from "../../public/icons/car-actie.svg";
+import AddressActive from "../../public/icons/loca-active.svg";
+import OrderActive from "../../public/icons/order-active.svg";
 import YellowGift from "../../public/icons/yellow-gift.svg";
 import Rate from "../../public/icons/rate.svg";
 import Favourite from "../../public/icons/favourite.svg";
@@ -111,6 +112,7 @@ function UserProfile() {
       path: "myCars",
     },
     {
+      activeSrc: <OrderActive />,
       src: <Order />,
       title: t.myOrders,
       num: 0,
@@ -151,6 +153,7 @@ function UserProfile() {
               path: "myCars",
             },
             {
+              activeSrc: <OrderActive />,
               src: <Order />,
               title: t.myOrders,
               num: res?.order_count,
@@ -168,13 +171,13 @@ function UserProfile() {
       );
       setQuickSections([
         {
-          activeSrc: <CarActive />,
           src: <Wallet />,
           title: t.myCards,
           num: 0,
           path: "wallet",
         },
         {
+          activeSrc: <CarActive />,
           src: <Car />,
           title: t.Cars,
           num: res?.vehicles_count,
@@ -182,6 +185,7 @@ function UserProfile() {
           path: "myCars",
         },
         {
+          activeSrc: <OrderActive />,
           src: <Order />,
           title: t.myOrders,
           num: res?.order_count,
@@ -211,7 +215,7 @@ function UserProfile() {
     <>
       <Box
         sx={{
-			// -2px -3px 8px rgba(0, 0, 0, 0.16)
+          // -2px -3px 8px rgba(0, 0, 0, 0.16)
           boxShadow:
             locale === "ar"
               ? "-2px -3px 8px rgba(0, 0, 0, 0.16)"
