@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedSparePart } from "@/redux/reducers/addSparePartsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
 
-function AddsparePart({ setOpenPricingDialog }) {
+function AddsparePart({ setOpenPricingDialog, loadOrder, fetchMedia }) {
   const dispatch = useDispatch();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -55,7 +55,7 @@ function AddsparePart({ setOpenPricingDialog }) {
           }}
         >
           {isLoading ? (
-            <CircularProgress size={18} />
+            <CircularProgress size={18} color="inherit" />
           ) : (
             <AddCircleOutlineIcon
               style={{
@@ -66,7 +66,15 @@ function AddsparePart({ setOpenPricingDialog }) {
               }}
             />
           )}
-          <Box onClick={() => setOpenPricingDialog(true)} component="span">
+          <Box
+            onClick={() =>
+              !loadOrder &&
+              !isLoading &&
+              !fetchMedia &&
+              setOpenPricingDialog(true)
+            }
+            component="span"
+          >
             {isLoading ? t.willAdd : t.addSparePart}
           </Box>
         </Box>

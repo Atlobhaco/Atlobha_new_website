@@ -19,7 +19,12 @@ import { useDispatch, useSelector } from "react-redux";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import Login from "@/components/Login";
 import { isAuth } from "@/config/hooks/isAuth";
-import { ORDERS, SPARE_PARTS, USERS } from "@/config/endPoints/endPoints";
+import {
+  MEDIA,
+  ORDERS,
+  SPARE_PARTS,
+  USERS,
+} from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useRouter } from "next/router";
@@ -39,7 +44,9 @@ function SpareParts() {
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
   const [openPricingDialog, setOpenPricingDialog] = useState(false);
-  const { selectedParts } = useSelector((state) => state.addSpareParts);
+  const { selectedParts, isLoading } = useSelector(
+    (state) => state.addSpareParts
+  );
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const [promoCodeId, setPromoCodeId] = useState(false);
   const [comment, setComment] = useState("");
@@ -51,16 +58,20 @@ function SpareParts() {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const [finalPartsAfterImgUpload, setFinalPartsAfterImageUpload] = useState(
+    []
+  );
+  const formDataImagesUploader = new FormData();
 
   const {
     data,
     refetch: addPricing,
-    isLoading,
+    isLoading: loadOrder,
   } = useCustomQuery({
-    name: "makePricingRequest",
+    name: ["makePricingRequest", finalPartsAfterImgUpload?.length],
     url: `${SPARE_PARTS}${USERS}/${user?.data?.user?.id}${ORDERS}`,
     refetchOnWindowFocus: false,
-    enabled: false,
+    enabled: finalPartsAfterImgUpload?.length ? true : false,
     method: "post",
     retry: 0,
     body: {
@@ -70,9 +81,12 @@ function SpareParts() {
       vehicle: {
         id: selectedCar?.id || defaultCar?.id,
       },
-      parts: selectedParts?.map((part) => ({
+      parts: (finalPartsAfterImgUpload?.length
+        ? finalPartsAfterImgUpload
+        : selectedParts
+      )?.map((part) => ({
         ...part,
-        image_path: part?.imgPathForBe || "",
+        image_path: part?.imgPathForBe || part?.image_path || "",
       })),
       promo_code: {
         id: promoCodeId,
@@ -97,6 +111,46 @@ function SpareParts() {
       );
     },
   });
+
+  const {
+    data: mediaRes,
+    refetch: callUploadMedia,
+    isFetching: fetchMedia,
+  } = useCustomQuery({
+    name: ["uploadMediaForSpareParts"],
+    url: `${SPARE_PARTS}${ORDERS}${MEDIA}`,
+    refetchOnWindowFocus: false,
+    method: "post",
+    body: formDataImagesUploader,
+    enabled: false,
+    retry: 0,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      const indexThatWillMerge = selectedParts
+        ?.map((d, index) => (!d?.imgPathForBe && d?.imgSrc ? index : null))
+        .filter((index) => index !== null);
+
+      setFinalPartsAfterImageUpload(
+        selectedParts.map((part, index) => {
+          if (indexThatWillMerge.includes(index)) {
+            const mergedData = res[indexThatWillMerge.indexOf(index)]; // Find corresponding data from anotherArray
+            return {
+              ...part,
+              image_path: part?.imgPathForBe || mergedData?.image || "",
+            };
+          }
+          return {
+            ...part,
+            image_path: part?.imgPathForBe || "",
+          };
+        })
+      );
+    },
+    onError: (err) => {
+      toast.error(t.someThingWrong);
+    },
+  });
+
   const handleRequestSparePart = () => {
     if (!isAuth()) {
       return setOpenLogin(true); // Open login modal if no user is authenticated
@@ -121,7 +175,29 @@ function SpareParts() {
         return;
       }
     }
-    addPricing();
+    const checkImgForBe = selectedParts?.some(
+      (d) => !d?.imgPathForBe && d?.imgSrc
+    );
+    const imgWithoutPathBe = selectedParts?.filter(
+      (d) => !d?.imgPathForBe && d?.imgSrc
+    );
+
+    if (checkImgForBe) {
+      // Ensure this logic is inside an async function
+      (async () => {
+        imgWithoutPathBe?.forEach((part, index) => {
+          formDataImagesUploader.append(`media[${index}]`, part.imgFile); // Append files with keys like media[0], media[1], etc.
+        });
+
+        try {
+          const response = await callUploadMedia(); // Await the endpoint call
+        } catch (error) {
+          console.error("Error uploading media:", error);
+        }
+      })();
+    } else {
+      addPricing();
+    }
   };
 
   const returnConfirmBtn = () => {
@@ -130,9 +206,13 @@ function SpareParts() {
         className="big-main-btn"
         customClass="w-100"
         text="makeSpare"
-        disabled={!selectedParts?.length}
+        disabled={
+          !selectedParts?.length || loadOrder || fetchMedia || isLoading
+        }
         compBeforeText={
-          isLoading && <CircularProgress color="inherit" size={10} />
+          (loadOrder || fetchMedia || isLoading) && (
+            <CircularProgress color="inherit" size={10} />
+          )
         }
         onClick={() => {
           handleRequestSparePart();
@@ -158,7 +238,11 @@ function SpareParts() {
         </div>
         <div className="row">
           <div className="col-md-8 col-12 mt-4">
-            <AddsparePart setOpenPricingDialog={setOpenPricingDialog} />
+            <AddsparePart
+              setOpenPricingDialog={setOpenPricingDialog}
+              loadOrder={loadOrder}
+              fetchMedia={fetchMedia}
+            />
             <div className="mt-4">
               <PromoCodeSpare
                 promoCodeId={promoCodeId}

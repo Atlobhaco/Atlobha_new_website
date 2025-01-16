@@ -1,4 +1,5 @@
 import { MEDIA, ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import { isAuth } from "@/config/hooks/isAuth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -15,7 +16,7 @@ export const fetchPartDetails = createAsyncThunk(
   "addSparePartsReducer/fetchPartDetails",
   async (part, { rejectWithValue }) => {
     try {
-      if (part.imgFile) {
+      if (part.imgFile && isAuth()) {
         const formData = new FormData();
         formData.append("media[0]", part.imgFile);
         const response = await axios.post(
@@ -53,7 +54,7 @@ export const addSparePartsReducer = createSlice({
     addOrUpdateSparePart: (state, action) => {
       const incomingPart = action.payload;
 
-	  const existingIndex = state.selectedParts.findIndex(
+      const existingIndex = state.selectedParts.findIndex(
         (part) => part.id === incomingPart.id
       );
 
