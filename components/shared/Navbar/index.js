@@ -97,7 +97,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               name: t.myOrders,
               num: 0,
               onClick: () => {
-                router.push("/userProfile/myOrders");
+                // router.push("/userProfile/myOrders");
                 handleClose();
               },
             },
