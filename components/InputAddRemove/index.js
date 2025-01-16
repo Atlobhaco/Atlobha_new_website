@@ -13,6 +13,7 @@ function InputAddRemove({
   return (
     <div>
       <SharedTextField
+        id="addRemoveField"
         label={false}
         hasMargin={false}
         plusMinusInput={true}

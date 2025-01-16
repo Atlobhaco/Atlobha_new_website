@@ -11,6 +11,7 @@ function SharedToggle({
   showAstrick = false,
   tooltipTitle = "Tooltip Title",
   applyMargin = true,
+  id = "",
 }) {
   return (
     <Box
@@ -53,6 +54,7 @@ function SharedToggle({
         }}
       >
         <Switch
+          id={id}
           name={name}
           checked={value}
           onChange={handleChange}

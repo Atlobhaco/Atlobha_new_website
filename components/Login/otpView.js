@@ -118,6 +118,7 @@ function OtpView({
           }}
         >
           <SharedTextField
+            id="otpField"
             placeholder={null}
             label={false}
             imgIcon={false}

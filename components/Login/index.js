@@ -248,6 +248,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               <Box sx={{ mt: 2, position: "relative" }}>
                 {true ? (
                   <SharedTextField
+                    id="loginField"
                     customPadding={`${
                       formik?.values?.phone?.length && !textInput
                         ? "0px 55px"

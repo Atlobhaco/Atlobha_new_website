@@ -138,6 +138,7 @@ function AddressDetails({
       )} */}
       <Box sx={{ mb: 2 }}>
         <SharedTextField
+          id="addressDetailsField"
           label={t.addressDetails}
           placeholder={t.addressDetailsHolder}
           showAstrick={true}

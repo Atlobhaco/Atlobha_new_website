@@ -138,6 +138,7 @@ function EnterOtpStep({
         </Box>
         <Box sx={{ mt: 2, width: isMobile ? "100%" : "70%" }}>
           <SharedTextField
+            id="otpStepField"
             placeholder={null}
             label={false}
             imgIcon={false}

@@ -241,6 +241,7 @@ function SingleAddressItem({
           }}
         >
           <SharedToggle
+            id="addressDefaultToggle"
             applyMargin={false}
             label={t.addressAsDefault}
             value={addressIdDefault === address?.id || address?.is_default}

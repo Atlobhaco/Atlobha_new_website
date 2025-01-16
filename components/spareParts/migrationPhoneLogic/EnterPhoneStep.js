@@ -122,6 +122,7 @@ function EnterPhoneStep({ setPhoneNum, canUseLoad, setOpenAddMobile }) {
           }}
         >
           <SharedTextField
+            id="phoneStepField"
             customPadding="0px 55px"
             placeholder={t.enterPhone}
             handleChange={(e) => {

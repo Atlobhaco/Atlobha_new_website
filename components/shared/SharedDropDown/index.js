@@ -27,6 +27,7 @@ function SharedDropDown({
   showAstrick = false,
   items = [],
   disabled = false,
+  id = "",
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -60,6 +61,7 @@ function SharedDropDown({
         )}
       </Box>
       <FormControl
+        id={id}
         fullWidth
         sx={{
           //   border: false
@@ -91,6 +93,7 @@ function SharedDropDown({
         }}
       >
         <Select
+          id={id}
           disabled={disabled}
           ref={selectRef}
           name={name}
@@ -173,6 +176,7 @@ function SharedDropDown({
           {items?.length ? (
             items.map((item) => (
               <MenuItem
+                id={item?.id}
                 key={item.id}
                 value={item.id}
                 sx={{

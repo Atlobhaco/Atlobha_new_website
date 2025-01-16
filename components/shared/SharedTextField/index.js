@@ -26,6 +26,7 @@ function SharedTextField({
   actionClickrightIcon = () => {},
   customPadding = null,
   alignPosition = false,
+  id = "",
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -57,6 +58,7 @@ function SharedTextField({
         )}
       </Box>
       <TextField
+        id={id}
         name={name}
         value={value}
         onChange={handleChange}

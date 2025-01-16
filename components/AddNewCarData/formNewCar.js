@@ -56,6 +56,7 @@ function FormNewCar({
               <div className="row">
                 <div className="col-6">
                   <SharedDropDown
+                    id="brandSelection"
                     handleChange={(e) => {
                       setBrandId(e?.target?.value);
                       setFieldValue("model", "");
@@ -75,6 +76,7 @@ function FormNewCar({
 
                 <div className="col-6">
                   <SharedDropDown
+                    id="modelSelection"
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     error={touched["model"] && errors["model"]}
@@ -89,6 +91,7 @@ function FormNewCar({
                 </div>
                 <div className="col-12 mt-3">
                   <SharedDropDown
+                    id="yearSelection"
                     handleChange={handleChange}
                     handleBlur={handleBlur}
                     error={touched["year"] && errors["year"]}
@@ -104,6 +107,7 @@ function FormNewCar({
 
                 <div className="col-12 mt-3">
                   <SharedTextField
+                    id="vinNumField"
                     placeholder={t.vinNum}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
@@ -120,6 +124,7 @@ function FormNewCar({
                 </div>
                 <div className="col-12 mt-3">
                   <SharedToggle
+                    id="carDefaultToggle"
                     label={t.carAsDefault}
                     value={values?.default_car || ""}
                     handleChange={handleChange}
