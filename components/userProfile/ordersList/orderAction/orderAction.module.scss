@@ -1,0 +1,47 @@
+@import "../../../../styles/variables.scss";
+@import "../../../../styles/mixins.scss";
+
+.btn-style {
+  height: 33px;
+}
+
+.title {
+  color: #232323;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.sub-title {
+  color: #6b7280;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  padding: 0px 5px;
+}
+
+.svg {
+  font-size: 20px;
+  color: #1fb256;
+}
+.green-sub-title {
+  color: #1fb256;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  padding: 0px 5px;
+}
+
+.orange-sub-title {
+  color: #ee772f;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  padding: 0px 5px;
+}
+
+.new {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

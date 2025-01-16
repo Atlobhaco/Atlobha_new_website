@@ -7,6 +7,80 @@ import React from "react";
 function PartsImages() {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const imgs = [
+    {
+      imgPath: "/imgs/spareParts/alpha.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/chery.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/chrysler.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/citroen.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/dodge.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/fiat.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/geely.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/genisis.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/gwm.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/haval.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/honda.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/hyndai.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/isuzu.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/jeep.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/mg.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/nexen.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/nissan.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/pegeout.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/ram.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/renault.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/subaru.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/tajeer.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/tank.svg",
+    },
+    {
+      imgPath: "/imgs/spareParts/toyo-tires.svg",
+    },
+  ];
 
   return (
     <Box>
@@ -25,60 +99,23 @@ function PartsImages() {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          gap: "35px",
-          //   flexWrap: "wrap",
+          gap: isMobile ? "40px" : "90px",
+          // flexWrap: "wrap",
           overflow: "auto",
           mt: 3,
+          mb: 1,
+          pb: isMobile ? 1 : 2,
         }}
       >
-        <Image
-          src={"/imgs/magdoey.svg"}
-          alt="magd"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/alpha.svg"}
-          alt="alpha"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/mg.svg"}
-          alt="MG"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/honda.svg"}
-          alt="honda"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/toyo-tires.svg"}
-          alt="toyo"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/chery.svg"}
-          alt="chery"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/mg.svg"}
-          alt="MG"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
-        <Image
-          src={"/imgs/toyo-tires.svg"}
-          alt="toyo"
-          width={isMobile ? 53 : 113}
-          height={isMobile ? 50 : 106}
-        />
+        {imgs?.map((img) => (
+          <Image
+            key={img?.imgPath}
+            src={img?.imgPath}
+            alt={img?.imgPath}
+            width={isMobile ? 53 : 113}
+            height={isMobile ? 50 : 106}
+          />
+        ))}
       </Box>
     </Box>
   );

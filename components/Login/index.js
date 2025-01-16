@@ -14,10 +14,12 @@ import { parsePhoneNumberFromString } from "libphonenumber-js";
 import SharedPhoneInput from "../shared/SharedPhoneInput";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import OtpView from "./otpView";
-import {
-  useRegisterUser,
-  useRequestOtp,
-} from "@/config/network/Shared/AuthHelpers";
+import { useRequestOtp } from "@/config/network/Shared/AuthHelpers";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { AUTH, REGISTER } from "@/config/endPoints/endPoints";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { saveUser } from "@/redux/reducers/authReducer";
 
 const Root = styled("div")(({ theme }) => ({
   width: "90%",
@@ -34,12 +36,14 @@ const Root = styled("div")(({ theme }) => ({
 function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const dispatch = useDispatch();
 
   const [timer, setTimer] = useState(120);
   const [otpView, setOtpView] = useState(false);
   const [textInput, setTextInput] = useState(true); // Default view is text field
   const [otpPayload, setOtpPayload] = useState(false);
 
+  const { saveUserinput } = useSelector((state) => state.auth);
   const initialValues = {
     text_input: "",
     phone: "",
@@ -69,6 +73,14 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
     initialValues,
     validationSchema,
     onSubmit: (values) => {
+      dispatch(
+        saveUser({
+          data: textInput
+            ? { email: values?.text_input }
+            : { phone: values?.phone?.replace(/\s/g, "") },
+        })
+      );
+
       setOtpPayload(
         textInput
           ? { email: values?.text_input }
@@ -111,13 +123,30 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   };
 
   const {
-    data: ResisterRes,
-    refetch: recallRegister,
-    isFetching: registerLoad,
-  } = useRegisterUser({
-    setOtpView,
-    otpPayload,
-    t,
+    data: registerRes,
+    refetch: callRegister,
+    isLoading: registerLoad,
+  } = useCustomQuery({
+    name: ["registerNewUserReqss"],
+    url: `${AUTH}${REGISTER}`,
+    refetchOnWindowFocus: false,
+    method: "post",
+    body: saveUserinput,
+    enabled: false,
+    retry: 0,
+    select: (res) => res,
+    onSuccess: (res) => {
+      setOtpView(true);
+    },
+    onError: (err) => {
+      console.log("err");
+      toast.error(
+        err?.response?.data?.first_error ||
+          err?.response?.data?.message ||
+          t.someThingWrong,
+        { toastId: "uniqueErrorId" } // Use a unique ID to deduplicate
+      );
+    },
   });
 
   const {
@@ -128,7 +157,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
     setOtpView,
     otpPayload,
     t,
-    recallRegister,
+    callRegister,
     setTimer,
   });
 

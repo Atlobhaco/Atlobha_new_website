@@ -25,6 +25,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
+import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
 
 const style = {
   marginTop: "32px",
@@ -42,6 +43,10 @@ function SpareParts() {
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const [promoCodeId, setPromoCodeId] = useState(false);
   const [comment, setComment] = useState("");
+  const [openAddMobile, setOpenAddMobile] = useState(false);
+  const [migrationStep, setMigrationStep] = useState(1);
+  const [otpCode, setOtpCode] = useState("");
+  const [phoneNum, setPhoneNum] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
@@ -57,6 +62,7 @@ function SpareParts() {
     refetchOnWindowFocus: false,
     enabled: false,
     method: "post",
+    retry: 0,
     body: {
       address: {
         id: selectedAddress?.id || defaultAddress?.id,
@@ -81,6 +87,9 @@ function SpareParts() {
       );
     },
     onError: (err) => {
+      if (err?.response?.data?.error?.includes("phone")) {
+        return setOpenAddMobile(true);
+      }
       toast.error(
         err?.response?.data?.first_error ||
           err?.response?.data?.error ||
@@ -196,6 +205,39 @@ function SpareParts() {
         hasCloseIcon
         customClass={!isMobile ? "sm-popup-width" : ""}
         content={<HowMakePrice setOpenhowPricing={setOpenhowPricing} />}
+      />
+
+      {/* migration logic for phone */}
+      <DialogCentered
+        showTitle={isMobile ? false : true}
+        title={
+          migrationStep === 1
+            ? t.addPhoneNum
+            : migrationStep === 2
+            ? t.mergeAccount
+            : t.confirmPhone
+        }
+        subtitle={false}
+        open={openAddMobile}
+        setOpen={setOpenAddMobile}
+        closeAction={() => {
+          setMigrationStep(1);
+          setOtpCode("");
+          setPhoneNum(false);
+        }}
+        hasCloseIcon
+        customClass="minimize-center-dialog-width"
+        content={
+          <MigrationPhoneLogic
+            setMigrationStep={setMigrationStep}
+            migrationStep={migrationStep}
+            setOpenAddMobile={setOpenAddMobile}
+            otpCode={otpCode}
+            setOtpCode={setOtpCode}
+            phoneNum={phoneNum}
+            setPhoneNum={setPhoneNum}
+          />
+        }
       />
 
       {/* dialog to add new spare parts info and image */}

@@ -5,6 +5,7 @@ const initialState = {
   token: null,
   isLoading: false,
   error: null,
+  saveUserinput: false,
 };
 
 export const authSlice = createSlice({
@@ -44,6 +45,9 @@ export const authSlice = createSlice({
     clearUser: (state) => {
       state.user = null;
     },
+    saveUser: (state, action) => {
+      state.saveUserinput = action.payload?.data;
+    },
   },
 });
 
@@ -55,6 +59,7 @@ export const {
   logout,
   setUser,
   clearUser,
+  saveUser,
 } = authSlice.actions;
 
 export default authSlice.reducer;

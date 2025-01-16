@@ -5,6 +5,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { ORDERSENUM } from "@/constants/helpers";
 import moment from "moment";
 import OrderStatus from "./orderStatus/orderStatus";
+import OrderActions from "./orderAction/orderActions";
 
 function OrdersList({ order }) {
   const { t } = useLocalization();
@@ -58,7 +59,9 @@ function OrdersList({ order }) {
           </div>
         </div>
       </div>
-      <div className={`${style["section-two"]}`}>action</div>
+      <div className={`${style["section-two"]}`}>
+        <OrderActions order={order} />
+      </div>
     </div>
   );
 }

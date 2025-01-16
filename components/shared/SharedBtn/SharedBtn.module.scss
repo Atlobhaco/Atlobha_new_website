@@ -70,8 +70,8 @@
     background: $yellow-ter !important;
     color: #232323 !important;
     background-color: $yellow-ter !important;
-	border: unset !important;
-	outline: unset !important;
+    border: unset !important;
+    outline: unset !important;
   }
 }
 
@@ -118,6 +118,11 @@
   font-weight: 500;
   color: #252c32;
   height: 48px;
+  @include mobile-screen-style {
+    padding: 5px 7px;
+    font-size: 11px;
+    height: 35px;
+  }
   &:hover,
   &:focus,
   &:active,

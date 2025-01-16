@@ -96,7 +96,10 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               src: "/icons/orders-yellow.svg",
               name: t.myOrders,
               num: 0,
-              onClick: () => router.push("/userProfile/myOrders"),
+              onClick: () => {
+                router.push("/userProfile/myOrders");
+                handleClose();
+              },
             },
             {
               src: "/icons/car-yellow.svg",
@@ -135,7 +138,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       onClick: () => {
         if (isAuth()) {
           router.push("/");
-          dispatch(logout());
+          setTimeout(() => {
+            dispatch(logout());
+          }, 500);
           handleClose();
         } else {
           handleClose();

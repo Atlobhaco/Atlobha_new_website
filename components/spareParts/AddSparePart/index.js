@@ -66,13 +66,7 @@ function AddsparePart({ setOpenPricingDialog }) {
               }}
             />
           )}
-          <Box
-            onClick={() => setOpenPricingDialog(true)}
-            sx={{
-              pt: isMobile ? 0 : 1,
-            }}
-            component="span"
-          >
+          <Box onClick={() => setOpenPricingDialog(true)} component="span">
             {isLoading ? t.willAdd : t.addSparePart}
           </Box>
         </Box>

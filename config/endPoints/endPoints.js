@@ -17,3 +17,7 @@ export const PROMO_CODES = "/promo-codes";
 export const SPARE_PARTS = "/spare-parts";
 export const ORDERS = "/orders";
 export const MEDIA = "/media";
+export const PHONE = "/phone";
+export const CAN_USE = "/can-use";
+export const ME = "/me";
+export const MERGE = "/merge";

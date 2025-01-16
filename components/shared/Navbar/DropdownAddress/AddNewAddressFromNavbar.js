@@ -57,7 +57,7 @@ const AddNewAddressFromNavbar = forwardRef(
         const currentLocation = await getUserCurrentLocation();
         setLocation(currentLocation);
       } catch (err) {
-        setError(err);
+        console.log(err);
       }
     };
 
@@ -111,7 +111,7 @@ const AddNewAddressFromNavbar = forwardRef(
       }
     }, [manualAddress, addressNameOrCustom, lngLatLocation, locationInfo]);
 
-	return (
+    return (
       <div className="container">
         <div className="row">
           <div className={`col-md-8 col-12 ${isMobile ? "mb-3" : "mb-0"} `}>

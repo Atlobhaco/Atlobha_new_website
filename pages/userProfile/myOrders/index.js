@@ -8,6 +8,7 @@ import OrdersList from "@/components/userProfile/ordersList/ordersList";
 import { useAuth } from "@/config/providers/AuthProvider";
 import { ORDERS, USERS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
+import FilterOrder from "@/components/userProfile/ordersList/filterOrders/filterOrder";
 
 function MyOrders() {
   const { isMobile } = useScreenSize();
@@ -30,7 +31,6 @@ function MyOrders() {
     },
     onError: () => {},
   });
-
 
   const handleNextPage = () => {
     if (page < lastPage) {
@@ -77,7 +77,9 @@ function MyOrders() {
                   />
                 )}
               </Box>
-              <Box>filter</Box>
+              <Box>
+                <FilterOrder />
+              </Box>
             </Box>
             <Box>
               {orders?.map((singleOrder) => (
@@ -87,23 +89,29 @@ function MyOrders() {
           </div>
           <div className="row mt-3 ">
             <div className="col-12 text-center d-flex aling-items-center justify-content-center gap-4">
-              <Box
-                sx={{ cursor: "pointer", fontSize: "17px", fontWeight: "700" }}
-                onClick={handleNextPage}
-              >
-                {page === lastPage
-                  ? `${t.total}: ${data?.meta?.total}`
-                  : t.loadMore}{" "}
-                {isLoading && (
-                  <CircularProgress
-                    size={14}
-                    sx={{
-                      color: "#FFD400",
-                      mx: 2,
-                    }}
-                  />
-                )}
-              </Box>
+              {!!orders?.length && (
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                    fontSize: "17px",
+                    fontWeight: "700",
+                  }}
+                  onClick={handleNextPage}
+                >
+                  {page === lastPage
+                    ? `${t.total}: ${data?.meta?.total}`
+                    : t.loadMore}{" "}
+                  {isLoading && (
+                    <CircularProgress
+                      size={14}
+                      sx={{
+                        color: "#FFD400",
+                        mx: 2,
+                      }}
+                    />
+                  )}
+                </Box>
+              )}
             </div>
           </div>
         </div>

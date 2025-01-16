@@ -1,10 +1,4 @@
-import {
-  AUTH,
-  LOGIN,
-  LOOKUPS,
-  OTP,
-  REGISTER,
-} from "@/config/endPoints/endPoints";
+import { AUTH, LOGIN, OTP } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import useCustomQuery from "../Apiconfig";
 import { loginSuccess } from "@/redux/reducers/authReducer";
@@ -13,11 +7,11 @@ export function useRequestOtp({
   setOtpView,
   otpPayload,
   t,
-  recallRegister,
+  callRegister,
   setTimer,
 }) {
   return useCustomQuery({
-    name: ["requestOtpForLogin", otpPayload],
+    name: ["requestOtpForLogin"],
     url: `${AUTH}${OTP}`,
     refetchOnWindowFocus: false,
     enabled: false,
@@ -31,7 +25,7 @@ export function useRequestOtp({
     },
     onError: (err) => {
       if (+err?.status === 400 || +err?.status === 404) {
-        recallRegister();
+        callRegister();
       } else {
         toast.error(
           err?.response?.data?.first_error ||
@@ -39,29 +33,6 @@ export function useRequestOtp({
             t.someThingWrong
         );
       }
-    },
-  });
-}
-
-export function useRegisterUser({ setOtpView, otpPayload, t }) {
-  return useCustomQuery({
-    name: "registerNewUser",
-    url: `${AUTH}${REGISTER}`,
-    refetchOnWindowFocus: false,
-    method: "post",
-    body: otpPayload,
-    enabled: false,
-    retry: 0,
-    select: (res) => res,
-    onSuccess: (res) => {
-      setOtpView(true);
-    },
-    onError: (err) => {
-      toast.error(
-        err?.response?.data?.first_error ||
-          err?.response?.data?.message ||
-          t.someThingWrong
-      );
     },
   });
 }
@@ -94,7 +65,8 @@ export function useLoginUser({
       toast.error(
         err?.response?.data?.first_error ||
           err?.response?.data?.message ||
-          t.someThingWrong
+          t.someThingWrong,
+        { toastId: "uniqueErrorIdLogin" } // Use a unique ID to deduplicate
       );
     },
   });
