@@ -188,5 +188,30 @@
   "enterOtpSendto": "Enter the confirmation code that was sent to you.",
   "confirmYouPhone": "Confirm your phone number",
   "canMakeSparePartReq": "Can request spare part pricing",
-  "invalidOtp": "Wrong OTP"
+  "invalidOtp": "Wrong OTP",
+  "creatianDateFrom": "creation date from",
+  "creationDateTo": "creation date to",
+  "reset": "Reset",
+  "showResults": "Show results",
+  "status": {
+    "new": "new",
+    "received": "received",
+    "payment-pending": "payment pending",
+    "confirmed": "confirmed",
+    "shipping": "shipping",
+    "delivered": "delivered",
+    "cancelled": "cancelled",
+    "incomplete": "incomplete",
+    "returnable": "returnable"
+  },
+  "noResultsFound": "No results found",
+  "order": {
+    "MarketplaceOrder": "Market place",
+    "SparePartsOrder": "Spare parts",
+    "EstimationRequest": "Estimation Request",
+    "MaintenanceReservation": "Maintenance Reservation",
+    "PortableMaintenanceReservation": "Portable Maintenance Reservation",
+    "MideastOrder": "Mideast",
+    "MajdouieMaintenanceReservation": "Majdouie Maintenance Reservation"
+  }
 }

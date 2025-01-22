@@ -131,7 +131,13 @@ function DropDownAddress() {
         open={selectCarPopUpMobile}
         setOpen={setSelectCarPopUpModal}
         hasCloseIcon
-        content={<ShowAddressesFromNavbarMobile /> || <></>}
+        content={
+          (
+            <ShowAddressesFromNavbarMobile
+              setSelectCarPopUpModal={setSelectCarPopUpModal}
+            />
+          ) || <></>
+        }
         renderCustomBtns={
           <Box sx={{ mt: 1, width: "100%" }}>
             <SharedBtn

@@ -50,7 +50,7 @@ function CategoriesPopupcontent({
     justifyContent: "space-between",
     alignItems: "center",
     background: "#FFDDEC",
-    height: isMobile ? "140px" : "170px",
+    height: isMobile ? "160px" : "170px",
     borderRadius: "4px",
     padding: "8px",
     background: `url(/imgs/najm.svg)`,
@@ -64,13 +64,15 @@ function CategoriesPopupcontent({
     // background: "#FFF5EF",
     borderRadius: "8px",
     padding: "10px",
-    minHeight: "144px",
+    minHeight: "150px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
     cursor: "pointer",
-    flexWrap: "wrap",
+    flexWrap: isMobile ? "noWrap" : "wrap",
     maxHeight: isMobile ? "160px" : "unset",
+    flexDirection: isMobile ? "column" : "row",
+    gap: "10px",
   };
 
   const boxHeader = {
@@ -81,9 +83,10 @@ function CategoriesPopupcontent({
   };
 
   const menuImgStyle = {
-    position: isMobile && "relative",
-    top: isMobile && "-24px",
-    left: isMobile && locale === "ar" ? "5%" : "-11px",
+    // position: isMobile && "relative",
+    // top: isMobile && "-24px",
+    // left: isMobile && locale === "ar" ? "5%" : "-11px",
+    margin: isMobile ? "auto" : "auto",
   };
 
   const sectionServiceTitle = {
@@ -104,7 +107,7 @@ function CategoriesPopupcontent({
     fontWeight: "400",
     color: "#6B7280",
     marginBottom: "5px",
-    height: isMobile ? "23px" : "auto",
+    height: isMobile ? "30px" : "auto",
   };
 
   const { data } = useCustomQuery({
@@ -156,6 +159,7 @@ function CategoriesPopupcontent({
         return "#DDECFF";
     }
   };
+
   return (
     <Box>
       {appGroups?.map((group, index) => (
@@ -201,27 +205,32 @@ function CategoriesPopupcontent({
                 >
                   <Box>
                     <Box sx={boxHeader}>{sec?.title}</Box>
-                    <Box sx={boxSub}>
-                      {sec?.type === MARKETPLACE
-                        ? t.allCarsNeed
-                        : t.bestPriceForYou}
-                    </Box>
+                    <Box sx={boxSub}>{sec?.description}</Box>
                     <Box
                       sx={{
                         ...coloredBox,
-                        background:
-                          sec?.type === MARKETPLACE ? "#6FBC36" : "#EB3C24",
+                        background: sec?.tag?.color,
                       }}
                     >
-                      {sec?.type === MARKETPLACE ? t.freeDilevery : t.free}
+                      {sec?.tag?.name}
                     </Box>
                   </Box>
                   <Box sx={menuImgStyle}>
-                    <Image
+                    {/* <Image
                       alt="img"
                       src="/icons/menu-1.svg"
                       height={100}
                       width={160}
+                    /> */}
+                    <Image
+                      alt="img"
+                      src={sec?.image || "/icons/menu-1.svg"}
+                      height={100}
+                      width={160}
+                      style={{
+                        maxWidth: isMobile ? "70px" : "90px",
+                        maxHeight: isMobile ? "60px" : "80px",
+                      }}
                     />
                   </Box>
                 </Box>

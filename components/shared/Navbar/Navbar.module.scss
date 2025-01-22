@@ -56,7 +56,7 @@
     display: flex; // Ensure proper alignment
 
     div {
-      padding: 0px 6px;
+      padding: 0px 10px;
       @include mobile-screen-style {
         padding: 0px 10px;
       }
@@ -64,7 +64,9 @@
       min-width: fit-content;
       position: relative; // Required for the pseudo-element
       overflow: hidden; // To ensure the pseudo-element stays within bounds
-
+      &:hover {
+        opacity: 0.8;
+      }
       // Add the pseudo-element for the progress bar effect
       &::after {
         content: "";
@@ -79,7 +81,7 @@
 
       // Apply the active class styles
       &.active::after {
-        width: 100%; // Expand the bar fully
+        width: 95%; // Expand the bar fully
         background-color: black; // Change color to black
       }
     }
@@ -88,7 +90,7 @@
   // For Arabic, use the lang-ar class selector
   html[lang="ar"] .sections &-parent div::after {
     left: unset;
-    right: 0;
+    right: 3%;
   }
 }
 

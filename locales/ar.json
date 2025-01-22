@@ -187,5 +187,30 @@
   "enterOtpSendto": "أدخل كود التأكيد الذي تم إرساله إلي",
   "confirmYouPhone": "تأكيد رقم الهاتف الخاص بك",
   "canMakeSparePartReq": "يمكنك طلب تسعير القطع",
-  "invalidOtp": "كود التاكيد غير صحيح"
+  "invalidOtp": "كود التاكيد غير صحيح",
+  "creatianDateFrom": "تاريخ الانشاء من",
+  "creationDateTo": "تاريخ الانشاء الي",
+  "reset": "إعادة تعيين",
+  "showResults": "إظهار النتائج",
+  "status": {
+    "new": "جديد",
+    "received": "مستلم",
+    "payment-pending": "معلق الدفع",
+    "confirmed": "مؤكد",
+    "shipping": "شحن",
+    "delivered": "تم التوصيل",
+    "cancelled": "تم الإلغاء",
+    "incomplete": "غير مكتمل",
+    "returnable": "إرجاع"
+  },
+  "noResultsFound": "لا يوجد نتائج",
+  "order": {
+    "MarketplaceOrder": "متجر قطع الغيار",
+    "SparePartsOrder": "تسعير قطع غيار السيارات",
+    "EstimationRequest": "نجم و تقدير",
+    "MaintenanceReservation": "الصيانة الدورية",
+    "PortableMaintenanceReservation": "المساعدة علي الطريق",
+    "MideastOrder": "MideastOrder",
+    "MajdouieMaintenanceReservation": "MajdouieMaintenanceReservation"
+  }
 }

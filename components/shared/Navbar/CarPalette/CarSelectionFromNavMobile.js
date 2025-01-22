@@ -14,7 +14,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import { usersVehiclesQuery } from "@/config/network/Shared/GetDataHelper";
 import { setAllCars } from "@/redux/reducers/selectedCarReducer";
 
-function CarSelectionFromNavMobile() {
+function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -32,6 +32,7 @@ function CarSelectionFromNavMobile() {
 
   const handleCheckboxChange = (car) => {
     dispatch(setSelectedCar({ data: car }));
+    setSelectCarPopUpModal(false);
     // callUserDefaultCar();
   };
 

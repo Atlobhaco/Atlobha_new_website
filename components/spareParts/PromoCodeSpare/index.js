@@ -1,7 +1,7 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPromoCodeForSpareParts } from "@/redux/reducers/addSparePartsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
@@ -14,6 +14,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { promoCode } = useSelector((state) => state.addSpareParts);
+  const [error, setError] = useState(false);
 
   const { refetch: checkPromo } = useCustomQuery({
     name: "checkPromoCode",
@@ -25,12 +26,14 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
     onSuccess: (res) => {
       if (res?.can_be_redeemed) {
         setPromoCodeId(res?.id);
+        setError(false);
       } else {
         toast.error(t.promoNotFound);
       }
     },
     onError: (err) => {
       if (err?.status) {
+        setError(true);
         toast.error(t.promoNotFound);
       }
     },
@@ -87,6 +90,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
           fullWidth
           disabled={promoCodeId ? true : false}
           onChange={(e) => {
+            setError(false);
             dispatch(setPromoCodeForSpareParts({ data: e?.target?.value }));
           }}
           value={promoCode || ""}
@@ -107,15 +111,17 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
                   style={{
                     fontSize: "16px",
                     fontWeight: "500",
-                    color: promoCodeId
-                      ? "#EB3C24"
-                      : promoCode?.length >= 3
-                      ? "black"
-                      : "grey",
+                    color:
+                      promoCodeId || error
+                        ? "#EB3C24"
+                        : promoCode?.length >= 3
+                        ? "black"
+                        : "grey",
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    if (promoCodeId) {
+                    if (promoCodeId || error) {
+                      setError(false);
                       setPromoCodeId(false);
                       dispatch(setPromoCodeForSpareParts({ data: null }));
                     } else {
@@ -125,7 +131,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
                     }
                   }}
                 >
-                  {promoCodeId ? t.delete : t.activate}
+                  {promoCodeId || error ? t.delete : t.activate}
                 </span>
               </InputAdornment>
             ),
@@ -135,20 +141,24 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
               height: "44px",
               borderRadius: "8px",
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: promoCodeId ? "#1FB256" : "", // Set hover border color
+                borderColor: error ? "red" : promoCodeId ? "#1FB256" : "", // Set hover border color
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: "black", // Change border color to red when focused
+                borderColor: "black", // Change border color to black when focused
               },
               "&.Mui-disabled": {
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#1FB256", // Keep border green when disabled
+                  borderColor: error ? "red" : "#1FB256", // Keep border green when disabled
                 },
               },
             },
             "& .MuiOutlinedInput-notchedOutline": {
               borderRadius: "8px",
-              border: promoCodeId ? "1px solid #1FB256" : "",
+              border: error
+                ? "1px solid red"
+                : promoCodeId
+                ? "1px solid #1FB256"
+                : "",
             },
             "& .MuiInputBase-input": {
               color: "black", // Ensure text color is black

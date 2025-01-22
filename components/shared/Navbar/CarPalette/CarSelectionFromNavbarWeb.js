@@ -57,6 +57,7 @@ function CarSelectionFromNavbarWeb({
 
   const handleCheckboxChange = (car) => {
     dispatch(setSelectedCar({ data: car }));
+    handleClose();
     // callUserDefaultCar();
   };
 

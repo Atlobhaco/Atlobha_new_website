@@ -18,7 +18,7 @@ const header = {
   color: "black",
 };
 
-function ShowAddressesFromNavbarMobile() {
+function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
   // Hooks must always be at the top and in the same order
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -50,7 +50,9 @@ function ShowAddressesFromNavbarMobile() {
       toast.error(error.message || "An error occurred");
       console.error(error);
     }
+    setSelectCarPopUpModal(false);
   };
+
   return (
     <Box
       sx={{

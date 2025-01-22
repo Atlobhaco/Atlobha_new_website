@@ -48,6 +48,18 @@ export const translateAddressName = (name, locale) => {
   }
 };
 
+export const getFilterParams = (filters) => {
+  const params = new URLSearchParams();
+
+  // Append only non-empty filter values
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value) {
+      params.append(key, value);
+    }
+  });
+  return params.toString(); // Returns a query string format
+};
+
 export const UrlsSpecific = ["userProfile"];
 
 /* -------------------------------------------------------------------------- */
@@ -56,6 +68,7 @@ export const UrlsSpecific = ["userProfile"];
 
 export const MARKETPLACE = "marketplace";
 export const SPAREPARTS = "spare-parts";
+
 export const ORDERSENUM = {
   marketplace: "MarketplaceOrder",
   spareParts: "SparePartsOrder",
@@ -64,6 +77,15 @@ export const ORDERSENUM = {
   portable: "PortableMaintenanceReservation",
   midEast: "MideastOrder",
   majdou: "MajdouieMaintenanceReservation",
+};
+
+export const orderEnumArray = () => {
+  const { t } = useLocalization();
+
+  return Object.values(ORDERSENUM).map((value) => ({
+    id: value,
+    name: t.order[`${value}`],
+  }));
 };
 
 export const STATUS = {
@@ -75,5 +97,14 @@ export const STATUS = {
   delivered: "delivered",
   cancelled: "cancelled",
   incomplete: "incomplete",
-  returnable:'returnable'
+  returnable: "returnable",
+};
+
+export const statusArray = () => {
+  const { t } = useLocalization();
+
+  return Object.values(STATUS).map((value) => ({
+    id: value,
+    name: t.status[`${value}`],
+  }));
 };

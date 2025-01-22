@@ -2,9 +2,16 @@ import { Box } from "@mui/material";
 import React from "react";
 import style from "../Navbar.module.scss";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { useSelector } from "react-redux";
 
-function SectionsNav({ selectedSection, setSelectedSection }) {
+function SectionsNav({
+  selectedSection = false,
+  setSelectedSection = () => {},
+  fontSize = false,
+  arrayData = false,
+}) {
   const { isMobile } = useScreenSize();
+  const { allGroups } = useSelector((state) => state.appGroups);
 
   return (
     <Box
@@ -13,28 +20,39 @@ function SectionsNav({ selectedSection, setSelectedSection }) {
         display: "flex",
         overflow: "auto hidden",
         // gap: "8px",
-        fontSize: isMobile ? "12px" : "24px",
+        fontSize: fontSize ? fontSize : isMobile ? "12px" : "24px",
         fontWeight: "700",
         pb: 1,
       }}
     >
-      <Box
-        onClick={() => setSelectedSection("1")}
-        className={`${selectedSection === "1" && style["active"]}`}
-      >
-        تسعير قطع غيار السيارات
-      </Box>
-      <Box
-        onClick={() => setSelectedSection("2")}
-        className={`${selectedSection === "2" && style["active"]}`}
-      >
-        متجر قطع الغيار
-      </Box>
-      <Box>الخدمات</Box>
-      <Box>SectionsNav</Box>
-      <Box>SectionsNav</Box>
-      <Box>SectionsNav</Box>
-      <Box>SectionsNav</Box>
+      {arrayData?.length
+        ? arrayData?.map((data) => (
+            <Box
+              key={data?.id}
+              onClick={() => setSelectedSection(data?.id)}
+              className={`${
+                selectedSection === data?.id && style["active"]
+              }`}
+            >
+              {data?.name}
+            </Box>
+          ))
+        : allGroups
+            ?.map((data) => data?.sections)
+            ?.flat()
+            ?.map((singleData) => (
+              <Box
+                key={singleData?.title}
+                onClick={() => setSelectedSection(singleData?.title)}
+                className={`${
+                  selectedSection === singleData?.title && style["active"]
+                }`}
+              >
+                {singleData?.title}
+              </Box>
+            ))}
+
+      {}
     </Box>
   );
 }

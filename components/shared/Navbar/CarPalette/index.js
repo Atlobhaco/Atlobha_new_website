@@ -207,7 +207,11 @@ function CarPalette() {
         setOpen={setSelectCarPopUpModal}
         hasCloseIcon
         // customClass={!isMobile ? "sm-popup-width" : ""}
-        content={<CarSelectionFromNavMobile />}
+        content={
+          <CarSelectionFromNavMobile
+            setSelectCarPopUpModal={setSelectCarPopUpModal}
+          />
+        }
         renderCustomBtns={
           <Box sx={{ mt: 1, width: "100%" }}>
             <SharedBtn

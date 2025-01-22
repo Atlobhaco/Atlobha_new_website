@@ -77,6 +77,7 @@ function AddressSelectionFromNavbarWeb({
         })
       );
     }
+    handleClose();
   };
 
   const { refetch: callAddresses } = usersAddressesQuery({
