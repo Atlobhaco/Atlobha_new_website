@@ -3,6 +3,8 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 function PartsImages() {
   const { t } = useLocalization();
@@ -82,6 +84,21 @@ function PartsImages() {
     },
   ];
 
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 7, // Number of items to show on desktop
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 5, // Number of items to show on tablets
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 4, // Number of items to show on mobile
+    },
+  };
+
   return (
     <Box>
       <Box
@@ -94,28 +111,27 @@ function PartsImages() {
       >
         {t.partsAreOriginal}
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: isMobile ? "40px" : "90px",
-          // flexWrap: "wrap",
-          overflow: "auto",
-          mt: 3,
-          mb: 1,
-          pb: isMobile ? 1 : 2,
-        }}
-      >
-        {imgs?.map((img) => (
-          <Image
-            key={img?.imgPath}
-            src={img?.imgPath}
-            alt={img?.imgPath}
-            width={isMobile ? 53 : 113}
-            height={isMobile ? 50 : 106}
-          />
-        ))}
+      <Box sx={{ mt: 3, mb: 1 }}>
+        <Carousel
+          responsive={responsive}
+          infinite
+          autoPlay
+          autoPlaySpeed={1000}
+          keyBoardControl
+          showDots={false}
+          arrows={false}
+        >
+          {imgs.map((img) => (
+            <Box key={img.imgPath} sx={{ textAlign: "center" }}>
+              <Image
+                src={img.imgPath}
+                alt={img.imgPath}
+                width={isMobile ? 53 : 113}
+                height={isMobile ? 50 : 106}
+              />
+            </Box>
+          ))}
+        </Carousel>
       </Box>
     </Box>
   );
