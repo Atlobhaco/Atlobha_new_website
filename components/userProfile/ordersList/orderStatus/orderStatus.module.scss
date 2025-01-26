@@ -24,11 +24,18 @@
 
 .svg {
   font-size: 15px;
+  @include mobile-screen-style {
+    font-size: 12px;
+  }
 }
 
 .image {
   width: 24px;
   height: 12px;
+  @include mobile-screen-style {
+    width: 12px;
+    height: 12px;
+  }
 }
 
 .new {
