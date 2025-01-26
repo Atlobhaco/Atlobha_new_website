@@ -6,9 +6,11 @@ import { ORDERSENUM } from "@/constants/helpers";
 import moment from "moment";
 import OrderStatus from "./orderStatus/orderStatus";
 import OrderActions from "./orderAction/orderActions";
+import { useRouter } from "next/router";
 
 function OrdersList({ order }) {
   const { t } = useLocalization();
+  const router = useRouter();
 
   const orderType = (order) => {
     switch (order?.class) {
@@ -24,7 +26,16 @@ function OrdersList({ order }) {
   };
 
   return (
-    <div key={order?.id} className={`${style["order"]}`}>
+    <div
+      key={order?.id}
+      className={`${style["order"]}`}
+      onClick={() =>
+        router.push({
+          pathname: `/userProfile/myOrders/${order?.id}`,
+          query: { type: order?.class },
+        })
+      }
+    >
       <div className={`${style["section-one"]}`}>
         <div className={`${style["date"]}`}>
           <div>{moment(order?.created_at)?.format("D")}</div>
@@ -59,9 +70,9 @@ function OrdersList({ order }) {
           </div>
         </div>
       </div>
-      <div className={`${style["section-two"]}`}>
+      {/* <div className={`${style["section-two"]}`}>
         <OrderActions order={order} />
-      </div>
+      </div> */}
     </div>
   );
 }

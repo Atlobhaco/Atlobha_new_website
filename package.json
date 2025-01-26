@@ -33,10 +33,12 @@
     "react-bootstrap": "^2.10.5",
     "react-bootstrap-carousel": "^4.1.1",
     "react-dom": "^18.3.1",
+    "react-multi-carousel": "^2.8.5",
     "react-phone-input-2": "^2.15.1",
     "react-query": "^3.39.3",
     "react-redux": "^9.2.0",
     "react-toastify": "^10.0.6",
+    "styled-components": "^6.1.14",
     "yup": "^1.4.0"
   },
   "devDependencies": {

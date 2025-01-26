@@ -9,6 +9,7 @@ function SectionsNav({
   setSelectedSection = () => {},
   fontSize = false,
   arrayData = false,
+  handleClick = () => {},
 }) {
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
@@ -20,7 +21,7 @@ function SectionsNav({
         display: "flex",
         overflow: "auto hidden",
         // gap: "8px",
-        fontSize: fontSize ? fontSize : isMobile ? "12px" : "24px",
+        fontSize: isMobile ? "12px" : fontSize ? fontSize : "24px",
         fontWeight: "700",
         pb: 1,
       }}
@@ -29,10 +30,11 @@ function SectionsNav({
         ? arrayData?.map((data) => (
             <Box
               key={data?.id}
-              onClick={() => setSelectedSection(data?.id)}
-              className={`${
-                selectedSection === data?.id && style["active"]
-              }`}
+              onClick={(e) => {
+                setSelectedSection(data?.id);
+                handleClick(data?.id);
+              }}
+              className={`${selectedSection === data?.id && style["active"]}`}
             >
               {data?.name}
             </Box>
@@ -43,7 +45,10 @@ function SectionsNav({
             ?.map((singleData) => (
               <Box
                 key={singleData?.title}
-                onClick={() => setSelectedSection(singleData?.title)}
+                onClick={() => {
+                  setSelectedSection(singleData?.title);
+                  handleClick(singleData?.title);
+                }}
                 className={`${
                   selectedSection === singleData?.title && style["active"]
                 }`}

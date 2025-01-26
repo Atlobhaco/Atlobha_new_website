@@ -6,15 +6,32 @@ import { Image } from "react-bootstrap";
 import { Box } from "@mui/material";
 import SharedDropDown from "@/components/shared/SharedDropDown";
 import SharedDatePicker from "@/components/shared/SharedDatePicker";
+import useLocalization from "@/config/hooks/useLocalization";
+import SharedBtn from "@/components/shared/SharedBtn";
+import { STATUS, statusArray } from "@/constants/helpers";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
-function FilterOrder() {
+function FilterOrder({
+  filters,
+  setFilters,
+  defaultFilters,
+  callOrders,
+  setPage,
+  setLoadMoreClicked,
+}) {
+  const { isMobile } = useScreenSize();
+  const { t } = useLocalization();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const [tempfilters, setTempFilters] = useState(defaultFilters);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    setTempFilters(filters);
+    setTempFilters(filters);
     setAnchorEl(null);
   };
 
@@ -23,7 +40,7 @@ function FilterOrder() {
     fontWeight: "700",
     mb: 2,
   };
-  const [value, setValue] = useState(null);
+
   return (
     <div>
       <Button
@@ -33,7 +50,12 @@ function FilterOrder() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Image src="/icons/filter.svg" width={30} height={30} alt="filter" />
+        <Image
+          src="/icons/filter.svg"
+          width={isMobile ? 24 : 30}
+          height={isMobile ? 24 : 30}
+          alt="filter"
+        />
       </Button>
       <Menu
         id="filter-menu"
@@ -49,14 +71,82 @@ function FilterOrder() {
             // backgroundColor: "lightblue", // Set background color
             padding: "20px",
             minWidth: "300px",
+            maxWidth: "390px",
             boxShadow: "0px 24px 24px 0px rgba(0, 0, 0, 0.14)",
             borderRadius: "20px",
           },
         }}
       >
-        <Box sx={title}>تصفية الطلبات</Box>
-        <SharedDropDown label="حالة الطلب" showAstrick />
-        <SharedDatePicker value={value} setValue={setValue} />
+        <Box sx={title}>{t.filtersOrders}</Box>
+        <SharedDropDown
+          value={tempfilters?.status}
+          label={t.statusOrder}
+          showAstrick
+          items={statusArray()}
+          handleChange={(e) => {
+            setTempFilters({
+              ...tempfilters,
+              status: e?.target?.value,
+            });
+          }}
+        />
+        <Box sx={{ display: "flex", gap: "10px" }}>
+          <SharedDatePicker
+            value={tempfilters?.created_at_from}
+            showAstrick
+            label={t.creatianDateFrom}
+            handleChange={(value) => {
+              setTempFilters({
+                ...tempfilters,
+                created_at_from: value,
+              });
+            }}
+          />
+          <SharedDatePicker
+            value={tempfilters?.created_at_to}
+            handleChange={(value) => {
+              setTempFilters({
+                ...tempfilters,
+                created_at_to: value,
+              });
+            }}
+            showAstrick
+            label={t.creationDateTo}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            justifyContent: "space-between",
+            mt: 4,
+          }}
+        >
+          <SharedBtn
+            className="big-main-btn"
+            customClass="w-100"
+            text="reset"
+            onClick={() => {
+              setLoadMoreClicked(false);
+              setFilters(defaultFilters);
+              setTempFilters(defaultFilters);
+              setPage(1);
+              setAnchorEl(null);
+            }}
+          />
+          <SharedBtn
+            className="outline-btn"
+            customClass="w-100"
+            text="showResults"
+            onClick={() => {
+              setLoadMoreClicked(false);
+              setFilters(tempfilters);
+              setTempFilters(tempfilters);
+              setPage(1);
+              setAnchorEl(null);
+            }}
+          />
+        </Box>
       </Menu>
     </div>
   );

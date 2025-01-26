@@ -32,7 +32,8 @@
     "edit": "Edit",
     "save": "Save",
     "delete": "Delete",
-    "details": "Details"
+    "details": "Details",
+    "remove": "Remove"
   },
   "loginNow": "Register or log in to start exploring",
   "appleLogin": "Register via Apple",
@@ -206,12 +207,15 @@
   },
   "noResultsFound": "No results found",
   "order": {
-    "MarketplaceOrder": "Market place",
-    "SparePartsOrder": "Spare parts",
-    "EstimationRequest": "Estimation Request",
-    "MaintenanceReservation": "Maintenance Reservation",
-    "PortableMaintenanceReservation": "Portable Maintenance Reservation",
-    "MideastOrder": "Mideast",
-    "MajdouieMaintenanceReservation": "Majdouie Maintenance Reservation"
-  }
+    "MarketplaceOrder": "Marketplace",
+    "SparePartsOrder": "Spare parts Pricing",
+    "EstimationRequest": "Taqdeer",
+    "MaintenanceReservation": "Maintenance",
+    "PortableMaintenanceReservation": "Help on the road"
+  },
+  "[idOrder]": "Orders details",
+  "orderedAt": "Ordered at",
+  "selectedProducts": "selected products",
+  "statusOrder": "Status",
+  "filtersOrders": "Filters"
 }

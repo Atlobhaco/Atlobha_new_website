@@ -54,7 +54,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { allGroups } = useSelector((state) => state.appGroups);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedSection, setSelectedSection] = useState("1");
+  const [selectedSection, setSelectedSection] = useState(false);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -97,7 +97,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               name: t.myOrders,
               num: 0,
               onClick: () => {
-                // router.push("/userProfile/myOrders");
+                router.push("/userProfile/myOrders");
                 handleClose();
               },
             },

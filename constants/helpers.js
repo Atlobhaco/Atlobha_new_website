@@ -75,8 +75,8 @@ export const ORDERSENUM = {
   estimation: "EstimationRequest",
   maintenance: "MaintenanceReservation",
   portable: "PortableMaintenanceReservation",
-  midEast: "MideastOrder",
-  majdou: "MajdouieMaintenanceReservation",
+  //   midEast: "MideastOrder",
+  //   majdou: "MajdouieMaintenanceReservation",
 };
 
 export const orderEnumArray = () => {

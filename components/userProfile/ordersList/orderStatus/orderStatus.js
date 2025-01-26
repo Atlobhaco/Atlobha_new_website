@@ -34,7 +34,7 @@ function OrderStatus({ status }) {
               width={24}
               height={12}
               alt="shipping"
-			  className={`${style["image"]}`}
+              className={`${style["image"]}`}
             />
             <div className={`${style["text"]}`}>{t.shipping}</div>
           </div>
@@ -54,7 +54,7 @@ function OrderStatus({ status }) {
               width={24}
               height={12}
               alt="wait-confirm"
-			  className={`${style["image"]}`}
+              className={`${style["image"]}`}
             />{" "}
             <div className={`${style["text"]}`}>{t.waitConfirm}</div>
           </div>
@@ -67,9 +67,22 @@ function OrderStatus({ status }) {
               width={24}
               height={12}
               alt="return"
-			  className={`${style["image"]}`}
+              className={`${style["image"]}`}
             />{" "}
             <div className={`${style["text"]}`}>{t.returnbale}</div>
+          </div>
+        );
+      case STATUS?.confirmed:
+        return (
+          <div className={`${style["confirmed"]} ${style["status"]}`}>
+            <Image
+              src="/icons/confirmed-tick.svg"
+              width={24}
+              height={12}
+              alt="return"
+              className={`${style["image"]}`}
+            />{" "}
+            <div className={`${style["text"]}`}>{t.status.confirmed}</div>
           </div>
         );
       default:

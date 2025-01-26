@@ -32,7 +32,8 @@
     "edit": "تعديل",
     "save": "حفظ",
     "delete": "حذف",
-    "details": "تفاصيل"
+    "details": "تفاصيل",
+    "remove": "إزالة"
   },
   "loginNow": "سجل أو قم بتسجيل الدخول لبدء الاستكشاف",
   "appleLogin": "التسجيل عن طريق ابل",
@@ -205,12 +206,15 @@
   },
   "noResultsFound": "لا يوجد نتائج",
   "order": {
-    "MarketplaceOrder": "متجر قطع الغيار",
+    "MarketplaceOrder": "المتجر",
     "SparePartsOrder": "تسعير قطع غيار السيارات",
-    "EstimationRequest": "نجم و تقدير",
-    "MaintenanceReservation": "الصيانة الدورية",
-    "PortableMaintenanceReservation": "المساعدة علي الطريق",
-    "MideastOrder": "MideastOrder",
-    "MajdouieMaintenanceReservation": "MajdouieMaintenanceReservation"
-  }
+    "EstimationRequest": "تقدير",
+    "MaintenanceReservation": "الصيانة",
+    "PortableMaintenanceReservation": "المساعدة علي الطريق"
+  },
+  "[idOrder]": "تفاصيل الطلب",
+  "orderedAt": "تم الطلب في",
+  "selectedProducts": "المنتجات المختارة",
+  "statusOrder": "حالة الطلب",
+  "filtersOrders": "تصفية الطلبات"
 }
