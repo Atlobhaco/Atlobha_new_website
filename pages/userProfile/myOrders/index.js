@@ -88,7 +88,7 @@ function MyOrders() {
                   color: "#1C1C28",
                   fontSize: isMobile ? "16px" : "24px",
                   fontWeight: "700",
-                  padding: "0px 5px",
+                  padding: "0px 16px",
                 }}
               >
                 {t.myOrders}{" "}
