@@ -88,12 +88,13 @@ function MyOrders() {
                   color: "#1C1C28",
                   fontSize: isMobile ? "16px" : "24px",
                   fontWeight: "700",
+                  padding: "0px 5px",
                 }}
               >
                 {t.myOrders}{" "}
                 {isFetching && (
                   <CircularProgress
-                    size={20}
+                    size={17}
                     sx={{
                       color: "#FFD400",
                       mx: 2,
