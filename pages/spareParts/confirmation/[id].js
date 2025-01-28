@@ -138,9 +138,9 @@ function Confirmation() {
       </div>
       <div className="d-flex justify-content-center">
         <SharedBtn
-          onClick={() => router.push(`/spareParts`)}
-          text="goMain"
-          className="black-btn"
+          onClick={() => router.push("/userProfile/myOrders")}
+          text="goOrder"
+          className="big-main-btn"
           customStyle={{
             width: "450px",
           }}

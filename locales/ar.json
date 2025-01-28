@@ -122,7 +122,7 @@
   "determinePaymentMethod": "سيتم تحديد طريقة الدفع لاحقآ بعد تسعير القطع",
   "partsAreOriginal": "جميع القطع اصليه مضمونه بضمان شركاء اطلبها",
   "copySuccess": "تم النسخ",
-  "goMain": "الذهاب إلي الرئيسية",
+  "goOrder": "الذهاب إلي الطلبات",
   "promoNotFound": "كود الخصم غير صالح",
   "thankYou": "شكرًا لك !",
   "orderNum": "رقم الطلب",

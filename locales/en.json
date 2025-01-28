@@ -123,7 +123,7 @@
   "determinePaymentMethod": "Payment method will be determined later after pricing the parts.",
   "partsAreOriginal": "All parts are original and guaranteed by Atlobha’s partners.",
   "copySuccess": "Success Copy",
-  "goMain": "Go To Main",
+  "goOrder": "Go To Orders",
   "promoNotFound": "Promo code not valid",
   "thankYou": "Thank you !",
   "orderNum": "Order number",

@@ -32,6 +32,7 @@ import { toast } from "react-toastify";
 import {
   addOrUpdateSparePart,
   clearSpareParts,
+  setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
 
@@ -109,6 +110,7 @@ function SpareParts() {
       selectedParts?.map((singlePart) =>
         dispatch(addOrUpdateSparePart({ ...singlePart, delete: true }))
       );
+      dispatch(setPromoCodeForSpareParts({ data: null }));
     },
     onError: (err) => {
       if (err?.response?.data?.error?.includes("phone")) {
