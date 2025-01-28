@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import Footer from "@/components/shared/Footer";
 import Login from "@/components/Login";
 import { UrlsSpecific } from "@/constants/helpers";
+import ScrollToTop from "@/components/ScrollToTop";
 
 function Layout({ children }) {
   const { t } = useLocalization();
@@ -65,7 +66,7 @@ function Layout({ children }) {
             : style["custom-style-popup"]
         }`}
         // title={t.wantSpareParts}
-		title={null}
+        title={null}
         subtitle={false}
         content={
           <CategoriesPopupcontent
@@ -75,6 +76,7 @@ function Layout({ children }) {
           />
         }
       />
+      <ScrollToTop />
     </div>
   );
 }
