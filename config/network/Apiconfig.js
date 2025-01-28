@@ -39,6 +39,7 @@ const useCustomQuery = (options) => {
     useErrorBoundary,
     isFetching,
     isLoading,
+    isStale,
   } = options;
 
   const { locale } = useRouter();
@@ -99,6 +100,7 @@ const useCustomQuery = (options) => {
       structuralSharing,
       suspense,
       useErrorBoundary,
+      isStale,
     }
   );
 };

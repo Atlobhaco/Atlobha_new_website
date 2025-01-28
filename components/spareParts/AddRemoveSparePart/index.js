@@ -4,9 +4,12 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import InputAddRemove from "@/components/InputAddRemove";
 import { useDispatch, useSelector } from "react-redux";
 import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
+import { toast } from "react-toastify";
+import useLocalization from "@/config/hooks/useLocalization";
 
-function AddRemoveSparePart({ data }) {
+function AddRemoveSparePart({ data, insideOrder = false }) {
   const { isMobile } = useScreenSize();
+  const { t } = useLocalization();
   const dispatch = useDispatch();
   const selectedParts = useSelector(
     (state) => state.addSpareParts.selectedParts
@@ -15,7 +18,13 @@ function AddRemoveSparePart({ data }) {
     (part) => part?.id === data?.id
   ) || { quantity: 0 };
 
+
   const updateSparePart = (quantity, extra = {}) => {
+    // can not delete the laste item from the order
+    if (insideOrder && selectedParts?.length === 1 && +quantity === 0) {
+      toast.error(t.canNotDeletePart);
+      return null;
+    }
     dispatch(
       addOrUpdateSparePart({ ...selectedSparePart, quantity, ...extra })
     );

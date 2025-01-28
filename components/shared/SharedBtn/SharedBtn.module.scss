@@ -189,3 +189,15 @@
     color: $white !important;
   }
 }
+
+// used in order spare parts
+.green-hover {
+  &:hover,
+  &:focus,
+  &:active,
+  &:disabled,
+  &:visited {
+    background: #1fb256;
+    color: #fff;
+  }
+}

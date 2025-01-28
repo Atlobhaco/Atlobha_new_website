@@ -218,6 +218,22 @@
           height: 30px;
         }
       }
+	  &-second-qty {
+        display: flex;
+        height: 38px;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+        color: #6B7280;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+        @include mobile-screen-style {
+          font-size: 14px;
+          height: 30px;
+        }
+      }
     }
   }
   @include mobile-screen-style {

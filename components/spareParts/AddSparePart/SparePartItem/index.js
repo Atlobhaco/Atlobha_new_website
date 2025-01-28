@@ -1,11 +1,13 @@
 import AddRemoveSparePart from "@/components/spareParts/AddRemoveSparePart";
+import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function SparePartItem({ data }) {
+function SparePartItem({ data, insideOrder = false }) {
   const { isMobile } = useScreenSize();
+  const { t } = useLocalization();
 
   const imgHolderStyle = {
     borderRadius: isMobile ? "8px" : "20px",
@@ -44,8 +46,22 @@ function SparePartItem({ data }) {
         />
       </Box>
       <Box>
-        <AddRemoveSparePart data={data} />
+        <AddRemoveSparePart data={data} insideOrder={insideOrder} />
       </Box>
+      {insideOrder && (
+        <Box
+          sx={{
+            display: "flex",
+            flex: "1",
+            justifyContent: "flex-end",
+            color: "#EE772F",
+            fontSize: isMobile ? "14px" : "16px",
+            fontWeight: "500",
+          }}
+        >
+          {data?.total_price} {t.sar}
+        </Box>
+      )}
     </Box>
   );
 }

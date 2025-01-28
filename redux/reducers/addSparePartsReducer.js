@@ -71,6 +71,9 @@ export const addSparePartsReducer = createSlice({
         state.selectedParts.push(incomingPart);
       }
     },
+    clearSpareParts: (state, action) => {
+      state.selectedParts = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -103,6 +106,7 @@ export const {
   setAllSpareParts,
   setPromoCodeForSpareParts,
   addOrUpdateSparePart,
+  clearSpareParts,
 } = addSparePartsReducer.actions;
 
 export default addSparePartsReducer.reducer;

@@ -59,9 +59,9 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>{t.waitConfirm}</div>
           </div>
         );
-      case STATUS?.incomplete:
+      case STATUS?.returned:
         return (
-          <div className={`${style["incomplete"]} ${style["status"]}`}>
+          <div className={`${style["returnbale"]} ${style["status"]}`}>
             <Image
               src="/icons/returnable.svg"
               width={24}
@@ -70,6 +70,19 @@ function OrderStatus({ status }) {
               className={`${style["image"]}`}
             />{" "}
             <div className={`${style["text"]}`}>{t.returnbale}</div>
+          </div>
+        );
+      case STATUS?.incomplete:
+        return (
+          <div className={`${style["incomplete"]} ${style["status"]}`}>
+            <Image
+              src="/icons/incomplete.svg"
+              width={24}
+              height={12}
+              alt="return"
+              className={`${style["image"]}`}
+            />{" "}
+            <div className={`${style["text"]}`}>{t.status.incomplete}</div>
           </div>
         );
       case STATUS?.confirmed:
@@ -83,6 +96,19 @@ function OrderStatus({ status }) {
               className={`${style["image"]}`}
             />{" "}
             <div className={`${style["text"]}`}>{t.status.confirmed}</div>
+          </div>
+        );
+      case STATUS?.priced:
+        return (
+          <div className={`${style["priced"]} ${style["status"]}`}>
+            <Image
+              src="/icons/priced-status.svg"
+              width={24}
+              height={12}
+              alt="return"
+              className={`${style["image"]}`}
+            />{" "}
+            <div className={`${style["text"]}`}>{t.status.priced}</div>
           </div>
         );
       default:

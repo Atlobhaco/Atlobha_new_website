@@ -69,6 +69,12 @@
 }
 
 .incomplete {
+  border: 1.365px solid #f81c6b;
+  box-shadow: 1.365px 2.729px 0px 0px #f81c6b;
+  color: #f81c6b;
+}
+
+.returnbale {
   border: 1.365px solid #373737;
   box-shadow: 1.365px 2.729px 0px 0px #373737;
   color: #373737;
@@ -78,4 +84,10 @@
   border: 1.365px solid #078ea1;
   box-shadow: 1.365px 2.729px 0px 0px #078ea1;
   color: #078ea1;
+}
+
+.priced {
+  border: 1.365px solid #b217fb;
+  box-shadow: 1.365px 2.729px 0px 0px #b217fb;
+  color: #b217fb;
 }

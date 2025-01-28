@@ -139,7 +139,6 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
       setOtpView(true);
     },
     onError: (err) => {
-      console.log("err");
       toast.error(
         err?.response?.data?.first_error ||
           err?.response?.data?.message ||

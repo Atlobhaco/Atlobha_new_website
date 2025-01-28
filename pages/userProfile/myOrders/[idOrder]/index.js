@@ -1,0 +1,88 @@
+import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { useRouter } from "next/router";
+import React from "react";
+import UserProfile from "../..";
+import BreadCrumb from "@/components/BreadCrumb";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { ORDERSENUM } from "@/constants/helpers";
+import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
+
+function OrderDetails() {
+  const router = useRouter();
+  const { idOrder, type } = router.query;
+  const { isMobile } = useScreenSize();
+
+  const renderUrlDependOnType = () => {
+    switch (type) {
+      case ORDERSENUM?.marketplace:
+        return `/marketplace${ORDERS}/${idOrder}`;
+      case ORDERSENUM?.spareParts:
+        return `${SPARE_PARTS}${ORDERS}/${idOrder}`;
+      default:
+        return type;
+    }
+  };
+
+  const {
+    data,
+    isFetching: orderDetailsFetching,
+    refetch: callSingleOrder,
+  } = useCustomQuery({
+    name: ["singleOrderData"],
+    url: renderUrlDependOnType(),
+    refetchOnWindowFocus: false,
+    enabled: !!idOrder,
+    select: (res) => res?.data?.data,
+    // onSuccess: (res) => {
+    //   if (loadMoreClicked) {
+    //     setOrders((prevOrders) => [...prevOrders, ...res?.data]);
+    //   } else {
+    //     setOrders(res?.data);
+    //   }
+    //   setLastPage(res?.meta?.last_page);
+    //   setPage(res?.meta?.current_page);
+    // },
+    // onError: () => {
+    //   setLoadMoreClicked(false);
+    // },
+  });
+
+  const returnOrderDetailsPage = () => {
+    switch (type) {
+      case ORDERSENUM?.marketplace:
+        return `/marketplace${ORDERS}/${idOrder}`;
+      case ORDERSENUM?.spareParts:
+        return (
+          <SparePartsOrderDetails
+            orderDetails={data}
+            callSingleOrder={callSingleOrder}
+            orderDetailsFetching={orderDetailsFetching}
+          />
+        );
+      default:
+        return type;
+    }
+  };
+
+  return (
+    <div className="container-fluid">
+      <div className="row">
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
+        )}
+        <div className="col-md-8 col-12 pt-4">
+          <div className="row mb-2">
+            <BreadCrumb />
+          </div>
+          {/* OrderDetails-{idOrder} */}
+          {returnOrderDetailsPage()}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default OrderDetails;

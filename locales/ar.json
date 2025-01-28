@@ -202,7 +202,8 @@
     "delivered": "تم التوصيل",
     "cancelled": "تم الإلغاء",
     "incomplete": "غير مكتمل",
-    "returnable": "إرجاع"
+    "returned": "إرجاع",
+    "priced": "مسعر"
   },
   "noResultsFound": "لا يوجد نتائج",
   "order": {
@@ -216,5 +217,37 @@
   "orderedAt": "تم الطلب في",
   "selectedProducts": "المنتجات المختارة",
   "statusOrder": "حالة الطلب",
-  "filtersOrders": "تصفية الطلبات"
+  "filtersOrders": "تصفية الطلبات",
+  "changeAddress": "تغير عنوان التسليم",
+  "cancelYourOrder": "الغاء الطلب",
+  "repeatPricing": "إعادة تسعير الطلب",
+  "orderAgain": "إعادة الطلب",
+  "rateProductsNow": "قيم المنتجات الان!",
+  "canNotDeletePart": "لا يمكنك حذف اخر منتج",
+  "inPricing": "جاري التسعير",
+  "inCorfirmed": "تم التاكيد",
+  "inPrepare": "تم التحضير",
+  "inShipping": "تم الشحن",
+  "inDelivery": "تم التوصيل",
+  "payAndConfirm": "دفع وتاكيد الطلب",
+  "payMethods": {
+    "CREDIT": "بطاقة إئتمان",
+    "CASH": "كاش",
+    "APPLE-PAY": "أبل باي",
+    "STC-PAY": "اس تي سي باي",
+    "INSTALLMENT": "تقسيط",
+    "BANK-TRANSFER": "تحويل بنكي",
+    "TABBY": "تابي",
+    "wallet": "محفظة اطلبها"
+  },
+  "orderSummary": "ملخص الطلب",
+  "productsPrice": "سعر المنتجات",
+  "additionaldiscount": "خصم اضافي",
+  "deliveryFees": "رسوم التوصيل",
+  "payFromBlanace": "المدفوع من الرصيد",
+  "totalSum": "المجموع الكلي",
+  "include": "يشمل",
+  "vatPercentage": "ضريبة القيمة المضافة",
+  "remainingtotal": "اجمالي المتبقي للدفع",
+  "availablePayments": "طرق الدفع"
 }

@@ -1,4 +1,6 @@
 import useLocalization from "@/config/hooks/useLocalization";
+import { Box } from "@mui/material";
+import Image from "next/image";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -97,7 +99,8 @@ export const STATUS = {
   delivered: "delivered",
   cancelled: "cancelled",
   incomplete: "incomplete",
-  returnable: "returnable",
+  returned: "returned",
+  priced: "priced",
 };
 
 export const statusArray = () => {
@@ -107,4 +110,177 @@ export const statusArray = () => {
     id: value,
     name: t.status[`${value}`],
   }));
+};
+
+export const PAYMENT_METHODS = {
+  credit: "CREDIT",
+  cash: "CASH",
+  applePay: "APPLE-PAY",
+  stcPay: "STC-PAY",
+  installment: "INSTALLMENT",
+  banktransfer: "BANK-TRANSFER",
+  tabby: "TABBY",
+  wallet: "WALLET",
+};
+
+export const availablePaymentMethodImages = (
+  orderDetails = {},
+  isMobile = false
+) => {
+  // return (
+  //   <Image
+  //     src="/icons/payments/mada-pay.svg"
+  //     alt="mada-pay"
+  //     width={100}
+  //     height={40}
+  //   />
+  // );
+
+  // return (
+  //   <Image
+  //     src="/icons/payments/google-pay.svg"
+  //     alt="google-pay"
+  //     width={100}
+  //     height={40}
+  //   />
+  // );
+
+  switch (orderDetails?.payment_method) {
+    case PAYMENT_METHODS?.credit:
+      return (
+        <Image
+          src="/icons/payments/master-card.svg"
+          alt="credit-card"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.applePay:
+      return (
+        <Image
+          src="/icons/payments/apple-pay.svg"
+          alt="apple-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.stcPay:
+      return (
+        <Image
+          src="/icons/payments/stc-pay.svg"
+          alt="stc-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.installment:
+      return (
+        <Image
+          src="/icons/payments/sadad-pay.svg"
+          alt="sadad-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.banktransfer:
+      return (
+        <Image
+          src="/icons/payments/visa-pay.svg"
+          alt="visa-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.tabby:
+      return (
+        <Image
+          src="/icons/payments/tabby-pay.svg"
+          alt="tabbby"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    case PAYMENT_METHODS?.wallet:
+      return (
+        <Image
+          src="/icons/payments/wallet.svg"
+          alt="wallet-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
+    default:
+      return orderDetails?.payment_method;
+  }
+};
+
+export const availablePaymentMethodText = (
+  orderDetails = {},
+  t = () => {},
+  isMobile = false
+) => {
+  // return (
+  //   <Image
+  //     src="/icons/payments/mada-pay.svg"
+  //     alt="mada-pay"
+  //     width={100}
+  //     height={40}
+  //   />
+  // );
+
+  // return (
+  //   <Image
+  //     src="/icons/payments/google-pay.svg"
+  //     alt="google-pay"
+  //     width={100}
+  //     height={40}
+  //   />
+  // );
+
+  switch (orderDetails?.payment_method) {
+    case PAYMENT_METHODS?.credit:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods.CREDIT}
+        </Box>
+      );
+    case PAYMENT_METHODS?.applePay:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`APPLE-PAY`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.stcPay:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`STC-PAY`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.installment:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`INSTALLMENT`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.banktransfer:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`BANK-TRANSFER`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.tabby:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`TABBY`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.wallet:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`wallet`]}
+        </Box>
+      );
+    default:
+      return orderDetails?.payment_method;
+  }
 };

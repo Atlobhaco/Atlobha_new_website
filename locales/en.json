@@ -203,7 +203,8 @@
     "delivered": "delivered",
     "cancelled": "cancelled",
     "incomplete": "incomplete",
-    "returnable": "returnable"
+    "returned": "returned",
+    "priced": "priced"
   },
   "noResultsFound": "No results found",
   "order": {
@@ -217,5 +218,37 @@
   "orderedAt": "Ordered at",
   "selectedProducts": "selected products",
   "statusOrder": "Status",
-  "filtersOrders": "Filters"
+  "filtersOrders": "Filters",
+  "changeAddress": "change delivery address",
+  "cancelYourOrder": "cancel order",
+  "repeatPricing": "price order again",
+  "orderAgain": "order again",
+  "rateProductsNow": "rate products now!",
+  "canNotDeletePart": "can't delete last product",
+  "inPricing": "Pricing",
+  "inCorfirmed": "confirmed",
+  "inPrepare": "Prepared",
+  "inShipping": "Shipping",
+  "inDelivery": "Delivered",
+  "payAndConfirm": "pay and confirm",
+  "payMethods": {
+    "CREDIT": "credit",
+    "CASH": "cash",
+    "APPLE-PAY": "apple pay",
+    "STC-PAY": "stc pay",
+    "INSTALLMENT": "installment",
+    "BANK-TRANSFER": "bank transfer",
+    "TABBY": "tabby",
+    "wallet": "atlobha wallet"
+  },
+  "orderSummary": "order summary",
+  "productsPrice": "products price",
+  "additionaldiscount": "discount",
+  "deliveryFees": "delivery fees",
+  "payFromBlanace": "paid from balance",
+  "totalSum": "total",
+  "include": "includes",
+  "vatPercentage": "VAT  percentage",
+  "remainingtotal": "remaining to pay",
+  "availablePayments": "Available payments"
 }

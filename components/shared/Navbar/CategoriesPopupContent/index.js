@@ -61,16 +61,15 @@ function CategoriesPopupcontent({
   };
 
   const boxStyle = {
-    // background: "#FFF5EF",
     borderRadius: "8px",
     padding: "10px",
-    minHeight: "150px",
+    minHeight: isMobile ? "100%" : "150px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
     cursor: "pointer",
     flexWrap: isMobile ? "noWrap" : "wrap",
-    maxHeight: isMobile ? "160px" : "unset",
+    maxHeight: isMobile ? "100%s" : "unset",
     flexDirection: isMobile ? "column" : "row",
     gap: "10px",
   };
@@ -107,7 +106,7 @@ function CategoriesPopupcontent({
     fontWeight: "400",
     color: "#6B7280",
     marginBottom: "5px",
-    height: isMobile ? "30px" : "auto",
+    height: isMobile ? "unset" : "auto",
   };
 
   const { data } = useCustomQuery({

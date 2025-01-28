@@ -74,7 +74,7 @@ function MyOrders() {
           <div className="row">
             <BreadCrumb />
           </div>
-          <div className="row mb-4">
+          <div className={`row ${isMobile ? "mt-2" : "mb-4"} `}>
             <Box
               sx={{
                 padding: "25px 0px",
@@ -156,7 +156,7 @@ function MyOrders() {
               )}
             </Box>
           </div>
-          <div className="row mt-3 ">
+          <div className={`row  ${isMobile ? "mt-1" : "mt-3"} `}>
             <div className="col-12 text-center d-flex aling-items-center justify-content-center gap-4">
               {!!orders?.length && (
                 <Box

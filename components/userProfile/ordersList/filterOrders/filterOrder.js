@@ -20,7 +20,7 @@ function FilterOrder({
   setLoadMoreClicked,
 }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -36,7 +36,7 @@ function FilterOrder({
   };
 
   const title = {
-    fontSize: "24px",
+    fontSize: isMobile ? "19px" : "24px",
     fontWeight: "700",
     mb: 2,
   };
@@ -70,10 +70,13 @@ function FilterOrder({
           "& .MuiPaper-root": {
             // backgroundColor: "lightblue", // Set background color
             padding: "20px",
-            minWidth: "300px",
-            maxWidth: "390px",
+            minWidth: isMobile ? "unset" : "300px",
+            maxWidth: isMobile ? "99%" : "390px",
             boxShadow: "0px 24px 24px 0px rgba(0, 0, 0, 0.14)",
             borderRadius: "20px",
+            ...(locale === "ar"
+              ? { right: isMobile ? "auto !important" : "unset" }
+              : { left: isMobile ? "auto !important" : "inherit" }),
           },
         }}
       >
@@ -90,7 +93,13 @@ function FilterOrder({
             });
           }}
         />
-        <Box sx={{ display: "flex", gap: "10px" }}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            // flexWrap: isMobile ? "wrap" : "nowrap",
+          }}
+        >
           <SharedDatePicker
             value={tempfilters?.created_at_from}
             showAstrick

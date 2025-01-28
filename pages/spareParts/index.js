@@ -5,7 +5,7 @@ import PaymentMethodSpare from "@/components/spareParts/PaymentMethodSpare";
 import PromoCodeSpare from "@/components/spareParts/PromoCodeSpare";
 import SharedTextArea from "@/components/shared/SharedTextArea";
 import { Box, CircularProgress } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DialogCentered from "@/components/DialogCentered";
 import DialogMultiDirection from "@/components/DialogMultiDirection";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -29,7 +29,10 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
+import {
+  addOrUpdateSparePart,
+  clearSpareParts,
+} from "@/redux/reducers/addSparePartsReducer";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
 
 const style = {
@@ -62,6 +65,13 @@ function SpareParts() {
     []
   );
   const formDataImagesUploader = new FormData();
+
+  //  clear the part that may be selected from order details
+  useEffect(() => {
+    if (selectedParts?.some((obj) => obj.insideOrder === true)) {
+      dispatch(clearSpareParts());
+    }
+  }, []);
 
   const {
     data,
