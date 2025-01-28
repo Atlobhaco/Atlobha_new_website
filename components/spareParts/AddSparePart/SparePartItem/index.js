@@ -36,9 +36,12 @@ function SparePartItem({ data, insideOrder = false }) {
         marginBottom: "40px",
       }}
     >
-      <Box sx={imgHolderStyle}>
+      <Box sx={imgHolderStyle}>s
         <Image
-          src={data?.imgSrc ? data?.imgSrc : "/imgs/no-img-holder.svg"}
+          src={
+            data?.image ||
+            (data?.imgSrc ? data?.imgSrc : "/imgs/no-img-holder.svg")
+          }
           width={isMobile ? 50 : 100}
           height={isMobile ? 50 : 100}
           alt="spare-part"
