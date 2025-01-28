@@ -65,8 +65,7 @@ function Layout({ children }) {
             ? style["custom-style-popup-mobile"]
             : style["custom-style-popup"]
         }`}
-        // title={t.wantSpareParts}
-        title={null}
+        title={t.wantSpareParts}
         subtitle={false}
         content={
           <CategoriesPopupcontent
