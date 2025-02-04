@@ -16,7 +16,7 @@ import { BRANCHES } from "@/config/endPoints/endPoints";
 import "react-bootstrap-carousel/dist/react-bootstrap-carousel.css";
 import "moment/locale/ar";
 import moment from "moment";
-
+import AxiosProvider from "@/config/network/AxiosConfig";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -61,9 +61,9 @@ export default function App({ Component, pageProps }) {
         <ThemeProvider theme={theme}>
           <ToastifyProvider>
             <AuthProvider>
-              {/* <AxiosProvider> */}
-              <AppContent Component={Component} pageProps={pageProps} />
-              {/* </AxiosProvider> */}
+              <AxiosProvider>
+                <AppContent Component={Component} pageProps={pageProps} />
+              </AxiosProvider>
             </AuthProvider>
           </ToastifyProvider>
         </ThemeProvider>

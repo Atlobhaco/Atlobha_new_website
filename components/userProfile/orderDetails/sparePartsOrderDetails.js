@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrderNumCopyWhatsapp from "./orderNumCopyWhatsapp";
 import TrackOrder from "./trackOrder";
 import { toast } from "react-toastify";
@@ -28,6 +28,7 @@ function SparePartsOrderDetails({
   callSingleOrder = () => {},
   orderDetailsFetching = false,
 }) {
+
   if (orderDetailsFetching) {
     return (
       <Box className="d-flex align-items-center justify-content-center">
@@ -41,6 +42,7 @@ function SparePartsOrderDetails({
       </Box>
     );
   }
+
   const { t } = useLocalization();
   const router = useRouter();
   const { idOrder, type, status } = router.query;

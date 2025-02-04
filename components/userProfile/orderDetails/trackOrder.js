@@ -43,26 +43,27 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
 
   const renderColorDependOnStatusProgress = (currentStep, index) => {
     if (!orderDetails?.changes?.length) {
-      // If changes array is empty, return orange for the first step, grey for others
+      // If changes array is empty, first step is orange, rest are grey
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
 
     const stepIndex = orderDetails.changes.findIndex(
       (obj) => obj.status === currentStep
     );
+    console.log(index, orderDetails?.changes?.length + 1);
+    if (index === orderDetails?.changes?.length) {
+      return "#EE772F"; // Orange for the step immediately after the last found status
+    }
 
     if (stepIndex === -1) {
-      return "#A1AEBE"; // Grey color
+      return "#A1AEBE"; // Grey color if status is not found
     }
 
-    if (
-      stepIndex === orderDetails.changes.length - 1 &&
-      currentStep !== "delivered"
-    ) {
-      return "#EE772F"; // Orange color
+    if (index === stepIndex) {
+      return "#1FB256"; // Green if the current step exists in changes
     }
 
-    return "#1FB256"; // Green color
+    return "#A1AEBE"; // Default grey for all other cases
   };
 
   return (
@@ -93,7 +94,8 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
           />
           <Box sx={textStyle}>{t.inCorfirmed}</Box>
         </Box>
-        {ORDERSENUM?.marketplace === type && (
+        {/* need to handle this type for marketplace and render the color */}
+        {/* {ORDERSENUM?.marketplace === type && (
           <Box sx={parentStyle}>
             <Box
               sx={{
@@ -106,12 +108,12 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
             />
             <Box sx={textStyle}>{t.inPrepare}</Box>
           </Box>
-        )}
+        )} */}
         <Box sx={parentStyle}>
           <Box
             sx={{
               ...lineStyle,
-              background: renderColorDependOnStatusProgress("shipping", 3),
+              background: renderColorDependOnStatusProgress("shipping", 2),
             }}
           />
           <Box sx={textStyle}>{t.inShipping}</Box>
@@ -120,7 +122,7 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
           <Box
             sx={{
               ...lineStyle,
-              background: renderColorDependOnStatusProgress("delivered", 4),
+              background: renderColorDependOnStatusProgress("delivered", 3),
             }}
           />
           <Box sx={textStyle}>{t.inDelivery}</Box>

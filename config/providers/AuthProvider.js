@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user");
-    router.push("/auth/login");
+    router.push("/");
   };
 
   return (

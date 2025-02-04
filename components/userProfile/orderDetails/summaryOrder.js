@@ -39,6 +39,7 @@ function SummaryOrder({
   );
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
+  const [redirectToPayfort, setRedirectToPayfort] = useState(false);
 
   const header = {
     color: "#232323",
@@ -130,6 +131,9 @@ function SummaryOrder({
     onSuccess: (res) => {
       if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
         form.submit();
+        setTimeout(() => {
+          setRedirectToPayfort(false);
+        }, 4000);
         return;
       }
       toast.success(t.successPayOrder);
@@ -137,6 +141,7 @@ function SummaryOrder({
       //   router.push(`/spareParts/confirmation/${res?.id}`);
     },
     onError: (err) => {
+      setRedirectToPayfort(false);
       toast.error(err?.response?.data?.message || t.someThingWrong);
     },
   });
@@ -182,11 +187,12 @@ function SummaryOrder({
     language: locale,
     currency: "SAR",
     customer_email: "user@example.com",
-    return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}/${orderDetails?.id}/?type=${type}&status=CREDIT`,
+    // return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}/${orderDetails?.id}/?type=${type}&status=CREDIT`,
+    return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}?order_id=${orderDetails?.id}&type=${type}&status=CREDIT`,
   };
 
   requestData.merchant_reference = merchanteRefrence;
-  requestData.amount = calculateReceipt?.amount_to_pay * 100;
+  requestData.amount = (calculateReceipt?.amount_to_pay * 100)?.toFixed(0);
   // Generate Signature
   requestData.signature = generateSignature(
     requestData,
@@ -220,10 +226,12 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.productsPrice}</Box>
         <Box sx={text}>
-          {orderDetails?.parts?.reduce(
-            (accumulator, current) => accumulator + current.total_price,
-            0
-          )}{" "}
+          {orderDetails?.parts
+            ?.reduce(
+              (accumulator, current) => accumulator + current.total_price,
+              0
+            )
+            ?.toFixed(2)}{" "}
           {t.sar}
         </Box>
       </Box>
@@ -319,18 +327,22 @@ function SummaryOrder({
           </Box>
           <SharedBtn
             disabled={
-              !selectedPaymentMethod?.id || confirmPriceFetch || fetchReceipt
+              !selectedPaymentMethod?.id ||
+              confirmPriceFetch ||
+              fetchReceipt ||
+              redirectToPayfort
             }
             className="big-main-btn"
             customClass="w-100"
             text="payAndConfirm"
             comAfterText={
-              confirmPriceFetch || fetchReceipt ? (
+              confirmPriceFetch || fetchReceipt || redirectToPayfort ? (
                 <CircularProgress color="inherit" size={15} />
               ) : null
             }
             onClick={() => {
               if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+                setRedirectToPayfort(true);
                 callCalculateReceipt();
               } else {
                 callConfirmPricing();
