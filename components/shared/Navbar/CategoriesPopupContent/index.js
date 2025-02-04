@@ -118,7 +118,10 @@ function CategoriesPopupcontent({
     onSuccess: (res) => {
       setAppGroups(res);
       setMainGroups(res);
-      setOpenCategories(true);
+      // open anyway but not in order page
+      if (!route?.includes("myOrders")) {
+        setOpenCategories(true);
+      }
       dispatch(setAllGroups(res));
     },
     onError: () => {

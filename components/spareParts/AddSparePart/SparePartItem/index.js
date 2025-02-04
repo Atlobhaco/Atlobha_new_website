@@ -36,7 +36,7 @@ function SparePartItem({ data, insideOrder = false }) {
         marginBottom: "40px",
       }}
     >
-      <Box sx={imgHolderStyle}>s
+      <Box sx={imgHolderStyle}>
         <Image
           src={
             data?.image ||

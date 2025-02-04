@@ -231,8 +231,8 @@
   "inDelivery": "تم التوصيل",
   "payAndConfirm": "دفع وتاكيد الطلب",
   "payMethods": {
-    "CREDIT": "بطاقة إئتمان",
-    "CASH": "كاش",
+    "CREDIT": "كروت الدفع",
+    "CASH": "دفع نقدي",
     "APPLE-PAY": "أبل باي",
     "STC-PAY": "اس تي سي باي",
     "INSTALLMENT": "تقسيط",
@@ -249,5 +249,7 @@
   "include": "يشمل",
   "vatPercentage": "ضريبة القيمة المضافة",
   "remainingtotal": "اجمالي المتبقي للدفع",
-  "availablePayments": "طرق الدفع"
+  "availablePayments": "طرق الدفع",
+  "successPayOrder": "تم الدفع بنجاح",
+  "checkPayment": "جاري التاكد من عملية الدفع"
 }

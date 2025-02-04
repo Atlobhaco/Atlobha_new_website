@@ -1,12 +1,27 @@
 import SharedBtn from "@/components/shared/SharedBtn";
-import { ORDERS, RE_OPEN, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import {
+  CALCULATE_RECEIPT,
+  CONFIRM_PRICING,
+  ORDERS,
+  RE_OPEN,
+  SPARE_PARTS,
+} from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { useAuth } from "@/config/providers/AuthProvider";
+import {
+  ORDERSENUM,
+  PAYMENT_METHODS,
+  STATUS,
+  generateSignature,
+} from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
+import moment from "moment";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useReducer } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function SummaryOrder({
@@ -15,9 +30,15 @@ function SummaryOrder({
   callSingleOrder = () => {},
 }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
-  const { idOrder, type } = router.query;
+  const { idOrder, type, status } = router.query;
+  const { user } = useAuth();
+  const { selectedPaymentMethod } = useSelector(
+    (state) => state.selectedPaymentMethod
+  );
+  const merchanteRefrence = `${user?.data?.user?.id}_${Date.now()}`;
+  const hasRun = useRef(false);
 
   const header = {
     color: "#232323",
@@ -72,6 +93,121 @@ function SummaryOrder({
     },
   });
 
+  //   change the status after redirect from payfort
+  console.log(status);
+  useEffect(() => {
+    if (status && !hasRun.current) {
+      hasRun.current = true; // Mark that it has run
+      toast.success(t.checkPayment);
+      callSingleOrder();
+      router.push({
+        pathname: `/userProfile/myOrders/${idOrder}`,
+        query: { type },
+      });
+    }
+  }, [router, status]);
+
+  //     card_number: "4111111111111111",
+  //     expiry_date: "1226",
+  //     card_holder_name: "micheal abid",
+  //     cvv: "123",
+
+  const {
+    data: confirmPriceRes,
+    isFetching: confirmPriceFetch,
+    refetch: callConfirmPricing,
+  } = useCustomQuery({
+    name: "confirmPriceOrder",
+    url: `${SPARE_PARTS}${ORDERS}/${idOrder}${CONFIRM_PRICING}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: false,
+    method: "post",
+    body: {
+      payment_method: selectedPaymentMethod?.key,
+      payment_reference: merchanteRefrence,
+    },
+    onSuccess: (res) => {
+      if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+        form.submit();
+        return;
+      }
+      toast.success(t.successPayOrder);
+      callSingleOrder();
+      //   router.push(`/spareParts/confirmation/${res?.id}`);
+    },
+    onError: (err) => {
+      toast.error(err?.response?.data?.message || t.someThingWrong);
+    },
+  });
+
+  const renderUrlForCaluclate = () => {
+    switch (type) {
+      case ORDERSENUM?.marketplace:
+        return `/marketplace${ORDERS}/${idOrder}`;
+      case ORDERSENUM?.spareParts:
+        return `${SPARE_PARTS}${ORDERS}/${idOrder}${CALCULATE_RECEIPT}`;
+      default:
+        return type;
+    }
+  };
+
+  const {
+    data: calculateReceipt,
+    isFetching: fetchReceipt,
+    refetch: callCalculateReceipt,
+  } = useCustomQuery({
+    name: ["calculateReceiptForTotalPay"],
+    url: renderUrlForCaluclate(),
+    refetchOnWindowFocus: false,
+    enabled: false,
+    method: "post",
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      if (res?.amount_to_pay > 0) {
+        callConfirmPricing();
+      } else {
+        toast.error(`${t.remainingtotal} ${res?.amount_to_pay} ${t.sar}`);
+      }
+    },
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error || t.someThingWrong);
+    },
+  });
+
+  const requestData = {
+    command: "PURCHASE",
+    access_code: process.env.NEXT_PUBLIC_PAYFORT_ACCESS,
+    merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
+    language: locale,
+    currency: "SAR",
+    customer_email: "user@example.com",
+    return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}/${orderDetails?.id}/?type=${type}&status=CREDIT`,
+  };
+
+  requestData.merchant_reference = merchanteRefrence;
+  requestData.amount = calculateReceipt?.amount_to_pay * 100;
+  // Generate Signature
+  requestData.signature = generateSignature(
+    requestData,
+    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+  );
+
+  // Create a form and submit it
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+
+  // Append inputs to form
+  Object.keys(requestData).forEach((key) => {
+    const input = document.createElement("input");
+    input.type = "hidden";
+    input.name = key;
+    input.value = requestData[key];
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+
   return (
     <Box
       sx={{
@@ -80,7 +216,7 @@ function SummaryOrder({
       }}
     >
       <Box sx={header}>{t.orderSummary}</Box>
-      {/* product price */}
+      {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.productsPrice}</Box>
         <Box sx={text}>
@@ -129,7 +265,7 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.remainingtotal}</Box>
         <Box sx={text}>
-          {+receipt?.total_price - +receipt?.wallet_payment_value}
+          {+receipt?.amount_to_pay?.toFixed(2)}
           {t.sar}
         </Box>
       </Box>
@@ -182,9 +318,24 @@ function SummaryOrder({
             </Box>
           </Box>
           <SharedBtn
+            disabled={
+              !selectedPaymentMethod?.id || confirmPriceFetch || fetchReceipt
+            }
             className="big-main-btn"
             customClass="w-100"
             text="payAndConfirm"
+            comAfterText={
+              confirmPriceFetch || fetchReceipt ? (
+                <CircularProgress color="inherit" size={15} />
+              ) : null
+            }
+            onClick={() => {
+              if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+                callCalculateReceipt();
+              } else {
+                callConfirmPricing();
+              }
+            }}
           />
         </>
       )}

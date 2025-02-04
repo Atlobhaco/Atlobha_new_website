@@ -232,7 +232,7 @@
   "inDelivery": "Delivered",
   "payAndConfirm": "pay and confirm",
   "payMethods": {
-    "CREDIT": "credit",
+    "CREDIT": "credit cards",
     "CASH": "cash",
     "APPLE-PAY": "apple pay",
     "STC-PAY": "stc pay",
@@ -250,5 +250,7 @@
   "include": "includes",
   "vatPercentage": "VAT  percentage",
   "remainingtotal": "remaining to pay",
-  "availablePayments": "Available payments"
+  "availablePayments": "Available payments",
+  "successPayOrder": "order successfully paid",
+  "checkPayment": "payment is being verified"
 }

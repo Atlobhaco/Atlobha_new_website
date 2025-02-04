@@ -7,9 +7,10 @@ import OrderProducts from "./orderProducts";
 import OrderAddress from "./orderAddress";
 import SharedBtn from "@/components/shared/SharedBtn";
 import { Box, CircularProgress, Divider } from "@mui/material";
-import { STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/helpers";
 import useCustomQuery from "@/config/network/Apiconfig";
 import {
+  CALCULATE_RECEIPT,
   CANCELLED,
   DASHBOARD,
   ORDERS,
@@ -20,6 +21,7 @@ import PaymentMethodOrder from "./paymentMethodOrder";
 import SummaryOrder from "./summaryOrder";
 import RateProductsSection from "./rateProductsSection";
 import AddAvailablePayMethods from "./addAvailablePayMethods";
+import { useRouter } from "next/router";
 
 function SparePartsOrderDetails({
   orderDetails = {},
@@ -40,6 +42,8 @@ function SparePartsOrderDetails({
     );
   }
   const { t } = useLocalization();
+  const router = useRouter();
+  const { idOrder, type, status } = router.query;
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -66,6 +70,33 @@ function SparePartsOrderDetails({
     onSuccess: (res) => {
       callSingleOrder();
     },
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error || t.someThingWrong);
+    },
+  });
+
+  const renderUrlDependOnType = () => {
+    switch (type) {
+      case ORDERSENUM?.marketplace:
+        return `/marketplace${ORDERS}/${idOrder}`;
+      case ORDERSENUM?.spareParts:
+        return `${SPARE_PARTS}${ORDERS}/${idOrder}${CALCULATE_RECEIPT}`;
+      default:
+        return type;
+    }
+  };
+
+  const {
+    data: calculateReceipt,
+    isFetching: fetchReceipt,
+    refetch: callCalculateReceipt,
+  } = useCustomQuery({
+    name: ["calculateReceipt"],
+    url: renderUrlDependOnType(),
+    refetchOnWindowFocus: false,
+    enabled: STATUS?.priced === orderDetails?.status && idOrder ? true : false,
+    method: "post",
+    select: (res) => res?.data?.data,
     onError: (err) => {
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
@@ -110,7 +141,9 @@ function SparePartsOrderDetails({
         </>
       )}
 
-      {orderDetails?.status === STATUS?.priced && <AddAvailablePayMethods />}
+      {orderDetails?.status === STATUS?.priced && (
+        <AddAvailablePayMethods orderDetails={orderDetails} />
+      )}
 
       {(orderDetails?.status === STATUS?.confirmed ||
         orderDetails?.status === STATUS?.incomplete ||
@@ -120,6 +153,7 @@ function SparePartsOrderDetails({
           <SummaryOrder
             orderDetails={orderDetails}
             callSingleOrder={callSingleOrder}
+            calculateReceipt={calculateReceipt}
           />
         </Box>
       )}

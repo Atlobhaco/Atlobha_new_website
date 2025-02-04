@@ -7,11 +7,14 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERSENUM } from "@/constants/helpers";
 import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
+import { toast } from "react-toastify";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function OrderDetails() {
   const router = useRouter();
   const { idOrder, type } = router.query;
   const { isMobile } = useScreenSize();
+  const { t } = useLocalization();
 
   const renderUrlDependOnType = () => {
     switch (type) {
@@ -43,9 +46,9 @@ function OrderDetails() {
     //   setLastPage(res?.meta?.last_page);
     //   setPage(res?.meta?.current_page);
     // },
-    // onError: () => {
-    //   setLoadMoreClicked(false);
-    // },
+    onError: (err) => {
+      toast.error(t.someThingWrong);
+    },
   });
 
   const returnOrderDetailsPage = () => {

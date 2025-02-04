@@ -1,6 +1,7 @@
 import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import crypto from "crypto";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -149,7 +150,8 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.credit:
       return (
         <Image
-          src="/icons/payments/master-card.svg"
+          //   src="/icons/payments/master-card.svg"
+          src="/icons/payments/credit-cards.svg"
           alt="credit-card"
           width={isMobile ? 65 : 100}
           height={isMobile ? 26 : 40}
@@ -209,6 +211,15 @@ export const availablePaymentMethodImages = (
           height={isMobile ? 26 : 40}
         />
       );
+    case PAYMENT_METHODS?.cash:
+      return (
+        <Image
+          src="/icons/payments/cash-pay.svg"
+          alt="cash-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
     default:
       return orderDetails?.payment_method;
   }
@@ -241,7 +252,7 @@ export const availablePaymentMethodText = (
     case PAYMENT_METHODS?.credit:
       return (
         <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
-          {t.payMethods.CREDIT}
+          {t.payMethods["CREDIT"]}
         </Box>
       );
     case PAYMENT_METHODS?.applePay:
@@ -280,7 +291,32 @@ export const availablePaymentMethodText = (
           {t.payMethods[`wallet`]}
         </Box>
       );
+    case PAYMENT_METHODS?.cash:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`CASH`]}
+        </Box>
+      );
     default:
       return orderDetails?.payment_method;
   }
+};
+
+/* -------------------------------------------------------------------------- */
+/*                       generate signature for payfort                       */
+/* -------------------------------------------------------------------------- */
+export const generateSignature = (params) => {
+  let shaString = "";
+  // Sort the parameters by key
+  const sortedKeys = Object.keys(params).sort();
+  // Concatenate key-value pairs
+  sortedKeys.forEach((key) => {
+    shaString += `${key}=${params[key]}`;
+  });
+  // Add the secret key at the beginning and end of the string
+  shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
+  // Generate SHA-256 hash
+  const signature = crypto.createHash("sha256").update(shaString).digest("hex");
+
+  return signature;
 };

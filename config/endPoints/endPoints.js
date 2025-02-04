@@ -26,3 +26,6 @@ export const CANCELLED = "/cancelled";
 export const DASHBOARD = "/dashboard";
 export const PARTS = "/parts";
 export const RE_OPEN = "/reopen";
+export const PAYMENT = "/payment";
+export const CALCULATE_RECEIPT = "/calculate-receipt";
+export const CONFIRM_PRICING = "/confirm-pricing";
