@@ -47,11 +47,15 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
 
-    const stepIndex = orderDetails.changes.findIndex(
-      (obj) => obj.status === currentStep
-    );
-    console.log(index, orderDetails?.changes?.length + 1);
-    if (index === orderDetails?.changes?.length) {
+    const stepIndex = orderDetails.changes
+      ?.filter((d) => d?.status !== "ready-to-ship")
+      .findIndex((obj) => obj.status === currentStep);
+
+    if (
+      index ===
+      orderDetails?.changes?.filter((d) => d?.status !== "ready-to-ship")
+        ?.length
+    ) {
       return "#EE772F"; // Orange for the step immediately after the last found status
     }
 
