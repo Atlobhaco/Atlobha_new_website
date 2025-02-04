@@ -37,7 +37,7 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
-  const merchanteRefrence = `${user?.data?.user?.id}_${Date.now()}`;
+  const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
 
   const header = {
