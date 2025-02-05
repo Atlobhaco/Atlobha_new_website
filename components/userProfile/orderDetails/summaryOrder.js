@@ -1,4 +1,3 @@
-import ApplePayAction from "@/components/payments/payfort/ApplePayAction";
 import SharedBtn from "@/components/shared/SharedBtn";
 import {
   CALCULATE_RECEIPT,
@@ -41,6 +40,7 @@ function SummaryOrder({
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+  
 
   const header = {
     color: "#232323",
@@ -215,6 +215,66 @@ function SummaryOrder({
   });
   document.body.appendChild(form);
 
+  const handleApplePayPayment = async () => {
+	if (!window.ApplePaySession) {
+	  alert("Apple Pay is not supported on this device.");
+	  return;
+	}
+  
+	const paymentRequest = {
+	  countryCode: "SA", // Change based on your country
+	  currencyCode: "SAR",
+	  merchantCapabilities: ["supports3DS"],
+	  supportedNetworks: ["visa", "masterCard", "mada"],
+	  total: { label: "Atlobha soter", amount: "100.00" },
+	};
+  
+	const session = new ApplePaySession(3, paymentRequest);
+  
+	session.onvalidatemerchant = async (event) => {
+	  try {
+		const response = await fetch("/api/validateApplePay", {
+		  method: "POST",
+		  body: JSON.stringify({ validationURL: event.validationURL }),
+		  headers: { "Content-Type": "application/json" },
+		});
+  
+		const merchantSession = await response.json();
+		session.completeMerchantValidation(merchantSession);
+	  } catch (error) {
+		console.error("Merchant validation failed:", error);
+		session.abort();
+	  }
+	};
+  
+	session.onpaymentauthorized = async (event) => {
+	  try {
+		const paymentData = event.payment.token.paymentData;
+		
+		// Send the Apple Pay payment token to your backend
+		const response = await fetch("/api/payfortApplePay", {
+		  method: "POST",
+		  body: JSON.stringify({ applePayToken: paymentData }),
+		  headers: { "Content-Type": "application/json" },
+		});
+  
+		const result = await response.json();
+		
+		if (result.status === "success") {
+		  session.completePayment(ApplePaySession.STATUS_SUCCESS);
+		} else {
+		  session.completePayment(ApplePaySession.STATUS_FAILURE);
+		}
+	  } catch (error) {
+		console.error("Payment failed:", error);
+		session.completePayment(ApplePaySession.STATUS_FAILURE);
+	  }
+	};
+  
+	session.begin();
+  };
+  
+
   return (
     <Box
       sx={{
@@ -356,7 +416,6 @@ function SummaryOrder({
           />
         </>
       )}
-      {/* <ApplePayAction handleApplePayPayment={handleApplePayPayment} /> */}
     </Box>
   );
 }
