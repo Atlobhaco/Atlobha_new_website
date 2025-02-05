@@ -2,11 +2,14 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 function CommunicationSection() {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const router = useRouter();
+
   const socialMedia = [
     {
       src: "/icons/twitter-round.svg",
@@ -29,16 +32,20 @@ function CommunicationSection() {
     {
       text: t.returnPolicy,
       onClick: () => {
-        alert("clicked");
+        router.push("/userProfile/returnPolicy");
       },
     },
     {
       text: t.privacyPolicy,
-      onClick: () => {},
+      onClick: () => {
+        router.push("/userProfile/privacyPolicy");
+      },
     },
     {
       text: t.termsCondition,
-      onClick: () => {},
+      onClick: () => {
+        router.push("/userProfile/termsCondition");
+      },
     },
   ];
   return (

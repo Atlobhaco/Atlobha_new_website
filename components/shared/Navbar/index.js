@@ -45,6 +45,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
   const router = useRouter();
+  const { mobileScreen } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const hideInSparePartsPage = router?.pathname?.includes("spare");
@@ -167,7 +168,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     }
   };
 
-  return (
+  return !mobileScreen ? (
     <Box
       className={`${style["navbar"]}`}
       sx={{
@@ -208,19 +209,19 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 onClick={() => setOpenCategories(true)}
               />
               {/* <IconInsideCircle
-                hasText={false}
-                iconUrl="/icons/search-black.svg"
-              />
-              <IconInsideCircle
-                hasText={false}
-                iconUrl="/icons/basket-black.svg"
-              /> */}
+			  hasText={false}
+			  iconUrl="/icons/search-black.svg"
+			/>
+			<IconInsideCircle
+			  hasText={false}
+			  iconUrl="/icons/basket-black.svg"
+			/> */}
             </>
           )}
           {/* <SharedBtn
-            text="atlobhaPlus"
-            customClass={`${isMobile ? style["mobile-btn"] : ""}`}
-          /> */}
+		  text="atlobhaPlus"
+		  customClass={`${isMobile ? style["mobile-btn"] : ""}`}
+		/> */}
 
           <div>
             <IconButton
@@ -296,9 +297,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                   {singleData?.component || (
                     <BlurText
                       text={singleData?.name}
-                      delay={5}
+                      delay={3}
                       animateBy="words"
-                      direction="top"
+                      direction="bottom"
                       onAnimationComplete={() => {}}
                       className=""
                     />
@@ -334,7 +335,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       )}
       <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
     </Box>
-  );
+  ) : null;
 }
 
 export default Navbar;
