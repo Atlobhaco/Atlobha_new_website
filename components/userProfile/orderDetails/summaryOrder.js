@@ -1,3 +1,4 @@
+import ApplePayAction from "@/components/payments/payfort/ApplePayAction";
 import SharedBtn from "@/components/shared/SharedBtn";
 import {
   CALCULATE_RECEIPT,
@@ -95,18 +96,18 @@ function SummaryOrder({
   });
 
   //   change the status after redirect from payfort
-  console.log(status);
-  useEffect(() => {
-    if (status && !hasRun.current) {
-      hasRun.current = true; // Mark that it has run
-      toast.success(t.checkPayment);
-      callSingleOrder();
-      router.push({
-        pathname: `/userProfile/myOrders/${idOrder}`,
-        query: { type },
-      });
-    }
-  }, [router, status]);
+  //   redirect to confirm page directly for now
+  //   useEffect(() => {
+  //     if (status && !hasRun.current) {
+  //       hasRun.current = true; // Mark that it has run
+  //       toast.success(t.checkPayment);
+  //       callSingleOrder();
+  //       router.push({
+  //         pathname: `/userProfile/myOrders/${idOrder}`,
+  //         query: { type },
+  //       });
+  //     }
+  //   }, [router, status]);
 
   //     card_number: "4111111111111111",
   //     expiry_date: "1226",
@@ -133,7 +134,7 @@ function SummaryOrder({
         form.submit();
         setTimeout(() => {
           setRedirectToPayfort(false);
-        }, 4000);
+        }, 6000);
         return;
       }
       toast.success(t.successPayOrder);
@@ -344,6 +345,10 @@ function SummaryOrder({
               if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
                 setRedirectToPayfort(true);
                 callCalculateReceipt();
+              } else if (
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
+              ) {
+                handleApplePayPayment();
               } else {
                 callConfirmPricing();
               }
@@ -351,6 +356,7 @@ function SummaryOrder({
           />
         </>
       )}
+      {/* <ApplePayAction handleApplePayPayment={handleApplePayPayment} /> */}
     </Box>
   );
 }
