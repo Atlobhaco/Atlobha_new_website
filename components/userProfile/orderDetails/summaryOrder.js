@@ -307,7 +307,8 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
         <Box sx={{ ...text, color: "#EB3C24" }}>
-          {calculateReceiptResFromMainPage?.discount === receipt?.discount
+          {(calculateReceiptResFromMainPage?.discount ?? receipt?.discount) ===
+          receipt?.discount
             ? receipt?.discount
             : calculateReceiptResFromMainPage?.discount}{" "}
           {t.sar}
@@ -317,8 +318,8 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.deliveryFees}</Box>
         <Box sx={text}>
-          {calculateReceiptResFromMainPage?.delivery_fees ===
-          receipt?.delivery_fees
+          {(calculateReceiptResFromMainPage?.delivery_fees ??
+            receipt?.delivery_fees) === receipt?.delivery_fees
             ? receipt?.delivery_fees
             : calculateReceiptResFromMainPage?.delivery_fees}{" "}
           {t.sar}
@@ -328,8 +329,8 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.payFromBlanace}</Box>
         <Box sx={text}>
-          {calculateReceiptResFromMainPage?.wallet_payment_value ===
-          receipt?.wallet_payment_value
+          {(calculateReceiptResFromMainPage?.wallet_payment_value ??
+            receipt?.wallet_payment_value) === receipt?.wallet_payment_value
             ? receipt?.wallet_payment_value
             : calculateReceiptResFromMainPage?.wallet_payment_value}{" "}
           {t.sar}
@@ -339,7 +340,8 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.totalSum}</Box>
         <Box sx={text}>
-          {calculateReceiptResFromMainPage?.total_price === receipt?.total_price
+          {(calculateReceiptResFromMainPage?.total_price ??
+            receipt?.total_price) === receipt?.total_price
             ? receipt?.total_price
             : calculateReceiptResFromMainPage?.total_price}{" "}
           {t.sar}
@@ -348,10 +350,10 @@ function SummaryOrder({
       {/* vat  percentage */}
       <Box sx={vat}>
         {t.include}{" "}
-        {calculateReceiptResFromMainPage?.tax_percentage ===
-        receipt?.tax_percentage
+        {((calculateReceiptResFromMainPage?.tax_percentage ??
+          receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
-          : calculateReceiptResFromMainPage?.tax_percentage * 100}
+          : calculateReceiptResFromMainPage?.tax_percentage) * 100}
         ٪ {t.vatPercentage} ({receipt?.tax} {t.sar})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
@@ -359,8 +361,8 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.remainingtotal}</Box>
         <Box sx={text}>
-          {(calculateReceiptResFromMainPage?.amount_to_pay ===
-          receipt?.amount_to_pay
+          {((calculateReceiptResFromMainPage?.amount_to_pay ??
+            receipt?.amount_to_pay) === receipt?.amount_to_pay
             ? receipt?.amount_to_pay
             : calculateReceiptResFromMainPage?.amount_to_pay
           )?.toFixed(2)}{" "}
@@ -373,8 +375,8 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {calculateReceiptResFromMainPage?.total_price ===
-              receipt?.total_price
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
@@ -400,8 +402,8 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {calculateReceiptResFromMainPage?.total_price ===
-              receipt?.total_price
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
@@ -420,8 +422,8 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {calculateReceiptResFromMainPage?.total_price ===
-              receipt?.total_price
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
