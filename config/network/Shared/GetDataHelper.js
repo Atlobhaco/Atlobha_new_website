@@ -10,6 +10,7 @@ export function usersVehiclesQuery({
   setSelectedCar = () => ({ type: "NO_ACTION" }),
   setOpenAddNewCar = () => {},
   setDefaultCar = () => {},
+  openAddNewCar = false,
 }) {
   return useCustomQuery({
     name: ["getUsersVehicles", user?.data?.user?.id],
@@ -21,6 +22,9 @@ export function usersVehiclesQuery({
       const defaultCar = res?.find((d) => d?.is_default);
       //   dispatch(setSelectedCar({ data: defaultCar }));
       dispatch(setAllCars({ data: res }));
+      if (openAddNewCar) {
+        document.getElementById("openAfterAddNewCar")?.click();
+      }
       setOpenAddNewCar(false);
       dispatch(setDefaultCar({ data: defaultCar }));
     },

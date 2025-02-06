@@ -43,8 +43,12 @@ function DropDownAddress() {
     } else {
       if (isMobile) {
         setSelectCarPopUpModal(true);
+        event.preventDefault(); // Prevents the default action (e.g., navigation for links)
+        event.stopPropagation();
       } else {
         setAnchorEl(event.currentTarget); // Set the anchor element for the dropdown
+        event.preventDefault(); // Prevents the default action (e.g., navigation for links)
+        event.stopPropagation();
       }
     }
   };
@@ -80,6 +84,7 @@ function DropDownAddress() {
               whiteSpace: "nowrap",
             }}
             onClick={handleOpen}
+            id="openAfterAddNewAddress"
           >
             {selectedAddress?.address ||
               defaultAddress?.address ||

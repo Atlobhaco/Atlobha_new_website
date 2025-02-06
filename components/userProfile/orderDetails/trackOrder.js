@@ -47,6 +47,10 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
 
+    if (orderDetails?.status === "incomplete") {
+      return "#A1AEBE"; // grey color
+    }
+
     const stepIndex = orderDetails.changes
       ?.filter((d) => d?.status !== "ready-to-ship")
       .findIndex((obj) => obj.status === currentStep);
@@ -70,6 +74,9 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
     return "#A1AEBE"; // Default grey for all other cases
   };
 
+  //   if status new changes some time return status new and sometimes now
+  //   ex 223325 here not
+  //   ex 223148 returned
   return (
     <Box
       sx={{

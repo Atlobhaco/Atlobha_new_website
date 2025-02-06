@@ -55,8 +55,12 @@ function CarPalette() {
       }
       if (isMobile) {
         setSelectCarPopUpModal(true);
+        event.preventDefault(); // Prevents the default action (e.g., navigation for links)
+        event.stopPropagation();
       } else {
-        setAnchorEl(event.currentTarget); // Set the anchor element for the dropdown
+        setAnchorEl(event?.currentTarget); // Set the anchor element for the dropdown
+        event.preventDefault(); // Prevents the default action (e.g., navigation for links)
+        event.stopPropagation();
       }
     }
   };
@@ -106,7 +110,7 @@ function CarPalette() {
     color: "#232323",
     fontWeight: "500",
     textAlign: "center",
-    width: "30%",
+    width: "35%",
   };
 
   const clickTooltipOpenVinHint = () => {
@@ -135,6 +139,7 @@ function CarPalette() {
     setSelectedCar,
     setOpenAddNewCar,
     setDefaultCar,
+    openAddNewCar,
   });
 
   return (
@@ -153,15 +158,23 @@ function CarPalette() {
           />
         </Box>
         {selectedCar?.id || defaultCar?.id ? (
-          <Box sx={selectedCarBox} onClick={handleOpen}>
-            <Box sx={textStyle}>
-              {selectedCar?.brand?.name || defaultCar?.brand?.name}
+          <Box sx={selectedCarBox} id="openAfterAddNewCar" onClick={handleOpen}>
+            <Box
+              sx={{
+                ...textStyle,
+                display: "flex",
+                flexDirection: "column",
+                fontSize: isMobile ? "10px" : locale == "en" ? "12px" : "13px",
+              }}
+            >
+              <Box>{selectedCar?.brand?.name || defaultCar?.brand?.name}</Box>
+              <Box>{selectedCar?.model?.name || defaultCar?.model?.name}</Box>
             </Box>
             <Box>
               <Image
                 alt={selectedCar?.brand?.name || defaultCar?.brand?.name}
-                width={isMobile ? 30 : 43}
-                height={isMobile ? 30 : 43}
+                width={isMobile ? 30 : 40}
+                height={isMobile ? 30 : 40}
                 src={selectedCar?.brand?.image || defaultCar?.brand?.image}
                 style={{
                   width: "auto",

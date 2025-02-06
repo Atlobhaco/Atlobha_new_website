@@ -78,7 +78,10 @@ const AddNewAddressFromNavbar = forwardRef(
         manual_address: manualAddress,
       },
       callUserAddresses,
-      redirect: () => setOpenAddNewAddress(false),
+      redirect: () => {
+        setOpenAddNewAddress(false);
+        document.getElementById("openAfterAddNewAddress")?.click();
+      },
       t,
       returnDefaultValues: () => {
         setLocationInfo(null);
