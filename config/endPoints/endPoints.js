@@ -29,3 +29,5 @@ export const RE_OPEN = "/reopen";
 export const PAYMENT = "/payment";
 export const CALCULATE_RECEIPT = "/calculate-receipt";
 export const CONFIRM_PRICING = "/confirm-pricing";
+export const SETTINGS = "/settings";
+export const ESTIMATED_DELIVERY = "/estimated-delivery";

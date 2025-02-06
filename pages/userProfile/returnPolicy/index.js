@@ -35,46 +35,8 @@ function ReturnPolicy() {
                   mb: 3,
                 }}
               >
-                {t.returnPolicy}
+                {t.returnReplace}
               </Box>
-              <Box
-                sx={{
-                  padding: "15px  4px",
-                  color: "#374151",
-                  fontSize: "14px",
-                }}
-              >
-                <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    مع عدم الإخلال بأحكام الضمان الاتفاقية والنظامية يحق
-                    للمستهلك استرجاع أي منتج في الفاتورة خلال ( 3 ) أيام عمل
-                    والاستبدال خلال ( 5 ) أيام عمل ولا يحق له استبدال واسترجاع
-                    المنتج بعد مرور الفترة المحددة.
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    لا يحق للمستهلك استبدال او استرجاع إذا كان المنتج تم تصنيعه
-                    بناءً على طلب المستهلك أو وفقاً لمواصفات حدّدها، ويستثنى من
-                    ذلك المنتجات التي بها عيب أو التي خالفت المواصفات المحدّدة
-                    من قبل المستهلك.
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    يشترط لاستبدال او استرجاع المنتج أن يكون المنتج بحالة سليمة
-                    وألا يكون المستهلك قد استخدم المنتج أو حصل على منفعته، ويحق
-                    للمتجر معاينة المنتج قبل استبداله او استرجاع للتأكد من
-                    سلامته ويتحمل المستهلك دفع قيمة الشحن في حال أراد استبدال او
-                    استرجاع المنتج وفي الاستبدال والاسترجاع الدولي يتحمل
-                    المستهلك كامل تكاليف الشحن وتسليم المنتج لشركة الشحن وفي حال
-                    وجود عيوب أو خطأ سيتم تعويض المستهلك
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    استلام الشحنة من شركة الشحن او مندوب التوصيل يعتبر اقراراً
-                    من العميل ان الشحنة سليمة وبحالة جيدة ولم يتم فتحها قبل
-                    الاستلام يشمل الارجاع والاستبدال جميع الأصناف باستثناء القطع
-                    الكهربائية . الا اذا وجد عيب مصنعي بالمنتج .
-                  </li>
-                </ul>
-              </Box>
-              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
 
               <Box
                 sx={{
@@ -92,19 +54,12 @@ function ReturnPolicy() {
                     mb: 1,
                   }}
                 >
-                  الاستبدال للقطع الكهربائية اذا تبين وجود عيب مصنعي
+                  {t.conditionToReplace}
                 </Box>{" "}
                 <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    ان تكون خالية من الخدوش او سوا الاستخدام
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    إحضار العلبة الاصلية مع جميع الملحقات{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    قد يتطلب إحضار تقرير من وكيل الصيانة المعتمد قبل عملية
-                    الاستبدال{" "}
-                  </li>
+                  <li style={{ marginBottom: "7px" }}>{t.sevenDaysReplace}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.cleanPart}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.replacePart}</li>
                 </ul>
               </Box>
 
@@ -126,23 +81,28 @@ function ReturnPolicy() {
                     mb: 1,
                   }}
                 >
-                  ما هي الحالات التي لا أستطيع فيها الاسترجاع؟{" "}
+                  {t.shippingCost}
                 </Box>{" "}
-                <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    عند تقديم طلب الاسترجاع بعد الوقت المحدد وهو 3 ايام من تاريخ
-                    الاستلام.{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    عند استخدام المنتج أو فتحه، أو عند تلفه .{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    عند تلف التغليف الخاصة بالمنتج
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    الاسترجاع والاستبدال لا يشمل القطع الكهربائية{" "}
-                  </li>
-                </ul>
+                <ol>
+                  <li style={{ marginBottom: "7px" }}>{t.atlobhaAfford}</li>
+                  <ul>
+                    <li style={{ marginBottom: "7px" }}>
+                      {t.differenceInpart}
+                    </li>
+                    <li style={{ marginBottom: "7px" }}>
+                      {t.correctPartShipped}
+                    </li>
+                  </ul>
+
+                  <li style={{ marginBottom: "7px" }}>{t.clientAfford}</li>
+                  <ul>
+                    <li style={{ marginBottom: "7px" }}>
+                      {t.errorFromCustomer}
+                    </li>
+                    <li style={{ marginBottom: "7px" }}>{t.noChaseNum}</li>
+                    <li style={{ marginBottom: "7px" }}>{t.noLongerNeed}</li>
+                  </ul>
+                </ol>
               </Box>
 
               <Divider sx={{ background: "#EAECF0", mb: 1 }} />
@@ -163,18 +123,12 @@ function ReturnPolicy() {
                     mb: 1,
                   }}
                 >
-                  تحتفظ متجر سديم بحق إلغاء الطلب لأي سبب من الأسباب التالية :{" "}
+                  {t.exceptions}{" "}
                 </Box>{" "}
                 <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.electricalParts}</li>
                   <li style={{ marginBottom: "7px" }}>
-                    رفض / عدم قبول عملية الدفع الالكترونية{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    إذا كان عنوان التوصيل المعطى من قبل العميل خاطئ أو كانت
-                    معلومات الاتصال خاطئة أو لعدم القدرة على الوصول إلى العميل{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    عدم توفر المنتج في الوقت الحالي أو انتهت الكمية من المخزون{" "}
+                    {t.noChangeReturnNever}{" "}
                   </li>
                 </ul>
               </Box>

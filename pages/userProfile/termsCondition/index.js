@@ -38,8 +38,7 @@ function TermsCondition() {
               >
                 {t.termsCondition}
               </Box>
-
-              <Box
+              {/* <Box
                 sx={{
                   background: "rgba(224, 110, 14, 0.10)",
                   borderRadius: "8px",
@@ -61,8 +60,7 @@ function TermsCondition() {
                 />
                 يرجى قراءة هذه الشروط والأحكام بعناية قبل تقديم الطلب والاحتفاظ
                 بنسخة من هذه الشروط والأحكام والرجوع إليها في المستقبل
-              </Box>
-
+              </Box> */}
               <Box
                 sx={{
                   padding: "15px  4px",
@@ -79,7 +77,7 @@ function TermsCondition() {
                     mb: 1,
                   }}
                 >
-                  التعريفات
+                  {t.intro}
                 </Box>{" "}
                 <Box
                   sx={{
@@ -91,23 +89,142 @@ function TermsCondition() {
                   }}
                 >
                   <span>
-                    نحن ولنا ونشير إلى Atlobha.com (مسجل في السعودية).
+                    {t.rulesApplied} {t.readCarefully}
                   </span>
-                  <span>أنت وأنت تشير إلى مشتري أي سلع منا.</span>
-                  <span>
-                    العقد يعني العقد المبرم بيننا وبينك لبيعنا لك البضائع.
-                  </span>{" "}
-                  <span>السلع تعني أي سلع أو خدمات تطلبها منا.</span>
-                  <span>
-                    المستهلك يعني أي شخص طبيعي ، عند تقديم طلب معنا ، يتصرف
-                    لأغراض خارج نطاق تجارته أو أعماله أو مهنته.
-                  </span>
-                  <span>
-                    الموقع الإلكتروني يعني موقعنا على www.Atlobha.com.
-                  </span>
+                  <span>{t.youAccept}</span>{" "}
                 </Box>
               </Box>
-
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.elibibility}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.hasEligibility}</li>
+                  <li style={{ marginBottom: "7px" }}>
+                    {t.confirmEligibility}
+                  </li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.infoAbout}
+                  <br />
+                  <p className="pt-1">{t.atlobhaDesccribe}</p>{" "}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.sellSpareParts}</li>
+                  <li style={{ marginBottom: "7px" }}>
+                    {t.maintenanceService}
+                  </li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.services}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.sellToCustomers}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.provideService}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.deliveryService}</li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.serviceAvailability}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>
+                    {t.deliverySpareParts}
+                  </li>
+                  <li style={{ marginBottom: "7px" }}>{t.maintenaceService}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.workingHrs}</li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.howWorks}
+                </Box>{" "}
+                <ol>
+                  <li style={{ marginBottom: "7px" }}>{t.makeRequest}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.pricedImmedialty}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.invoiceDetails}</li>
+                </ol>
+              </Box>
               <Divider sx={{ background: "#EAECF0", mb: 1 }} />
 
               <Box
@@ -126,22 +243,16 @@ function TermsCondition() {
                     mb: 1,
                   }}
                 >
-                  2. مبيعات الأعمال:
+                  {t.paymentsMethods}
+                  <br />
+                  <p className="pt-1">{t.multipleOptions}</p>{" "}
                 </Box>{" "}
                 <ul>
-                  <li style={{ marginBottom: "7px" }}>
-                    إذا طلبت سلعًا بخلاف كمستهلك (على سبيل المثال لأنك شركة
-                    تجارية) ، فعندئذٍ:
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    هذه الشروط والأحكام لا تنطبق و
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    تنطبق شروط وأحكام أعمالنا على طلبك وأي عقد ناتج بينك وبيننا.{" "}
-                  </li>
+                  <li style={{ marginBottom: "7px" }}>{t.cashOnriyadh}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.madaCredit}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.installBank}</li>
                 </ul>
               </Box>
-
               <Divider sx={{ background: "#EAECF0", mb: 1 }} />
 
               <Box
@@ -160,36 +271,67 @@ function TermsCondition() {
                     mb: 1,
                   }}
                 >
-                  بنود العقد:
+                  {t.Warranty}
+                  <br />
+                  <p className="pt-1">{t.originalwarranty}</p>{" "}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.monthOfCars}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.oneYear}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.yearAcccessories}</li>
+                  <li style={{ marginBottom: "7px" }}>{t.exceptionsParts}</li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.returnPolicyPart}
+                </Box>{" "}
+                <ul>
+                  <li style={{ marginBottom: "7px" }}>{t.timeToReturn}</li>
+                </ul>
+              </Box>
+              <Divider sx={{ background: "#EAECF0", mb: 1 }} />
+
+              <Box
+                sx={{
+                  padding: "15px  4px",
+                  color: "#374151",
+                  fontSize: "14px",
+                }}
+              >
+                <Box
+                  sx={{
+                    color: "#1C1C28",
+                    fontSize: "16px",
+                    fontWeight: "700",
+                    padding: "0px 16px",
+                    mb: 1,
+                  }}
+                >
+                  {t.propertyRight}
                 </Box>{" "}
                 <ul>
                   <li style={{ marginBottom: "7px" }}>
-                    إذا قمت بتقديم طلب للبضائع كمستهلك ، فإن هذه الشروط والأحكام
-                    تنطبق على طلبك والعقد بينك وبيننا.
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    يجوز لنا تغيير هذه الشروط والأحكام في أي وقت. ستنطبق أي
-                    تغييرات على أي طلبات تقوم بإدخالها بعد الوقت الذي نقوم فيه
-                    بتحديث الشروط والأحكام على موقعنا. لن تسري التغييرات على أي
-                    طلب تقدمه قبل إجراء التغييرات على موقعنا.
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    لقد حرصنا على التأكد من أن موقعنا الإلكتروني وهذه الشروط
-                    والأحكام لا تتعارض مع بعضها البعض. ومع ذلك ، إذا كان هناك أي
-                    تناقضات أو تناقضات ، فسيتم تطبيق هذه الشروط والأحكام بدلاً
-                    من أي جزء متناقض أو غير متسق من موقعنا على الإنترنت. عند
-                    إنشاء العقد ، لا يوجد عقد بينك وبيننا حتى نخطرك بقبولنا
-                    لطلبك وتسليم البضائع.{" "}
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    نحن لسنا ملزمين بقبول طلبك.
-                  </li>
-                  <li style={{ marginBottom: "7px" }}>
-                    يجوز لنا إلغاء طلبك إذا لم نتمكن من توريد البضائع لأي سبب.{" "}
+                    {t.propertyForAtlobha}
                   </li>
                 </ul>
               </Box>
-
               <Divider sx={{ background: "#EAECF0", mb: 1 }} />
             </Box>
           </div>

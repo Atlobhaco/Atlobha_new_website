@@ -98,10 +98,20 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                   }
                   data={pay}
                 />
-                <Box>
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => dispatch(setSelectedPayment({ data: pay }))}
+                >
                   {availablePaymentMethodImages({ payment_method: pay?.key })}
                 </Box>
-                <Box>
+                <Box
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  onClick={() => dispatch(setSelectedPayment({ data: pay }))}
+                >
                   {availablePaymentMethodText({ payment_method: pay?.key }, t)}
                 </Box>
               </Box>

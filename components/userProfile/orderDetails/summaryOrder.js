@@ -28,6 +28,7 @@ function SummaryOrder({
   orderDetails: { receipt = {} } = {},
   orderDetails = {},
   callSingleOrder = () => {},
+  calculateReceiptResFromMainPage,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -40,7 +41,6 @@ function SummaryOrder({
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
-  
 
   const header = {
     color: "#232323",
@@ -138,8 +138,8 @@ function SummaryOrder({
         return;
       }
       toast.success(t.successPayOrder);
-      callSingleOrder();
-      //   router.push(`/spareParts/confirmation/${res?.id}`);
+      router.push(`/spareParts/confirmation/${res?.id}`);
+      //   callSingleOrder();
     },
     onError: (err) => {
       setRedirectToPayfort(false);
@@ -170,6 +170,14 @@ function SummaryOrder({
     method: "post",
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
+      // check if amount to pay changed before pay
+      if (+res?.amount_to_pay !== +receipt?.amount_to_pay) {
+        toast.error(`${t.remainingtotal} ${t.beChanged}`);
+        setTimeout(() => {
+          callSingleOrder();
+        }, 500);
+        return;
+      }
       if (res?.amount_to_pay > 0) {
         callConfirmPricing();
       } else {
@@ -216,64 +224,63 @@ function SummaryOrder({
   document.body.appendChild(form);
 
   const handleApplePayPayment = async () => {
-	if (!window.ApplePaySession) {
-	  alert("Apple Pay is not supported on this device.");
-	  return;
-	}
-  
-	const paymentRequest = {
-	  countryCode: "SA", // Change based on your country
-	  currencyCode: "SAR",
-	  merchantCapabilities: ["supports3DS"],
-	  supportedNetworks: ["visa", "masterCard", "mada"],
-	  total: { label: "Atlobha soter", amount: "100.00" },
-	};
-  
-	const session = new ApplePaySession(3, paymentRequest);
-  
-	session.onvalidatemerchant = async (event) => {
-	  try {
-		const response = await fetch("/api/validateApplePay", {
-		  method: "POST",
-		  body: JSON.stringify({ validationURL: event.validationURL }),
-		  headers: { "Content-Type": "application/json" },
-		});
-  
-		const merchantSession = await response.json();
-		session.completeMerchantValidation(merchantSession);
-	  } catch (error) {
-		console.error("Merchant validation failed:", error);
-		session.abort();
-	  }
-	};
-  
-	session.onpaymentauthorized = async (event) => {
-	  try {
-		const paymentData = event.payment.token.paymentData;
-		
-		// Send the Apple Pay payment token to your backend
-		const response = await fetch("/api/payfortApplePay", {
-		  method: "POST",
-		  body: JSON.stringify({ applePayToken: paymentData }),
-		  headers: { "Content-Type": "application/json" },
-		});
-  
-		const result = await response.json();
-		
-		if (result.status === "success") {
-		  session.completePayment(ApplePaySession.STATUS_SUCCESS);
-		} else {
-		  session.completePayment(ApplePaySession.STATUS_FAILURE);
-		}
-	  } catch (error) {
-		console.error("Payment failed:", error);
-		session.completePayment(ApplePaySession.STATUS_FAILURE);
-	  }
-	};
-  
-	session.begin();
+    if (!window.ApplePaySession) {
+      alert("Apple Pay is not supported on this device.");
+      return;
+    }
+
+    const paymentRequest = {
+      countryCode: "SA", // Change based on your country
+      currencyCode: "SAR",
+      merchantCapabilities: ["supports3DS"],
+      supportedNetworks: ["visa", "masterCard", "mada"],
+      total: { label: "Atlobha soter", amount: "100.00" },
+    };
+
+    const session = new ApplePaySession(3, paymentRequest);
+
+    session.onvalidatemerchant = async (event) => {
+      try {
+        const response = await fetch("/api/validateApplePay", {
+          method: "POST",
+          body: JSON.stringify({ validationURL: event.validationURL }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const merchantSession = await response.json();
+        session.completeMerchantValidation(merchantSession);
+      } catch (error) {
+        console.error("Merchant validation failed:", error);
+        session.abort();
+      }
+    };
+
+    session.onpaymentauthorized = async (event) => {
+      try {
+        const paymentData = event.payment.token.paymentData;
+
+        // Send the Apple Pay payment token to your backend
+        const response = await fetch("/api/payfortApplePay", {
+          method: "POST",
+          body: JSON.stringify({ applePayToken: paymentData }),
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          session.completePayment(ApplePaySession.STATUS_SUCCESS);
+        } else {
+          session.completePayment(ApplePaySession.STATUS_FAILURE);
+        }
+      } catch (error) {
+        console.error("Payment failed:", error);
+        session.completePayment(ApplePaySession.STATUS_FAILURE);
+      }
+    };
+
+    session.begin();
   };
-  
 
   return (
     <Box
@@ -300,41 +307,63 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
         <Box sx={{ ...text, color: "#EB3C24" }}>
-          {receipt?.discount} {t.sar}
+          {calculateReceiptResFromMainPage?.discount === receipt?.discount
+            ? receipt?.discount
+            : calculateReceiptResFromMainPage?.discount}{" "}
+          {t.sar}
         </Box>
       </Box>
       {/* delivery fees */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.deliveryFees}</Box>
         <Box sx={text}>
-          {receipt?.delivery_fees} {t.sar}
+          {calculateReceiptResFromMainPage?.delivery_fees ===
+          receipt?.delivery_fees
+            ? receipt?.delivery_fees
+            : calculateReceiptResFromMainPage?.delivery_fees}{" "}
+          {t.sar}
         </Box>
       </Box>
       {/* pay from wallet balance */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.payFromBlanace}</Box>
         <Box sx={text}>
-          {receipt?.wallet_payment_value} {t.sar}
+          {calculateReceiptResFromMainPage?.wallet_payment_value ===
+          receipt?.wallet_payment_value
+            ? receipt?.wallet_payment_value
+            : calculateReceiptResFromMainPage?.wallet_payment_value}{" "}
+          {t.sar}
         </Box>
       </Box>
       {/* total pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.totalSum}</Box>
         <Box sx={text}>
-          {receipt?.total_price} {t.sar}
+          {calculateReceiptResFromMainPage?.total_price === receipt?.total_price
+            ? receipt?.total_price
+            : calculateReceiptResFromMainPage?.total_price}{" "}
+          {t.sar}
         </Box>
       </Box>
       {/* vat  percentage */}
       <Box sx={vat}>
-        {t.include} {receipt?.tax_percentage * 100}٪ {t.vatPercentage} (
-        {receipt?.tax} {t.sar})
+        {t.include}{" "}
+        {calculateReceiptResFromMainPage?.tax_percentage ===
+        receipt?.tax_percentage
+          ? receipt?.tax_percentage
+          : calculateReceiptResFromMainPage?.tax_percentage * 100}
+        ٪ {t.vatPercentage} ({receipt?.tax} {t.sar})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.remainingtotal}</Box>
         <Box sx={text}>
-          {+receipt?.amount_to_pay?.toFixed(2)}
+          {(calculateReceiptResFromMainPage?.amount_to_pay ===
+          receipt?.amount_to_pay
+            ? receipt?.amount_to_pay
+            : calculateReceiptResFromMainPage?.amount_to_pay
+          )?.toFixed(2)}{" "}
           {t.sar}
         </Box>
       </Box>
@@ -344,7 +373,11 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {receipt?.total_price} {t.sar}
+              {calculateReceiptResFromMainPage?.total_price ===
+              receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {t.sar}
             </Box>
           </Box>
           <SharedBtn
@@ -367,7 +400,11 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {receipt?.total_price} {t.sar}
+              {calculateReceiptResFromMainPage?.total_price ===
+              receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {t.sar}
             </Box>
           </Box>
           <SharedBtn
@@ -383,7 +420,11 @@ function SummaryOrder({
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
-              {receipt?.total_price} {t.sar}
+              {calculateReceiptResFromMainPage?.total_price ===
+              receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {t.sar}
             </Box>
           </Box>
           <SharedBtn
@@ -410,7 +451,7 @@ function SummaryOrder({
               ) {
                 handleApplePayPayment();
               } else {
-                callConfirmPricing();
+                callCalculateReceipt();
               }
             }}
           />

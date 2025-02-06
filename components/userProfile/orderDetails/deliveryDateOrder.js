@@ -1,12 +1,41 @@
+import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
+import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
-import React from "react";
+import moment from "moment";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 function DeliveryDateOrder({ orderDetails = {} }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const [LngLat, setLngLat] = useState();
+
+  const { data: estimateRes } = useCustomQuery({
+    name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng],
+    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
+    refetchOnWindowFocus: false,
+    enabled: LngLat?.lat && LngLat?.lng ? true : false,
+    select: (res) => res?.data?.data,
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error);
+    },
+  });
+
+  useEffect(() => {
+    if (
+      !orderDetails?.estimated_packaging_date &&
+      !orderDetails?.estimated_delivery_date
+    ) {
+      setLngLat({
+        lng: orderDetails?.address?.lng,
+        lat: orderDetails?.address?.lat,
+      });
+    }
+  }, [orderDetails]);
+
   return (
     <Box
       sx={{
@@ -39,12 +68,18 @@ function DeliveryDateOrder({ orderDetails = {} }) {
         <Box
           sx={{
             color: "#1FB256",
-            fontSize: isMobile ? "12px" : "16px",
+            fontSize: isMobile ? "12px" : "18px",
             fontWeight: "500",
             lineHeight: "24px",
           }}
         >
-          {orderDetails?.estimated_delivery_date || t.dateLater}
+          {orderDetails?.estimated_packaging_date
+            ? moment(orderDetails?.estimated_packaging_date).format(
+                "DD-MM-YYYY"
+              )
+            : orderDetails?.estimated_delivery_date
+            ? moment(orderDetails?.estimated_delivery_date).format("DD-MM-YYYY")
+            : estimateRes?.estimated_delivery_date_from || t.dateLater}
         </Box>
       </Box>
     </Box>

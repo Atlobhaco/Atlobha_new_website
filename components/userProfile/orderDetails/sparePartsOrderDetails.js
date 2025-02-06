@@ -28,7 +28,6 @@ function SparePartsOrderDetails({
   callSingleOrder = () => {},
   orderDetailsFetching = false,
 }) {
-
   if (orderDetailsFetching) {
     return (
       <Box className="d-flex align-items-center justify-content-center">
@@ -155,7 +154,7 @@ function SparePartsOrderDetails({
           <SummaryOrder
             orderDetails={orderDetails}
             callSingleOrder={callSingleOrder}
-            calculateReceipt={calculateReceipt}
+            calculateReceiptResFromMainPage={calculateReceipt}
           />
         </Box>
       )}

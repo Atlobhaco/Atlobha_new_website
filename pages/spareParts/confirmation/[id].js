@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import style from "./confirmation.module.scss";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
@@ -10,7 +10,13 @@ import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SharedBtn from "@/components/shared/SharedBtn";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import {
+  ESTIMATED_DELIVERY,
+  ORDERS,
+  SETTINGS,
+  SPARE_PARTS,
+} from "@/config/endPoints/endPoints";
+import moment from "moment";
 
 function Confirmation() {
   const { isMobile } = useScreenSize();
@@ -18,6 +24,7 @@ function Confirmation() {
   const router = useRouter();
   const { id } = router.query;
   const { t } = useLocalization();
+  const [LngLat, setLngLat] = useState(null);
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -30,12 +37,31 @@ function Confirmation() {
     );
   };
 
+  const { data: estimateRes } = useCustomQuery({
+    name: ["getEstimateDelivery", LngLat?.lat, LngLat?.lng],
+    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
+    refetchOnWindowFocus: false,
+    enabled: LngLat?.lat && LngLat?.lng ? true : false,
+    select: (res) => res?.data?.data,
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error);
+    },
+  });
+
   const { data, refetch: addPricing } = useCustomQuery({
     name: ["getDataforPricing", id],
     url: `${SPARE_PARTS}${ORDERS}/${id}`,
     refetchOnWindowFocus: false,
     enabled: id ? true : false,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      if (!res?.estimated_packaging_date && !res?.estimated_delivery_date) {
+        setLngLat({
+          lng: res?.address?.lng,
+          lat: res?.address?.lat,
+        });
+      }
+    },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
     },
@@ -101,7 +127,13 @@ function Confirmation() {
               width={isMobile ? 14 : 20}
               height={isMobile ? 14 : 20}
             />
-            {data?.estimated_delivery_date || t.dateLater}
+            {data?.estimated_packaging_date
+              ? moment(data?.estimated_packaging_date || "").format(
+                  "DD-MM-YYYY"
+                )
+              : data?.estimated_delivery_date
+              ? moment(data?.estimated_delivery_date || "").format("DD-MM-YYYY")
+              : estimateRes?.estimated_delivery_date_from || t.dateLater}
           </div>
         </div>
       </div>
