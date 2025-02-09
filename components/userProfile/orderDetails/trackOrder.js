@@ -5,7 +5,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import OrderStatus from "../ordersList/orderStatus/orderStatus";
 import { useRouter } from "next/router";
-import { ORDERSENUM } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/helpers";
 
 function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   const { t } = useLocalization();
@@ -42,36 +42,73 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   };
 
   const renderColorDependOnStatusProgress = (currentStep, index) => {
-    if (!orderDetails?.changes?.length) {
-      // If changes array is empty, first step is orange, rest are grey
+    if (orderDetails?.status === STATUS?.new) {
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
-
-    if (orderDetails?.status === "incomplete") {
-      return "#A1AEBE"; // grey color
+    if (orderDetails?.status === STATUS?.priced) {
+      return index === 0 ? "#1FB256" : index === 1 ? "#EE772F" : "#A1AEBE";
+    }
+    if (orderDetails?.status === STATUS?.confirmed) {
+      return index === 0 || index === 1
+        ? "#1FB256"
+        : (ORDERSENUM?.marketplace === type && index === 2) ||
+          (ORDERSENUM?.spareParts === type && index === 3)
+        ? "#EE772F"
+        : "#A1AEBE";
     }
 
-    const stepIndex = orderDetails.changes
-      ?.filter((d) => d?.status !== "ready-to-ship")
-      .findIndex((obj) => obj.status === currentStep);
+    if (orderDetails?.status === STATUS?.shipping) {
+      return index === 0 ||
+        index === 1 ||
+        (ORDERSENUM?.marketplace === type && index === 2) ||
+        (ORDERSENUM?.spareParts === type && index === 3)
+        ? "#1FB256"
+        : index === 4
+        ? "#EE772F"
+        : "#A1AEBE";
+    }
 
+    if (orderDetails?.status === STATUS?.delivered) {
+      return "#1FB256";
+    }
     if (
-      index ===
-      orderDetails?.changes?.filter((d) => d?.status !== "ready-to-ship")
-        ?.length
+      orderDetails?.status === STATUS?.cancelled ||
+      orderDetails?.status === STATUS?.incomplete ||
+      orderDetails?.status === STATUS?.returned
     ) {
-      return "#EE772F"; // Orange for the step immediately after the last found status
+      return "#A1AEBE"; //grey
     }
 
-    if (stepIndex === -1) {
-      return "#A1AEBE"; // Grey color if status is not found
-    }
+    // if (!orderDetails?.changes?.length) {
+    //   // If changes array is empty, first step is orange, rest are grey
+    //   return index === 0 ? "#EE772F" : "#A1AEBE";
+    // }
 
-    if (index === stepIndex) {
-      return "#1FB256"; // Green if the current step exists in changes
-    }
+    // if (orderDetails?.status === "incomplete") {
+    //   return "#A1AEBE"; // grey color
+    // }
 
-    return "#A1AEBE"; // Default grey for all other cases
+    // const stepIndex = orderDetails.changes
+    //   ?.filter((d) => d?.status !== "ready-to-ship")
+    //   .findIndex((obj) => obj.status === currentStep);
+
+    // if (
+    //   index ===
+    //   orderDetails?.changes?.filter((d) => d?.status !== "ready-to-ship")
+    //     ?.length
+    // ) {
+    //   return "#EE772F"; // Orange for the step immediately after the last found status
+    // }
+
+    // if (stepIndex === -1) {
+    //   return "#A1AEBE"; // Grey color if status is not found
+    // }
+
+    // if (index === stepIndex) {
+    //   return "#1FB256"; // Green if the current step exists in changes
+    // }
+
+    // return "#A1AEBE"; // Default grey for all other cases
   };
 
   //   if status new changes some time return status new and sometimes now
@@ -106,7 +143,7 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
           <Box sx={textStyle}>{t.inCorfirmed}</Box>
         </Box>
         {/* need to handle this type for marketplace and render the color */}
-        {/* {ORDERSENUM?.marketplace === type && (
+        {ORDERSENUM?.marketplace === type && (
           <Box sx={parentStyle}>
             <Box
               sx={{
@@ -119,12 +156,12 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
             />
             <Box sx={textStyle}>{t.inPrepare}</Box>
           </Box>
-        )} */}
+        )}
         <Box sx={parentStyle}>
           <Box
             sx={{
               ...lineStyle,
-              background: renderColorDependOnStatusProgress("shipping", 2),
+              background: renderColorDependOnStatusProgress("shipping", 3),
             }}
           />
           <Box sx={textStyle}>{t.inShipping}</Box>
@@ -133,7 +170,7 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
           <Box
             sx={{
               ...lineStyle,
-              background: renderColorDependOnStatusProgress("delivered", 3),
+              background: renderColorDependOnStatusProgress("delivered", 4),
             }}
           />
           <Box sx={textStyle}>{t.inDelivery}</Box>

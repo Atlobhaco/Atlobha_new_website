@@ -78,7 +78,7 @@ function DropDownAddress() {
               fontWeight: "400",
               width: "fit-content",
               cursor: "pointer",
-              maxWidth: "30vw",
+              maxWidth: isMobile ? "40vw" : "30vw",
               overflow: "hidden",
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
@@ -86,9 +86,19 @@ function DropDownAddress() {
             onClick={handleOpen}
             id="openAfterAddNewAddress"
           >
-            {selectedAddress?.address ||
-              defaultAddress?.address ||
-              t.noAddressSelected}{" "}
+            {selectedAddress?.city
+              ? `${selectedAddress?.city?.name},${
+                  locale === "ar"
+                    ? selectedAddress?.area?.name_ar
+                    : selectedAddress?.area?.name_en
+                }`
+              : defaultAddress?.city
+              ? `${defaultAddress?.city?.name},${
+                  locale === "ar"
+                    ? defaultAddress?.area?.name_ar
+                    : defaultAddress?.area?.name_en
+                }`
+              : t.noAddressSelected}{" "}
           </Box>
 
           <KeyboardArrowDownIcon

@@ -17,9 +17,10 @@ import Address from "../../public/icons/address-yellow.svg";
 import Wallet from "../../public/icons/wallet-yellow.svg";
 import Car from "../../public/icons/car-yellow.svg";
 import Order from "../../public/icons/orders-yellow.svg";
-import CarActive from "../../public/icons/car-actie.svg";
-import AddressActive from "../../public/icons/loca-active.svg";
-import OrderActive from "../../public/icons/order-active.svg";
+import CarActive from "../../public/icons/active-car-new.svg";
+import AddressActive from "../../public/icons/active-address-new.svg";
+import OrderActive from "../../public/icons/active-order-new.svg";
+import CardActive from "../../public/icons/cards-active-new.svg";
 import YellowGift from "../../public/icons/yellow-gift.svg";
 import Rate from "../../public/icons/rate.svg";
 import Favourite from "../../public/icons/favourite.svg";
@@ -98,20 +99,6 @@ function UserProfile() {
 
   const [quickSections, setQuickSections] = useState([
     {
-      src: <Wallet />,
-      title: t.myCards,
-      num: 0,
-      path: "wallet",
-    },
-    {
-      activeSrc: <CarActive />,
-      src: <Car />,
-      title: t.Cars,
-      num: 0,
-      onClick: () => router.push("/userProfile/myCars"),
-      path: "myCars",
-    },
-    {
       activeSrc: <OrderActive />,
       src: <Order />,
       title: t.myOrders,
@@ -127,6 +114,21 @@ function UserProfile() {
       onClick: () => router.push("/userProfile/myAddresses"),
       path: "myAddresses",
     },
+    {
+      src: <Wallet />,
+      title: t.myCards,
+      num: 0,
+      path: "wallet",
+      activeSrc: <CardActive />,
+    },
+    {
+      activeSrc: <CarActive />,
+      src: <Car />,
+      title: t.Cars,
+      num: 0,
+      onClick: () => router.push("/userProfile/myCars"),
+      path: "myCars",
+    },
   ]);
 
   const { data } = useCustomQuery({
@@ -141,19 +143,6 @@ function UserProfile() {
         setAllSections({
           data: [
             {
-              src: <Wallet />,
-              title: t.myCards,
-              num: 0,
-              path: "wallet",
-            },
-            {
-              activeSrc: <CarActive />,
-              src: <Car />,
-              title: t.Cars,
-              num: res?.vehicles_count,
-              path: "myCars",
-            },
-            {
               activeSrc: <OrderActive />,
               src: <Order />,
               title: t.myOrders,
@@ -167,24 +156,24 @@ function UserProfile() {
               num: res?.addresses_count,
               path: "myAddresses",
             },
+            {
+              src: <Wallet />,
+              title: t.myCards,
+              num: 0,
+              path: "wallet",
+              activeSrc: <CardActive />,
+            },
+            {
+              activeSrc: <CarActive />,
+              src: <Car />,
+              title: t.Cars,
+              num: res?.vehicles_count,
+              path: "myCars",
+            },
           ],
         })
       );
       setQuickSections([
-        {
-          src: <Wallet />,
-          title: t.myCards,
-          num: 0,
-          path: "wallet",
-        },
-        {
-          activeSrc: <CarActive />,
-          src: <Car />,
-          title: t.Cars,
-          num: res?.vehicles_count,
-          onClick: () => router.push("/userProfile/myCars"),
-          path: "myCars",
-        },
         {
           activeSrc: <OrderActive />,
           src: <Order />,
@@ -200,6 +189,21 @@ function UserProfile() {
           num: res?.addresses_count,
           onClick: () => router.push("/userProfile/myAddresses"),
           path: "myAddresses",
+        },
+        {
+          src: <Wallet />,
+          title: t.myCards,
+          num: 0,
+          path: "wallet",
+          activeSrc: <CardActive />,
+        },
+        {
+          activeSrc: <CarActive />,
+          src: <Car />,
+          title: t.Cars,
+          num: res?.vehicles_count,
+          onClick: () => router.push("/userProfile/myCars"),
+          path: "myCars",
         },
       ]);
     },

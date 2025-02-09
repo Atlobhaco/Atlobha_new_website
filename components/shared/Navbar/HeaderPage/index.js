@@ -3,18 +3,23 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 function HeaderPage() {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
   const spareParts = router?.pathname?.includes("spare");
+  const { allGroups } = useSelector((state) => state.appGroups);
 
   const renderHeaderDependOnUrl = () => {
     if (spareParts) {
       return t.sparePartPricing;
-    } else {
+    }
+    if (router?.pathname === "/") {
       return "طلبات المتجر";
+    } else {
+      return router?.query?.secTitle;
     }
   };
 

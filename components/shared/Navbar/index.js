@@ -24,7 +24,7 @@ import { USERS } from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
-import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
+import { MARKETPLACE, SPAREPARTS, orderEnumArray } from "@/constants/helpers";
 
 const firstPartStyle = {
   display: "flex",
@@ -48,7 +48,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { mobileScreen } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
-  const hideInSparePartsPage = router?.pathname?.includes("spare");
+  const hideInSpareOrSectionsPage =
+    router?.pathname?.includes("spare") ||
+    router?.pathname?.includes("sections");
   const hideComponent = hideNavbarInUrls.some((url) =>
     router?.pathname?.includes(url)
   );
@@ -158,13 +160,17 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     const marketPlaceColor = allGroups[0]?.sections?.find(
       (sec) => sec?.type === MARKETPLACE
     )?.background_color;
+    const sectionBgColor =
+      allGroups[1]?.sections?.find(
+        (sec) => sec?.type === router?.query?.secType
+      )?.background_color || "#DDECFF";
 
     if (router?.pathname === "/spareParts" || router?.pathname === "/") {
       return router?.pathname === "/spareParts"
         ? sparePartColor || "#FFF5EF"
         : marketPlaceColor || "#FFF5EF";
     } else {
-      return hideComponent ? "#F6F6F6" : "#FFF5EF";
+      return hideComponent ? "#F6F6F6" : sectionBgColor;
     }
   };
 
@@ -177,7 +183,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           ? "10px 20px 16px 20px"
           : hideComponent
           ? "24px 65px"
-          : "10px 62px 5px 62px",
+          : "10px 62px 0px 62px",
       }}
     >
       <Box className={`${style["navbar-container"]}`}>
@@ -190,14 +196,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             src="/logo/atlobha-ar-en.svg"
             onClick={() => router.push("/")}
           />
-          {!isMobile && hideInSparePartsPage && <CarPalette />}
+          {!isMobile && hideInSpareOrSectionsPage && <CarPalette />}
           {!hideComponent && (
             <>
               <AdvertiseHint />
               <HeaderPage />
             </>
           )}
-          {isMobile && hideInSparePartsPage && <CarPalette />}
+          {isMobile && hideInSpareOrSectionsPage && <CarPalette />}
         </Box>
         <Box sx={secondPartStyle}>
           <LanguageSwitcher />
@@ -310,7 +316,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </Box>
       </Box>
-      {!isMobile && !hideInSparePartsPage && !hideComponent && (
+      {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
         <Box className={`${style["searching"]}`}>
           <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
           <Box className={`${style["searching-sub"]}`}>
@@ -330,6 +336,8 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
+            arrayData={[...orderEnumArray()]}
+            // handleClick={(data) => console.log(data)}
           />
         </Box>
       )}

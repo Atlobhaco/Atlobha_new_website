@@ -135,6 +135,7 @@ function MyOrders() {
                 //   }
                 // }}
                 selectedSection={filters?.class}
+                showLineBelow={true}
               />
             </Box>
 

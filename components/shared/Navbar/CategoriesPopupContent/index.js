@@ -240,6 +240,14 @@ function CategoriesPopupcontent({
             ) : (
               <Grid item key={`${sec?.id}-${index}`} size={{ xs: 4, md: 2 }}>
                 <Box
+                  onClick={() => {
+                    router.push(
+                      `/sections?secTitle=${sec?.title}&&secType=${sec?.type}`
+                    );
+                    setTimeout(() => {
+                      setOpenCategories(false);
+                    }, 150);
+                  }}
                   sx={{
                     ...sectionService,
                     background: `url(${returnImgDependOnId(sec?.id)})`,

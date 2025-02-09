@@ -10,6 +10,7 @@ function SectionsNav({
   fontSize = false,
   arrayData = false,
   handleClick = () => {},
+  showLineBelow = false,
 }) {
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
@@ -22,8 +23,8 @@ function SectionsNav({
         overflow: "auto hidden",
         // gap: "8px",
         fontSize: isMobile ? "12px" : fontSize ? fontSize : "24px",
-        fontWeight: "700",
-        pb: 1,
+        mb: 1,
+        borderBottom: showLineBelow ? "1px solid #F0F0F0" : "unset",
       }}
     >
       {arrayData?.length
@@ -34,7 +35,12 @@ function SectionsNav({
                 setSelectedSection(data?.id);
                 handleClick(data?.id);
               }}
-              className={`${selectedSection === data?.id && style["active"]}`}
+              className={`${
+                selectedSection === data?.id && `${style["active"]}`
+              }`}
+              sx={{
+                fontWeight: selectedSection === data?.id ? "700" : "500",
+              }}
             >
               {data?.name}
             </Box>

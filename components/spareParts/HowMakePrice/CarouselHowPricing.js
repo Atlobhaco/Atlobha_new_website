@@ -7,7 +7,7 @@ import Carousel from "react-bootstrap/Carousel";
 function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
   const { locale } = useLocalization();
   const [hovered, setHovered] = useState(false);
-  const [carouselInterval, setCarouselInterval] = useState(3000); // Default interval is 3 seconds
+  const [carouselInterval, setCarouselInterval] = useState(1500); // Default interval is 3 seconds
 
   const slides = [
     {
@@ -44,7 +44,7 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
       setCarouselInterval(3000);
     }, 5000);
   };
-
+  
   return (
     <Box>
       <Carousel
@@ -54,7 +54,8 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
         // controls={false}
         indicators={false}
         activeIndex={activeIndex}
-        // onSelect={handleSelect}
+        onSelect={handleSelect}
+        autoplay={true}
         prevIcon={
           <span
             onClick={() =>
@@ -135,12 +136,12 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
             key={index}
             onClick={() => handleButtonClick(index)} // Adjust interval on click
             style={{
-              width: "12px",
-              height: "12px",
-              maxWidth: "12px",
-              maxHeight: "12px",
-              margin: "0 5px",
-              borderRadius: "50%",
+              width: index === activeIndex ? "20px" : "11px",
+              height: index === activeIndex ? "8px" : "11px",
+              maxWidth: index === activeIndex ? "20px" : "11px",
+              maxHeight: index === activeIndex ? "8px" : "11px",
+              margin: index === activeIndex ? "2px 5px" : "0 5px",
+              borderRadius: index === activeIndex ? "5px" : "50%",
               border: "none",
               backgroundColor: activeIndex === index ? "#000" : "#ccc",
               cursor: "pointer",

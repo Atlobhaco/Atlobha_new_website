@@ -17,7 +17,7 @@ function BasicSections({
 
   const mainStyle = {
     background: router?.pathname?.includes(path)
-      ? "#232323 !important"
+      ? "#FFD400 !important"
       : "white",
     padding: isMobile ? "16px 20px" : "20px 20px",
     display: "flex",
@@ -36,7 +36,7 @@ function BasicSections({
     },
   };
   const numStyle = {
-    background: router?.pathname?.includes(path) ? "#374151" : "#000",
+    background: router?.pathname?.includes(path) ? "#232323" : "#FFD400",
     padding: "2px 6px",
     borderRadius: "50%",
     color: "#fff",
@@ -45,7 +45,8 @@ function BasicSections({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    fontSize: isMobile ? "12px" : "16px",
+    fontSize: isMobile ? "12px" : "14px",
+    marginTop: "1px",
   };
 
   return (
@@ -62,9 +63,7 @@ function BasicSections({
           sx={{
             fontSize: isMobile ? "12px" : "17px",
             fontWeight: "500",
-            color: router?.pathname?.includes(path)
-              ? "#fff !important"
-              : "#232323",
+            color: "#232323",
           }}
         >
           {title}

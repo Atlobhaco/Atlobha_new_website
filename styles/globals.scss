@@ -409,9 +409,15 @@ div[aria-label="number input"] {
 .carousel-control-prev {
   right: 0 !important;
   left: auto !important;
+  &:hover {
+    background-image: unset !important;
+  }
 }
 
 .carousel-control-next {
   left: 0 !important;
   right: auto !important;
+  &:hover {
+    background-image: unset !important;
+  }
 }
