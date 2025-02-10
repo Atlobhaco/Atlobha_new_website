@@ -165,8 +165,8 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
         (sec) => sec?.type === router?.query?.secType
       )?.background_color || "#DDECFF";
 
-    if (router?.pathname === "/spareParts" || router?.pathname === "/") {
-      return router?.pathname === "/spareParts"
+    if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
+      return router?.pathname?.includes("/spareParts")
         ? sparePartColor || "#FFF5EF"
         : marketPlaceColor || "#FFF5EF";
     } else {

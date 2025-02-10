@@ -1,10 +1,23 @@
+import { ANNOUNCEMENT } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 function AdvertiseHint() {
   const { isMobile } = useScreenSize();
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
+  const router = useRouter();
+  const { secTitle, secType } = router.query;
+
+  const theDesiredPageIs =
+    secType || (router?.pathname === "/spareParts" ? SPAREPARTS : MARKETPLACE);
 
   const { locale } = useLocalization();
   const bgColor = (type) => {
@@ -18,7 +31,29 @@ function AdvertiseHint() {
     }
   };
 
-  return (
+  const { data: informativeMsg } = useCustomQuery({
+    name: [
+      "getInformativeMessage",
+      theDesiredPageIs,
+      selectedAddress?.lat || defaultAddress?.lat,
+    ],
+    url: `${ANNOUNCEMENT}/?lat=${
+      selectedAddress?.lat || defaultAddress?.lat
+    }&lng=${
+      selectedAddress?.lng || defaultAddress?.lng
+    }&type=information&app_section=${theDesiredPageIs}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled:
+      (selectedAddress?.lat || defaultAddress?.lat) &&
+      (selectedAddress?.lng || defaultAddress?.lng) &&
+      theDesiredPageIs
+        ? true
+        : false,
+  });
+
+
+  return informativeMsg ? (
     <Box
       sx={{
         background: bgColor("red"),
@@ -69,7 +104,7 @@ function AdvertiseHint() {
         `}
       </style>
     </Box>
-  );
+  ) : null;
 }
 
 export default AdvertiseHint;

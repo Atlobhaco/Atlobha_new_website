@@ -111,6 +111,13 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>{t.status.priced}</div>
           </div>
         );
+      case STATUS?.priceUnavailable:
+        return (
+          <div className={`${style["cancelled"]} ${style["status"]}`}>
+            <CancelIcon className={`${style["svg"]}`} />
+            <div className={`${style["text"]}`}>{t.status['pricing-unavailable']}</div>
+          </div>
+        );
       default:
         return status;
     }

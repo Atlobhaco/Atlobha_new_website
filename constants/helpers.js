@@ -102,6 +102,7 @@ export const STATUS = {
   incomplete: "incomplete",
   returned: "returned",
   priced: "priced",
+  priceUnavailable: "pricing-unavailable",
 };
 
 export const statusArray = () => {

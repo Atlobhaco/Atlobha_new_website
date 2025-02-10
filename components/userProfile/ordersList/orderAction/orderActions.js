@@ -1,34 +1,64 @@
 import React from "react";
 import style from "./orderAction.module.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/helpers";
 import SharedBtn from "@/components/shared/SharedBtn";
 import moment from "moment";
+import useLocalization from "@/config/hooks/useLocalization";
+import { useRouter } from "next/router";
+import { CircularProgress } from "@mui/material";
 
-function OrderActions({ order }) {
+function OrderActions({
+  order,
+  setOrderDetailsRePrice,
+  repeatPriceFetch,
+  orderDetailsReprice,
+}) {
+  const { t } = useLocalization();
+  const router = useRouter();
+
   const orderStatus = (status) => {
     switch (status) {
       case STATUS?.new:
-        return (
-          <div className={`${style["new"]}`}>
-            <div className={`${style["title"]}`}>يمكنك الغاء او تعديل طلبك</div>
-            <div className={`${style["text"]}`}>
-              <SharedBtn
-                text="cancelOrder"
-                className="outline-btn"
-                id="cancelOrder"
-                customClass={`${style["btn-style"]}`}
-              />
+        if (order?.class === ORDERSENUM?.marketplace) {
+          return (
+            <div className={`${style["new"]}`}>
+              <div className={`${style["title"]}`}>{t.orderUnderReview}</div>
+              {/* <div className={`${style["text"]}`}>
+                <SharedBtn
+                  text="cancelOrder"
+                  className="outline-btn"
+                  id="cancelOrder"
+                  customClass={`${style["btn-style"]}`}
+                />
+              </div> */}
             </div>
-          </div>
-        );
+          );
+        } else {
+          return (
+            <div className={`${style["new"]}`}>
+              <div className={`${style["title"]}`}>{t.waitForPricing}</div>
+              {/* <div className={`${style["text"]}`}>
+                <SharedBtn
+                  text="cancelOrder"
+                  className="outline-btn"
+                  id="cancelOrder"
+                  customClass={`${style["btn-style"]}`}
+                />
+              </div> */}
+            </div>
+          );
+        }
+
       case STATUS?.cancelled:
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>
-              طلب ملغي في
+              {t.orderCancelledOn}
               <span className={`${style["sub-title"]}`}>
-                {moment(order?.created_at)?.format("DD-MM-YYYY")}
+                {order?.status_updated_at
+                  ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
+                  : null}
               </span>
             </div>
           </div>
@@ -37,16 +67,18 @@ function OrderActions({ order }) {
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>
-              خرج للتوصيل في
+              {t.outForDelivery}
               <span className={`${style["sub-title"]}`}>
-                {moment(order?.created_at)?.format("DD-MM-YYYY")}
+                {order?.status_updated_at
+                  ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
+                  : null}
               </span>
             </div>
             <div className={`${style["text"]}`}>
               <SharedBtn
                 text="trackOrder"
                 className="outline-btn"
-                id="cancelOrder"
+                id="shippingOrder"
                 customClass={`${style["btn-style"]}`}
               />
             </div>
@@ -56,7 +88,7 @@ function OrderActions({ order }) {
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>
-              تم التوصيل في
+              {t.deliveredOn}
               <span className={`${style["sub-title"]}`}>
                 {moment(order?.created_at)?.format("DD-MM-YYYY")}
               </span>
@@ -65,7 +97,7 @@ function OrderActions({ order }) {
               <SharedBtn
                 text="rateOrder"
                 className="outline-btn"
-                id="cancelOrder"
+                id="deliveredOrder"
                 customClass={`${style["btn-style"]}`}
               />
             </div>
@@ -77,14 +109,14 @@ function OrderActions({ order }) {
             <div className={`${style["title"]}`}>
               <InfoIcon className={`${style["svg"]}`} />
               <span className={`${style["green-sub-title"]}`}>
-                يمكنك اكمال الدفع و تاكيد الطلب
+                {t.confirmOrderNow}
               </span>
             </div>
             <div className={`${style["text"]}`}>
               <SharedBtn
-                text="completePay"
                 className="outline-btn"
-                id="cancelOrder"
+                text="confimrOrderBtn"
+                id="payPendingOrder"
                 customClass={`${style["btn-style"]}`}
               />
             </div>
@@ -101,22 +133,82 @@ function OrderActions({ order }) {
                 className={`${style["svg"]}`}
               />
               <span className={`${style["orange-sub-title"]}`}>
-                طلب مرجع جزئبا في
-              </span>
-              <span className={`${style["sub-title"]}`}>
-                {moment(order?.created_at)?.format("DD-MM-YYYY")}
+                {t.orderCanReprice}
               </span>
             </div>
             <div className={`${style["text"]}`}>
               <SharedBtn
-                text="completePay"
+                text="repriceOrderAgain"
                 className="outline-btn"
                 id="cancelOrder"
+                customClass={`${style["btn-style"]}`}
+                disabled={
+                  repeatPriceFetch && order?.id === orderDetailsReprice?.id
+                }
+                comAfterText={
+                  repeatPriceFetch && order?.id === orderDetailsReprice?.id ? (
+                    <CircularProgress color="inherit" size={15} />
+                  ) : null
+                }
+                onClick={(e) => {
+                  e?.preventDefault();
+                  e?.stopPropagation();
+                  setOrderDetailsRePrice(order);
+                }}
+              />
+            </div>
+          </div>
+        );
+      case STATUS?.priced:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>
+              <InfoIcon className={`${style["svg"]}`} />
+              <span className={`${style["green-sub-title"]}`}>
+                {t.confirmOrderNow}
+              </span>
+            </div>
+            <div className={`${style["text"]}`}>
+              <SharedBtn
+                text="confimrOrderBtn"
+                className="outline-btn"
+                id="priceOrder"
                 customClass={`${style["btn-style"]}`}
               />
             </div>
           </div>
         );
+
+      case STATUS?.confirmed:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>{t.orderUnderReview}</div>
+            {/* <div className={`${style["text"]}`}>
+					<SharedBtn
+					  text="cancelOrder"
+					  className="outline-btn"
+					  id="cancelOrder"
+					  customClass={`${style["btn-style"]}`}
+					/>
+				  </div> */}
+          </div>
+        );
+
+      case STATUS?.priceUnavailable:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>{t.priceNotAvaiilable}</div>
+            {/* <div className={`${style["text"]}`}>
+						<SharedBtn
+						  text="cancelOrder"
+						  className="outline-btn"
+						  id="cancelOrder"
+						  customClass={`${style["btn-style"]}`}
+						/>
+					  </div> */}
+          </div>
+        );
+
       default:
         return status;
     }

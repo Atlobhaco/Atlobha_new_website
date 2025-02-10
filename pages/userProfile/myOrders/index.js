@@ -142,7 +142,11 @@ function MyOrders() {
             <Box>
               {orders?.length ? (
                 orders?.map((singleOrder) => (
-                  <OrdersList key={singleOrder?.id} order={singleOrder} />
+                  <OrdersList
+                    key={singleOrder?.id}
+                    order={singleOrder}
+                    callOrders={callOrders}
+                  />
                 ))
               ) : (
                 <Box

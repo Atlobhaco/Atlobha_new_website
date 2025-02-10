@@ -171,7 +171,7 @@
   "total": "الاجمالي",
   "cancelOrder": "الغاء طلبك",
   "trackOrder": "تتبع طلبك",
-  "rateOrder": "قيم طلبك",
+  "rateOrder": "تقييم عناصر الطلب",
   "completePay": "اكمل الدفع",
   "addPhoneNum": "أضف رقم الهاتف",
   "mergeAccount": "دمج الحسابين",
@@ -203,7 +203,8 @@
     "cancelled": "تم الإلغاء",
     "incomplete": "غير مكتمل",
     "returned": "إرجاع",
-    "priced": "مسعر"
+    "priced": "مسعر",
+    "pricing-unavailable": "غير متاح"
   },
   "noResultsFound": "لا يوجد نتائج",
   "order": {
@@ -326,5 +327,15 @@
   "returnPolicyPart": "سياسة الارجاع",
   "timeToReturn": "يتم استرداد المبالغ خلال 7 إلى 21 يوًما من استلام القطعة المسترجعة.",
   "propertyRight": "الملكية الفكرية",
-  "propertyForAtlobha": "جميع الحقوق محفوظة لـ ”اطلبها”. لا يجوز نسخ أو استخدام المحتوى إلا للاغراض الشخصية."
+  "propertyForAtlobha": "جميع الحقوق محفوظة لـ ”اطلبها”. لا يجوز نسخ أو استخدام المحتوى إلا للاغراض الشخصية.",
+  "orderUnderReview": "الطلب قيد المراجعة",
+  "waitForPricing": "بانتظار التسعير",
+  "outForDelivery": "خرج للتوصيل في ",
+  "deliveredOn": "تم التوصيل في ",
+  "orderCancelledOn": "طلب ملغي في",
+  "orderCanReprice": "يمكنك اعادة التسعير من جديد",
+  "repriceOrderAgain": "إعادة تسعير",
+  "confirmOrderNow": "قم بتأكيد طلبك !",
+  "confimrOrderBtn": "تأكيد طلبك",
+  "priceNotAvaiilable": "الطلب غير متاح"
 }

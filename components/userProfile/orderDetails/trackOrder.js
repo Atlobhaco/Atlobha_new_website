@@ -5,7 +5,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import OrderStatus from "../ordersList/orderStatus/orderStatus";
 import { useRouter } from "next/router";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS, statusArray } from "@/constants/helpers";
 
 function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   const { t } = useLocalization();
@@ -71,49 +71,23 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
     if (orderDetails?.status === STATUS?.delivered) {
       return "#1FB256";
     }
-    if (
-      orderDetails?.status === STATUS?.cancelled ||
-      orderDetails?.status === STATUS?.incomplete ||
-      orderDetails?.status === STATUS?.returned
-    ) {
+    if (orderDetails?.status === STATUS?.returned) {
       return "#A1AEBE"; //grey
     }
+    if (
+      orderDetails?.status === STATUS?.cancelled ||
+      orderDetails?.status === STATUS?.priceUnavailable ||
+      orderDetails?.status === STATUS?.incomplete
+    ) {
+      return index === 0 ? "#1FB256" : "#EB3C24";
+    }
 
-    // if (!orderDetails?.changes?.length) {
-    //   // If changes array is empty, first step is orange, rest are grey
-    //   return index === 0 ? "#EE772F" : "#A1AEBE";
-    // }
-
-    // if (orderDetails?.status === "incomplete") {
-    //   return "#A1AEBE"; // grey color
-    // }
-
-    // const stepIndex = orderDetails.changes
-    //   ?.filter((d) => d?.status !== "ready-to-ship")
-    //   .findIndex((obj) => obj.status === currentStep);
-
-    // if (
-    //   index ===
-    //   orderDetails?.changes?.filter((d) => d?.status !== "ready-to-ship")
-    //     ?.length
-    // ) {
-    //   return "#EE772F"; // Orange for the step immediately after the last found status
-    // }
-
-    // if (stepIndex === -1) {
-    //   return "#A1AEBE"; // Grey color if status is not found
-    // }
-
-    // if (index === stepIndex) {
-    //   return "#1FB256"; // Green if the current step exists in changes
-    // }
-
-    // return "#A1AEBE"; // Default grey for all other cases
+    // "#EB3C24" red color
+    // "#1FB256" green color
+    // "#A1AEBE" grey color
+    // "#EE772F" orange color
   };
 
-  //   if status new changes some time return status new and sometimes now
-  //   ex 223325 here not
-  //   ex 223148 returned
   return (
     <Box
       sx={{
@@ -121,62 +95,96 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
         background: "#F6F6F6",
       }}
     >
-      <Box>
-        {ORDERSENUM?.spareParts === type && (
-          <Box sx={parentStyle}>
+      {orderDetails?.status === STATUS?.cancelled ||
+      orderDetails?.status === STATUS?.priceUnavailable ||
+      orderDetails?.status === STATUS?.incomplete ||
+      orderDetails?.status === STATUS?.returned ? (
+        <>
+          <Box sx={{ ...parentStyle, width: "50%" }}>
             <Box
               sx={{
                 ...lineStyle,
                 background: renderColorDependOnStatusProgress("priced", 0),
               }}
             />
-            <Box sx={textStyle}>{t.inPricing}</Box>
+            <Box sx={textStyle}>
+              {orderDetails?.status === STATUS?.incomplete
+                ? t.inPricing
+                : t.new}
+            </Box>
           </Box>
-        )}
-        <Box sx={parentStyle}>
-          <Box
-            sx={{
-              ...lineStyle,
-              background: renderColorDependOnStatusProgress("confirmed", 1),
-            }}
-          />
-          <Box sx={textStyle}>{t.inCorfirmed}</Box>
-        </Box>
-        {/* need to handle this type for marketplace and render the color */}
-        {ORDERSENUM?.marketplace === type && (
-          <Box sx={parentStyle}>
+
+          <Box sx={{ ...parentStyle, width: "50%" }}>
             <Box
               sx={{
                 ...lineStyle,
-                background: renderColorDependOnStatusProgress(
-                  "ready-to-ship",
-                  2
-                ),
+                background: renderColorDependOnStatusProgress("confirmed", 1),
               }}
             />
-            <Box sx={textStyle}>{t.inPrepare}</Box>
+            <Box sx={textStyle}>
+              {statusArray()?.find((d) => d?.id === orderDetails?.status)?.name}
+            </Box>
           </Box>
-        )}
-        <Box sx={parentStyle}>
-          <Box
-            sx={{
-              ...lineStyle,
-              background: renderColorDependOnStatusProgress("shipping", 3),
-            }}
-          />
-          <Box sx={textStyle}>{t.inShipping}</Box>
-        </Box>
-        <Box sx={parentStyle}>
-          <Box
-            sx={{
-              ...lineStyle,
-              background: renderColorDependOnStatusProgress("delivered", 4),
-            }}
-          />
-          <Box sx={textStyle}>{t.inDelivery}</Box>
-        </Box>
-      </Box>
-
+        </>
+      ) : (
+        <>
+          <Box>
+            {ORDERSENUM?.spareParts === type && (
+              <Box sx={parentStyle}>
+                <Box
+                  sx={{
+                    ...lineStyle,
+                    background: renderColorDependOnStatusProgress("priced", 0),
+                  }}
+                />
+                <Box sx={textStyle}>{t.inPricing}</Box>
+              </Box>
+            )}
+            <Box sx={parentStyle}>
+              <Box
+                sx={{
+                  ...lineStyle,
+                  background: renderColorDependOnStatusProgress("confirmed", 1),
+                }}
+              />
+              <Box sx={textStyle}>{t.inCorfirmed}</Box>
+            </Box>
+            {/* need to handle this type for marketplace and render the color */}
+            {ORDERSENUM?.marketplace === type && (
+              <Box sx={parentStyle}>
+                <Box
+                  sx={{
+                    ...lineStyle,
+                    background: renderColorDependOnStatusProgress(
+                      "ready-to-ship",
+                      2
+                    ),
+                  }}
+                />
+                <Box sx={textStyle}>{t.inPrepare}</Box>
+              </Box>
+            )}
+            <Box sx={parentStyle}>
+              <Box
+                sx={{
+                  ...lineStyle,
+                  background: renderColorDependOnStatusProgress("shipping", 3),
+                }}
+              />
+              <Box sx={textStyle}>{t.inShipping}</Box>
+            </Box>
+            <Box sx={parentStyle}>
+              <Box
+                sx={{
+                  ...lineStyle,
+                  background: renderColorDependOnStatusProgress("delivered", 4),
+                }}
+              />
+              <Box sx={textStyle}>{t.inDelivery}</Box>
+            </Box>
+          </Box>
+        </>
+      )}
       <Box
         sx={{
           mt: 2,

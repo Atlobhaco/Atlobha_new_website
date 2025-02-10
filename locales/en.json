@@ -172,7 +172,7 @@
   "total": "Total",
   "cancelOrder": "cancel order",
   "trackOrder": "track order",
-  "rateOrder": "rate order",
+  "rateOrder": "Review order items",
   "completePay": "complete payment",
   "addPhoneNum": "Add phone number",
   "mergeAccount": "Merge account",
@@ -204,7 +204,8 @@
     "cancelled": "cancelled",
     "incomplete": "incomplete",
     "returned": "returned",
-    "priced": "priced"
+    "priced": "priced",
+    "pricing-unavailable": "not available"
   },
   "noResultsFound": "No results found",
   "order": {
@@ -228,7 +229,7 @@
   "inPricing": "Pricing",
   "inCorfirmed": "confirmed",
   "inPrepare": "Prepared",
-  "inShipping": "Shipping",
+  "inShipping": "Delivering",
   "inDelivery": "Delivered",
   "payAndConfirm": "pay and confirm",
   "payMethods": {
@@ -326,5 +327,15 @@
   "returnPolicyPart": "Return Policy",
   "timeToReturn": "Refunds are processed within 7 to 21 business days from the date of receiving the returned item.",
   "propertyRight": "Intellectual Property Rights",
-  "propertyForAtlobha": "All intellectual property rights for the app and its content are owned by “Atlobha.” No copying, sharing, or reproduction of content is allowed except for personal use."
+  "propertyForAtlobha": "All intellectual property rights for the app and its content are owned by “Atlobha.” No copying, sharing, or reproduction of content is allowed except for personal use.",
+  "orderUnderReview": "The order is under review",
+  "waitForPricing": "Awaiting pricing.",
+  "outForDelivery": "Out for delivery at ",
+  "deliveredOn": "Delivered on ",
+  "orderCancelledOn": "Order canceled on",
+  "orderCanReprice": "order is incomplete. reprice it",
+  "repriceOrderAgain": "Reprice Order",
+  "confirmOrderNow": "Confirm your order!",
+  "confimrOrderBtn": "Confirm Your Order",
+  "priceNotAvaiilable": "The order is not available."
 }
