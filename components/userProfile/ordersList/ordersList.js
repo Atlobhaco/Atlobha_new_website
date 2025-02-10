@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./orderList.module.scss";
 import { Box } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
-import { ORDERSENUM } from "@/constants/helpers";
+import { ORDERSENUM } from "@/constants/enums";
 import moment from "moment";
 import OrderStatus from "./orderStatus/orderStatus";
 import OrderActions from "./orderAction/orderActions";

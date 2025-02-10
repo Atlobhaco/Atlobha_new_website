@@ -1,0 +1,39 @@
+export const MARKETPLACE = "marketplace";
+export const SPAREPARTS = "spare-parts";
+
+export const UrlsSpecific = ["userProfile"];
+
+export const ORDERSENUM = {
+  marketplace: "MarketplaceOrder",
+  spareParts: "SparePartsOrder",
+  estimation: "EstimationRequest",
+  maintenance: "MaintenanceReservation",
+  portable: "PortableMaintenanceReservation",
+  //   midEast: "MideastOrder",
+  //   majdou: "MajdouieMaintenanceReservation",
+};
+
+export const STATUS = {
+  new: "new",
+  received: "received",
+  payPending: "payment-pending",
+  confirmed: "confirmed",
+  shipping: "shipping",
+  delivered: "delivered",
+  cancelled: "cancelled",
+  incomplete: "incomplete",
+  returned: "returned",
+  priced: "priced",
+  priceUnavailable: "pricing-unavailable",
+};
+
+export const PAYMENT_METHODS = {
+  credit: "CREDIT",
+  cash: "CASH",
+  applePay: "APPLE-PAY",
+  stcPay: "STC-PAY",
+  installment: "INSTALLMENT",
+  banktransfer: "BANK-TRANSFER",
+  tabby: "TABBY",
+  wallet: "WALLET",
+};

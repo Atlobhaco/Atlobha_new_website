@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./orderAction.module.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import SharedBtn from "@/components/shared/SharedBtn";
 import moment from "moment";
 import useLocalization from "@/config/hooks/useLocalization";

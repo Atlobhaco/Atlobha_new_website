@@ -3,11 +3,11 @@ import { PAYMENT } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import {
-  PAYMENT_METHODS,
   availablePaymentMethodImages,
   availablePaymentMethodText,
   checkApplePayAvailability,
 } from "@/constants/helpers";
+import { PAYMENT_METHODS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { setSelectedPayment } from "@/redux/reducers/selectedPaymentMethod";
 import { Box } from "@mui/material";

@@ -2,6 +2,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import crypto from "crypto";
+import { ORDERSENUM, PAYMENT_METHODS, STATUS } from "./enums";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -40,6 +41,9 @@ export const getUserCurrentLocation = () => {
   }
 };
 
+/* -------------------------------------------------------------------------- */
+/*                           localize address naming                          */
+/* -------------------------------------------------------------------------- */
 export const translateAddressName = (name, locale) => {
   switch (name) {
     case "Home":
@@ -51,6 +55,9 @@ export const translateAddressName = (name, locale) => {
   }
 };
 
+/* -------------------------------------------------------------------------- */
+/*                    used in  filters  in endpoint calling                   */
+/* -------------------------------------------------------------------------- */
 export const getFilterParams = (filters) => {
   const params = new URLSearchParams();
 
@@ -62,26 +69,9 @@ export const getFilterParams = (filters) => {
   });
   return params.toString(); // Returns a query string format
 };
-
-export const UrlsSpecific = ["userProfile"];
-
 /* -------------------------------------------------------------------------- */
-/*                       constants keyword along the app                      */
+/*                            order enum localized                            */
 /* -------------------------------------------------------------------------- */
-
-export const MARKETPLACE = "marketplace";
-export const SPAREPARTS = "spare-parts";
-
-export const ORDERSENUM = {
-  marketplace: "MarketplaceOrder",
-  spareParts: "SparePartsOrder",
-  estimation: "EstimationRequest",
-  maintenance: "MaintenanceReservation",
-  portable: "PortableMaintenanceReservation",
-  //   midEast: "MideastOrder",
-  //   majdou: "MajdouieMaintenanceReservation",
-};
-
 export const orderEnumArray = () => {
   const { t } = useLocalization();
 
@@ -91,20 +81,9 @@ export const orderEnumArray = () => {
   }));
 };
 
-export const STATUS = {
-  new: "new",
-  received: "received",
-  payPending: "payment-pending",
-  confirmed: "confirmed",
-  shipping: "shipping",
-  delivered: "delivered",
-  cancelled: "cancelled",
-  incomplete: "incomplete",
-  returned: "returned",
-  priced: "priced",
-  priceUnavailable: "pricing-unavailable",
-};
-
+/* -------------------------------------------------------------------------- */
+/*                            status enum localized                           */
+/* -------------------------------------------------------------------------- */
 export const statusArray = () => {
   const { t } = useLocalization();
 
@@ -114,17 +93,9 @@ export const statusArray = () => {
   }));
 };
 
-export const PAYMENT_METHODS = {
-  credit: "CREDIT",
-  cash: "CASH",
-  applePay: "APPLE-PAY",
-  stcPay: "STC-PAY",
-  installment: "INSTALLMENT",
-  banktransfer: "BANK-TRANSFER",
-  tabby: "TABBY",
-  wallet: "WALLET",
-};
-
+/* -------------------------------------------------------------------------- */
+/*                      available payment methods images                      */
+/* -------------------------------------------------------------------------- */
 export const availablePaymentMethodImages = (
   orderDetails = {},
   isMobile = false
@@ -226,6 +197,9 @@ export const availablePaymentMethodImages = (
   }
 };
 
+/* -------------------------------------------------------------------------- */
+/*                       available payment methods text                       */
+/* -------------------------------------------------------------------------- */
 export const availablePaymentMethodText = (
   orderDetails = {},
   t = () => {},

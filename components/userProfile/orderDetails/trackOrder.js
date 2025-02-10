@@ -5,7 +5,8 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import OrderStatus from "../ordersList/orderStatus/orderStatus";
 import { useRouter } from "next/router";
-import { ORDERSENUM, STATUS, statusArray } from "@/constants/helpers";
+import { statusArray } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 
 function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   const { t } = useLocalization();

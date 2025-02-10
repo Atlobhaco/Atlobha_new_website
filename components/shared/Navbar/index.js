@@ -24,7 +24,8 @@ import { USERS } from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
-import { MARKETPLACE, SPAREPARTS, orderEnumArray } from "@/constants/helpers";
+import { orderEnumArray } from "@/constants/helpers";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 
 const firstPartStyle = {
   display: "flex",

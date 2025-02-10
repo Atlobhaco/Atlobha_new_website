@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SharedCheckbox from "@/components/shared/SharedCheckbox";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { ADDRESS, ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 

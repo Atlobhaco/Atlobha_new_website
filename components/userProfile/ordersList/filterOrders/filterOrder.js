@@ -8,7 +8,8 @@ import SharedDropDown from "@/components/shared/SharedDropDown";
 import SharedDatePicker from "@/components/shared/SharedDatePicker";
 import useLocalization from "@/config/hooks/useLocalization";
 import SharedBtn from "@/components/shared/SharedBtn";
-import { STATUS, statusArray } from "@/constants/helpers";
+import { statusArray } from "@/constants/helpers";
+import { STATUS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function FilterOrder({

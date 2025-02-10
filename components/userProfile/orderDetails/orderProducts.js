@@ -1,12 +1,12 @@
 import SharedBtn from "@/components/shared/SharedBtn";
 import SparePartItem from "@/components/spareParts/AddSparePart/SparePartItem";
 import useLocalization from "@/config/hooks/useLocalization";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Dialog } from "@mui/material";
 import React, { useState } from "react";
 import style from "../../../pages/spareParts/confirmation/confirmation.module.scss";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import Image from "next/image";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import {
   addOrUpdateSparePart,
   clearSpareParts,
@@ -29,6 +29,7 @@ function OrderProducts({
   const [editMode, setEditMode] = useState(false);
   const dispatch = useDispatch();
   const { selectedParts } = useSelector((state) => state.addSpareParts);
+  const [largeImage, setLargeImage] = useState(false);
 
   const imgHolderStyle = {
     borderRadius: isMobile ? "8px" : "20px",
@@ -37,6 +38,7 @@ function OrderProducts({
     height: isMobile ? "50px" : "62px",
     background: "#E6E6E6",
     display: "flex",
+    cursor: "pointer",
   };
 
   const renderUrlDependOnType = () => {
@@ -190,6 +192,9 @@ function OrderProducts({
                       width={isMobile ? 50 : 61}
                       height={isMobile ? 50 : 61}
                       alt="spare-part"
+                      onClick={() =>
+                        setLargeImage(part?.image ? part?.image : false)
+                      } // Open modal on click
                     />
                   </Box>
                   <div
@@ -205,18 +210,39 @@ function OrderProducts({
                     </div>
                   </div>
                 </div>
-                <div
-                  style={{
-                    color: "#EE772F",
-                    fontWeight: "500",
-                    fontSize: isMobile ? "14px" : "16px",
-                  }}
-                >
-                  {part?.total_price} {t.sar}
-                </div>
+                {orderDetails?.status !== STATUS?.new ? (
+                  <div
+                    style={{
+                      color: "#EE772F",
+                      fontWeight: "500",
+                      fontSize: isMobile ? "14px" : "16px",
+                    }}
+                  >
+                    {part?.total_price} {t.sar}
+                  </div>
+                ) : null}
               </div>
             ))}
       </Box>
+      <Dialog
+        maxWidth="lg"
+        open={largeImage ? true : false}
+        onClose={() => setLargeImage(false)}
+        sx={{
+          minWidth: "100% !important",
+        }}
+      >
+        <Image
+          src={largeImage}
+          width={500}
+          height={500}
+          alt="spare-part-large"
+          style={{
+            width: "auto",
+            height: "auto",
+          }} // Responsive sizing
+        />
+      </Dialog>
     </Box>
   );
 }

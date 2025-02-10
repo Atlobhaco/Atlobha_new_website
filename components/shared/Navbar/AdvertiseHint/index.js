@@ -1,7 +1,7 @@
 import { ANNOUNCEMENT } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";

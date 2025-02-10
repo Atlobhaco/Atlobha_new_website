@@ -13,8 +13,8 @@ import CategoriesPopupcontent from "@/components/shared/Navbar/CategoriesPopupCo
 import { useRouter } from "next/router";
 import Footer from "@/components/shared/Footer";
 import Login from "@/components/Login";
-import { UrlsSpecific } from "@/constants/helpers";
 import ScrollToTop from "@/components/ScrollToTop";
+import { UrlsSpecific } from "@/constants/enums";
 
 function Layout({ children }) {
   const { t } = useLocalization();

@@ -7,7 +7,7 @@ import OrderProducts from "./orderProducts";
 import OrderAddress from "./orderAddress";
 import SharedBtn from "@/components/shared/SharedBtn";
 import { Box, CircularProgress, Divider } from "@mui/material";
-import { ORDERSENUM, STATUS } from "@/constants/helpers";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import useCustomQuery from "@/config/network/Apiconfig";
 import {
   CALCULATE_RECEIPT,

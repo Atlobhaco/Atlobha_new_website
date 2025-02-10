@@ -51,7 +51,7 @@ function SparePartItem({ data, insideOrder = false }) {
       <Box>
         <AddRemoveSparePart data={data} insideOrder={insideOrder} />
       </Box>
-      {insideOrder && (
+      {/* {insideOrder && (
         <Box
           sx={{
             display: "flex",
@@ -64,7 +64,7 @@ function SparePartItem({ data, insideOrder = false }) {
         >
           {data?.total_price} {t.sar}
         </Box>
-      )}
+      )} */}
     </Box>
   );
 }

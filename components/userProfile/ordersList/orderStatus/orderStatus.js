@@ -2,7 +2,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import React from "react";
 import style from "./orderStatus.module.scss";
 import InfoIcon from "@mui/icons-material/Info";
-import { STATUS } from "@/constants/helpers";
+import { STATUS } from "@/constants/enums";
 import CancelIcon from "@mui/icons-material/Cancel";
 import Image from "next/image";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";

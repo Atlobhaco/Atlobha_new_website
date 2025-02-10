@@ -4,7 +4,7 @@ import React from "react";
 import UserProfile from "../..";
 import BreadCrumb from "@/components/BreadCrumb";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { ORDERSENUM } from "@/constants/helpers";
+import { ORDERSENUM } from "@/constants/enums";
 import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
 import { toast } from "react-toastify";

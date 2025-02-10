@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { useDispatch } from "react-redux";
-import { MARKETPLACE, SPAREPARTS } from "@/constants/helpers";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 
 const active = {
   border: "1px solid #F9DD4B",
@@ -118,8 +118,8 @@ function CategoriesPopupcontent({
     onSuccess: (res) => {
       setAppGroups(res);
       setMainGroups(res);
-      // open anyway but not in order page
-      if (!route?.includes("myOrders")) {
+      // open anyway but not in order page or confirmation
+      if (!route?.includes("myOrders") && !route?.includes("confirmation")) {
         setOpenCategories(true);
       }
       dispatch(setAllGroups(res));

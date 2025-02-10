@@ -9,12 +9,8 @@ import {
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import {
-  ORDERSENUM,
-  PAYMENT_METHODS,
-  STATUS,
-  generateSignature,
-} from "@/constants/helpers";
+import { generateSignature } from "@/constants/helpers";
+import { ORDERSENUM, STATUS, PAYMENT_METHODS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import moment from "moment";
