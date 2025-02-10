@@ -92,7 +92,7 @@ function DialogCentered({
         } ${customClass}`,
       }}
       open={open}
-      TransitionComponent={Transition}
+    //   TransitionComponent={Transition}
       keepMounted
       onClose={() => {
         handleClose();
