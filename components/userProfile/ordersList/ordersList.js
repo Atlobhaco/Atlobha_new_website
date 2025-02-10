@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./orderList.module.scss";
 import { Box } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
-import { ORDERSENUM } from "@/constants/enums";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import moment from "moment";
 import OrderStatus from "./orderStatus/orderStatus";
 import OrderActions from "./orderAction/orderActions";
@@ -96,19 +96,21 @@ function OrdersList({ order, callOrders }) {
             <div>
               <OrderStatus status={order?.status} />
             </div>
-            <Box className={`${style["price"]}`}>
-              {/* can not find price before */}
-              {/* <span>{order?.receipt?.total_price}</span>{" "} */}
-              {order?.receipt?.total_price && (
-                <Box
-                  sx={{
-                    color: order?.receipt?.total_price ? "#EE772F" : "red",
-                  }}
-                >
-                  {order?.receipt?.total_price} {t.sar}
-                </Box>
-              )}
-            </Box>
+            {order?.status !== STATUS?.new && (
+              <Box className={`${style["price"]}`}>
+                {/* can not find price before */}
+                {/* <span>{order?.receipt?.total_price}</span>{" "} */}
+                {order?.receipt?.total_price && (
+                  <Box
+                    sx={{
+                      color: order?.receipt?.total_price ? "#EE772F" : "red",
+                    }}
+                  >
+                    {order?.receipt?.total_price} {t.sar}
+                  </Box>
+                )}
+              </Box>
+            )}
           </div>
         </div>
       </div>
