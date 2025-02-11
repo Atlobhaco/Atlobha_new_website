@@ -9,7 +9,7 @@ import { Image } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 function DeliveryDateOrder({ orderDetails = {} }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [LngLat, setLngLat] = useState();
 
@@ -79,7 +79,11 @@ function DeliveryDateOrder({ orderDetails = {} }) {
               )
             : orderDetails?.estimated_delivery_date
             ? moment(orderDetails?.estimated_delivery_date).format("DD-MM-YYYY")
-            : estimateRes?.estimated_delivery_date_from || t.dateLater}
+            : moment
+                .unix(estimateRes?.estimated_delivery_date_from)
+                .format(
+                  locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
+                ) || t.dateLater}
         </Box>
       </Box>
     </Box>

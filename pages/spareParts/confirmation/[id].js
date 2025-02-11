@@ -23,7 +23,7 @@ function Confirmation() {
 
   const router = useRouter();
   const { id } = router.query;
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const [LngLat, setLngLat] = useState(null);
 
   const handleCopy = (id) => {
@@ -133,7 +133,11 @@ function Confirmation() {
                 )
               : data?.estimated_delivery_date
               ? moment(data?.estimated_delivery_date || "").format("DD-MM-YYYY")
-              : estimateRes?.estimated_delivery_date_from || t.dateLater}
+              : moment
+                  .unix(estimateRes?.estimated_delivery_date_from)
+                  .format(
+                    locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
+                  ) || t.dateLater}
           </div>
         </div>
       </div>

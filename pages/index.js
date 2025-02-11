@@ -66,7 +66,7 @@ export default function Home() {
         </div>
       </div> */}
 
-      <SharedBtn />
+      {/* <SharedBtn />
       <LanguageSwitcher />
       <IconInsideCircle
         hasText={"info"}
@@ -84,7 +84,17 @@ export default function Home() {
       <IconInsideCircle hasText={false} />
       <IconInsideCircle hasText={false} />
       <IconInsideCircle hasText={false} />
-      <SharedInput />
+      <SharedInput /> */}
+	  <Box
+        sx={{
+          mt: 5,
+          fontWeight: "bold",
+          fontSize: "25px",
+          textAlign: "center",
+        }}
+      >
+        coming soon
+      </Box>
     </Box>
   );
 }
