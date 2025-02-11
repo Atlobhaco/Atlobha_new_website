@@ -7,7 +7,10 @@ import { USERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { setAllSections } from "@/redux/reducers/quickSectionsProfile";
+import {
+  setAllSections,
+  setUserData,
+} from "@/redux/reducers/quickSectionsProfile";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -139,6 +142,11 @@ function UserProfile() {
     // staleTime: 5 * 60 * 1000,
     enabled: user?.data?.user?.id ? true : false,
     onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
       dispatch(
         setAllSections({
           data: [

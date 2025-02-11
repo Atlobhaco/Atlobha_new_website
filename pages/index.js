@@ -13,6 +13,7 @@ import MainCarousel from "@/components/MainCarousel";
 import ColoredHint from "@/components/ColoredHint";
 import Categories from "@/components/Categories";
 import ProductCard from "@/components/shared/ProductCard";
+import ComingSoon from "@/components/comingSoon";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -85,16 +86,7 @@ export default function Home() {
       <IconInsideCircle hasText={false} />
       <IconInsideCircle hasText={false} />
       <SharedInput /> */}
-	  <Box
-        sx={{
-          mt: 5,
-          fontWeight: "bold",
-          fontSize: "25px",
-          textAlign: "center",
-        }}
-      >
-        coming soon
-      </Box>
+	  {/* <ComingSoon  /> */}
     </Box>
   );
 }
