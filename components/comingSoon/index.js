@@ -35,6 +35,7 @@ function ComingSoon() {
             position: "absolute",
             width: "100%",
             left: "0px",
+            top: "52%",
           }}
         />
       </Box>

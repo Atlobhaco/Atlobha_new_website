@@ -86,7 +86,7 @@ export default function Home() {
       <IconInsideCircle hasText={false} />
       <IconInsideCircle hasText={false} />
       <SharedInput /> */}
-	  {/* <ComingSoon  /> */}
+	  <ComingSoon  />
     </Box>
   );
 }
