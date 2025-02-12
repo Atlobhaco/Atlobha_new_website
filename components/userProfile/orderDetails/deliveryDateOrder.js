@@ -86,7 +86,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
                 .unix(estimateRes?.estimated_delivery_date_from)
                 .format(
                   locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                )}
+                ) || t.dateLater}
         </Box>
       </Box>
     </Box>
