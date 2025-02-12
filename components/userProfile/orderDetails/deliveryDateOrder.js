@@ -37,6 +37,28 @@ function DeliveryDateOrder({ orderDetails = {} }) {
     }
   }, [orderDetails]);
 
+  const deliveryDate = () => {
+    if (!orderDetails) return null;
+
+    if (orderDetails?.status === STATUS?.new) return t.dateLater;
+
+    const date =
+      orderDetails?.estimated_packaging_date ||
+      orderDetails?.estimated_delivery_date;
+
+    if (date)
+      return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
+
+    return estimateRes?.estimated_delivery_date_from &&
+      estimateRes?.estimated_delivery_date_to
+      ? `${t.deliveryFrom} ${moment
+          .unix(estimateRes.estimated_delivery_date_from)
+          .format("dddd, D MMMM YYYY")} ${t.and} ${moment
+          .unix(estimateRes.estimated_delivery_date_to)
+          .format("dddd, D MMMM YYYY")}`
+      : t.dateLater;
+  };
+
   return (
     <Box
       sx={{
@@ -74,7 +96,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
             lineHeight: "24px",
           }}
         >
-          {orderDetails?.status === STATUS?.new
+          {/* {orderDetails?.status === STATUS?.new
             ? t.dateLater
             : orderDetails?.estimated_packaging_date
             ? moment(orderDetails?.estimated_packaging_date).format(
@@ -86,7 +108,8 @@ function DeliveryDateOrder({ orderDetails = {} }) {
                 .unix(estimateRes?.estimated_delivery_date_from)
                 .format(
                   locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                ) || t.dateLater}
+                ) || t.dateLater} */}
+          {deliveryDate()}
         </Box>
       </Box>
     </Box>
