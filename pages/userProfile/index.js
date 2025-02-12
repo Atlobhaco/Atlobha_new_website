@@ -245,7 +245,7 @@ function UserProfile() {
         <div className="row mt-3">
           {(allsections?.length ? allsections : quickSections)?.map(
             (sec, index) => (
-              <div key={sec?.title} className="col-md-6 col-6">
+              <div key={sec?.title} className="col-6 col-lg-6 col-md-12 ">
                 <BasicSections
                   src={sec?.src}
                   activeSrc={sec?.activeSrc}

@@ -6,6 +6,8 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import { useSelector } from "react-redux";
 import { Formik } from "formik";
+import ComingSoon from "@/components/comingSoon";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 const flexBox = {
   display: "flex",
@@ -15,6 +17,7 @@ const flexBox = {
 
 function EditInfo() {
   const { t } = useLocalization();
+  const { isMobile } = useScreenSize();
   const { userDataProfile } = useSelector((state) => state.quickSection);
 
   console.log("userDataProfile", userDataProfile);
@@ -49,15 +52,17 @@ function EditInfo() {
   return (
     <div className="container-fluid">
       <div className="row mb-2">
-        <div className="col-md-4">
-          <UserProfile />
-        </div>
+        {!isMobile && (
+          <div className="col-md-4">
+            <UserProfile />
+          </div>
+        )}
         <div className="col-md-8 col-12 pt-4">
           <div className="row">
             <BreadCrumb />
           </div>
           <div className="row mb-4 mt-3">
-            <Box sx={flexBox}>
+            {/* <Box sx={flexBox}>
               <Box
                 sx={{
                   fontSize: "20px",
@@ -66,9 +71,10 @@ function EditInfo() {
               >
                 {t.editInfo}
               </Box>
-            </Box>
+            </Box> */}
+            <ComingSoon />
 
-            <Formik
+            {/* <Formik
               enableReinitialize
               initialValues={initialValues}
               validationSchema={validationSchema}
@@ -94,7 +100,7 @@ function EditInfo() {
                   </>
                 );
               }}
-            </Formik>
+            </Formik> */}
           </div>
         </div>
         <div></div>

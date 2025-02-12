@@ -132,7 +132,7 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
         }}
       >
         {slides.map((_, index) => (
-          <button
+          <Box
             key={index}
             onClick={() => handleButtonClick(index)} // Adjust interval on click
             style={{
@@ -146,7 +146,7 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
               backgroundColor: activeIndex === index ? "#000" : "#ccc",
               cursor: "pointer",
             }}
-          ></button>
+          ></Box>
         ))}
       </div>
     </Box>

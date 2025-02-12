@@ -1,3 +1,4 @@
+import ComingSoon from "@/components/comingSoon";
 import MetaTags from "@/components/shared/MetaTags";
 import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
@@ -13,16 +14,7 @@ function Sections() {
     <Box>
       <MetaTags title={secTitle} content={secType} />
 
-      <Box
-        sx={{
-          mt: 5,
-          fontWeight: "bold",
-          fontSize: "25px",
-          textAlign: "center",
-        }}
-      >
-        coming soon
-      </Box>
+      <ComingSoon />
     </Box>
   );
 }

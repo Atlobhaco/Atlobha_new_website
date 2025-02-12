@@ -37,3 +37,10 @@ export const PAYMENT_METHODS = {
   tabby: "TABBY",
   wallet: "WALLET",
 };
+
+export const INFORMATIVE_TYPES = {
+  information: "information",
+  offer: "offer",
+  warning: "warning",
+  other: "other",
+};

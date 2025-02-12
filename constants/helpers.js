@@ -41,6 +41,35 @@ export const getUserCurrentLocation = () => {
   }
 };
 
+export const getAddressFromLatLng = async (lat, lng, locale) => {
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Replace with your Google API Key
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}&language=${locale}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.status === "OK") {
+      // Find city (locality) and area (sublocality)
+      const city =
+        data.results.find((result) => result.types.includes("locality"))
+          ?.address_components[0].long_name || "";
+
+      const area =
+        data.results.find((result) => result.types.includes("political"))
+          ?.address_components[0].long_name || "";
+
+      return { city, area }; // Return both city and area
+    } else {
+      console.error("Error:", data.status);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return null;
+  }
+};
+
 /* -------------------------------------------------------------------------- */
 /*                           localize address naming                          */
 /* -------------------------------------------------------------------------- */

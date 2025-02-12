@@ -42,7 +42,7 @@ function OrderNumCopyWhatsapp({ orderDetails = {}, handleCopy = () => {} }) {
           color="inherit"
           onClick={() =>
             window.open(
-              `https://api.whatsapp.com/send/?phone=201279211807&text&type=phone_number&app_absent=0`,
+              `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
               "_blank"
             )
           }

@@ -1,14 +1,17 @@
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 .soon {
-  background-color: red;
   width: 80%;
   margin: 50px auto 20px auto;
-  padding: 40px 10px;
+  padding: 40px 20px;
   background: #fffbe6;
   box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
   border-radius: 1px;
-  position: relative;
+  @include mobile-screen-style {
+    width: 100%;
+    padding: 20px 10px;
+    margin: 20px auto 20px auto;
+  }
 }
 
 .header {
@@ -22,4 +25,82 @@
   display: flex;
   justify-content: center;
   margin-bottom: 43px;
+  @include mobile-screen-style {
+    margin-bottom: 25px;
+    font-size: 23px;
+  }
+}
+
+.progress {
+  margin: 15px 0px;
+  display: flex;
+  padding: 40px 50px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  background-color: #fff;
+  border-radius: 10px;
+  @include mobile-screen-style {
+    padding: 10px 10px;
+  }
+  &-text {
+    color: #374151;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 34px; /* 188.889% */
+    @include mobile-screen-style {
+      font-size: 15px;
+    }
+  }
+}
+
+.questions {
+  margin: 15px 0px;
+  background-color: #232323;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 20px;
+  flex-wrap: wrap;
+
+  background-image: url("/icons/pattern.png"); /* Adjust path if needed */
+  background-position: center; /* Centers the image */
+  background-repeat: repeat-x; /* Prevents image repetition */
+  overflow: hidden; /* Hides any overflow */
+  @include mobile-screen-style {
+    padding: 10px;
+    font-size: 14px;
+    flex-direction: column;
+    gap: 7px;
+  }
+}
+
+.social {
+  margin: 15px 0px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.static-pages {
+  width: fit-content;
+  margin: 40px auto 0px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  &_links {
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 }

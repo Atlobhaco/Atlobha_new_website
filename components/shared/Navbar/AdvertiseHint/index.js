@@ -1,7 +1,7 @@
 import { ANNOUNCEMENT } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
+import { INFORMATIVE_TYPES, MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
@@ -22,12 +22,14 @@ function AdvertiseHint() {
   const { locale } = useLocalization();
   const bgColor = (type) => {
     switch (type) {
-      case "red":
-        return "#EB3C24";
-      case "yellow":
-        return "#FFD400";
-      default:
+      case INFORMATIVE_TYPES?.information:
         return "#1FB256";
+      case INFORMATIVE_TYPES?.offer:
+        return "#FFD400";
+      case INFORMATIVE_TYPES?.warning:
+        return "#EB3C24";
+      default:
+        return "#B0B0B0";
     }
   };
 
@@ -52,19 +54,18 @@ function AdvertiseHint() {
         : false,
   });
 
-
-  return informativeMsg ? (
+  return informativeMsg?.is_active ? (
     <Box
       sx={{
-        background: bgColor("red"),
+        background: bgColor(informativeMsg?.type),
         color: "white",
         display: "flex",
         height: isMobile ? "25px" : "30px",
         padding: isMobile ? "3px 4px" : "6px 10px",
         alignItems: "center",
+        maxWidth: isMobile ? "200px" : "300px",
         gap: "10px",
         borderRadius: "4px",
-        width: "fit-content",
         fontWeight: "500",
         fontSize: isMobile ? "10px" : "14px",
         overflow: "hidden", // Ensures smooth animation within the box
@@ -77,13 +78,16 @@ function AdvertiseHint() {
       <Box
         component="span"
         sx={{
+          textAlign: "center",
+          width: "fit-content",
+          minWidth: "80%",
           display: "inline-block",
           whiteSpace: "nowrap", // Prevents text wrapping
           animation: "slide 10s linear infinite", // Animates the text
           animationPlayState: "running", // Ensures the animation runs by default
         }}
       >
-        🚚 توصيل مجاني على جميع باقات الصيانة 📦
+        🚚 {informativeMsg?.body} 📦
       </Box>
 
       {/* Define the keyframes for animation */}

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown"; // Import an icon or use your custom SVG
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -13,6 +13,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 import AddressSelectionFromNavbarWeb from "./AddressSelectionFromNavbarWeb";
 import AddNewAddressFromNavbar from "./AddNewAddressFromNavbar";
 import ShowAddressesFromNavbarMobile from "./ShowAddressesFromNavbarMobile";
+import { getAddressFromLatLng } from "@/constants/helpers";
 
 function DropDownAddress() {
   const childRef = useRef(null);
@@ -29,6 +30,7 @@ function DropDownAddress() {
   const [selectCarPopUpMobile, setSelectCarPopUpModal] = useState(false);
   const open = Boolean(anchorEl);
   const [canAddAddress, setCanAddAddress] = useState(false);
+  const [addressObj, setAddressObj] = useState(false);
 
   const handleOpenProgrmatically = (event) => {
     if (!event.isTrusted) {
@@ -63,6 +65,25 @@ function DropDownAddress() {
       childRef.current.triggerChildFunction();
     }
   };
+  const fetchCity = async (lat, lng) => {
+    const { city, area } = await getAddressFromLatLng(lat, lng, locale);
+    setAddressObj({
+      area: area,
+      city: city,
+    });
+    // return city;
+  };
+
+  useEffect(() => {
+    if (selectedAddress?.id) {
+      fetchCity(selectedAddress?.lat, selectedAddress?.lng);
+      return;
+    }
+    if (defaultAddress?.id) {
+      fetchCity(defaultAddress?.lat, defaultAddress?.lng);
+      return;
+    }
+  }, [selectedAddress?.id, defaultAddress?.id]);
 
   return (
     <Box
@@ -86,19 +107,14 @@ function DropDownAddress() {
             onClick={handleOpen}
             id="openAfterAddNewAddress"
           >
-            {selectedAddress?.city
-              ? `${selectedAddress?.city?.name},${
-                  locale === "ar"
-                    ? selectedAddress?.area?.name_ar
-                    : selectedAddress?.area?.name_en
-                }`
+            {`${addressObj?.city || t.noAddressSelected}, ${
+              addressObj?.area || ""
+            }`}
+            {/* {selectedAddress?.city
+              ? fetchCity(selectedAddress?.lat, selectedAddress?.lng)
               : defaultAddress?.city
-              ? `${defaultAddress?.city?.name},${
-                  locale === "ar"
-                    ? defaultAddress?.area?.name_ar
-                    : defaultAddress?.area?.name_en
-                }`
-              : t.noAddressSelected}{" "}
+              ? fetchCity(defaultAddress?.lat, defaultAddress?.lng)
+              : t.noAddressSelected}{" "} */}
           </Box>
 
           <KeyboardArrowDownIcon
