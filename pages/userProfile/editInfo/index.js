@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import ComingSoon from "@/components/comingSoon";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import SharedTextField from "@/components/shared/SharedTextField";
 
 const flexBox = {
   display: "flex",
@@ -62,7 +63,7 @@ function EditInfo() {
             <BreadCrumb />
           </div>
           <div className="row mb-4 mt-3">
-            {/* <Box sx={flexBox}>
+            <Box sx={flexBox}>
               <Box
                 sx={{
                   fontSize: "20px",
@@ -71,8 +72,8 @@ function EditInfo() {
               >
                 {t.editInfo}
               </Box>
-            </Box> */}
-            <ComingSoon />
+            </Box>
+			<ComingSoon  />
 
             {/* <Formik
               enableReinitialize
@@ -95,7 +96,36 @@ function EditInfo() {
 
                 return (
                   <>
-                    <div className="col-12">line-1</div>
+                    <div className="col-12 mt-3">
+                      <SharedTextField
+                        id="fullName"
+                        placeholder={t.fullName}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={touched["vin_number"] && errors["vin_number"]}
+                        name="vin_number"
+                        value={values?.vin_number || ""}
+                        setFieldValue={setFieldValue}
+                        label={t.fullName}
+                        showAstrick
+                        imgIcon={false}
+                      />
+                    </div>
+                    <div className="col-12 mt-3">
+                      <SharedTextField
+                        id="fullName"
+                        placeholder={t.fullName}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        error={touched["vin_number"] && errors["vin_number"]}
+                        name="vin_number"
+                        value={values?.vin_number || ""}
+                        setFieldValue={setFieldValue}
+                        label={t.fullName}
+                        showAstrick
+                        imgIcon={false}
+                      />
+                    </div>
                     <div className="col-12">line-2</div>
                   </>
                 );

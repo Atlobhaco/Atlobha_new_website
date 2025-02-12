@@ -127,7 +127,7 @@ function SparePartsOrderDetails({
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
 
       {(orderDetails?.status === STATUS?.confirmed ||
-        orderDetails?.status === STATUS?.delivered ||
+        orderDetails?.status === STATUS?.new ||
         orderDetails?.status === STATUS?.priced) && (
         <>
           <DeliveryDateOrder orderDetails={orderDetails} />

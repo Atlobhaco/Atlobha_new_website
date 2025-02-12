@@ -17,6 +17,7 @@ import {
   SPARE_PARTS,
 } from "@/config/endPoints/endPoints";
 import moment from "moment";
+import { STATUS } from "@/constants/enums";
 
 function Confirmation() {
   const { isMobile } = useScreenSize();
@@ -127,7 +128,9 @@ function Confirmation() {
               width={isMobile ? 14 : 20}
               height={isMobile ? 14 : 20}
             />
-            {data?.estimated_packaging_date
+            {data?.status === STATUS?.new
+              ? t.dateLater
+              : data?.estimated_packaging_date
               ? moment(data?.estimated_packaging_date || "").format(
                   "DD-MM-YYYY"
                 )
@@ -137,7 +140,7 @@ function Confirmation() {
                   .unix(estimateRes?.estimated_delivery_date_from)
                   .format(
                     locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                  ) || t.dateLater}
+                  )}
           </div>
         </div>
       </div>

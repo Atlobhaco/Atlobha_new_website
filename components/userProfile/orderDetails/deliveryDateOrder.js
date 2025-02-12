@@ -1,6 +1,7 @@
 import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
+import { STATUS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import moment from "moment";
@@ -73,7 +74,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
             lineHeight: "24px",
           }}
         >
-          {orderDetails?.estimated_packaging_date
+          {orderDetails?.status === STATUS?.new
+            ? t.dateLater
+            : orderDetails?.estimated_packaging_date
             ? moment(orderDetails?.estimated_packaging_date).format(
                 "DD-MM-YYYY"
               )
@@ -83,7 +86,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
                 .unix(estimateRes?.estimated_delivery_date_from)
                 .format(
                   locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                ) || t.dateLater}
+                )}
         </Box>
       </Box>
     </Box>
