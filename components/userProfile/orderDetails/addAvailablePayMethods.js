@@ -72,7 +72,6 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
       {availablePayments
         ?.filter(
           (d) =>
-            d?.key === PAYMENT_METHODS?.cash ||
             d?.key === PAYMENT_METHODS?.credit ||
             d?.key === PAYMENT_METHODS?.applePay
         )
