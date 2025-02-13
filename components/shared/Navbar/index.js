@@ -24,7 +24,6 @@ import { USERS } from "@/config/endPoints/endPoints";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
-import { orderEnumArray } from "@/constants/helpers";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 
 const firstPartStyle = {
@@ -163,7 +162,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     )?.background_color;
     const sectionBgColor =
       allGroups[1]?.sections?.find(
-        (sec) => sec?.type === router?.query?.secType
+        (sec) => sec?.title === router?.query?.secTitle
       )?.background_color || "#DDECFF";
 
     if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
@@ -175,15 +174,24 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     }
   };
 
+  const handleAppSectionRedirection = (section) => {
+    if (section?.type === SPAREPARTS || section?.type === MARKETPLACE) {
+      router.push(section?.type === MARKETPLACE ? "/" : "/spareParts");
+    } else {
+      router.push(
+        `/sections?secTitle=${section?.title}&&secType=${section?.type}`
+      );
+    }
+  };
   return !mobileScreen ? (
     <Box
       className={`${style["navbar"]}`}
       sx={{
         background: returnNavbarBg(),
         padding: isMobile
-          ? "10px 20px 16px 20px"
+          ? "10px 20px 0px 20px"
           : hideComponent
-          ? "24px 65px"
+          ? "24px 62px 0px 62px"
           : "10px 62px 0px 62px",
       }}
     >
@@ -196,7 +204,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             height={isMobile ? 25 : 49}
             src="/logo/atlobha-ar-en.svg"
             onClick={() => router.push("/")}
+            className="cursor-pointer"
+            style={{
+              transition: "opacity 0.3s ease",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           />
+
           {!isMobile && hideInSpareOrSectionsPage && <CarPalette />}
           {!hideComponent && (
             <>
@@ -332,13 +347,22 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </Box>
         </Box>
       )}
-      {!hideComponent && (
-        <Box className={`${style["sections"]}`}>
+      {true && (
+        <Box
+          className={`${style["sections"]}`}
+          sx={{
+            padding:
+              isMobile && !hideComponent
+                ? "0px 5px"
+                : hideComponent
+                ? "0px"
+                : "0px 25px",
+          }}
+        >
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
-            arrayData={[...orderEnumArray()]}
-            // handleClick={(data) => console.log(data)}
+            handleClick={(section) => handleAppSectionRedirection(section)}
           />
         </Box>
       )}

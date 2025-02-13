@@ -195,7 +195,7 @@
   "showResults": "إظهار النتائج",
   "status": {
     "new": "جديد",
-    "received": "مستلم",
+    "ready-to-ship": "جاهز للشحن",
     "payment-pending": "معلق الدفع",
     "confirmed": "مؤكد",
     "shipping": "جاري التوصيل",

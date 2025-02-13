@@ -47,10 +47,7 @@
 }
 .sections {
   margin-top: 30px;
-  padding: 0px 25px;
-  @include mobile-screen-style {
-    padding: 0px 5px;
-  }
+
 
   &-parent {
     display: flex; // Ensure proper alignment

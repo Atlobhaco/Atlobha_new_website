@@ -16,7 +16,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
     <Box
       className={`${style["footNavbar"]}`}
       sx={{
-        justifyContent: openCategories ? "center" : "space-between",
+        justifyContent: openCategories ? "center" : "center",
         zIndex: !openCategories ? 1 : 9999,
         // hide when any popoup open except the main one
       }}
@@ -30,7 +30,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
         />
       ) : (
         <>
-          <FootNavSection
+          {/* <FootNavSection
             icon={<Main />}
             text="الرئيسية"
             activeTab={activeTab === "main" ? true : false}
@@ -41,7 +41,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             text="البحث"
             activeTab={activeTab === "search" ? true : false}
             onClick={() => setActiveTab("search")}
-          />
+          /> */}
           <FootNavSection
             icon={<BlackMenu />}
             customWidth="43px"
@@ -49,7 +49,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             activeTab={activeTab === "menu" ? true : false}
             onClick={() => setOpenCategories(true)}
           />
-          <FootNavSection
+          {/* <FootNavSection
             icon={<Basket />}
             text="السلة"
             activeTab={activeTab === "basket" ? true : false}
@@ -60,7 +60,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             text="المزيد"
             activeTab={activeTab === "more" ? true : false}
             onClick={() => setActiveTab("more")}
-          />{" "}
+          />{" "} */}
         </>
       )}
     </Box>

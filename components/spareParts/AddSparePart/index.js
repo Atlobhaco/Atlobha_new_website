@@ -55,7 +55,7 @@ function AddsparePart({ setOpenPricingDialog, loadOrder, fetchMedia }) {
           }}
         >
           {isLoading ? (
-            <CircularProgress size={18} color="inherit" />
+            <CircularProgress size={14} color="inherit" />
           ) : (
             <AddCircleOutlineIcon
               style={{

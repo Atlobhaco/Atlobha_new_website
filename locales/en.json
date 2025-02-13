@@ -196,7 +196,7 @@
   "showResults": "Show results",
   "status": {
     "new": "new",
-    "received": "received",
+    "ready-to-ship": "ready to ship",
     "payment-pending": "payment pending",
     "confirmed": "confirmed",
     "shipping": "shipping",

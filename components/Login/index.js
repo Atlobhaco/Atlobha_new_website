@@ -163,7 +163,6 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
   const containerStyle = {
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
-
   return (
     <DialogCentered
       actionsWhenClose={() => {
@@ -175,6 +174,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
       subtitle={false}
       hasCloseIcon={true}
       customClass="modal-login-width-web"
+      closeAction={() => formik?.resetForm()}
       content={
         !otpView ? (
           <>

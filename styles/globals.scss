@@ -426,3 +426,13 @@ div[aria-label="number input"] {
 .cursor-pointer {
   cursor: pointer;
 }
+
+.data-over-foot-nav {
+  position: fixed;
+  bottom: 85px;
+  left: 0px;
+  right: 0px;
+  width: 90% !important;
+  margin: auto;
+  z-index: 1;
+}

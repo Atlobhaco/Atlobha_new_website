@@ -84,6 +84,29 @@ function OrderActions({
             </div>
           </div>
         );
+      // need to enhance this step it is wrong(design)
+      case STATUS?.readyToShip:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>
+              {t.outForDelivery}
+              <span className={`${style["sub-title"]}`}>
+                {/* {order?.status_updated_at
+                  ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
+                  : null} */}
+				  {order?.status}
+              </span>
+            </div>
+            {/* <div className={`${style["text"]}`}>
+              <SharedBtn
+                text="trackOrder"
+                className="outline-btn"
+                id="shippingOrder"
+                customClass={`${style["btn-style"]}`}
+              />
+            </div> */}
+          </div>
+        );
       case STATUS?.delivered:
         return (
           <div className={`${style["new"]}`}>
