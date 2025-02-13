@@ -3,6 +3,8 @@ import React from "react";
 import style from "../Navbar.module.scss";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 
 function SectionsNav({
   selectedSection = false,
@@ -12,8 +14,20 @@ function SectionsNav({
   handleClick = () => {},
   showLineBelow = false,
 }) {
+  const router = useRouter();
+  const { secTitle } = router.query;
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
+
+  const activeDependOnUrl = (section) => {
+    if (
+      section?.title === secTitle ||
+      (section?.type === SPAREPARTS && router.pathname === "/spareParts") ||
+      (section?.type === MARKETPLACE && router.pathname === "/")
+    ) {
+      return `${style["active"]}`;
+    }
+  };
 
   return (
     <Box
@@ -53,11 +67,9 @@ function SectionsNav({
                 key={singleData?.title}
                 onClick={() => {
                   setSelectedSection(singleData?.title);
-                  handleClick(singleData?.title);
+                  handleClick(singleData);
                 }}
-                className={`${
-                  selectedSection === singleData?.title && style["active"]
-                }`}
+                className={`${activeDependOnUrl(singleData)}`}
               >
                 {singleData?.title}
               </Box>

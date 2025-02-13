@@ -15,7 +15,7 @@ export const ORDERSENUM = {
 
 export const STATUS = {
   new: "new",
-  received: "received",
+  readyToShip: "ready-to-ship",
   payPending: "payment-pending",
   confirmed: "confirmed",
   shipping: "shipping",

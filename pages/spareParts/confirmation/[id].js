@@ -17,6 +17,8 @@ import {
   SPARE_PARTS,
 } from "@/config/endPoints/endPoints";
 import moment from "moment";
+import { STATUS } from "@/constants/enums";
+import { CircularProgress } from "@mui/material";
 
 function Confirmation() {
   const { isMobile } = useScreenSize();
@@ -37,7 +39,7 @@ function Confirmation() {
     );
   };
 
-  const { data: estimateRes } = useCustomQuery({
+  const { data: estimateRes, isLoading: loadDate } = useCustomQuery({
     name: ["getEstimateDelivery", LngLat?.lat, LngLat?.lng],
     url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
     refetchOnWindowFocus: false,
@@ -66,6 +68,27 @@ function Confirmation() {
       toast.error(err?.response?.data?.first_error);
     },
   });
+
+  const deliveryDate = () => {
+    if (!data) return null;
+
+    if (data?.status === STATUS?.new) return t.dateLater;
+
+    const date =
+      data?.estimated_packaging_date || data?.estimated_delivery_date;
+
+    if (date)
+      return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
+
+    return estimateRes?.estimated_delivery_date_from &&
+      estimateRes?.estimated_delivery_date_to
+      ? `${t.deliveryFrom} ${moment
+          .unix(estimateRes.estimated_delivery_date_from)
+          .format("dddd, D MMMM YYYY")} ${t.and} ${moment
+          .unix(estimateRes.estimated_delivery_date_to)
+          .format("dddd, D MMMM YYYY")}`
+      : t.dateLater;
+  };
 
   return (
     <div className={`${style["confirmation"]}`}>
@@ -127,17 +150,11 @@ function Confirmation() {
               width={isMobile ? 14 : 20}
               height={isMobile ? 14 : 20}
             />
-            {data?.estimated_packaging_date
-              ? moment(data?.estimated_packaging_date || "").format(
-                  "DD-MM-YYYY"
-                )
-              : data?.estimated_delivery_date
-              ? moment(data?.estimated_delivery_date || "").format("DD-MM-YYYY")
-              : moment
-                  .unix(estimateRes?.estimated_delivery_date_from)
-                  .format(
-                    locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                  ) || t.dateLater}
+            {loadDate ? (
+              <CircularProgress color="inherit" size={20} />
+            ) : (
+              deliveryDate()
+            )}
           </div>
         </div>
       </div>

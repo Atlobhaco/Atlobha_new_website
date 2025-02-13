@@ -5,7 +5,7 @@ import { INFORMATIVE_TYPES, MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 function AdvertiseHint() {
@@ -15,6 +15,7 @@ function AdvertiseHint() {
   );
   const router = useRouter();
   const { secTitle, secType } = router.query;
+  const [informativeMsg, setInformativeMsg] = useState(false);
 
   const theDesiredPageIs =
     secType || (router?.pathname === "/spareParts" ? SPAREPARTS : MARKETPLACE);
@@ -33,7 +34,7 @@ function AdvertiseHint() {
     }
   };
 
-  const { data: informativeMsg } = useCustomQuery({
+  useCustomQuery({
     name: [
       "getInformativeMessage",
       theDesiredPageIs,
@@ -46,6 +47,7 @@ function AdvertiseHint() {
     }&type=information&app_section=${theDesiredPageIs}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => setInformativeMsg(res),
     enabled:
       (selectedAddress?.lat || defaultAddress?.lat) &&
       (selectedAddress?.lng || defaultAddress?.lng) &&
@@ -80,14 +82,14 @@ function AdvertiseHint() {
         sx={{
           textAlign: "center",
           width: "fit-content",
-          minWidth: "80%",
+          minWidth: "90%",
           display: "inline-block",
           whiteSpace: "nowrap", // Prevents text wrapping
           animation: "slide 10s linear infinite", // Animates the text
           animationPlayState: "running", // Ensures the animation runs by default
         }}
       >
-        🚚 {informativeMsg?.body} 📦
+        {informativeMsg?.body}
       </Box>
 
       {/* Define the keyframes for animation */}

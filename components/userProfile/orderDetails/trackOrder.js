@@ -58,7 +58,14 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
         : "#A1AEBE";
     }
 
-    if (orderDetails?.status === STATUS?.shipping) {
+    // need to remove readyToShip it is wrong
+    if (
+      orderDetails?.status === STATUS?.shipping ||
+      orderDetails?.status === STATUS?.readyToShip
+    ) {
+      if (orderDetails?.status === STATUS?.readyToShip) {
+        return "red";
+      }
       return index === 0 ||
         index === 1 ||
         (ORDERSENUM?.marketplace === type && index === 2) ||

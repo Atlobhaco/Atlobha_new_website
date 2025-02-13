@@ -9,7 +9,12 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
-function AddPartDialogContent({ setOpenPricingDialog }) {
+function AddPartDialogContent({
+  setOpenPricingDialog,
+  addedPart,
+  setAddedPart,
+  defaultValue,
+}) {
   const { t } = useLocalization();
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -19,15 +24,7 @@ function AddPartDialogContent({ setOpenPricingDialog }) {
     (state) => state.addSpareParts
   );
 
-  const defaultValue = {
-    quantity: 1,
-    imgSrc: "",
-    imgFile: "",
-    id: null,
-    name: "",
-  };
   const [searchFor, setSearchFor] = useState("");
-  const [addedPart, setAddedPart] = useState(defaultValue);
 
   const header = {
     fontSize: "24px",

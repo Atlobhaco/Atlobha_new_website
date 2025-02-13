@@ -1,6 +1,7 @@
 import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
+import { STATUS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import moment from "moment";
@@ -35,6 +36,28 @@ function DeliveryDateOrder({ orderDetails = {} }) {
       });
     }
   }, [orderDetails]);
+
+  const deliveryDate = () => {
+    if (!orderDetails) return null;
+
+    if (orderDetails?.status === STATUS?.new) return t.dateLater;
+
+    const date =
+      orderDetails?.estimated_packaging_date ||
+      orderDetails?.estimated_delivery_date;
+
+    if (date)
+      return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
+
+    return estimateRes?.estimated_delivery_date_from &&
+      estimateRes?.estimated_delivery_date_to
+      ? `${t.deliveryFrom} ${moment
+          .unix(estimateRes.estimated_delivery_date_from)
+          .format("dddd, D MMMM YYYY")} ${t.and} ${moment
+          .unix(estimateRes.estimated_delivery_date_to)
+          .format("dddd, D MMMM YYYY")}`
+      : t.dateLater;
+  };
 
   return (
     <Box
@@ -73,7 +96,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
             lineHeight: "24px",
           }}
         >
-          {orderDetails?.estimated_packaging_date
+          {/* {orderDetails?.status === STATUS?.new
+            ? t.dateLater
+            : orderDetails?.estimated_packaging_date
             ? moment(orderDetails?.estimated_packaging_date).format(
                 "DD-MM-YYYY"
               )
@@ -83,7 +108,8 @@ function DeliveryDateOrder({ orderDetails = {} }) {
                 .unix(estimateRes?.estimated_delivery_date_from)
                 .format(
                   locale === "ar" ? "DD-MM-YYYY mm:HH" : "DD-MM-YYYY HH:mm"
-                ) || t.dateLater}
+                ) || t.dateLater} */}
+          {deliveryDate()}
         </Box>
       </Box>
     </Box>

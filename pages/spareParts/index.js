@@ -66,6 +66,14 @@ function SpareParts() {
     []
   );
   const formDataImagesUploader = new FormData();
+  const defaultValue = {
+    quantity: 1,
+    imgSrc: "",
+    imgFile: "",
+    id: null,
+    name: "",
+  };
+  const [addedPart, setAddedPart] = useState(defaultValue);
 
   //  clear the part that may be selected from order details
   useEffect(() => {
@@ -216,7 +224,7 @@ function SpareParts() {
     return (
       <SharedBtn
         className="big-main-btn"
-        customClass="w-100"
+        customClass={`${isMobile && "data-over-foot-nav"} w-100`}
         text="makeSpare"
         disabled={
           !selectedParts?.length || loadOrder || fetchMedia || isLoading
@@ -234,7 +242,7 @@ function SpareParts() {
   };
 
   return (
-    <Box>
+    <Box className="position-relative">
       <MetaTags title={t.sparePartPricing} content={t.discoverPricingMade} />
       <div className="container pb-5 mb-5">
         <div className="row" style={style}>
@@ -272,9 +280,7 @@ function SpareParts() {
           </div>
           <div className="col-md-4 col-12 mt-4">
             <PaymentMethodSpare />
-            {!isMobile && (
-              <Box sx={{ margin: "30px 0px" }}>{returnConfirmBtn()}</Box>
-            )}
+            <Box sx={{ margin: "30px 0px" }}>{returnConfirmBtn()}</Box>
             <AvailablePaymentMethodsImgs />
           </div>
         </div>
@@ -286,9 +292,9 @@ function SpareParts() {
         >
           <div className="col-12 text-center">
             <PartsImages />
-            {isMobile && (
-              <Box sx={{ marginTop: "30px" }}>{returnConfirmBtn()}</Box>
-            )}
+            {/* {isMobile && (
+              <Box sx={{ marginTop: "30px" }}>button</Box>
+            )} */}
           </div>
         </div>
       </div>
@@ -345,8 +351,14 @@ function SpareParts() {
         subtitle={false}
         customTransition={true}
         customClass="minimize-center-dialog-width"
+        closeAction={() => setAddedPart(defaultValue)}
         content={
-          <AddPartDialogContent setOpenPricingDialog={setOpenPricingDialog} />
+          <AddPartDialogContent
+            setOpenPricingDialog={setOpenPricingDialog}
+            setAddedPart={setAddedPart}
+            addedPart={addedPart}
+            defaultValue={defaultValue}
+          />
         }
       />
 

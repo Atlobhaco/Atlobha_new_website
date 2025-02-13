@@ -39,6 +39,20 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>{t.shipping}</div>
           </div>
         );
+      // need to enhance this step it is wrong(design)
+      case STATUS?.readyToShip:
+        return (
+          <div className={`${style["shipping"]} ${style["status"]}`}>
+            <Image
+              src="/icons/shipping.svg"
+              width={24}
+              height={12}
+              alt="shipping"
+              className={`${style["image"]}`}
+            />
+            <div className={`${style["text"]}`}>{status}</div>
+          </div>
+        );
       case STATUS?.delivered:
         return (
           <div className={`${style["delivered"]} ${style["status"]}`}>
@@ -113,9 +127,17 @@ function OrderStatus({ status }) {
         );
       case STATUS?.priceUnavailable:
         return (
-          <div className={`${style["cancelled"]} ${style["status"]}`}>
-            <CancelIcon className={`${style["svg"]}`} />
-            <div className={`${style["text"]}`}>{t.status['pricing-unavailable']}</div>
+          <div className={`${style["priceUnavailable"]} ${style["status"]}`}>
+            <Image
+              src="/icons/price-unavailable-status.svg"
+              width={24}
+              height={12}
+              alt="unavailbe"
+              className={`${style["image"]}`}
+            />{" "}
+            <div className={`${style["text"]}`}>
+              {t.status["pricing-unavailable"]}
+            </div>
           </div>
         );
       default:
