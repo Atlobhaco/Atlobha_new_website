@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { Formik } from "formik";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
-import EditInfoForm from "./editInfoForm";
+import EditInfoForm from "../../../components/userProfile/editInfo/editInfoForm";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { EMAIL, ME, OTP, PHONE, USERS } from "@/config/endPoints/endPoints";
 import OtpView from "@/components/Login/otpView";
