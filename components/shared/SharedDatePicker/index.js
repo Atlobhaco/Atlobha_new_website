@@ -8,6 +8,8 @@ import "dayjs/locale/ar"; // Import Arabic locale
 import "dayjs/locale/en"; // Import English locale
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { InputAdornment } from "@mui/material";
+import Image from "next/image";
 
 function SharedDatePicker({
   value,
@@ -16,6 +18,8 @@ function SharedDatePicker({
   label = "label",
   showAstrick = false,
   handleChange = () => {},
+  disableFuture = false,
+  error = false,
 }) {
   const { locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -31,10 +35,10 @@ function SharedDatePicker({
         "YYYY-MM-DDTHH:mm:ss.SSSSSSZ"
       );
       handleChange(formattedDate);
-    //   setValue(formattedDate); // Save the formatted date
+      //   setValue(formattedDate); // Save the formatted date
     } else {
       handleChange(null);
-    //   setValue(null); // Handle clearing the date
+      //   setValue(null); // Handle clearing the date
     }
   };
 
@@ -76,11 +80,17 @@ function SharedDatePicker({
           value={value ? dayjs(value) : null} // Ensure value is a Day.js object
           onChange={handleDateChange}
           disablePast={disablePast}
+          disableFuture={disableFuture}
           showDaysOutsideCurrentMonth={true}
           yearsPerRow={3}
           slotProps={{
             textField: {
               sx: {
+                "& .MuiOutlinedInput-notchedOutline": {
+                  border: error
+                    ? "1px solid red !important"
+                    : "1px solid rgba(0, 0, 0, 0.23)", // Add custom border
+                },
                 input: {
                   height: "13px",
                 },
@@ -99,7 +109,22 @@ function SharedDatePicker({
                   height: "44px",
                   borderRadius: "8px !important",
                 },
+                inputProps: {
+                  readOnly: true, // Prevents manual typing
+                },
               },
+              //   InputProps: {
+              //     endAdornment: (
+              //       <InputAdornment position="end">
+              //         <Image
+              //           src="/icons/date-picker-icon.svg"
+              //           alt="icon"
+              //           width={20}
+              //           height={20}
+              //         />
+              //       </InputAdornment>
+              //     ),
+              //   },
             },
             popper: {
               sx: {
@@ -122,7 +147,7 @@ function SharedDatePicker({
                   },
                 },
                 "& .MuiDateCalendar-root": {
-                  height: "290px !important",
+                  height: "280px !important",
                 },
               },
             },
@@ -143,6 +168,29 @@ function SharedDatePicker({
             },
           }}
         />
+        <Image
+          src="/icons/date-picker-icon.svg"
+          alt="icon"
+          width={22}
+          height={22}
+          style={{
+            position: "absolute",
+            ...(locale === "ar" ? { left: "9px" } : { right: "9px" }),
+            top: "48%",
+            background: "white",
+          }}
+        />
+        {error && (
+          <Box
+            className="error-msg-inputs"
+            sx={{
+              position: "absolute",
+              bottom: "-23px",
+            }}
+          >
+            {error}
+          </Box>
+        )}{" "}
       </Box>
     </LocalizationProvider>
   );

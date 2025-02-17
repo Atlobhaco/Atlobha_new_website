@@ -32,3 +32,4 @@ export const CONFIRM_PRICING = "/confirm-pricing";
 export const SETTINGS = "/settings";
 export const ESTIMATED_DELIVERY = "/estimated-delivery";
 export const ANNOUNCEMENT = "/announcement";
+export const EMAIL = "/email";

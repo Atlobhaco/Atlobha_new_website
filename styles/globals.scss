@@ -262,6 +262,7 @@ a {
     min-width: 100% !important;
     border-radius: 10px !important;
     border: 1px solid #d1d5db;
+    padding: 0px 10px;
     &:focus {
       box-shadow: unset !important;
       border: 1px solid $primary;
@@ -313,6 +314,10 @@ div[aria-label="number input"] {
   overflow: hidden;
   column-gap: 8px;
   padding: 3px 8px;
+}
+
+.Mui-error .MuiOutlinedInput-notchedOutline {
+  border-color: #eb3c24 !important;
 }
 
 .error-border {

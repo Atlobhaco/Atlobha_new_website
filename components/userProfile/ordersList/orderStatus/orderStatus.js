@@ -39,18 +39,19 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>{t.shipping}</div>
           </div>
         );
-      // need to enhance this step it is wrong(design)
       case STATUS?.readyToShip:
         return (
-          <div className={`${style["shipping"]} ${style["status"]}`}>
+          <div className={`${style["ready-to-ship"]} ${style["status"]}`}>
             <Image
-              src="/icons/shipping.svg"
+              src="/icons/readyShip.svg"
               width={24}
               height={12}
               alt="shipping"
               className={`${style["image"]}`}
             />
-            <div className={`${style["text"]}`}>{status}</div>
+            <div className={`${style["text"]}`}>
+              {t.status["ready-to-ship"]}
+            </div>
           </div>
         );
       case STATUS?.delivered:

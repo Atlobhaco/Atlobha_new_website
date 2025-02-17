@@ -49,7 +49,10 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
     if (orderDetails?.status === STATUS?.priced) {
       return index === 0 ? "#1FB256" : index === 1 ? "#EE772F" : "#A1AEBE";
     }
-    if (orderDetails?.status === STATUS?.confirmed) {
+    if (
+      orderDetails?.status === STATUS?.confirmed ||
+      orderDetails?.status === STATUS?.readyToShip
+    ) {
       return index === 0 || index === 1
         ? "#1FB256"
         : (ORDERSENUM?.marketplace === type && index === 2) ||
@@ -59,13 +62,7 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
     }
 
     // need to remove readyToShip it is wrong
-    if (
-      orderDetails?.status === STATUS?.shipping ||
-      orderDetails?.status === STATUS?.readyToShip
-    ) {
-      if (orderDetails?.status === STATUS?.readyToShip) {
-        return "red";
-      }
+    if (orderDetails?.status === STATUS?.shipping) {
       return index === 0 ||
         index === 1 ||
         (ORDERSENUM?.marketplace === type && index === 2) ||

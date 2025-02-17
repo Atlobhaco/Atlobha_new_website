@@ -19,6 +19,9 @@ function OtpView({
   otpPayload,
   setOpen,
   textInput,
+  confirmOtpEntered = false,
+  setOtpPayload = () => {},
+  confirmOtpFetch = false,
 }) {
   const { t, locale } = useLocalization();
   const dispatch = useDispatch();
@@ -58,12 +61,15 @@ function OtpView({
 
   //  auto confirm otp
   useEffect(() => {
-    if (otpCode?.length === 6) {
+    if (
+      (!otpPayload?.otp && otpCode?.length === 6) ||
+      (otpPayload?.otp && otpPayload?.otp?.length === 6)
+    ) {
       setTimeout(() => {
-        recallLogin();
+        !confirmOtpEntered ? recallLogin() : confirmOtpEntered();
       }, 500);
     }
-  }, [otpCode]);
+  }, [otpCode, otpPayload?.otp]);
 
   const {
     data: loginRes,
@@ -78,7 +84,6 @@ function OtpView({
     dispatch,
     login,
   });
-
   return (
     <>
       <Box
@@ -122,9 +127,16 @@ function OtpView({
             placeholder={null}
             label={false}
             imgIcon={false}
-            value={otpCode}
+            value={otpPayload?.otp || otpCode}
             handleChange={(e) => {
-              setOtpCode(e?.target?.value);
+              if (confirmOtpEntered) {
+                setOtpPayload({
+                  ...otpPayload,
+                  otp: e?.target?.value,
+                });
+              } else {
+                setOtpCode(e?.target?.value);
+              }
             }}
           />
         </Box>
@@ -145,7 +157,11 @@ function OtpView({
               animation: isBlinking ? "blink 1s infinite" : "none",
             }}
             onClick={() =>
-              !timer && !otpLoad && !loginFetching && recallReqOtp()
+              !timer &&
+              !otpLoad &&
+              !loginFetching &&
+              recallReqOtp() &&
+              !confirmOtpFetch
             }
           >
             {t.resendOtp}{" "}
@@ -163,17 +179,25 @@ function OtpView({
         </Box>
         <Box>
           <SharedBtn
-            disabled={!otpCode || otpCode?.length <= 5 || loginFetching}
-            text={loginFetching ? null : "common.check"}
+            disabled={
+              !otpPayload?.otp
+                ? !otpCode || otpCode?.length <= 5 || loginFetching
+                : !otpPayload?.otp ||
+                  otpPayload?.otp?.length <= 5 ||
+                  confirmOtpFetch
+            }
+            text={loginFetching || confirmOtpFetch ? null : "common.check"}
             compBeforeText={
-              loginFetching ? (
+              loginFetching || confirmOtpFetch ? (
                 <CircularProgress color="inherit" size={20} />
               ) : null
             }
             className="black-btn"
             customClass="w-100 mb-5"
             type="button"
-            onClick={() => recallLogin()}
+            onClick={() => {
+              !confirmOtpEntered ? recallLogin() : confirmOtpEntered();
+            }}
           />
         </Box>
       </Box>

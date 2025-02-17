@@ -6,8 +6,8 @@ export default function Document() {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script>
-          var clickRankAi = document.createElement("script"); clickRankAi.src =
-          "https://js.clickrank.ai/seo/dc4d56df-22cb-424b-aef2-fa3a2d0c6e66/script?"
+          var clickRankAi = document.createElement(`script`); clickRankAi.src =
+          `https://js.clickrank.ai/seo/dc4d56df-22cb-424b-aef2-fa3a2d0c6e66/script?`
           + new Date().getTime(); clickRankAi.async = true;
           document.head.appendChild(clickRankAi);
         </script>

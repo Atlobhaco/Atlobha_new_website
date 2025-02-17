@@ -89,12 +89,11 @@ function OrderActions({
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>
-              {t.outForDelivery}
+              {t.status["ready-to-ship"]}
               <span className={`${style["sub-title"]}`}>
-                {/* {order?.status_updated_at
+                {order?.status_updated_at
                   ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
-                  : null} */}
-				  {order?.status}
+                  : null}
               </span>
             </div>
             {/* <div className={`${style["text"]}`}>
