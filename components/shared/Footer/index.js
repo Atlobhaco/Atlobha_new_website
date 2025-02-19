@@ -188,8 +188,8 @@ function Footer() {
               <Image
                 alt="twitter"
                 src="/icons/social/twitter-yellow.svg"
-                width={13}
-                height={13}
+                width={10}
+                height={10}
               />
             </Link>
 
@@ -197,8 +197,8 @@ function Footer() {
               <Image
                 alt="insta"
                 src="/icons/social/instgram-yellow.svg"
-                width={22}
-                height={22}
+                width={12}
+                height={12}
               />
             </Link>
 
@@ -206,8 +206,8 @@ function Footer() {
               <Image
                 alt="tiktok"
                 src="/icons/social/tiktok-yellow.svg"
-                width={15}
-                height={15}
+                width={12}
+                height={12}
               />
             </Link>
 
@@ -218,8 +218,8 @@ function Footer() {
               <Image
                 alt="snapchat"
                 src="/icons/social/snap-chat-yellow.svg"
-                width={30}
-                height={30}
+                width={26}
+                height={26}
                 className="cursor-pointer"
               />
             </Link>
@@ -228,8 +228,8 @@ function Footer() {
               <Image
                 alt="whatsapp"
                 src="/icons/social/whatsapp-yellow.svg"
-                width={25}
-                height={25}
+                width={26}
+                height={26}
                 className="cursor-pointer"
               />
             </Link>
