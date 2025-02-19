@@ -6,43 +6,16 @@ import useLocalization from "@/config/hooks/useLocalization";
 import Image from "next/image";
 import Link from "next/link";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { useSelector } from "react-redux";
+import { useAuth } from "@/config/providers/AuthProvider";
 
 function Footer() {
   const router = useRouter();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
-  const atlobhaSections = [
-    {
-      id: 1,
-      text: t.priceSpareParts,
-      link: "",
-    },
-    {
-      id: 2,
-      text: t.tirePolish,
-      link: "",
-    },
-    {
-      id: 3,
-      text: t.rentalService,
-      link: "",
-    },
-    {
-      id: 4,
-      text: t.roadAssistance,
-      link: "",
-    },
-    {
-      id: 5,
-      text: t.driveTrainning,
-      link: "",
-    },
-    {
-      id: 6,
-      text: t.sparePartStore,
-      link: "",
-    },
-  ];
+  const { allGroups } = useSelector((state) => state.appGroups);
+  const { user } = useAuth();
+
   const storeSections = [
     {
       id: 1,
@@ -95,9 +68,21 @@ function Footer() {
         <div className={`col-12 col-md-3`}>
           <div className={`${style["footer-header"]}`}>{t.atlobhaSections}</div>
           <ul className={`${style["footer-links"]}`}>
-            {atlobhaSections?.map((data) => (
-              <li key={data?.id}>{data?.text}</li>
-            ))}
+            {allGroups
+              ?.map((data) => data?.sections)
+              ?.flat()
+              ?.map((data) => (
+                <li
+                  key={data?.id}
+                  onClick={() =>
+                    router.push(
+                      `/sections?secTitle=${data?.title}&&secType=${data?.type}`
+                    )
+                  }
+                >
+                  {data?.title}
+                </li>
+              ))}
           </ul>
         </div>
         <div className={`col-12 col-md-3`}>
@@ -234,6 +219,7 @@ function Footer() {
               alt="logo"
               width={isMobile ? 130 : 147}
               height={isMobile ? 40 : 57}
+              onClick={() => router.push("/")}
             />
           </Box>
 
@@ -320,6 +306,21 @@ function Footer() {
             Copyright © ATLOBHA. All rights reserved.
           </Box>
           <Image
+            onClick={() => {
+              if (window.webengage) {
+                console.log(window.webengage);
+                console.log("🔄 Registering user in WebEngage...");
+                webengage.user.login("user_123"); // Unique user ID
+                webengage.user.setAttribute("we_first_name", "John");
+                webengage.user.setAttribute("we_last_name", "Doe");
+                webengage.user.setAttribute("we_email", "john.doe@example.com");
+                webengage.user.setAttribute("we_phone", "+1234567890");
+                webengage.user.setAttribute("custom_attr", "VIP User");
+                console.log("✅ User registered successfully in WebEngage!");
+              } else {
+                console.error("❌ WebEngage is not available.");
+              }
+            }}
             src="/icons/full-pay-images.svg"
             alt="pay"
             width={20}

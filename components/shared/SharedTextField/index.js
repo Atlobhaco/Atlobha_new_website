@@ -27,6 +27,7 @@ function SharedTextField({
   customPadding = null,
   alignPosition = false,
   id = "",
+  disabled = false,
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -66,6 +67,7 @@ function SharedTextField({
         onBlur={handleBlur}
         variant="outlined"
         fullWidth
+        disabled={disabled}
         placeholder={placeholder} // Add a placeholder instead of a label
         InputProps={{
           endAdornment: (

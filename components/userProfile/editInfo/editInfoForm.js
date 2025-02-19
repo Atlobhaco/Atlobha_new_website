@@ -72,6 +72,7 @@ function EditInfoForm({
             imgIcon={false}
             customPadding="0px 10px"
             alignPosition="start"
+            disabled={userDataProfile?.email?.length}
           />
         </Box>
         {values?.email &&
@@ -219,11 +220,6 @@ function EditInfoForm({
           onClick={() => {
             handleSubmit();
           }}
-        />
-        <SharedBtn
-          className="outline-btn"
-          text="common.cancel"
-          onClick={() => router.back()}
         />
       </div>
     </>
