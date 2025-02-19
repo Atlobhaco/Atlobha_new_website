@@ -343,6 +343,12 @@ function Footer() {
                 webengage.user.setAttribute("we_phone", "+1234567890");
                 webengage.user.setAttribute("custom_attr", "VIP User");
                 console.log("✅ User registered successfully in WebEngage!");
+                window.webengage.user.login("test_123"); // Register user ID
+                window.webengage.user.setAttribute(
+                  "we_email",
+                  "micheal@gmail.com"
+                ); // Set email
+                window.webengage.user.setAttribute("we_first_name", "test"); // Set name
               } else {
                 console.error("❌ WebEngage is not available.");
               }
