@@ -6,8 +6,13 @@ import useLocalization from "@/config/hooks/useLocalization";
 import Image from "next/image";
 import Link from "next/link";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/config/providers/AuthProvider";
+import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
+import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
+import { setAllGroups } from "@/redux/reducers/appGroups";
+import { toast } from "react-toastify";
+import useCustomQuery from "@/config/network/Apiconfig";
 
 function Footer() {
   const router = useRouter();
@@ -15,6 +20,21 @@ function Footer() {
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
   const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  useCustomQuery({
+    name: "sectionGroupsFooter",
+    url: `${APP_SECTIONS_GROUPS}`,
+    refetchOnWindowFocus: false,
+    enabled: true,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      dispatch(setAllGroups(res));
+    },
+    onError: () => {
+      toast.error(t.someThingWrong);
+    },
+  });
 
   const storeSections = [
     {
@@ -62,6 +82,16 @@ function Footer() {
     },
   ];
 
+  const handleAppSectionRedirection = (section) => {
+    if (section?.type === SPAREPARTS || section?.type === MARKETPLACE) {
+      router.push(section?.type === MARKETPLACE ? "/" : "/spareParts");
+    } else {
+      router.push(
+        `/sections?secTitle=${section?.title}&&secType=${section?.type}`
+      );
+    }
+  };
+
   return (
     <footer className={`${style["footer"]}`}>
       <div className="row">
@@ -74,11 +104,7 @@ function Footer() {
               ?.map((data) => (
                 <li
                   key={data?.id}
-                  onClick={() =>
-                    router.push(
-                      `/sections?secTitle=${data?.title}&&secType=${data?.type}`
-                    )
-                  }
+                  onClick={() => handleAppSectionRedirection(data)}
                 >
                   {data?.title}
                 </li>
