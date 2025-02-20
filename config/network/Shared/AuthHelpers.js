@@ -63,7 +63,8 @@ export function useLoginUser({
       window.webengage.onReady(() => {
         console.log("✅ WebEngage is ready!", res);
 
-        webengage.user.login(res?.user?.id); //9SBOkLVMWvPX is the unique user identifier being used here
+        webengage.user.login(res?.user?.id);
+        webengage.user.setAttribute("User ID", res?.user?.id);
         webengage.user.setAttribute("we_email", res?.user?.email || "");
         webengage.user.setAttribute(
           "we_birth_date",
