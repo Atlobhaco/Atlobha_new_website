@@ -214,6 +214,10 @@ function UserProfile({ recallUserData = false }) {
           path: "myCars",
         },
       ]);
+      window.webengage.onReady(() => {
+        webengage.user.setAttribute("total_cars", res?.vehicles_count || 0);
+        webengage.user.setAttribute("total_orders", res?.order_count || 0);
+      });
     },
     onError: () => {},
   });
