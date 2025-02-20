@@ -341,11 +341,13 @@ function Footer() {
                 window.webengage.onReady(() => {
                   console.log("✅ WebEngage is ready!");
 
-                  webengage.user.login("9SBOkLVMWvPX"); //9SBOkLVMWvPX is the unique user identifier being used here
-                  webengage.user.setAttribute("we_email", "john@doe.com");
-                  webengage.user.setAttribute("we_birth_date", "1986-08-19");
+                    webengage.user.login("9SBOkLVMWvPX-user-test"); //9SBOkLVMWvPX is the unique user identifier being used here
+                    webengage.user.setAttribute("we_email", "johnTest@doe.com");
+                    webengage.user.setAttribute("we_birth_date", "1994-04-19");
+					webengage.user.setAttribute('we_first_name', 'John dude');
+					webengage.user.setAttribute('we_phone', '01278766256');
 
-                  console.log("✅ User registered successfully in WebEngage!");
+                    console.log("✅ User registered successfully in WebEngage!");
                 });
               } else {
                 console.error("❌ WebEngage is not available.");

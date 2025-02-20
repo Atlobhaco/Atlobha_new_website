@@ -154,7 +154,10 @@ function SparePartsOrderDetails({
           <SummaryOrder
             orderDetails={orderDetails}
             callSingleOrder={callSingleOrder}
-            calculateReceiptResFromMainPage={calculateReceipt}
+            calculateReceiptResFromMainPage={
+              STATUS?.priced === orderDetails?.status ? calculateReceipt : {}
+            }
+            // send object if it priced only
           />
         </Box>
       )}
