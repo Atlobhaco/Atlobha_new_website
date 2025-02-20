@@ -188,8 +188,8 @@ function Footer() {
               <Image
                 alt="twitter"
                 src="/icons/social/twitter-yellow.svg"
-                width={10}
-                height={10}
+                width={26}
+                height={26}
               />
             </Link>
 
@@ -197,8 +197,8 @@ function Footer() {
               <Image
                 alt="insta"
                 src="/icons/social/instgram-yellow.svg"
-                width={12}
-                height={12}
+                width={26}
+                height={26}
               />
             </Link>
 
@@ -206,8 +206,8 @@ function Footer() {
               <Image
                 alt="tiktok"
                 src="/icons/social/tiktok-yellow.svg"
-                width={12}
-                height={12}
+                width={26}
+                height={26}
               />
             </Link>
 
@@ -336,19 +336,26 @@ function Footer() {
               if (window.webengage) {
                 console.log(window.webengage);
                 console.log("🔄 Registering user in WebEngage...");
-                webengage.user.login("user_123"); // Unique user ID
-                webengage.user.setAttribute("we_first_name", "John");
-                webengage.user.setAttribute("we_last_name", "Doe");
-                webengage.user.setAttribute("we_email", "john.doe@example.com");
-                webengage.user.setAttribute("we_phone", "+1234567890");
-                webengage.user.setAttribute("custom_attr", "VIP User");
-                console.log("✅ User registered successfully in WebEngage!");
-                window.webengage.user.login("test_123"); // Register user ID
-                window.webengage.user.setAttribute(
-                  "we_email",
-                  "micheal@gmail.com"
-                ); // Set email
-                window.webengage.user.setAttribute("we_first_name", "test"); // Set name
+
+                // Ensure WebEngage is fully loaded before making API calls
+                window.webengage.onReady(() => {
+                  console.log("✅ WebEngage is ready!");
+
+                  // Register user ID
+                  window.webengage.user.login("user_123");
+
+                  // Set user attributes
+                  window.webengage.user.setAttribute("we_first_name", "John");
+                  window.webengage.user.setAttribute("we_last_name", "Doe");
+                  window.webengage.user.setAttribute(
+                    "we_email",
+                    "john.doe@example.com"
+                  );
+                  window.webengage.user.setAttribute("we_phone", "+1234567890");
+                  window.webengage.user.setAttribute("custom_attr", "VIP User");
+
+                  console.log("✅ User registered successfully in WebEngage!");
+                });
               } else {
                 console.error("❌ WebEngage is not available.");
               }
