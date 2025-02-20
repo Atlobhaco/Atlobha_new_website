@@ -341,18 +341,9 @@ function Footer() {
                 window.webengage.onReady(() => {
                   console.log("✅ WebEngage is ready!");
 
-                  // Register user ID
-                  window.webengage.user.login("user_123");
-
-                  // Set user attributes
-                  window.webengage.user.setAttribute("we_first_name", "John");
-                  window.webengage.user.setAttribute("we_last_name", "Doe");
-                  window.webengage.user.setAttribute(
-                    "we_email",
-                    "john.doe@example.com"
-                  );
-                  window.webengage.user.setAttribute("we_phone", "+1234567890");
-                  window.webengage.user.setAttribute("custom_attr", "VIP User");
+                  webengage.user.login("9SBOkLVMWvPX"); //9SBOkLVMWvPX is the unique user identifier being used here
+                  webengage.user.setAttribute("we_email", "john@doe.com");
+                  webengage.user.setAttribute("we_birth_date", "1986-08-19");
 
                   console.log("✅ User registered successfully in WebEngage!");
                 });
