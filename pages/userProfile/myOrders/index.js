@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserProfile from "..";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import BreadCrumb from "@/components/BreadCrumb";
