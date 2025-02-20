@@ -60,6 +60,17 @@ export function useLoginUser({
       setOtpView(false);
       setOpen(false);
       dispatch(loginSuccess({ data: res }));
+      window.webengage.onReady(() => {
+        console.log("✅ WebEngage is ready!", res);
+
+        webengage.user.login(res?.user?.id); //9SBOkLVMWvPX is the unique user identifier being used here
+        webengage.user.setAttribute("we_email", res?.user?.email);
+        webengage.user.setAttribute("we_birth_date", res?.user?.birthdate);
+        webengage.user.setAttribute("we_first_name", res?.user?.name);
+        webengage.user.setAttribute("we_phone", res?.user?.phone);
+
+        console.log("✅ User registered successfully in WebEngage!");
+      });
     },
     onError: (err) => {
       toast.error(
