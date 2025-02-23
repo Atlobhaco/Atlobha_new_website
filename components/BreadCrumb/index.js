@@ -84,6 +84,7 @@ function BreadCrumb() {
         width={isMobile ? 14 : 18}
         height={isMobile ? 14 : 18}
         className={`${locale === "ar" ? "ms-2" : "me-2"}  mb-1`}
+		priority={false}
       />
       {renderTitleOfPages()}
     </div>

@@ -31,11 +31,13 @@ const firstPartStyle = {
   flexDirection: "column",
   width: "60%",
   gap: "10px",
+  width: "fit-content",
 };
 
 const secondPartStyle = {
   display: "flex",
   gap: "10px",
+  height: "fit-content",
 };
 
 function Navbar({ setOpenCategories, hideNavbarInUrls }) {
@@ -196,7 +198,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       }}
     >
       <Box className={`${style["navbar-container"]}`}>
-        <Box sx={firstPartStyle}>
+        <div style={firstPartStyle}>
           {!hideComponent && <DropDownAddress />}
           <Image
             alt="logo"
@@ -220,8 +222,8 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             </>
           )}
           {isMobile && hideInSpareOrSectionsPage && <CarPalette />}
-        </Box>
-        <Box sx={secondPartStyle}>
+        </div>
+        <div style={secondPartStyle}>
           <LanguageSwitcher />
 
           {!isMobile && (
@@ -330,7 +332,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               ))}
             </Menu>
           </div>
-        </Box>
+        </div>
       </Box>
       {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
         <Box className={`${style["searching"]}`}>

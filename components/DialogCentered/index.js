@@ -92,13 +92,14 @@ function DialogCentered({
         } ${customClass}`,
       }}
       open={open}
-    //   TransitionComponent={Transition}
+      //   TransitionComponent={Transition}
       keepMounted
       onClose={() => {
         handleClose();
         closeAction();
       }}
-      aria-describedby="general-dialog"
+      aria-describedby={title || subtitle || "general-dialog"}
+      aria-labelledby={title || subtitle || "dialog-title"}
     >
       {/* {isMobile && (
         <Box className="d-flex align-items-center justify-content-center">

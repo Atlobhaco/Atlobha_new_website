@@ -20,6 +20,7 @@ function SharedPhoneInput({
   label = false,
   showAstrick = false,
   hintBelowInput = false,
+  disabled = false,
 }) {
   const { locale, t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -52,6 +53,7 @@ function SharedPhoneInput({
       <PhoneInput
         disableCountryCode={false}
         disableDropdown={true}
+        disabled={disabled}
         ref={inputRef}
         style={{
           height: "44px",

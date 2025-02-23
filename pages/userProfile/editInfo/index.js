@@ -15,6 +15,7 @@ import OtpView from "@/components/Login/otpView";
 import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
+import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
 
 const flexBox = {
   display: "flex",
@@ -32,6 +33,7 @@ function EditInfo() {
   const [otpPayload, setOtpPayload] = useState(false);
   const [timer, setTimer] = useState(120);
   const [saveUserNewData, setSaveUserNewData] = useState(false);
+  const [migrationStep, setMigrationStep] = useState(false);
 
   const containerStyle = {
     padding: `0px ${isMobile ? "0px" : "90px"}`,
@@ -116,11 +118,17 @@ function EditInfo() {
       enabled: false,
       onSuccess: (res) => {
         setOtpView(false);
+        setMigrationStep(false);
         toast.success(t.confirmedSuccess);
         setChangedField(false);
         setOtpPayload(false);
       },
       onError: (err) => {
+        if (err?.response?.status === 409) {
+          setMigrationStep(true);
+          setOtpView(true);
+          return null;
+        }
         toast.error(t.someThingWrong);
       },
     });
@@ -258,6 +266,7 @@ function EditInfo() {
       </div>
       <DialogCentered
         actionsWhenClose={() => {
+          setMigrationStep(false);
           setOtpView(false);
           setChangedField(false);
           setOtpPayload(false);
@@ -269,20 +278,35 @@ function EditInfo() {
         hasCloseIcon={true}
         customClass="modal-login-width-web"
         content={
-          <OtpView
-            containerStyle={containerStyle}
-            setOtpView={setOtpView}
-            recallReqOtp={recallReqOtp}
-            otpLoad={otpLoad}
-            setTimer={setTimer}
-            timer={timer}
-            otpPayload={otpPayload}
-            setOpen={setOtpView}
-            textInput={changedField?.type === "email"}
-            confirmOtpEntered={editPhoneOrEmail}
-            setOtpPayload={setOtpPayload}
-            confirmOtpFetch={confirmOtpFetch}
-          />
+          migrationStep && migrationStep !== 1 ? (
+            <MergeStep
+              setOpenAddMobile={setOtpView}
+              setMigrationStep={setMigrationStep}
+              phoneNum={changedField["value"]
+                ?.replace(/\s+/g, "")
+                ?.replace(/^\+966/, "")}
+              otpCode={otpPayload?.otp}
+              setPhoneNum={() => {}}
+              setOtpCode={setOtpPayload}
+              setChangedField={setChangedField}
+              editProfile={true}
+            />
+          ) : (
+            <OtpView
+              containerStyle={containerStyle}
+              setOtpView={setOtpView}
+              recallReqOtp={recallReqOtp}
+              otpLoad={otpLoad}
+              setTimer={setTimer}
+              timer={timer}
+              otpPayload={otpPayload}
+              setOpen={setOtpView}
+              textInput={changedField?.type === "email"}
+              confirmOtpEntered={editPhoneOrEmail}
+              setOtpPayload={setOtpPayload}
+              confirmOtpFetch={confirmOtpFetch}
+            />
+          )
         }
       />
     </div>

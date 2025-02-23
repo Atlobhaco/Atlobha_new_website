@@ -36,7 +36,13 @@ function UserBalanceHolder({ data, removeStyle = false }) {
         <div className={`${style["edit"]}`}>
           <ActionButtons
             type="edit"
-            onClick={() => router.push("/userProfile/editInfo")}
+            onClick={(e) => {
+              setTimeout(() => {
+                if (isMobile) {
+                  router.push("/userProfile/editInfo");
+                }
+              }, 100);
+            }}
           />
         </div>
       </Box>

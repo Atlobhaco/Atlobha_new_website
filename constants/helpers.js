@@ -62,11 +62,11 @@ export const getAddressFromLatLng = async (lat, lng, locale) => {
       return { city, area }; // Return both city and area
     } else {
       console.error("Error:", data.status);
-      return null;
+      return { city: "", area: "" };
     }
   } catch (error) {
     console.error("Error fetching data:", error);
-    return null;
+    return { city: "", area: "" };
   }
 };
 

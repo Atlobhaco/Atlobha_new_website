@@ -17,22 +17,22 @@ function ComingSoon() {
   return (
     <Box className={`${style["soon"]}`}>
       <Box className="position-relative">
-        <Box className="d-flex">
+        <Box className="d-flex justify-content-center">
           <Image
             alt="img-atlobha"
             src="/logo/ar-en-road-atlobha.svg"
             width={isMobile ? 180 : 276}
             height={isMobile ? 30 : 40}
-            className="mx-auto"
+            priority={false}
           />
         </Box>
-        <Box className="d-flex mt-4">
+        <Box className="d-flex mt-4 justify-content-center">
           <Image
             alt="maintance-atlobha"
             src="/imgs/maintance-man.svg"
             width={isMobile ? 220 : 346}
             height={isMobile ? 160 : 231}
-            className="mx-auto"
+            priority={false}
             style={{
               zIndex: 1,
             }}
@@ -47,6 +47,7 @@ function ComingSoon() {
             src="/icons/pattern.png"
             width={isMobile ? 220 : 346}
             height={isMobile ? 142 : 189}
+			priority={false}
             style={{
               position: "absolute",
               width: "100%",
@@ -113,6 +114,7 @@ function ComingSoon() {
             src="/icons/social/twitter.svg"
             width={28}
             height={28}
+			priority={false}
           />
         </Link>
 
@@ -122,6 +124,7 @@ function ComingSoon() {
             src="/icons/social/insta.svg"
             width={28}
             height={28}
+			priority={false}
           />
         </Link>
 
@@ -131,6 +134,7 @@ function ComingSoon() {
             src="/icons/social/tiktok.svg"
             width={28}
             height={28}
+			priority={false}
           />
         </Link>
 
@@ -141,6 +145,7 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
+			priority={false}
           />
         </Link>
 
@@ -161,6 +166,7 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
+			priority={false}
           />
         </Link>
       </Box>
@@ -184,6 +190,7 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
+			priority={false}
           />
         </Link>
 
@@ -200,6 +207,7 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
+			priority={false}
           />
         </Link>
       </Box>

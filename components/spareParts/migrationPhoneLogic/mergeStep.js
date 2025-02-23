@@ -24,6 +24,8 @@ function MergeStep({
   otpCode,
   setPhoneNum,
   setOtpCode,
+  setChangedField = () => {},
+  editProfile = false,
 }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -44,10 +46,17 @@ function MergeStep({
     retry: 0,
     select: (res) => res?.data?.data,
     onError: (err) => {
-      toast.error(err?.response?.data?.message);
+      toast.error(editProfile ? t.cannotMerge : err?.response?.data?.message);
+      if (editProfile) {
+        handleCloseStep();
+      }
     },
     onSuccess: () => {
-      loginrefetch();
+      if (editProfile) {
+        handleCloseStep();
+      } else {
+        loginrefetch();
+      }
     },
   });
 
@@ -83,6 +92,7 @@ function MergeStep({
     setMigrationStep(1);
     setPhoneNum(false);
     setOtpCode("");
+    setChangedField(false);
   };
   return (
     <Box>

@@ -22,7 +22,6 @@ import SummaryOrder from "./summaryOrder";
 import RateProductsSection from "./rateProductsSection";
 import AddAvailablePayMethods from "./addAvailablePayMethods";
 import { useRouter } from "next/router";
-import { orderEnumArray } from "@/constants/helpers";
 
 function SparePartsOrderDetails({
   orderDetails = {},
@@ -106,7 +105,6 @@ function SparePartsOrderDetails({
 
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
-      console.log("window?.webengage", window?.webengage);
       if (type === ORDERSENUM?.spareParts) {
         window.webengage.onReady(() => {
           webengage.track("ORDER_SPAREPARTS_VIEWED", {

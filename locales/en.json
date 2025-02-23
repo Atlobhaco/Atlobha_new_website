@@ -185,6 +185,7 @@
   "ok": "Confirm",
   "numberEnteredBefore": "The number you entered is already registered with Atlobha",
   "mergeTwoAccounts": "The accounts will now be merged. Are you sure?",
+  "cannotMerge": "The accounts can not merged",
   "resendOtpAgain": "Resend OTP",
   "enterOtpSendto": "Enter the confirmation code that was sent to you.",
   "confirmYouPhone": "Confirm your phone number",
