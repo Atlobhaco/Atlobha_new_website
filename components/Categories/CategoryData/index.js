@@ -11,7 +11,7 @@ function CategoryData({ imgPath = "/imgs/accessories.svg", text = "text" }) {
       <Box
         className={`${style["category-image"]}`}
         sx={{
-          backgroundImage: `url('${imgPath}')`, // Correct syntax for background image
+          backgroundImage: `url('${imgPath}')`, 
         }}
       ></Box>
       {!isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>}

@@ -2,7 +2,6 @@
 @import "../../styles/variables.scss";
 
 .hint {
-  //   background-color: #e7f5ff;
   display: flex;
   padding: 24px 16px;
   @include mobile-screen-style {
@@ -14,9 +13,7 @@
   border-radius: 10px;
   flex-wrap: wrap;
   &-text {
-    // background-color: red;
     display: flex;
-    // flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     gap: 10px;

@@ -19,8 +19,8 @@
   }
   &-image {
     background-repeat: no-repeat;
-    background-position: center; // Center the image
-    background-size: contain; // Scale the image to fit
+    background-position: center; 
+    background-size: contain;
     height: 77px;
     width: 77px;
     @include mobile-screen-style {
