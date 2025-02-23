@@ -32,7 +32,7 @@ function ComingSoon() {
             src="/imgs/maintance-man.svg"
             width={isMobile ? 220 : 346}
             height={isMobile ? 160 : 231}
-            priority={false}
+            priority={true}
             style={{
               zIndex: 1,
             }}
