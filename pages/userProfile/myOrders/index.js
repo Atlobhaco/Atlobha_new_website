@@ -67,7 +67,6 @@ function MyOrders() {
       webengage.track("APP_SECTION_VIEWED", {
         app_section: "My Orders",
       });
-      console.log("✅ track order event");
     });
   }, []);
 

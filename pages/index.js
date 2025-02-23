@@ -14,6 +14,7 @@ import ColoredHint from "@/components/ColoredHint";
 import Categories from "@/components/Categories";
 import ProductCard from "@/components/shared/ProductCard";
 import ComingSoon from "@/components/comingSoon";
+import { useEffect } from "react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,6 +31,15 @@ export default function Home() {
   const style = {
     marginTop: "32px",
   };
+
+  useEffect(() => {
+    window.webengage.onReady(() => {
+      webengage.track("APP_SECTION_VIEWED", {
+        app_section: "Home",
+      });
+    });
+  }, []);
+  
   return (
     <Box
     //   sx={{
@@ -86,7 +96,7 @@ export default function Home() {
       <IconInsideCircle hasText={false} />
       <IconInsideCircle hasText={false} />
       <SharedInput /> */}
-	  <ComingSoon  />
+      <ComingSoon />
     </Box>
   );
 }

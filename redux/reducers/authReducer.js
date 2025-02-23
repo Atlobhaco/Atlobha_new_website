@@ -39,7 +39,6 @@ export const authSlice = createSlice({
       localStorage.removeItem("user");
       window.location.reload();
       webengage.user.logout();
-      console.log("user-logout-webengage");
     },
     setUser: (state, action) => {
       state.user = action.payload;

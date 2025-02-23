@@ -177,7 +177,7 @@ function SummaryOrder({
       if (res?.amount_to_pay > 0) {
         callConfirmPricing();
       } else {
-        toast.error(`${t.remainingtotal} ${res?.amount_to_pay} ${t.sar}`);
+        callConfirmPricing();
       }
     },
     onError: (err) => {
@@ -382,7 +382,33 @@ function SummaryOrder({
             className="big-main-btn"
             customClass="w-100"
             text="repeatPricing"
-            onClick={() => callRepeatPricing()}
+            onClick={() => {
+              callRepeatPricing();
+              window.webengage.onReady(() => {
+                webengage.track("ORDER_SPAREPARTS_REPRICE", {
+                  car_brand: orderDetails?.vehicle?.brand?.name || "",
+                  car_model: orderDetails?.vehicle?.model?.name || "",
+                  car_year: orderDetails?.vehicle?.year || "",
+                  order_items:
+                    orderDetails?.parts?.map((part) => ({
+                      Part_Name_or_Number: part?.name || part?.id || "",
+                      Quantity: part?.quantity || 0,
+                      Image: part?.image || "",
+                    })) || [],
+                  shipping_address: orderDetails?.address?.address || "",
+                  promo_code: orderDetails?.promo_code?.code || "",
+                  comment: orderDetails?.notes || "",
+                  order_number: orderDetails?.id || "",
+                  creation_date: orderDetails?.created_at || "",
+                  status: orderDetails?.status || "",
+                  order_url: router?.asPath || "",
+                  total_price:
+                    calculateReceiptResFromMainPage?.total_price ||
+                    receipt?.total_price ||
+                    0,
+                });
+              });
+            }}
             disabled={repeatPriceFetch}
             comAfterText={
               repeatPriceFetch ? (

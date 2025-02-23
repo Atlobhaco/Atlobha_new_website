@@ -27,38 +27,8 @@ const AppContent = ({ Component, pageProps }) => {
     moment.locale(locale);
   }, [locale]);
 
-  //   useEffect(() => {
-  //     if (typeof window !== "undefined") {
-  //       console.log("🔄 Checking WebEngage...");
-  //       if (window.webengage) {
-  //         console.log("✅ WebEngage exists, initializing...");
-  //         window.webengage.init("ksa~76aa41d"); // Replace with your actual license code
-
-  //         setTimeout(() => {
-  //           if (window.webengage?.onReady) {
-  //             window.webengage.onReady(() => {
-  //               console.log("✅ WebEngage is Ready!");
-  //               window.webengage.user.login("test_user");
-  //             });
-  //           } else {
-  //             console.error(
-  //               "❌ webengage.onReady is not available after timeout."
-  //             );
-  //           }
-  //         }, 500);
-  //       }
-  //     }
-  //   }, []);
-
-  //   console.log(window?.webengage);
   return (
     <Provider store={store}>
-      {/* <Script
-        id="webengage-sdk"
-        strategy="afterInteractive"
-        src="https://cdn.widgets.webengage.com/js/webengage-min-v-6.0.js"
-        onLoad={() => console.log("✅ WebEngage script loaded.")}
-      /> */}
       <Layout>
         <Component {...pageProps} />
       </Layout>
@@ -67,35 +37,9 @@ const AppContent = ({ Component, pageProps }) => {
 };
 
 export default function App({ Component, pageProps }) {
-  //   useEffect(() => {
-  //     let interval; // ✅ Declare interval outside
-
-  //     if (typeof window !== "undefined") {
-  //       console.log("🔄 Checking WebEngage...");
-
-  //       interval = setInterval(() => {
-  //         if (window.webengage?.init) {
-  //           clearInterval(interval); // ✅ Stop checking once initialized
-  //           console.log("✅ WebEngage exists, initializing...");
-  // 		  console.log("WebEngage License Code:", "ksa~76aa41d");
-  //           window.webengage.init("ksa~76aa41d"); // Replace with your real license code
-
-  //           window.webengage.onReady(() => {
-  //             console.log("✅ WebEngage is Ready!");
-  //           });
-  //         }
-  //       }, 500); // Check every 500ms
-  //     }
-
-  //     return () => {
-  //       if (interval) clearInterval(interval); // ✅ Cleanup interval properly
-  //     };
-  //   }, []);
-
   useEffect(() => {
     if (typeof window !== "undefined" && window.webengage) {
-      window.webengage.init("ksa~76aa41d"); // Your WebEngage License Code
-      console.log("🚀 WebEngage Initialized!");
+      window.webengage.init(process.env.NEXT_PUBLIC_WEBENGAGE_LICENCE); // Your WebEngage License Code
     }
   }, []);
 
@@ -104,7 +48,7 @@ export default function App({ Component, pageProps }) {
       <Script
         id="webengage-config"
         strategy="lazyOnload"
-        src="https://wsdk-files.webengage.com/webengage/ksa~76aa41d/v4.js"
+        src={`https://wsdk-files.webengage.com/webengage/${process.env.NEXT_PUBLIC_WEBENGAGE_LICENCE}/v4.js`}
         onError={() => console.error("Failed to load WebEngage config script")}
       />
 

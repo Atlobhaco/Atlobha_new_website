@@ -80,6 +80,11 @@ function SpareParts() {
     if (selectedParts?.some((obj) => obj.insideOrder === true)) {
       dispatch(clearSpareParts());
     }
+    window.webengage.onReady(() => {
+      webengage.track("SPAREPARTS_VIEWED", {
+        event_status: true,
+      });
+    });
   }, []);
 
   const {

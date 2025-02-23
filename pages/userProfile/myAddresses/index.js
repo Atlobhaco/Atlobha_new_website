@@ -15,7 +15,7 @@ import {
 import { Box } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import UserProfile from "..";
@@ -59,6 +59,18 @@ function MyAddresses() {
       setDeleteAddressId(null);
     },
   });
+
+  useEffect(() => {
+    if (allAddresses?.length) {
+      webengage.track("LOGIN", {
+        addresses: allAddresses?.map((address) => ({
+          id: address?.id || "",
+          Address: address?.address || "",
+          Type: address?.name || "",
+        })),
+      });
+    }
+  }, [allAddresses]);
 
   return (
     <div className="container-fluid">

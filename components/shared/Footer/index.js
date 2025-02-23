@@ -142,12 +142,17 @@ function Footer() {
             <span>info@atlobha.com</span>
           </div>
           <div
-            onClick={() =>
+            onClick={() => {
               window.open(
                 `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
                 "_blank"
-              )
-            }
+              );
+              window.webengage.onReady(() => {
+                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              });
+            }}
             className={`${style["footer-help_info"]}`}
           >
             <Box
@@ -224,7 +229,17 @@ function Footer() {
               />
             </Link>
 
-            <Link href="https://wa.me/966502670094" target="_blank">
+            <Link
+              onClick={() =>
+                window.webengage.onReady(() => {
+                  webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                    event_status: true,
+                  });
+                })
+              }
+              href="https://wa.me/966502670094"
+              target="_blank"
+            >
               <Image
                 alt="whatsapp"
                 src="/icons/social/whatsapp-yellow.svg"
@@ -332,27 +347,6 @@ function Footer() {
             Copyright © ATLOBHA. All rights reserved.
           </Box>
           <Image
-            onClick={() => {
-              if (window.webengage) {
-                console.log(window.webengage);
-                console.log("🔄 Registering user in WebEngage...");
-
-                // Ensure WebEngage is fully loaded before making API calls
-                window.webengage.onReady(() => {
-                  console.log("✅ WebEngage is ready!");
-
-                    webengage.user.login("9SBOkLVMWvPX-user-test"); //9SBOkLVMWvPX is the unique user identifier being used here
-                    webengage.user.setAttribute("we_email", "johnTest@doe.com");
-                    webengage.user.setAttribute("we_birth_date", "1994-04-19");
-					webengage.user.setAttribute('we_first_name', 'John dude');
-					webengage.user.setAttribute('we_phone', '01278766256');
-
-                    console.log("✅ User registered successfully in WebEngage!");
-                });
-              } else {
-                console.error("❌ WebEngage is not available.");
-              }
-            }}
             src="/icons/full-pay-images.svg"
             alt="pay"
             width={20}

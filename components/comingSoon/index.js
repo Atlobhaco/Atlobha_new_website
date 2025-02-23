@@ -91,12 +91,17 @@ function ComingSoon() {
             customClass={`${isMobile ? "w-100" : "unset"}`}
             className="big-main-btn"
             text="helpCenter"
-            onClick={() =>
+            onClick={() => {
               window.open(
                 `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
                 "_blank"
-              )
-            }
+              );
+              window.webengage.onReady(() => {
+                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              });
+            }}
           />
         </Box>
       </Box>
@@ -139,7 +144,17 @@ function ComingSoon() {
           />
         </Link>
 
-        <Link href="https://wa.me/966502670094" target="_blank">
+        <Link
+          onClick={() =>
+            window.webengage.onReady(() => {
+              webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                event_status: true,
+              });
+            })
+          }
+          href="https://wa.me/966502670094"
+          target="_blank"
+        >
           <Image
             alt="whatsapp"
             src="/icons/social/whatsapp.svg"
