@@ -145,7 +145,7 @@ function SparePartsOrderDetails({
           deleivery_date: orderDetails?.estimated_delivery_date || "",
           payment: orderDetails?.payment_method || "",
           total_price: orderDetails?.receipt?.total_price || 0,
-          status: total_price?.status || "",
+          status: orderDetails?.status || "",
           order_type: orderEnumArray()?.find((d) => d?.id === type)?.id || "",
           order_url: router?.asPath || "",
         });
