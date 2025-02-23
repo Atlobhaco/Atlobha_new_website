@@ -105,7 +105,7 @@ function SparePartsOrderDetails({
   });
 
   useEffect(() => {
-    if (orderDetails?.id && router?.asPath) {
+    if (orderDetails?.id && router?.asPath && window?.webengage) {
       if (type === ORDERSENUM?.spareParts) {
         window.webengage.onReady(() => {
           webengage.track("ORDER_SPAREPARTS_VIEWED", {
