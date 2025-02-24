@@ -126,7 +126,10 @@ function SummaryOrder({
       payment_reference: merchanteRefrence,
     },
     onSuccess: (res) => {
-      if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
         form.submit();
         setTimeout(() => {
           setRedirectToPayfort(false);
@@ -135,7 +138,6 @@ function SummaryOrder({
       }
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
-      //   callSingleOrder();
     },
     onError: (err) => {
       setRedirectToPayfort(false);
@@ -166,7 +168,7 @@ function SummaryOrder({
     method: "post",
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
-      // check if amount to pay changed before pay
+      //   check if amount to pay changed before pay
       if (+res?.amount_to_pay !== +receipt?.amount_to_pay) {
         toast.error(`${t.remainingtotal} ${t.beChanged}`);
         setTimeout(() => {
@@ -174,7 +176,7 @@ function SummaryOrder({
         }, 500);
         return;
       }
-      if (res?.amount_to_pay > 0) {
+      if (+res?.amount_to_pay > 0) {
         callConfirmPricing();
       } else {
         callConfirmPricing();

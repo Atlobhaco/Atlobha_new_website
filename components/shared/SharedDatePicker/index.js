@@ -176,7 +176,7 @@ function SharedDatePicker({
           style={{
             position: "absolute",
             ...(locale === "ar" ? { left: "9px" } : { right: "9px" }),
-            top: "48%",
+            top: "46%",
             background: "white",
           }}
         />
