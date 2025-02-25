@@ -48,7 +48,6 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
       }
     } catch (error) {
       toast.error(error.message || "An error occurred");
-      console.error(error);
     }
     setSelectCarPopUpModal(false);
   };

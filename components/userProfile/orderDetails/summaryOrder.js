@@ -248,7 +248,7 @@ function SummaryOrder({
         const merchantSession = await response.json();
         session.completeMerchantValidation(merchantSession);
       } catch (error) {
-        console.error("Merchant validation failed:", error);
+        // console.error("Merchant validation failed:", error);
         session.abort();
       }
     };
@@ -272,7 +272,7 @@ function SummaryOrder({
           session.completePayment(ApplePaySession.STATUS_FAILURE);
         }
       } catch (error) {
-        console.error("Payment failed:", error);
+        // console.error("Payment failed:", error);
         session.completePayment(ApplePaySession.STATUS_FAILURE);
       }
     };

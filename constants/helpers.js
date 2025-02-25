@@ -29,7 +29,6 @@ export const getUserCurrentLocation = () => {
           resolve(location);
         },
         (err) => {
-          console.error("Error getting location:", err);
           reject(
             "Unable to retrieve location. Please enable location services."
           );
@@ -61,11 +60,9 @@ export const getAddressFromLatLng = async (lat, lng, locale) => {
 
       return { city, area }; // Return both city and area
     } else {
-      console.error("Error:", data.status);
       return { city: "", area: "" };
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
     return { city: "", area: "" };
   }
 };

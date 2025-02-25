@@ -61,7 +61,7 @@ export function usersAddressesQuery({
             })
           );
         } catch (error) {
-          console.error(error);
+        //   console.error(error);
         }
       } else {
         dispatch(setDefaultAddress({ data: defaultAddress }));

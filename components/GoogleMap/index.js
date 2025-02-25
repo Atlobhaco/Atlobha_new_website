@@ -128,7 +128,7 @@ const GoogleMapComponent = React.memo(
                 "Please enable your location services for better accuracy."
               );
             } else {
-              console.error("Error getting the location", error);
+            //   console.error("Error getting the location", error);
             }
           },
           { enableHighAccuracy: true }
@@ -170,7 +170,7 @@ const GoogleMapComponent = React.memo(
           map.setZoom(17);
         }
       } else {
-        console.error("Place not found. Please try again.");
+        // console.error("Place not found. Please try again.");
       }
     };
 
@@ -199,11 +199,10 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-          console.error("Geocoding failed:", data.status);
           alert("Failed to fetch location details.");
         }
       } catch (error) {
-        console.error("Error fetching location details:", error);
+        // console.error("Error fetching location details:", error);
         // alert("Error fetching location details. Please try again.");
       }
     };

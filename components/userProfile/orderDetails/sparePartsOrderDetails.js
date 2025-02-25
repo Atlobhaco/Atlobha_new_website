@@ -51,9 +51,7 @@ function SparePartsOrderDetails({
       () => {
         toast.success(`${t.copySuccess}, ${id}`);
       },
-      (err) => {
-        console.error("Failed to copy: ", err);
-      }
+      (err) => {}
     );
   };
 
