@@ -228,15 +228,16 @@ function SummaryOrder({
     }
 
     const paymentRequest = {
-      countryCode: "SA", // Change based on your country
+      countryCode: "SA",
       currencyCode: "SAR",
       merchantCapabilities: ["supports3DS"],
       supportedNetworks: ["visa", "masterCard", "mada"],
-      total: { label: "Atlobha soter", amount: "100.00" },
+      total: { label: "Atlobha Store", amount: "100.00" },
     };
 
     const session = new ApplePaySession(3, paymentRequest);
 
+    // Merchant Validation
     session.onvalidatemerchant = async (event) => {
       try {
         const response = await fetch("/api/validateApplePay", {
@@ -245,19 +246,22 @@ function SummaryOrder({
           headers: { "Content-Type": "application/json" },
         });
 
+        if (!response.ok) throw new Error("Merchant validation failed");
+
         const merchantSession = await response.json();
         session.completeMerchantValidation(merchantSession);
       } catch (error) {
-        // console.error("Merchant validation failed:", error);
+        console.error("Merchant validation error:", error);
         session.abort();
       }
     };
 
+    // Payment Authorization
     session.onpaymentauthorized = async (event) => {
       try {
-        const paymentData = event.payment.token.paymentData;
+        const paymentData = event.payment.token.paymentData; // Extract correct token data
 
-        // Send the Apple Pay payment token to your backend
+        // Send payment token to backend
         const response = await fetch("/api/payfortApplePay", {
           method: "POST",
           body: JSON.stringify({ applePayToken: paymentData }),
@@ -272,7 +276,7 @@ function SummaryOrder({
           session.completePayment(ApplePaySession.STATUS_FAILURE);
         }
       } catch (error) {
-        // console.error("Payment failed:", error);
+        console.error("Payment processing error:", error);
         session.completePayment(ApplePaySession.STATUS_FAILURE);
       }
     };
