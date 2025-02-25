@@ -5,6 +5,7 @@ export default function Document() {
   return (
     <Html lang="en">
       <Head>
+        <link rel="manifest" href="/manifest.json" />
         <Script>
           var clickRankAi = document.createElement(`script`); clickRankAi.src =
           `https://js.clickrank.ai/seo/dc4d56df-22cb-424b-aef2-fa3a2d0c6e66/script?`

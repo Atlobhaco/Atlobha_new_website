@@ -1,0 +1,19 @@
+{
+  "name": "Atlobha-اطلبها",
+  "short_name": "Atlobha-اطلبها",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/logo/road-atlobha-text.svg",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo/road-atlobha-text.svg",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
