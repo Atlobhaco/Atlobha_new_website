@@ -13,6 +13,7 @@ import ToastifyProvider from "@/config/providers/ToastifyProvider";
 import AxiosProvider from "@/config/network/AxiosConfig";
 import store from "@/redux/store";
 import Layout from "@/layouts/MainLayout";
+import "moment/locale/ar";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -24,7 +25,7 @@ const AppContent = ({ Component, pageProps }) => {
   useEffect(() => {
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.documentElement.lang = locale;
-    moment.locale(locale);
+    moment.locale(locale === "ar" ? "ar" : "en");
   }, [locale]);
 
   return (
