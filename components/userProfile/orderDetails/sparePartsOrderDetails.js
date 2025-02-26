@@ -120,7 +120,7 @@ function SparePartsOrderDetails({
             comment: orderDetails?.notes || "",
             order_number: orderDetails?.id?.toString() || "",
             creation_date: orderDetails?.created_at
-              ? new Date(created_at.replace(" ", "T") + "Z").getTime()
+              ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
               : "",
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
@@ -134,7 +134,7 @@ function SparePartsOrderDetails({
         webengage.track("ORDER_VIEWED", {
           order_number: orderDetails?.id?.toString() || "",
           creation_date: orderDetails?.created_at
-            ? new Date(created_at.replace(" ", "T") + "Z").getTime()
+            ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
             : "",
           order_items:
             orderDetails?.parts?.map((part) => ({
