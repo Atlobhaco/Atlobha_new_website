@@ -100,7 +100,12 @@ function SparePartsOrderDetails({
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
-
+  console.log(
+    'new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()',
+    orderDetails?.created_at
+      ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
+      : ""
+  );
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
       if (type === ORDERSENUM?.spareParts) {
@@ -118,9 +123,11 @@ function SparePartsOrderDetails({
             shipping_address: orderDetails?.address?.address || "",
             promo_code: orderDetails?.promo_code?.code || "",
             comment: orderDetails?.notes || "",
-            order_number: orderDetails?.id?.toString() || "",
+            order_number: orderDetails?.id ? String(orderDetails.id) : "",
             creation_date: orderDetails?.created_at
-              ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
+              ? new Date(
+                  orderDetails?.created_at?.replace(" ", "T") + "Z"
+                ).getTime()
               : "",
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
@@ -132,9 +139,11 @@ function SparePartsOrderDetails({
       /* -------------------------------------------------------------------------- */
       window.webengage.onReady(() => {
         webengage.track("ORDER_VIEWED", {
-          order_number: orderDetails?.id?.toString() || "",
+          order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
-            ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
+            ? new Date(
+                orderDetails?.created_at?.replace(" ", "T") + "Z"
+              ).getTime()
             : "",
           order_items:
             orderDetails?.parts?.map((part) => ({
