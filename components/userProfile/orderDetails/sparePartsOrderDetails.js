@@ -118,8 +118,10 @@ function SparePartsOrderDetails({
             shipping_address: orderDetails?.address?.address || "",
             promo_code: orderDetails?.promo_code?.code || "",
             comment: orderDetails?.notes || "",
-            order_number: orderDetails?.id || "",
-            creation_date: orderDetails?.created_at || "",
+            order_number: orderDetails?.id?.toString() || "",
+            creation_date: orderDetails?.created_at
+              ? new Date(orderCreatedAt.replace(" ", "T") + "Z").getTime()
+              : "",
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
           });
@@ -130,8 +132,10 @@ function SparePartsOrderDetails({
       /* -------------------------------------------------------------------------- */
       window.webengage.onReady(() => {
         webengage.track("ORDER_VIEWED", {
-          order_number: orderDetails?.id || "",
-          creation_date: orderDetails?.created_at || "",
+          order_number: orderDetails?.id?.toString() || "",
+          creation_date: orderDetails?.created_at
+            ? new Date(orderCreatedAt.replace(" ", "T") + "Z").getTime()
+            : "",
           order_items:
             orderDetails?.parts?.map((part) => ({
               Part_Name_or_Number: part?.name || part?.id || "",

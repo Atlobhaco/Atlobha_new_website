@@ -282,6 +282,34 @@ function SummaryOrder({
     };
 
     session.begin();
+
+    // session.onpaymentauthorized = async (event) => {
+    //   const orderId = idOrder;
+
+    //   const paymentResponse = await fetch(
+    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/${orderId}/purchase`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         payment_token: event.payment.token, // Sending Apple Pay token directly
+    //         // Add any other order/payment details required by your backend
+    //       }),
+    //     }
+    //   ).then((res) => res.json());
+
+    //   if (paymentResponse.success) {
+    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
+    //     // Additional success handling here
+    //   } else {
+    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
+    //     // Additional failure handling here
+    //   }
+    // };
+
+    // session.begin();
   };
 
   return (
