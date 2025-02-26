@@ -1,4 +1,3 @@
-// pages/api/validateApplePay.js
 export default async function handler(req, res) {
 //   if (req.method !== "POST") {
 //     return res.status(405).json({ error: "Method Not Allowed" });
@@ -12,7 +11,7 @@ export default async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         merchantIdentifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
-        domainName: "https://atlobha-new-website.vercel.app/",
+        domainName: "atlobha-new-website.vercel.app", // Corrected
         displayName: "Atlobha Store",
       }),
     });
