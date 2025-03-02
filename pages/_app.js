@@ -14,6 +14,7 @@ import AxiosProvider from "@/config/network/AxiosConfig";
 import store from "@/redux/store";
 import Layout from "@/layouts/MainLayout";
 import "moment/locale/ar";
+import useBranch from "./useBranch";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ export default function App({ Component, pageProps }) {
       window.webengage.init(process.env.NEXT_PUBLIC_WEBENGAGE_LICENCE); // Your WebEngage License Code
     }
   }, []);
+  useBranch();
 
   return (
     <QueryClientProvider client={queryClient}>
