@@ -249,6 +249,7 @@ function SummaryOrder({
             // ✅ Headers should be inside a headers object
             "Content-Type": "application/json;charset=UTF-8",
             "x-api-key": "w123",
+            Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
           },
         }
       );
