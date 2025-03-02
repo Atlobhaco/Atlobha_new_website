@@ -227,86 +227,71 @@ function SummaryOrder({
       return;
     }
 
-    const paymentRequest = {
+    const request = {
       countryCode: "SA",
       currencyCode: "SAR",
+      supportedNetworks: ["visa", "masterCard", "amex"],
       merchantCapabilities: ["supports3DS"],
-      supportedNetworks: ["visa", "masterCard", "mada"],
-      total: { label: "Atlobha Store", amount: "100.00" },
+      total: {
+        label: "Atlobha Store",
+        amount: "2000",
+      },
     };
 
-    const session = new ApplePaySession(3, paymentRequest);
+    const session = new ApplePaySession(3, request);
 
-    // Merchant Validation
-    session.onvalidatemerchant = async (event) => {
-      try {
-        const response = await fetch("/api/validateApplePay", {
-          method: "POST",
-          body: JSON.stringify({ validationURL: event.validationURL }),
-          headers: { "Content-Type": "application/json" },
-        });
-
-        if (!response.ok) throw new Error("Merchant validation failed");
-
-        const merchantSession = await response.json();
-        console.log("merchantSession", merchantSession);
-        session.completeMerchantValidation(merchantSession);
-      } catch (error) {
-        console.error("Merchant validation error:", error);
-        session.abort();
-      }
-    };
-
-    // // Payment Authorization
     session.onpaymentauthorized = async (event) => {
-      try {
-        // const paymentData = event.payment.token.paymentData; // Extract correct token data
-
-        const paymentData = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/getApplePaySession`
-        )
-          .then((res) => res.json())
-          .catch((err) => {
-            err.json();
-            console.error("err-endpoint", err);
-          });
-        console.log("paymentData", paymentData);
-        // Send payment token to backend
-        const response = await fetch("/api/payfortApplePay", {
-          method: "POST",
-          body: JSON.stringify({ applePayToken: paymentData }),
-          headers: { "Content-Type": "application/json" },
-        });
-
-        const result = await response.json();
-        console.log("result", result);
-        console.error("result:", result);
-
-        if (result.status === "success") {
-          session.completePayment(ApplePaySession.STATUS_SUCCESS);
-        } else {
-          session.completePayment(ApplePaySession.STATUS_FAILURE);
+      const paymentResponse = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/apple-pay/session`,
+        {
+          method: "Get",
         }
-      } catch (error) {
-        console.error("Payment processing error:", error);
+      ).then((res) => res.json());
+      console.log("paymentResponse", paymentResponse);
+      if (paymentResponse.success) {
+        session.completePayment(ApplePaySession.STATUS_SUCCESS);
+        // Additional success handling here
+      } else {
         session.completePayment(ApplePaySession.STATUS_FAILURE);
+        // Additional failure handling here
       }
     };
 
-    // session.begin();
+    // **1. Merchant Validation**
+    // session.onvalidatemerchant = async (event) => {
+    //   try {
+    //     const response = await fetch("/api/validateApplePay", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({ validationURL: event.validationURL }),
+    //     });
 
+    //     if (!response.ok) throw new Error("Merchant validation failed");
+
+    //     const merchantSession = await response.json();
+    //     session.completeMerchantValidation(merchantSession);
+    //   } catch (error) {
+    //     console.error("Merchant validation error:", error);
+    //     session.abort();
+    //   }
+    // };
+
+    // // **2. Payment Authorization**
     // session.onpaymentauthorized = async (event) => {
-    //   const paymentResponse = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/getApplePaySession`
-    //   ).then((res) => res.json());
+    //   try {
+    //     const response = await fetch("/api/payfortApplePay", {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(event.payment),
+    //     });
 
-    //   if (paymentResponse.success || paymentResponse.status === "success") {
+    //     if (!response.ok) throw new Error("Payment processing failed");
+
     //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
-    //     // Additional success handling here
-    //   } else {
+    //     alert("Payment successful!");
+    //   } catch (error) {
+    //     console.error("Payment error:", error);
     //     session.completePayment(ApplePaySession.STATUS_FAILURE);
-    //     // Additional failure handling here
-    //     console.error("Payment processing error:", ApplePaySession);
     //   }
     // };
 
