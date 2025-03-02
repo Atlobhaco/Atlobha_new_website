@@ -3,14 +3,44 @@ import { useEffect, useState } from "react";
 const useDeepLink = () => {
   const [deepLinkData, setDeepLinkData] = useState(null);
 
+  const fetchBranchData = async (matchId) => {
+    try {
+      const response = await fetch(
+        `https://api2.branch.io/v1/url?branch_match_id=${matchId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "branch-key": process.env.NEXT_PUBLIC_BRANCH_KEY, // Set in .env file
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error("Branch.io fetch failed");
+
+      const data = await response.json();
+      console.log("Branch Metadata:", data);
+
+      // Check where to redirect based on metadata
+      //   if (data.data && data.data.redirectTo) {
+      //     router.replace(data.data.redirectTo);
+      //   }
+    } catch (error) {
+      console.error("Error fetching Branch.io data:", error);
+    }
+  };
+
   useEffect(() => {
     if (typeof window === "undefined") return; // Ensure it runs on the client
 
     const initBranch = () => {
       if (window.branch) {
-        console.log(
-          new URLSearchParams(window?.location?.search).get("_branch_match_id")
+        const branchMatchId = new URLSearchParams(window?.location?.search).get(
+          "_branch_match_id"
         );
+        if (branchMatchId) {
+          fetchBranchData(branchMatchId);
+        }
         console.log("window.branch:", window?.branch);
         window.branch.init(
           "key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG",
@@ -38,10 +68,6 @@ const useDeepLink = () => {
 
     const checkBranch = setInterval(() => {
       if (window.branch) {
-        console.log(
-          new URLSearchParams(window?.location?.search).get("_branch_match_id")
-        );
-        console.log("window.branch:", window?.branch);
         clearInterval(checkBranch); // Stop checking
         initBranch();
       }

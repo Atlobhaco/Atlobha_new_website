@@ -49,10 +49,6 @@ export default function Home() {
     //     display: "flex",
     //   }}
     >
-      <div>
-        <h1>Listening for Deep Links...</h1>
-        {deepLinkData && <pre>{JSON.stringify(deepLinkData, null, 2)}</pre>}
-      </div>
       <MetaTags title="طلبات المتجر" content="طلبات المتجر" />
       {/* <div className="container mb-5 pb-5">
         <div className="row" style={style}>
