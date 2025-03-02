@@ -234,72 +234,71 @@ function SummaryOrder({
       merchantCapabilities: ["supports3DS"],
       total: {
         label: "Atlobha Store",
-        amount: "2000",
+        amount: "2000", // Adjust dynamically if needed
       },
     };
 
     const session = new ApplePaySession(3, request);
 
-    session.onpaymentauthorized = async (event) => {
-      const paymentResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/apple-pay/session`,
-        {
-          method: "GET", // ✅ Correct case
-          headers: {
-            // ✅ Headers should be inside a headers object
-            "Content-Type": "application/json;charset=UTF-8",
-            "x-api-key": "w123",
-            Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
-          },
-        }
-      );
-      console.log("paymentResponse", paymentResponse?.data);
-      if (paymentResponse) {
-        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-        // Additional success handling here
-      } else {
-        session.completePayment(ApplePaySession.STATUS_FAILURE);
-        // Additional failure handling here
+    // ✅ **1. Merchant Validation (Calls Your Backend)**
+    session.onvalidatemerchant = async (event) => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/apple-pay/session`, // Your backend endpoint
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": "w123",
+              Authorization: `Bearer ${localStorage?.getItem("access_token")}`, // Include if needed
+            },
+            // body: JSON.stringify({ validationURL: event.validationURL }), // Send validation URL
+          }
+        );
+
+        if (!response.ok) throw new Error("Merchant validation failed");
+
+        const merchantSession = await response.json();
+        session.completeMerchantValidation(merchantSession);
+      } catch (error) {
+        console.error("Merchant validation error:", error);
+        session.abort();
       }
     };
 
-    // **1. Merchant Validation**
-    // session.onvalidatemerchant = async (event) => {
-    //   try {
-    //     const response = await fetch("/api/validateApplePay", {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({ validationURL: event.validationURL }),
-    //     });
+    // ✅ **2. Payment Authorization (Process Payment on Frontend)**
+    session.onpaymentauthorized = async (event) => {
+      try {
+        console.log("Apple Pay Payment Data:", event.payment);
 
-    //     if (!response.ok) throw new Error("Merchant validation failed");
+        // Here, you send the payment token to your payment processor (Stripe, Adyen, etc.)
+        // Replace this with actual payment API integration.
+        const paymentToken = event.payment.token; // Get Apple Pay token
 
-    //     const merchantSession = await response.json();
-    //     session.completeMerchantValidation(merchantSession);
-    //   } catch (error) {
-    //     console.error("Merchant validation error:", error);
-    //     session.abort();
-    //   }
-    // };
+        // Example of sending payment to an API
+        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: paymentToken,
+            amount: 2000, // Adjust dynamically
+            currency: "SAR",
+          }),
+        });
 
-    // // **2. Payment Authorization**
-    // session.onpaymentauthorized = async (event) => {
-    //   try {
-    //     const response = await fetch("/api/payfortApplePay", {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(event.payment),
-    //     });
+        if (!response.ok) throw new Error("Payment failed");
 
-    //     if (!response.ok) throw new Error("Payment processing failed");
-
-    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
-    //     alert("Payment successful!");
-    //   } catch (error) {
-    //     console.error("Payment error:", error);
-    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
-    //   }
-    // };
+        // ✅ Payment successful
+        session.completePayment(ApplePaySession.STATUS_SUCCESS);
+        alert("Payment successful!");
+      } catch (error) {
+        console.error("Payment error:", error);
+        session.completePayment(ApplePaySession.STATUS_FAILURE);
+        alert("Payment failed!");
+      }
+    };
 
     session.begin();
   };
