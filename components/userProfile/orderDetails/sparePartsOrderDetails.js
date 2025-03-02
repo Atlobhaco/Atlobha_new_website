@@ -100,12 +100,7 @@ function SparePartsOrderDetails({
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
-  console.log(
-    'new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()',
-    orderDetails?.created_at
-      ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z").getTime()
-      : ""
-  );
+
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
       if (type === ORDERSENUM?.spareParts) {

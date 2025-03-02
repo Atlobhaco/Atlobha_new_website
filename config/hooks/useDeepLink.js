@@ -15,12 +15,13 @@ const useDeepLink = () => {
               console.error("Branch init error:", err);
             } else {
               console.log("Branch Initialized", data);
+			  setDeepLinkData(data)
               window.branch.data((err, deepLink) => {
                 if (err) {
                   console.error("Branch deep link error:", err);
                 } else {
                   console.log("Deep Link Data:", deepLink);
-                  setDeepLinkData(deepLink);
+                //   setDeepLinkData(deepLink);
                 }
               });
             }
@@ -33,7 +34,7 @@ const useDeepLink = () => {
 
     initBranch();
   }, []);
-
+console.log('deepLinkData',deepLinkData);
   return deepLinkData;
 };
 
