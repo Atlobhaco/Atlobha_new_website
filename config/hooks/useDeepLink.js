@@ -5,26 +5,16 @@ const useDeepLink = () => {
 
   const fetchBranchData = async (matchId) => {
     try {
-      const response = await fetch(
-        `https://api2.branch.io/v1/url?branch_match_id=${matchId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "branch-key": process.env.NEXT_PUBLIC_BRANCH_KEY, // Set in .env file
-          },
-        }
-      );
-
+      const response = await fetch(`/api/getBranchData?matchId=${matchId}`);
       if (!response.ok) throw new Error("Branch.io fetch failed");
 
       const data = await response.json();
       console.log("Branch Metadata:", data);
 
-      // Check where to redirect based on metadata
-      //   if (data.data && data.data.redirectTo) {
-      //     router.replace(data.data.redirectTo);
-      //   }
+      // Redirect based on Branch.io data
+    //   if (data.data && data.data.redirectTo) {
+    //     router.replace(data.data.redirectTo);
+    //   }
     } catch (error) {
       console.error("Error fetching Branch.io data:", error);
     }
