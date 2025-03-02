@@ -29,8 +29,8 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-	const deepLinkData = useDeepLink();
-	const style = {
+  const deepLinkData = useDeepLink();
+  const style = {
     marginTop: "32px",
   };
 
@@ -41,7 +41,8 @@ export default function Home() {
       });
     });
   }, []);
-console.log('deepLinkData from index page',deepLinkData);
+  console.log("deepLinkData from index page", deepLinkData);
+
   return (
     <Box
     //   sx={{

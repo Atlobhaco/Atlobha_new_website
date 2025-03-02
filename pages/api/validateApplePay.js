@@ -22,6 +22,7 @@ export default async function handler(req, res) {
     }
 
     const merchantSession = await appleResponse.json();
+	console.log('merchantSession-fromValidation',merchantSession);
     res.status(200).json(merchantSession);
   } catch (error) {
     console.error("Apple Pay validation error:", error);

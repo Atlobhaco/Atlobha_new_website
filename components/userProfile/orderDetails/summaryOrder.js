@@ -238,23 +238,24 @@ function SummaryOrder({
     const session = new ApplePaySession(3, paymentRequest);
 
     // Merchant Validation
-    // session.onvalidatemerchant = async (event) => {
-    //   try {
-    //     const response = await fetch("/api/validateApplePay", {
-    //       method: "POST",
-    //       body: JSON.stringify({ validationURL: event.validationURL }),
-    //       headers: { "Content-Type": "application/json" },
-    //     });
+    session.onvalidatemerchant = async (event) => {
+      try {
+        const response = await fetch("/api/validateApplePay", {
+          method: "POST",
+          body: JSON.stringify({ validationURL: event.validationURL }),
+          headers: { "Content-Type": "application/json" },
+        });
 
-    //     if (!response.ok) throw new Error("Merchant validation failed");
+        if (!response.ok) throw new Error("Merchant validation failed");
 
-    //     const merchantSession = await response.json();
-    //     session.completeMerchantValidation(merchantSession);
-    //   } catch (error) {
-    //     console.error("Merchant validation error:", error);
-    //     session.abort();
-    //   }
-    // };
+        const merchantSession = await response.json();
+        console.log("merchantSession", merchantSession);
+        session.completeMerchantValidation(merchantSession);
+      } catch (error) {
+        console.error("Merchant validation error:", error);
+        session.abort();
+      }
+    };
 
     // // Payment Authorization
     session.onpaymentauthorized = async (event) => {
