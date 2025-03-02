@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   }
 
   const { applePayToken } = req.body;
-
+console.log('applePayToken',applePayToken);
   // Convert amount to minor units (e.g., 100.00 SAR = 10000)
   const amount = 10000;
   const merchantReference = `ORDER_${Date.now()}`;

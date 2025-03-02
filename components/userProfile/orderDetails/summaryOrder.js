@@ -238,28 +238,32 @@ function SummaryOrder({
     const session = new ApplePaySession(3, paymentRequest);
 
     // Merchant Validation
-    session.onvalidatemerchant = async (event) => {
-      try {
-        const response = await fetch("/api/validateApplePay", {
-          method: "POST",
-          body: JSON.stringify({ validationURL: event.validationURL }),
-          headers: { "Content-Type": "application/json" },
-        });
+    // session.onvalidatemerchant = async (event) => {
+    //   try {
+    //     const response = await fetch("/api/validateApplePay", {
+    //       method: "POST",
+    //       body: JSON.stringify({ validationURL: event.validationURL }),
+    //       headers: { "Content-Type": "application/json" },
+    //     });
 
-        if (!response.ok) throw new Error("Merchant validation failed");
+    //     if (!response.ok) throw new Error("Merchant validation failed");
 
-        const merchantSession = await response.json();
-        session.completeMerchantValidation(merchantSession);
-      } catch (error) {
-        console.error("Merchant validation error:", error);
-        session.abort();
-      }
-    };
+    //     const merchantSession = await response.json();
+    //     session.completeMerchantValidation(merchantSession);
+    //   } catch (error) {
+    //     console.error("Merchant validation error:", error);
+    //     session.abort();
+    //   }
+    // };
 
-    // Payment Authorization
+    // // Payment Authorization
     session.onpaymentauthorized = async (event) => {
       try {
-        const paymentData = event.payment.token.paymentData; // Extract correct token data
+        // const paymentData = event.payment.token.paymentData; // Extract correct token data
+
+        const paymentData = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/getApplePaySession`
+        ).then((res) => res.json());
 
         // Send payment token to backend
         const response = await fetch("/api/payfortApplePay", {
@@ -281,35 +285,24 @@ function SummaryOrder({
       }
     };
 
-    session.begin();
+    // session.begin();
 
     // session.onpaymentauthorized = async (event) => {
-    //   const orderId = idOrder;
-
     //   const paymentResponse = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/payments/${orderId}/purchase`,
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         payment_token: event.payment.token, // Sending Apple Pay token directly
-    //         // Add any other order/payment details required by your backend
-    //       }),
-    //     }
+    //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/getApplePaySession`
     //   ).then((res) => res.json());
 
-    //   if (paymentResponse.success) {
+    //   if (paymentResponse.success || paymentResponse.status === "success") {
     //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
     //     // Additional success handling here
     //   } else {
     //     session.completePayment(ApplePaySession.STATUS_FAILURE);
     //     // Additional failure handling here
+    //     console.error("Payment processing error:", ApplePaySession);
     //   }
     // };
 
-    // session.begin();
+    session.begin();
   };
 
   return (
