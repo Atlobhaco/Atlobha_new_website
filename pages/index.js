@@ -29,8 +29,8 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  useDeepLink();
-  const style = {
+	const deepLinkData = useDeepLink();
+	const style = {
     marginTop: "32px",
   };
 
@@ -41,13 +41,17 @@ export default function Home() {
       });
     });
   }, []);
-
+console.log('deepLinkData from index page',deepLinkData);
   return (
     <Box
     //   sx={{
     //     display: "flex",
     //   }}
     >
+      <div>
+        <h1>Listening for Deep Links...</h1>
+        {deepLinkData && <pre>{JSON.stringify(deepLinkData, null, 2)}</pre>}
+      </div>
       <MetaTags title="طلبات المتجر" content="طلبات المتجر" />
       {/* <div className="container mb-5 pb-5">
         <div className="row" style={style}>

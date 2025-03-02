@@ -68,7 +68,7 @@ const useBranch = () => {
           }
         }
       );
-	  window.branch.init('key_live_YOUR_KEY_GOES_HERE', function(err, data) {
+	  window.branch.init('key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG', function(err, data) {
 		console.log(err, data);
 	  });
 	  
