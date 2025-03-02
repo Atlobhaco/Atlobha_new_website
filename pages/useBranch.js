@@ -68,14 +68,18 @@ const useBranch = () => {
           }
         }
       );
-	  window.branch.init('key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG', function(err, data) {
-		console.log(err, data);
-	  });
-	  
-	  // Read latest data
-	  window.branch.data(function(err, data) {
-		console.log(err, data);
-	  });
+      window.branch.init(
+        "key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG",
+        function (err, data) {
+          console.log(err, data);
+        }
+      );
+
+      // Read latest data
+      window.branch.data(function (err, data) {
+        // console.log(err, data);
+        console.log("data-to-redirect", data?.data_parsed?.$deeplink_path);
+      });
     };
 
     document.body.appendChild(script);

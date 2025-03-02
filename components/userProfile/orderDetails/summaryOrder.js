@@ -244,11 +244,16 @@ function SummaryOrder({
       const paymentResponse = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/apple-pay/session`,
         {
-          method: "Get",
+          method: "GET", // ✅ Correct case
+          headers: {
+            // ✅ Headers should be inside a headers object
+            "Content-Type": "application/json;charset=UTF-8",
+            "x-api-key": "w123",
+          },
         }
-      ).then((res) => res.json());
-      console.log("paymentResponse", paymentResponse);
-      if (paymentResponse.success) {
+      );
+      console.log("paymentResponse", paymentResponse?.data);
+      if (paymentResponse) {
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         // Additional success handling here
       } else {
