@@ -263,8 +263,13 @@ function SummaryOrder({
 
         const paymentData = await fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/getApplePaySession`
-        ).then((res) => res.json());
-
+        )
+          .then((res) => res.json())
+          .catch((err) => {
+            err.json();
+            console.error("err-endpoint", err);
+          });
+        console.log("paymentData", paymentData);
         // Send payment token to backend
         const response = await fetch("/api/payfortApplePay", {
           method: "POST",
@@ -273,6 +278,8 @@ function SummaryOrder({
         });
 
         const result = await response.json();
+        console.log("result", result);
+        console.error("result:", result);
 
         if (result.status === "success") {
           session.completePayment(ApplePaySession.STATUS_SUCCESS);
