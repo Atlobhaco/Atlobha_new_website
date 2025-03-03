@@ -44,7 +44,6 @@ export default function App({ Component, pageProps }) {
       window.webengage.init(process.env.NEXT_PUBLIC_WEBENGAGE_LICENCE); // Your WebEngage License Code
     }
   }, []);
-  useBranch();
 
   return (
     <QueryClientProvider client={queryClient}>

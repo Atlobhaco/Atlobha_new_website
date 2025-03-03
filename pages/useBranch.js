@@ -1,17 +1,18 @@
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const useBranch = () => {
+  const router = useRouter();
+  const [branchData, setBranchData] = useState(null); // State to store data
+
   useEffect(() => {
-    // Check if Branch is already loaded
     if (window.branch) return;
 
-    // Create a script tag to load Branch SDK
     const script = document.createElement("script");
     script.src = "https://cdn.branch.io/branch-latest.min.js";
     script.async = true;
 
     script.onload = () => {
-      // Initialize Branch
       window.branch =
         window.branch ||
         function () {
@@ -20,7 +21,6 @@ const useBranch = () => {
       window.branch._q = [];
       window.branch._v = 1;
 
-      // Methods to attach to branch object
       const methods = [
         "addListener",
         "banner",
@@ -68,27 +68,26 @@ const useBranch = () => {
           }
         }
       );
-      window.branch.init(
-        "key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG",
-        function (err, data) {
-          console.log(err, data);
-        }
-      );
 
-      // Read latest data
-      window.branch.data(function (err, data) {
-        // console.log(err, data);
-        console.log("data-to-redirect", data?.data_parsed?.$deeplink_path);
+      // Read latest data and update state
+      window.branch.data((err, data) => {
+        if (!err) {
+          if (data?.data_parsed?.$deeplink_path) {
+            console.log("data-to-redirect", data?.data_parsed?.$deeplink_path);
+            setBranchData(data || null); // Store data in state
+          }
+        }
       });
     };
 
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup: Remove the script when component unmounts
       document.body.removeChild(script);
     };
-  }, []);
+  }, [router]);
+
+  return branchData; // Return the stored data from state
 };
 
 export default useBranch;

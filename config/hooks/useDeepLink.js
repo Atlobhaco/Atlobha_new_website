@@ -1,6 +1,9 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const useDeepLink = () => {
+  const router = useRouter();
+
   const [deepLinkData, setDeepLinkData] = useState(null);
 
   useEffect(() => {
@@ -15,27 +18,35 @@ const useDeepLink = () => {
               console.error("Branch init error:", err);
             } else {
               console.log("Branch Initialized", data);
-			  setDeepLinkData(data)
+              setDeepLinkData(data);
               window.branch.data((err, deepLink) => {
                 if (err) {
                   console.error("Branch deep link error:", err);
                 } else {
                   console.log("Deep Link Data:", deepLink);
-                //   setDeepLinkData(deepLink);
+                  //   setDeepLinkData(deepLink);
                 }
               });
             }
           }
         );
+        window.branch.data(function (err, data) {
+          // console.log(err, data);
+          console.log(
+            "data-to-redirect-deep-link",
+            data?.data_parsed?.$deeplink_path
+          );
+        });
       } else {
         console.warn("Branch SDK not loaded yet.");
       }
     };
 
     initBranch();
-  }, []);
-console.log('deepLinkData',deepLinkData);
-  return deepLinkData;
+  }, [router]);
+  console.log(";params", router);
+
+  return deepLinkData || "no-data";
 };
 
 export default useDeepLink;
