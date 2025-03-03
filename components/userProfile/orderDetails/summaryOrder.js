@@ -231,10 +231,10 @@ function SummaryOrder({
       countryCode: "SA",
       currencyCode: "SAR",
       supportedNetworks: ["visa", "masterCard", "amex"],
-      merchantCapabilities: ["supports3DS"],
+      merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: "2000", // Adjust dynamically if needed
+        amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
       },
     };
 
@@ -252,7 +252,6 @@ function SummaryOrder({
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`, // Include if needed
             },
-            // body: JSON.stringify({ validationURL: event.validationURL }), // Send validation URL
           }
         );
 
@@ -266,37 +265,40 @@ function SummaryOrder({
       }
     };
 
-    // ✅ **2. Payment Authorization (Process Payment on Frontend)**
+    // ✅ Payment Authorization
     session.onpaymentauthorized = async (event) => {
       try {
         console.log("Apple Pay Payment Data:", event.payment);
+        console.error("Apple Pay Payment Data:", event.payment);
 
-        // Here, you send the payment token to your payment processor (Stripe, Adyen, etc.)
-        // Replace this with actual payment API integration.
-        const paymentToken = event.payment.token; // Get Apple Pay token
+        const paymentToken =
+          event.payment.token || event.payment.token.paymentData; // ✅ Extracting correct token format
 
-        // Example of sending payment to an API
         const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            token: paymentToken,
-            amount: 2000, // Adjust dynamically
+            token: paymentToken, // ✅ Sending correctly formatted token
+            amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0),
             currency: "SAR",
           }),
         });
 
-        if (!response.ok) throw new Error("Payment failed");
+        const result = await response.json();
+        console.log("Payment API Response:", result);
 
-        // ✅ Payment successful
+        if (!response.ok || result.error) {
+          throw new Error(result.error || "Payment failed");
+        }
+
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         alert("Payment successful!");
       } catch (error) {
         console.error("Payment error:", error);
+        alert(`Payment failed: ${error.message}`);
         session.completePayment(ApplePaySession.STATUS_FAILURE);
-        alert("Payment failed!");
       }
     };
 
