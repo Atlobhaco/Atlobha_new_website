@@ -339,7 +339,7 @@ export const generateApplePaySignature = (params) => {
       signatureString += `${key}=${params[key]}`;
     });
   signatureString += shaRequestPhrase;
-console.log('signatureString',signatureString);
+  console.log("signatureString", signatureString);
   // Generate HMAC-SHA256 hash and convert to uppercase
   const signature = crypto
     .createHmac("sha256", shaRequestPhrase) // Use HMAC instead of SHA-256
@@ -350,6 +350,9 @@ console.log('signatureString',signatureString);
   console.log("Generated Apple Pay Signature:", signature);
   return signature?.toLowerCase();
 };
+/* -------------------------------------------------------------------------- */
+/*                         second  generate signature                         */
+/* -------------------------------------------------------------------------- */
 
 export const generateSignatureApple = (params) => {
   let shaString = "";
