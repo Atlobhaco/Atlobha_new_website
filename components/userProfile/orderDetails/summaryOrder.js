@@ -11,6 +11,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
 import {
   generateApplePaySignature,
+  generateHmacSignature,
   generateSignature,
   generateSignatureApple,
   generateSignatureApplePay,
@@ -545,6 +546,75 @@ function SummaryOrder({
       }
     };
 
+    // fourth signature
+    session.onpaymentauthorized = async (event) => {
+      try {
+        console.log("Apple Pay Payment Data:", event.payment);
+        console.error("Apple Pay Payment Data:", event.payment);
+
+        const applePayData =
+          event.payment.token || event.payment.token.paymentData;
+
+        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            amount: calculateReceiptResFromMainPage?.amount_to_pay,
+            currency: "SAR",
+            digital_wallet: "APPLE_PAY",
+            command: "PURCHASE",
+            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+            merchant_reference: merchanteRefrence,
+            customer_ip: "192.178.1.10",
+            language: locale,
+            customer_email: "user@example.com",
+            apple_data: applePayData?.paymentData?.data,
+            apple_signature: applePayData?.paymentData?.signature,
+            apple_header: applePayData?.paymentData?.header,
+            apple_transactionId:
+              applePayData?.paymentData?.header?.transactionId,
+            apple_ephemeralPublicKey:
+              applePayData?.paymentData?.header?.ephemeralPublicKey,
+            apple_publicKeyHash:
+              applePayData?.paymentData?.header?.publicKeyHash,
+            apple_paymentMethod: applePayData?.paymentMethod,
+            apple_displayName: applePayData?.paymentMethod?.displayName,
+            apple_network: applePayData?.paymentMethod?.network,
+            apple_type: applePayData?.paymentMethod?.type,
+            signature: generateHmacSignature({
+              amount: calculateReceiptResFromMainPage?.amount_to_pay,
+              currency: "SAR",
+              digital_wallet: "APPLE_PAY",
+              command: "PURCHASE",
+              access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+              merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+              merchant_reference: merchanteRefrence,
+              customer_ip: "192.178.1.10",
+              language: locale,
+              customer_email: "user@example.com",
+            }),
+          }),
+        });
+
+        const result = await response.json();
+        console.log("Payment API Response:", result);
+
+        if (!response.ok || result.error) {
+          throw new Error(result.error || "Payment failed");
+        }
+
+        session.completePayment(ApplePaySession.STATUS_SUCCESS);
+        alert("Payment successful!");
+      } catch (error) {
+        console.error("Payment error:", error);
+        alert(`Payment failed: ${error.message}`);
+        session.completePayment(ApplePaySession.STATUS_FAILURE);
+      }
+    };
+
     session.begin();
   };
 
@@ -585,7 +655,7 @@ function SummaryOrder({
 //       apple_displayName: "Visa 0121",
 //       apple_network: "Visa",
 //       apple_type: "credit",
-//       signature: generateApplePaySignature({
+//       signature: generateHmacSignature({
 //         command: "PURCHASE",
 //         access_code: "fwmGcdC3DvtpUvUfIYdy",
 //         merchant_identifier: "merchant.com.atlobha.atlobhadebug",
