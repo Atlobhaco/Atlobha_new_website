@@ -234,7 +234,7 @@ function SummaryOrder({
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
+        amount: (calculateReceiptResFromMainPage?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
       },
     };
 
@@ -281,7 +281,7 @@ function SummaryOrder({
           },
           body: JSON.stringify({
             token: paymentToken, // ✅ Sending correctly formatted token
-            amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0),
+            amount: (calculateReceiptResFromMainPage?.amount_to_pay * 100)?.toFixed(0),
             currency: "SAR",
           }),
         });
