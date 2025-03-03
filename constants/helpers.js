@@ -327,17 +327,23 @@ export const generateSignature = (params) => {
 /* -------------------------------------------------------------------------- */
 
 export const generateSignatureApplePay = (params) => {
-	let shaString = "";
-	// Sort the parameters by key
-	const sortedKeys = Object.keys(params).sort();
-	// Concatenate key-value pairs
-	sortedKeys.forEach((key) => {
-	  shaString += `${key}=${params[key]}`;
-	});
-	// Add the secret key at the beginning and end of the string
-	shaString = `${process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE}`;
-	// Generate SHA-256 hash
-	const signature = crypto.createHash("sha256").update(shaString).digest("hex");
-  console.log('signature',signature);
-	return signature;
-  };
+  let shaString = "";
+
+  // Sort the parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  // Concatenate key-value pairs
+  sortedKeys.forEach((key) => {
+    shaString += `${key}=${params[key]}`;
+  });
+
+  // Create HMAC-SHA256 hash using the secret key
+  const secretKey = process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "";
+  const hmac = crypto.createHmac("sha256", secretKey);
+  hmac.update(shaString);
+
+  const signature = hmac.digest("hex");
+
+  console.log("signature-updated", signature);
+  return signature;
+};
