@@ -19,6 +19,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useReducer } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import crypto from "crypto";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -234,7 +235,7 @@ function SummaryOrder({
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: (calculateReceiptResFromMainPage?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
+        amount: calculateReceiptResFromMainPage?.amount_to_pay, // Adjust dynamically if needed
       },
     };
 
@@ -273,16 +274,36 @@ function SummaryOrder({
 
         const paymentToken =
           event.payment.token || event.payment.token.paymentData; // ✅ Extracting correct token format
+        const applePayData =
+          event.payment.token || event.payment.token.paymentData;
+
+        const signatureString = `${process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE}access_code=${process.env.NEXT_PUBLIC_APPLE_ACCESS}amount=${calculateReceiptResFromMainPage?.amount_to_pay}command=PURCHASEcurrency=SARcustomer_email=user@example.comlanguage=${locale}merchant_identifier=${process.env.NEXT_PUBLIC_APPLE_IDENTIFIER}merchant_reference=${merchanteRefrence}token_name=${paymentToken}${process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE}`;
+
+        const signature = crypto
+          .createHash("sha256")
+          .update(signatureString)
+          .digest("hex");
 
         const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
           },
           body: JSON.stringify({
             token: paymentToken, // ✅ Sending correctly formatted token
-            amount: (calculateReceiptResFromMainPage?.amount_to_pay * 100)?.toFixed(0),
+            amount: calculateReceiptResFromMainPage?.amount_to_pay,
             currency: "SAR",
+            digital_wallet: "APPLE_PAY",
+            command: "PURCHASE",
+            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+            merchant_reference: merchanteRefrence,
+            language: locale,
+            customer_email: "user@example.com",
+            apple_data: applePayData,
+            signature: signature,
           }),
         });
 
