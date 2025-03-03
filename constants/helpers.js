@@ -318,6 +318,7 @@ export const generateSignature = (params) => {
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
+  console.log("signature", signature);
 
   return signature;
 };
@@ -326,24 +327,26 @@ export const generateSignature = (params) => {
 /*                        generate signature apple pay                        */
 /* -------------------------------------------------------------------------- */
 
-export const generateSignatureApplePay = (params) => {
-  let shaString = "";
+export const generateApplePaySignature = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
 
-  // Sort the parameters by key
-  const sortedKeys = Object.keys(params).sort();
+  // Construct signature string
+  let signatureString = shaRequestPhrase;
+  Object.keys(params)
+    .sort()
+    .forEach((key) => {
+      signatureString += `${key}=${params[key]}`;
+    });
+  signatureString += shaRequestPhrase;
 
-  // Concatenate key-value pairs
-  sortedKeys.forEach((key) => {
-    shaString += `${key}=${params[key]}`;
-  });
+  // Generate SHA-256 hash and convert to uppercase
+  const signature = crypto
+    .createHash("sha256")
+    .update(signatureString, "utf-8")
+    .digest("hex")
+    .toUpperCase();
 
-  // Create HMAC-SHA256 hash using the secret key
-  const secretKey = process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "";
-  const hmac = crypto.createHmac("sha256", secretKey);
-  hmac.update(shaString);
-
-  const signature = hmac.digest("hex");
-
-  console.log("signature-updated", signature);
+  console.log("Generated Apple Pay Signature:", signature);
   return signature;
 };
