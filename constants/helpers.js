@@ -329,7 +329,7 @@ export const generateSignature = (params) => {
 
 export const generateApplePaySignature = (params) => {
   const shaRequestPhrase =
-    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "$2y$10$Ea43N9LFe"; // Use actual SHA phrase
 
   // Construct signature string
   let signatureString = shaRequestPhrase;
@@ -339,14 +339,42 @@ export const generateApplePaySignature = (params) => {
       signatureString += `${key}=${params[key]}`;
     });
   signatureString += shaRequestPhrase;
-
-  // Generate SHA-256 hash and convert to uppercase
+console.log('signatureString',signatureString);
+  // Generate HMAC-SHA256 hash and convert to uppercase
   const signature = crypto
-    .createHash("sha256")
+    .createHmac("sha256", shaRequestPhrase) // Use HMAC instead of SHA-256
     .update(signatureString, "utf-8")
     .digest("hex")
     .toUpperCase();
 
   console.log("Generated Apple Pay Signature:", signature);
-  return signature;
+  return signature?.toLowerCase();
+};
+
+export const generateSignatureApple = (params) => {
+  let shaString = "";
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+
+  // Sort the parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  sortedKeys.forEach((key) => {
+    if (Array.isArray(params[key])) {
+      let shaSubString = "{";
+      params[key].forEach((v, k) => {
+        shaSubString += `${k}=${v}, `;
+      });
+      shaSubString = shaSubString.slice(0, -2) + "}"; // Remove trailing comma
+      shaString += `${key}=${shaSubString}`;
+    } else {
+      shaString += `${key}=${params[key]}`;
+    }
+  });
+
+  // Add request phrase at the beginning and end
+  shaString = `${shaRequestPhrase}${shaString}${shaRequestPhrase}`;
+
+  // Generate SHA-256 hash
+  return crypto.createHash("sha256").update(shaString, "utf-8").digest("hex");
 };
