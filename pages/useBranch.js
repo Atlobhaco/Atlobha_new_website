@@ -108,7 +108,7 @@ const useBranch = () => {
       if (redirectItem) {
         if (
           (redirectItem.mustAuthenticated && isAuth()) ||
-          !redirectItem.sectionGroup
+          (!redirectItem.mustAuthenticated && !redirectItem.sectionGroup)
         ) {
           router.push(redirectItem.routeToRedirect);
         } else if (redirectItem.sectionGroup) {
