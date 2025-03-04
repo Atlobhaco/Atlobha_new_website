@@ -47,7 +47,7 @@ const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
-  console.log("allGroups", allGroups?.map((data) => data?.sections)?.flat());
+
   useEffect(() => {
     // Ensure we're running on the client-side
     if (typeof window === "undefined") return;
@@ -70,7 +70,7 @@ const useBranch = () => {
     script.onload = () => {
       if (window.branch) {
         window.branch.init(
-          "key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG",
+          process.env.NEXT_PUBLIC_BRACNH_DASHBOARD,
           (err, data) => {
             if (err) {
               console.error("Branch initialization failed:", err);

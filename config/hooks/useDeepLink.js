@@ -12,7 +12,7 @@ const useDeepLink = () => {
     const initBranch = async () => {
       if (window.branch) {
         window.branch.init(
-          "key_test_cxmWbdwHvdK1l9XnJldEqpdftuk65asG",
+          process.env.NEXT_PUBLIC_BRACNH_DASHBOARD,
           (err, data) => {
             if (err) {
               console.error("Branch init error:", err);
