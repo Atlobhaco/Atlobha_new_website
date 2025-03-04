@@ -1,5 +1,5 @@
 import BreadCrumb from "@/components/BreadCrumb";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import * as Yup from "yup";
 import UserProfile from "..";
 import useLocalization from "@/config/hooks/useLocalization";
@@ -16,8 +16,6 @@ import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
 import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
-import { useQueryClient } from "react-query";
-import { isAuth } from "@/config/hooks/isAuth";
 
 const flexBox = {
   display: "flex",
@@ -29,7 +27,6 @@ function EditInfo() {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { userDataProfile } = useSelector((state) => state.quickSection);
-  const queryClient = useQueryClient();
   const [editPayload, setEditPayload] = useState(false);
   const [changedField, setChangedField] = useState(false);
   const [otpView, setOtpView] = useState(false);
@@ -41,12 +38,6 @@ function EditInfo() {
   const containerStyle = {
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
-
-  useEffect(() => {
-    if (isMobile && !userDataProfile?.id && isAuth()) {
-      queryClient.invalidateQueries(["getProfileInfo"]); // Triggers refetch
-    }
-  }, [isMobile]);
 
   const { data, refetch: EditUserData } = useCustomQuery({
     name: ["editUserInfo", editPayload],
