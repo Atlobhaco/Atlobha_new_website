@@ -90,15 +90,15 @@ const useBranch = () => {
 
       console.log("redirectItem", redirectItem);
 
-      if (redirectItem && !redirectItem?.routeToRedirect) {
+      if (redirectItem && !redirectItem?.sectionGroup) {
         router.push(redirectItem?.routeToRedirect);
       }
 
-      if (redirectItem && redirectItem?.routeToRedirect) {
+      if (redirectItem && redirectItem?.sectionGroup) {
         const findSectionData = allGroups
           ?.map((data) => data?.sections)
           ?.flat()
-          ?.find((item) => item.type === redirectItem?.nameInsideGroup);
+          ?.find((item) => item?.type === redirectItem?.nameInsideGroup);
 
         router.push(
           `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
