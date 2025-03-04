@@ -1,6 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+const arrayForRedirect = [
+  {
+    $deeplink_path: "spare-parts-section",
+    routeToRedirect: "/spareParts",
+  },
+];
+
 const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
@@ -13,7 +20,6 @@ const useBranch = () => {
     if (window.branch) {
       window.branch.data((err, data) => {
         if (!err) {
-          console.log("data-to-redirect", data?.data_parsed?.$deeplink_path);
           setBranchData(data || null);
         }
       });
@@ -34,10 +40,6 @@ const useBranch = () => {
               console.error("Branch initialization failed:", err);
             } else {
               console.log("Branch initialized successfully:", data);
-              console.log(
-                "data-to-redirect-succes",
-                data?.data_parsed?.$deeplink_path
-              );
               setBranchData(data || null);
             }
           }
@@ -45,7 +47,6 @@ const useBranch = () => {
 
         window.branch.data((err, data) => {
           if (!err) {
-            console.log("data-to-redirect", data?.data_parsed?.$deeplink_path);
             setBranchData(data || null);
           }
         });
@@ -61,7 +62,15 @@ const useBranch = () => {
 
   useEffect(() => {
     if (branchData) {
-      console.log(branchData);
+      console.log("branchData", branchData);
+      const redirectItem = arrayForRedirect.find(
+        (item) =>
+          item.$deeplink_path === branchData?.data_parsed?.$deeplink_path
+      );
+      console.log("redirectItem", redirectItem);
+      if (redirectItem) {
+        router.push(redirectItem?.routeToRedirect);
+      }
     }
   }, [branchData]);
   return branchData;

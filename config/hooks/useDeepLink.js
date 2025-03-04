@@ -31,11 +31,7 @@ const useDeepLink = () => {
           }
         );
         window.branch.data(function (err, data) {
-          // console.log(err, data);
-          console.log(
-            "data-to-redirect-deep-link",
-            data?.data_parsed?.$deeplink_path
-          );
+          console.log(err, data);
         });
       } else {
         console.warn("Branch SDK not loaded yet.");
@@ -44,7 +40,6 @@ const useDeepLink = () => {
 
     initBranch();
   }, [router]);
-  console.log(";params", router);
 
   return deepLinkData || "no-data";
 };
