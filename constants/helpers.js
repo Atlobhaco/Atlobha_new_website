@@ -413,3 +413,32 @@ export const generateHmacSignature = async (params) => {
 
   return hmac.toUpperCase(); // Convert to uppercase as required
 };
+
+// chatGptResponse
+export const generateHmacSignatureChatGpt = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+
+  // 🔹 Step 1: Sort parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  // 🔹 Step 2: Concatenate parameters into a string
+  let concatenatedString = sortedKeys
+    .map((key) =>
+      typeof params[key] === "object"
+        ? `${key}=${JSON.stringify(params[key])}`
+        : `${key}=${params[key]}`
+    )
+    .join("");
+
+  // 🔹 Step 3: Add SHA Request Phrase at the beginning and end
+  concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
+
+  // 🔹 Step 4: Generate HMAC-SHA512 signature
+  const hmac = crypto
+    .createHmac("sha512", shaRequestPhrase)
+    .update(concatenatedString, "utf-8")
+    .digest("hex");
+
+  return hmac.toUpperCase(); // Convert to uppercase as required
+};
