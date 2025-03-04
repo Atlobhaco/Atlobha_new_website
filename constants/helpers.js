@@ -318,8 +318,6 @@ export const generateSignature = (params) => {
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
-  console.log("signature", signature);
-
   return signature;
 };
 
@@ -339,7 +337,6 @@ export const generateApplePaySignature = (params) => {
       signatureString += `${key}=${params[key]}`;
     });
   signatureString += shaRequestPhrase;
-  console.log("signatureString", signatureString);
   // Generate HMAC-SHA256 hash and convert to uppercase
   const signature = crypto
     .createHmac("sha256", shaRequestPhrase) // Use HMAC instead of SHA-256
@@ -347,7 +344,6 @@ export const generateApplePaySignature = (params) => {
     .digest("hex")
     .toUpperCase();
 
-  console.log("Generated Apple Pay Signature:", signature);
   return signature?.toLowerCase();
 };
 /* -------------------------------------------------------------------------- */
@@ -415,6 +411,7 @@ export const generateHmacSignature = async (params) => {
 };
 
 // chatGptResponse
+// the last acurate function
 export const generateHmacSignatureChatGpt = (params) => {
   const shaRequestPhrase =
     process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";

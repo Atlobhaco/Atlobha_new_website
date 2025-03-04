@@ -42,7 +42,7 @@ export default function Home() {
       });
     });
   }, []);
-  console.log("deepLinkData from index page", deepLinkData);
+//   console.log("deepLinkData from index page", deepLinkData);
 
   return (
     <Box

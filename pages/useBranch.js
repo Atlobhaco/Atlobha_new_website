@@ -59,6 +59,11 @@ const useBranch = () => {
     };
   }, [router]);
 
+  useEffect(() => {
+    if (branchData) {
+      console.log(branchData);
+    }
+  }, [branchData]);
   return branchData;
 };
 
