@@ -284,413 +284,359 @@ function SummaryOrder({
       }
     };
 
-    // JSON.stringify({
-    //   token: {
-    //     paymentData: {
-    //       data: "p3T0CLgwPQo8wbmP7BmAtA5+VNnZIqgKFT5RWj7ExqBkxQGjJvHKueDqkUe4dlRLHy5abjgZdpdpBzkC8GNTUiWLNhIQNOKIBggXMRSboR1F0suY2KLtM96HU+boxdB3cPkJBpr/+YlaepE6ZCiuRMqFZe7XI8Z035bRc1ircMVlZLIY1BWEEmxxPl+J8xws6csg/5Z1KeEUBjzSgKUAgUpB6zCqZfHLqDFlGEC73MmQEsdPfCUfWVkZavUzCswJjJWKQXQmt3spPIfn75pzv5r1/OB0gZNf/VPwrcB2mfCIuDOqXrEXvAra7pF/rifYY8OdQ2CikGnWhgul6xfZ65zu52Z8AfWGZpsjrCw3J0wgO1+JRXIE3EL1kmGklurAxOUJ7m5WGiPgfsasO6hv0YNBILkqFVh3pSk1r3yN0USpM7A=",
-    //       signature:
-    //         "MIAGCSqGSIb3DQEHAqCAMIACAQExDTALBglghkgBZQMEAgEwgAYJKoZIhvcNAQcBAACggDCCA+QwggOLoAMCAQICCFnYobyq9OPNMAoGCCqGSM49BAMCMHoxLjAsBgNVBAMMJUFwcGxlIEFwcGxpY2F0aW9uIEludGVncmF0aW9uIENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMTA0MjAxOTM3MDBaFw0yNjA0MTkxOTM2NTlaMGIxKDAmBgNVBAMMH2VjYy1zbXAtYnJva2VyLXNpZ25fVUM0LVNBTkRCT1gxFDASBgNVBAsMC2lPUyBTeXN0ZW1zMRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIIw/avDnPdeICxQ2ZtFEuY34qkB3Wyz4LHNS1JnmPjPTr3oGiWowh5MM93OjiqWwvavoZMDRcToekQmzpUbEpWjggIRMIICDTAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFCPyScRPk+TvJ+bE9ihsP6K7/S5LMEUGCCsGAQUFBwEBBDkwNzA1BggrBgEFBQcwAYYpaHR0cDovL29jc3AuYXBwbGUuY29tL29jc3AwNC1hcHBsZWFpY2EzMDIwggEdBgNVHSAEggEUMIIBEDCCAQwGCSqGSIb3Y2QFATCB/jCBwwYIKwYBBQUHAgIwgbYMgbNSZWxpYW5jZSBvbiB0aGlzIGNlcnRpZmljYXRlIGJ5IGFueSBwYXJ0eSBhc3N1bWVzIGFjY2VwdGFuY2Ugb2YgdGhlIHRoZW4gYXBwbGljYWJsZSBzdGFuZGFyZCB0ZXJtcyBhbmQgY29uZGl0aW9ucyBvZiB1c2UsIGNlcnRpZmljYXRlIHBvbGljeSBhbmQgY2VydGlmaWNhdGlvbiBwcmFjdGljZSBzdGF0ZW1lbnRzLjA2BggrBgEFBQcCARYqaHR0cDovL3d3dy5hcHBsZS5jb20vY2VydGlmaWNhdGVhdXRob3JpdHkvMDQGA1UdHwQtMCswKaAnoCWGI2h0dHA6Ly9jcmwuYXBwbGUuY29tL2FwcGxlYWljYTMuY3JsMB0GA1UdDgQWBBQCJDALmu7tRjGXpKZaKZ5CcYIcRTAOBgNVHQ8BAf8EBAMCB4AwDwYJKoZIhvdjZAYdBAIFADAKBggqhkjOPQQDAgNHADBEAiB0obMk20JJQw3TJ0xQdMSAjZofSA46hcXBNiVmMl+8owIgaTaQU6v1C1pS+fYATcWKrWxQp9YIaDeQ4Kc60B5K2YEwggLuMIICdaADAgECAghJbS+/OpjalzAKBggqhkjOPQQDAjBnMRswGQYDVQQDDBJBcHBsZSBSb290IENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0xNDA1MDYyMzQ2MzBaFw0yOTA1MDYyMzQ2MzBaMHoxLjAsBgNVBAMMJUFwcGxlIEFwcGxpY2F0aW9uIEludGVncmF0aW9uIENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPAXEYQZ12SF1RpeJYEHduiAou/ee65N4I38S5PhM1bVZls1riLQl3YNIk57ugj9dhfOiMt2u2ZwvsjoKYT/VEWjgfcwgfQwRgYIKwYBBQUHAQEEOjA4MDYGCCsGAQUFBzABhipodHRwOi8vb2NzcC5hcHBsZS5jb20vb2NzcDA0LWFwcGxlcm9vdGNhZzMwHQYDVR0OBBYEFCPyScRPk+TvJ+bE9ihsP6K7/S5LMA8GA1UdEwEB/wQFMAMBAf8wHwYDVR0jBBgwFoAUu7DeoVgziJqkipnevr3rr9rLJKswNwYDVR0fBDAwLjAsoCqgKIYmaHR0cDovL2NybC5hcHBsZS5jb20vYXBwbGVyb290Y2FnMy5jcmwwDgYDVR0PAQH/BAQDAgEGMBAGCiqGSIb3Y2QGAg4EAgUAMAoGCCqGSM49BAMCA2cAMGQCMDrPcoNRFpmxhvs1w1bKYr/0F+3ZD3VNoo6+8ZyBXkK3ifiY95tZn5jVQQ2PnenC/gIwMi3VRCGwowV3bF3zODuQZ/0XfCwhbZZPxnJpghJvVPh6fRuZy5sJiSFhBpkPCZIdAAAxggGIMIIBhAIBATCBhjB6MS4wLAYDVQQDDCVBcHBsZSBBcHBsaWNhdGlvbiBJbnRlZ3JhdGlvbiBDQSAtIEczMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMCCFnYobyq9OPNMAsGCWCGSAFlAwQCAaCBkzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNTAzMDMxMjMzNTJaMCgGCSqGSIb3DQEJNDEbMBkwCwYJYIZIAWUDBAIBoQoGCCqGSM49BAMCMC8GCSqGSIb3DQEJBDEiBCAQjhKqxb+L/1QHkOVfRrTRkDNrMbopMyHWwXHThIcvWjAKBggqhkjOPQQDAgRHMEUCIQDdB8n97JJBsN545d5c/1pZF+wgmBNTXxokzjhCwyQqHgIgFFBGwneEBd4o7zDIZRxPm9bFlRQ9LnXijX6JU1mINwcAAAAAAAA=",
-    //       header: {
-    //         publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-    //         ephemeralPublicKey:
-    //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAgC73Eq5rpMF61urtiekYUVuSwsNdZH4XXVE13HnYfNhX4TCamgaEVDiv3cj4GxhFkk9IruJJfAUktKyQlG1iw==",
-    //         transactionId:
-    //           "4902afca4144620c511b4c213ac466db047d35af553b08398780f11b54c7df65",
+    // // ✅ Payment Authorization
+    // session.onpaymentauthorized = async (event) => {
+    //   try {
+    //     console.log("Apple Pay Payment Data:", event.payment);
+    //     console.error("Apple Pay Payment Data:", event.payment);
+
+    //     const applePayData =
+    //       event.payment.token || event.payment.token.paymentData;
+
+    //     const generateSignatureKey = generateApplePaySignature({
+    //       digital_wallet: "APPLE_PAY",
+    //       command: "PURCHASE",
+    //       access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //       merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //       merchant_reference: merchanteRefrence,
+    //       amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //       currency: "SAR",
+    //       language: locale,
+    //       customer_email: "user@example.com",
+    //       apple_data: applePayData?.paymentData?.data,
+    //       apple_signature: applePayData?.paymentData?.signature,
+    //       apple_header: {
+    //         apple_transactionId:
+    //           applePayData?.paymentData?.header?.transactionId,
+    //         apple_ephemeralPublicKey:
+    //           applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //         apple_publicKeyHash:
+    //           applePayData?.paymentData?.header?.publicKeyHash,
     //       },
-    //       version: "EC_v1",
-    //     },
-    //     paymentMethod: {
-    //       displayName: "Visa 0121",
-    //       network: "Visa",
-    //       type: "credit",
-    //     },
-    //     transactionIdentifier:
-    //       "4902afca4144620c511b4c213ac466db047d35af553b08398780f11b54c7df65",
-    //   },
-    //   amount: 28112.05,
-    //   currency: "SAR",
-    //   digital_wallet: "APPLE_PAY",
-    //   command: "PURCHASE",
-    //   access_code: "fwmGcdC3DvtpUvUfIYdy",
-    //   merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-    //   merchant_reference: "424445_223396",
-    //   language: "ar",
-    //   customer_email: "user@example.com",
-    //   apple_data: {
-    //     paymentData: {
-    //       data: "p3T0CLgwPQo8wbmP7BmAtA5+VNnZIqgKFT5RWj7ExqBkxQGjJvHKueDqkUe4dlRLHy5abjgZdpdpBzkC8GNTUiWLNhIQNOKIBggXMRSboR1F0suY2KLtM96HU+boxdB3cPkJBpr/+YlaepE6ZCiuRMqFZe7XI8Z035bRc1ircMVlZLIY1BWEEmxxPl+J8xws6csg/5Z1KeEUBjzSgKUAgUpB6zCqZfHLqDFlGEC73MmQEsdPfCUfWVkZavUzCswJjJWKQXQmt3spPIfn75pzv5r1/OB0gZNf/VPwrcB2mfCIuDOqXrEXvAra7pF/rifYY8OdQ2CikGnWhgul6xfZ65zu52Z8AfWGZpsjrCw3J0wgO1+JRXIE3EL1kmGklurAxOUJ7m5WGiPgfsasO6hv0YNBILkqFVh3pSk1r3yN0USpM7A=",
-    //       signature:
-    //         "MIAGCSqGSIb3DQEHAqCAMIACAQExDTALBglghkgBZQMEAgEwgAYJKoZIhvcNAQcBAACggDCCA+QwggOLoAMCAQICCFnYobyq9OPNMAoGCCqGSM49BAMCMHoxLjAsBgNVBAMMJUFwcGxlIEFwcGxpY2F0aW9uIEludGVncmF0aW9uIENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMTA0MjAxOTM3MDBaFw0yNjA0MTkxOTM2NTlaMGIxKDAmBgNVBAMMH2VjYy1zbXAtYnJva2VyLXNpZ25fVUM0LVNBTkRCT1gxFDASBgNVBAsMC2lPUyBTeXN0ZW1zMRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIIw/avDnPdeICxQ2ZtFEuY34qkB3Wyz4LHNS1JnmPjPTr3oGiWowh5MM93OjiqWwvavoZMDRcToekQmzpUbEpWjggIRMIICDTAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFCPyScRPk+TvJ+bE9ihsP6K7/S5LMEUGCCsGAQUFBwEBBDkwNzA1BggrBgEFBQcwAYYpaHR0cDovL29jc3AuYXBwbGUuY29tL29jc3AwNC1hcHBsZWFpY2EzMDIwggEdBgNVHSAEggEUMIIBEDCCAQwGCSqGSIb3Y2QFATCB/jCBwwYIKwYBBQUHAgIwgbYMgbNSZWxpYW5jZSBvbiB0aGlzIGNlcnRpZmljYXRlIGJ5IGFueSBwYXJ0eSBhc3N1bWVzIGFjY2VwdGFuY2Ugb2YgdGhlIHRoZW4gYXBwbGljYWJsZSBzdGFuZGFyZCB0ZXJtcyBhbmQgY29uZGl0aW9ucyBvZiB1c2UsIGNlcnRpZmljYXRlIHBvbGljeSBhbmQgY2VydGlmaWNhdGlvbiBwcmFjdGljZSBzdGF0ZW1lbnRzLjA2BggrBgEFBQcCARYqaHR0cDovL3d3dy5hcHBsZS5jb20vY2VydGlmaWNhdGVhdXRob3JpdHkvMDQGA1UdHwQtMCswKaAnoCWGI2h0dHA6Ly9jcmwuYXBwbGUuY29tL2FwcGxlYWljYTMuY3JsMB0GA1UdDgQWBBQCJDALmu7tRjGXpKZaKZ5CcYIcRTAOBgNVHQ8BAf8EBAMCB4AwDwYJKoZIhvdjZAYdBAIFADAKBggqhkjOPQQDAgNHADBEAiB0obMk20JJQw3TJ0xQdMSAjZofSA46hcXBNiVmMl+8owIgaTaQU6v1C1pS+fYATcWKrWxQp9YIaDeQ4Kc60B5K2YEwggLuMIICdaADAgECAghJbS+/OpjalzAKBggqhkjOPQQDAjBnMRswGQYDVQQDDBJBcHBsZSBSb290IENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0xNDA1MDYyMzQ2MzBaFw0yOTA1MDYyMzQ2MzBaMHoxLjAsBgNVBAMMJUFwcGxlIEFwcGxpY2F0aW9uIEludGVncmF0aW9uIENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABPAXEYQZ12SF1RpeJYEHduiAou/ee65N4I38S5PhM1bVZls1riLQl3YNIk57ugj9dhfOiMt2u2ZwvsjoKYT/VEWjgfcwgfQwRgYIKwYBBQUHAQEEOjA4MDYGCCsGAQUFBzABhipodHRwOi8vb2NzcC5hcHBsZS5jb20vb2NzcDA0LWFwcGxlcm9vdGNhZzMwHQYDVR0OBBYEFCPyScRPk+TvJ+bE9ihsP6K7/S5LMA8GA1UdEwEB/wQFMAMBAf8wHwYDVR0jBBgwFoAUu7DeoVgziJqkipnevr3rr9rLJKswNwYDVR0fBDAwLjAsoCqgKIYmaHR0cDovL2NybC5hcHBsZS5jb20vYXBwbGVyb290Y2FnMy5jcmwwDgYDVR0PAQH/BAQDAgEGMBAGCiqGSIb3Y2QGAg4EAgUAMAoGCCqGSM49BAMCA2cAMGQCMDrPcoNRFpmxhvs1w1bKYr/0F+3ZD3VNoo6+8ZyBXkK3ifiY95tZn5jVQQ2PnenC/gIwMi3VRCGwowV3bF3zODuQZ/0XfCwhbZZPxnJpghJvVPh6fRuZy5sJiSFhBpkPCZIdAAAxggGIMIIBhAIBATCBhjB6MS4wLAYDVQQDDCVBcHBsZSBBcHBsaWNhdGlvbiBJbnRlZ3JhdGlvbiBDQSAtIEczMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMCCFnYobyq9OPNMAsGCWCGSAFlAwQCAaCBkzAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yNTAzMDMxMjMzNTJaMCgGCSqGSIb3DQEJNDEbMBkwCwYJYIZIAWUDBAIBoQoGCCqGSM49BAMCMC8GCSqGSIb3DQEJBDEiBCAQjhKqxb+L/1QHkOVfRrTRkDNrMbopMyHWwXHThIcvWjAKBggqhkjOPQQDAgRHMEUCIQDdB8n97JJBsN545d5c/1pZF+wgmBNTXxokzjhCwyQqHgIgFFBGwneEBd4o7zDIZRxPm9bFlRQ9LnXijX6JU1mINwcAAAAAAAA=",
-    //       header: {
-    //         publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-    //         ephemeralPublicKey:
-    //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEAgC73Eq5rpMF61urtiekYUVuSwsNdZH4XXVE13HnYfNhX4TCamgaEVDiv3cj4GxhFkk9IruJJfAUktKyQlG1iw==",
-    //         transactionId:
-    //           "4902afca4144620c511b4c213ac466db047d35af553b08398780f11b54c7df65",
+    //       apple_paymentMethod: {
+    //         apple_displayName: applePayData?.paymentMethod?.displayName,
+    //         apple_network: applePayData?.paymentMethod?.network,
+    //         apple_type: applePayData?.paymentMethod?.type,
     //       },
-    //       version: "EC_v1",
-    //     },
-    //     paymentMethod: {
-    //       displayName: "Visa 0121",
-    //       network: "Visa",
-    //       type: "credit",
-    //     },
-    //     transactionIdentifier:
-    //       "4902afca4144620c511b4c213ac466db047d35af553b08398780f11b54c7df65",
-    //   },
-    //   signature:
-    //     "82651286f6b65733caf1c5bd5bcace77b5178cbd653a8c5beff0fb5060d80e37",
-    // });
-    // ✅ Payment Authorization
-    session.onpaymentauthorized = async (event) => {
-      try {
-        console.log("Apple Pay Payment Data:", event.payment);
-        console.error("Apple Pay Payment Data:", event.payment);
+    //       customer_ip: "192.178.1.10",
+    //     });
 
-        const applePayData =
-          event.payment.token || event.payment.token.paymentData;
+    //     const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         digital_wallet: "APPLE_PAY",
+    //         command: "PURCHASE",
+    //         access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //         merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //         merchant_reference: merchanteRefrence,
+    //         amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //         currency: "SAR",
+    //         language: locale,
+    //         customer_email: "user@example.com",
+    //         apple_data: applePayData?.paymentData?.data,
+    //         apple_signature: applePayData?.paymentData?.signature,
+    //         apple_header: {
+    //           apple_transactionId:
+    //             applePayData?.paymentData?.header?.transactionId,
+    //           apple_ephemeralPublicKey:
+    //             applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //           apple_publicKeyHash:
+    //             applePayData?.paymentData?.header?.publicKeyHash,
+    //         },
+    //         apple_paymentMethod: {
+    //           apple_displayName: applePayData?.paymentMethod?.displayName,
+    //           apple_network: applePayData?.paymentMethod?.network,
+    //           apple_type: applePayData?.paymentMethod?.type,
+    //         },
+    //         customer_ip: "192.178.1.10",
+    //         signature: generateSignatureKey,
+    //       }),
+    //     });
 
-        const generateSignatureKey = generateApplePaySignature({
-          digital_wallet: "APPLE_PAY",
-          command: "PURCHASE",
-          access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-          merchant_reference: merchanteRefrence,
-          amount: calculateReceiptResFromMainPage?.amount_to_pay,
-          currency: "SAR",
-          language: locale,
-          customer_email: "user@example.com",
-          apple_data: applePayData?.paymentData?.data,
-          apple_signature: applePayData?.paymentData?.signature,
-          apple_header: {
-            apple_transactionId:
-              applePayData?.paymentData?.header?.transactionId,
-            apple_ephemeralPublicKey:
-              applePayData?.paymentData?.header?.ephemeralPublicKey,
-            apple_publicKeyHash:
-              applePayData?.paymentData?.header?.publicKeyHash,
-          },
-          apple_paymentMethod: {
-            apple_displayName: applePayData?.paymentMethod?.displayName,
-            apple_network: applePayData?.paymentMethod?.network,
-            apple_type: applePayData?.paymentMethod?.type,
-          },
-          customer_ip: "192.178.1.10",
-        });
+    //     const result = await response.json();
+    //     console.log("Payment API Response:", result);
 
-        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            digital_wallet: "APPLE_PAY",
-            command: "PURCHASE",
-            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-            merchant_reference: merchanteRefrence,
-            amount: calculateReceiptResFromMainPage?.amount_to_pay,
-            currency: "SAR",
-            language: locale,
-            customer_email: "user@example.com",
-            apple_data: applePayData?.paymentData?.data,
-            apple_signature: applePayData?.paymentData?.signature,
-            apple_header: {
-              apple_transactionId:
-                applePayData?.paymentData?.header?.transactionId,
-              apple_ephemeralPublicKey:
-                applePayData?.paymentData?.header?.ephemeralPublicKey,
-              apple_publicKeyHash:
-                applePayData?.paymentData?.header?.publicKeyHash,
-            },
-            apple_paymentMethod: {
-              apple_displayName: applePayData?.paymentMethod?.displayName,
-              apple_network: applePayData?.paymentMethod?.network,
-              apple_type: applePayData?.paymentMethod?.type,
-            },
-            customer_ip: "192.178.1.10",
-            signature: generateSignatureKey,
-          }),
-        });
+    //     if (!response.ok || result.error) {
+    //       throw new Error(result.error || "Payment failed");
+    //     }
 
-        const result = await response.json();
-        console.log("Payment API Response:", result);
+    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
+    //     alert("Payment successful!");
+    //   } catch (error) {
+    //     console.error("Payment error:", error);
+    //     alert(`Payment failed: ${error.message}`);
+    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
+    //   }
+    // };
 
-        if (!response.ok || result.error) {
-          throw new Error(result.error || "Payment failed");
-        }
+    // // second signature
+    // session.onpaymentauthorized = async (event) => {
+    //   try {
+    //     console.log("Apple Pay Payment Data:", event.payment);
+    //     console.error("Apple Pay Payment Data:", event.payment);
 
-        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-        alert("Payment successful!");
-      } catch (error) {
-        console.error("Payment error:", error);
-        alert(`Payment failed: ${error.message}`);
-        session.completePayment(ApplePaySession.STATUS_FAILURE);
-      }
-    };
+    //     const applePayData =
+    //       event.payment.token || event.payment.token.paymentData;
 
-    // second signature
-    session.onpaymentauthorized = async (event) => {
-      try {
-        console.log("Apple Pay Payment Data:", event.payment);
-        console.error("Apple Pay Payment Data:", event.payment);
+    //     const generateSignatureKey = generateSignature({
+    //       digital_wallet: "APPLE_PAY",
+    //       command: "PURCHASE",
+    //       access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //       merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //       merchant_reference: merchanteRefrence,
+    //       amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //       currency: "SAR",
+    //       language: locale,
+    //       customer_email: "user@example.com",
+    //       apple_data: applePayData?.paymentData?.data,
+    //       apple_signature: applePayData?.paymentData?.signature,
+    //       apple_header: {
+    //         apple_transactionId:
+    //           applePayData?.paymentData?.header?.transactionId,
+    //         apple_ephemeralPublicKey:
+    //           applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //         apple_publicKeyHash:
+    //           applePayData?.paymentData?.header?.publicKeyHash,
+    //       },
+    //       apple_paymentMethod: {
+    //         apple_displayName: applePayData?.paymentMethod?.displayName,
+    //         apple_network: applePayData?.paymentMethod?.network,
+    //         apple_type: applePayData?.paymentMethod?.type,
+    //       },
+    //       customer_ip: "192.178.1.10",
+    //     });
 
-        const applePayData =
-          event.payment.token || event.payment.token.paymentData;
+    //     const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         digital_wallet: "APPLE_PAY",
+    //         command: "PURCHASE",
+    //         access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //         merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //         merchant_reference: merchanteRefrence,
+    //         amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //         currency: "SAR",
+    //         language: locale,
+    //         customer_email: "user@example.com",
+    //         apple_data: applePayData?.paymentData?.data,
+    //         apple_signature: applePayData?.paymentData?.signature,
+    //         apple_header: {
+    //           apple_transactionId:
+    //             applePayData?.paymentData?.header?.transactionId,
+    //           apple_ephemeralPublicKey:
+    //             applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //           apple_publicKeyHash:
+    //             applePayData?.paymentData?.header?.publicKeyHash,
+    //         },
+    //         apple_paymentMethod: {
+    //           apple_displayName: applePayData?.paymentMethod?.displayName,
+    //           apple_network: applePayData?.paymentMethod?.network,
+    //           apple_type: applePayData?.paymentMethod?.type,
+    //         },
+    //         customer_ip: "192.178.1.10",
+    //         signature: generateSignatureKey,
+    //       }),
+    //     });
 
-        const generateSignatureKey = generateSignature({
-          digital_wallet: "APPLE_PAY",
-          command: "PURCHASE",
-          access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-          merchant_reference: merchanteRefrence,
-          amount: calculateReceiptResFromMainPage?.amount_to_pay,
-          currency: "SAR",
-          language: locale,
-          customer_email: "user@example.com",
-          apple_data: applePayData?.paymentData?.data,
-          apple_signature: applePayData?.paymentData?.signature,
-          apple_header: {
-            apple_transactionId:
-              applePayData?.paymentData?.header?.transactionId,
-            apple_ephemeralPublicKey:
-              applePayData?.paymentData?.header?.ephemeralPublicKey,
-            apple_publicKeyHash:
-              applePayData?.paymentData?.header?.publicKeyHash,
-          },
-          apple_paymentMethod: {
-            apple_displayName: applePayData?.paymentMethod?.displayName,
-            apple_network: applePayData?.paymentMethod?.network,
-            apple_type: applePayData?.paymentMethod?.type,
-          },
-          customer_ip: "192.178.1.10",
-        });
+    //     const result = await response.json();
+    //     console.log("Payment API Response:", result);
 
-        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            digital_wallet: "APPLE_PAY",
-            command: "PURCHASE",
-            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-            merchant_reference: merchanteRefrence,
-            amount: calculateReceiptResFromMainPage?.amount_to_pay,
-            currency: "SAR",
-            language: locale,
-            customer_email: "user@example.com",
-            apple_data: applePayData?.paymentData?.data,
-            apple_signature: applePayData?.paymentData?.signature,
-            apple_header: {
-              apple_transactionId:
-                applePayData?.paymentData?.header?.transactionId,
-              apple_ephemeralPublicKey:
-                applePayData?.paymentData?.header?.ephemeralPublicKey,
-              apple_publicKeyHash:
-                applePayData?.paymentData?.header?.publicKeyHash,
-            },
-            apple_paymentMethod: {
-              apple_displayName: applePayData?.paymentMethod?.displayName,
-              apple_network: applePayData?.paymentMethod?.network,
-              apple_type: applePayData?.paymentMethod?.type,
-            },
-            customer_ip: "192.178.1.10",
-            signature: generateSignatureKey,
-          }),
-        });
+    //     if (!response.ok || result.error) {
+    //       throw new Error(result.error || "Payment failed");
+    //     }
 
-        const result = await response.json();
-        console.log("Payment API Response:", result);
+    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
+    //     alert("Payment successful!");
+    //   } catch (error) {
+    //     console.error("Payment error:", error);
+    //     alert(`Payment failed: ${error.message}`);
+    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
+    //   }
+    // };
 
-        if (!response.ok || result.error) {
-          throw new Error(result.error || "Payment failed");
-        }
+    // //   third signature
+    // session.onpaymentauthorized = async (event) => {
+    //   try {
+    //     console.log("Apple Pay Payment Data:", event.payment);
+    //     console.error("Apple Pay Payment Data:", event.payment);
 
-        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-        alert("Payment successful!");
-      } catch (error) {
-        console.error("Payment error:", error);
-        alert(`Payment failed: ${error.message}`);
-        session.completePayment(ApplePaySession.STATUS_FAILURE);
-      }
-    };
+    //     const applePayData =
+    //       event.payment.token || event.payment.token.paymentData;
 
-    //   third signature
-    session.onpaymentauthorized = async (event) => {
-      try {
-        console.log("Apple Pay Payment Data:", event.payment);
-        console.error("Apple Pay Payment Data:", event.payment);
+    //     const generateSignatureKey = generateSignatureApple({
+    //       digital_wallet: "APPLE_PAY",
+    //       command: "PURCHASE",
+    //       access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //       merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //       merchant_reference: merchanteRefrence,
+    //       amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //       currency: "SAR",
+    //       language: locale,
+    //       customer_email: "user@example.com",
+    //       apple_data: applePayData?.paymentData?.data,
+    //       apple_signature: applePayData?.paymentData?.signature,
+    //       apple_header: {
+    //         apple_transactionId:
+    //           applePayData?.paymentData?.header?.transactionId,
+    //         apple_ephemeralPublicKey:
+    //           applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //         apple_publicKeyHash:
+    //           applePayData?.paymentData?.header?.publicKeyHash,
+    //       },
+    //       apple_paymentMethod: {
+    //         apple_displayName: applePayData?.paymentMethod?.displayName,
+    //         apple_network: applePayData?.paymentMethod?.network,
+    //         apple_type: applePayData?.paymentMethod?.type,
+    //       },
+    //       customer_ip: "192.178.1.10",
+    //     });
 
-        const applePayData =
-          event.payment.token || event.payment.token.paymentData;
+    //     const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         digital_wallet: "APPLE_PAY",
+    //         command: "PURCHASE",
+    //         access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //         merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //         merchant_reference: merchanteRefrence,
+    //         amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //         currency: "SAR",
+    //         language: locale,
+    //         customer_email: "user@example.com",
+    //         apple_data: applePayData?.paymentData?.data,
+    //         apple_signature: applePayData?.paymentData?.signature,
+    //         apple_header: {
+    //           apple_transactionId:
+    //             applePayData?.paymentData?.header?.transactionId,
+    //           apple_ephemeralPublicKey:
+    //             applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //           apple_publicKeyHash:
+    //             applePayData?.paymentData?.header?.publicKeyHash,
+    //         },
+    //         apple_paymentMethod: {
+    //           apple_displayName: applePayData?.paymentMethod?.displayName,
+    //           apple_network: applePayData?.paymentMethod?.network,
+    //           apple_type: applePayData?.paymentMethod?.type,
+    //         },
+    //         customer_ip: "192.178.1.10",
+    //         signature: generateSignatureKey,
+    //       }),
+    //     });
 
-        const generateSignatureKey = generateSignatureApple({
-          digital_wallet: "APPLE_PAY",
-          command: "PURCHASE",
-          access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-          merchant_reference: merchanteRefrence,
-          amount: calculateReceiptResFromMainPage?.amount_to_pay,
-          currency: "SAR",
-          language: locale,
-          customer_email: "user@example.com",
-          apple_data: applePayData?.paymentData?.data,
-          apple_signature: applePayData?.paymentData?.signature,
-          apple_header: {
-            apple_transactionId:
-              applePayData?.paymentData?.header?.transactionId,
-            apple_ephemeralPublicKey:
-              applePayData?.paymentData?.header?.ephemeralPublicKey,
-            apple_publicKeyHash:
-              applePayData?.paymentData?.header?.publicKeyHash,
-          },
-          apple_paymentMethod: {
-            apple_displayName: applePayData?.paymentMethod?.displayName,
-            apple_network: applePayData?.paymentMethod?.network,
-            apple_type: applePayData?.paymentMethod?.type,
-          },
-          customer_ip: "192.178.1.10",
-        });
+    //     const result = await response.json();
+    //     console.log("Payment API Response:", result);
 
-        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            digital_wallet: "APPLE_PAY",
-            command: "PURCHASE",
-            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-            merchant_reference: merchanteRefrence,
-            amount: calculateReceiptResFromMainPage?.amount_to_pay,
-            currency: "SAR",
-            language: locale,
-            customer_email: "user@example.com",
-            apple_data: applePayData?.paymentData?.data,
-            apple_signature: applePayData?.paymentData?.signature,
-            apple_header: {
-              apple_transactionId:
-                applePayData?.paymentData?.header?.transactionId,
-              apple_ephemeralPublicKey:
-                applePayData?.paymentData?.header?.ephemeralPublicKey,
-              apple_publicKeyHash:
-                applePayData?.paymentData?.header?.publicKeyHash,
-            },
-            apple_paymentMethod: {
-              apple_displayName: applePayData?.paymentMethod?.displayName,
-              apple_network: applePayData?.paymentMethod?.network,
-              apple_type: applePayData?.paymentMethod?.type,
-            },
-            customer_ip: "192.178.1.10",
-            signature: generateSignatureKey,
-          }),
-        });
+    //     if (!response.ok || result.error) {
+    //       throw new Error(result.error || "Payment failed");
+    //     }
 
-        const result = await response.json();
-        console.log("Payment API Response:", result);
-
-        if (!response.ok || result.error) {
-          throw new Error(result.error || "Payment failed");
-        }
-
-        session.completePayment(ApplePaySession.STATUS_SUCCESS);
-        alert("Payment successful!");
-      } catch (error) {
-        console.error("Payment error:", error);
-        alert(`Payment failed: ${error.message}`);
-        session.completePayment(ApplePaySession.STATUS_FAILURE);
-      }
-    };
+    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
+    //     alert("Payment successful!");
+    //   } catch (error) {
+    //     console.error("Payment error:", error);
+    //     alert(`Payment failed: ${error.message}`);
+    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
+    //   }
+    // };
 
     // fourth signature
     session.onpaymentauthorized = async (event) => {
-      try {
-        console.log("Apple Pay Payment Data:", event.payment);
-        console.error("Apple Pay Payment Data:", event.payment);
-
-        const applePayData =
-          event.payment.token || event.payment.token.paymentData;
-
-        const generateSignatureKey = await generateHmacSignature({
-          digital_wallet: "APPLE_PAY",
-          command: "PURCHASE",
-          access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-          merchant_reference: merchanteRefrence,
-          amount: calculateReceiptResFromMainPage?.amount_to_pay,
-          currency: "SAR",
-          language: locale,
-          customer_email: "user@example.com",
-          apple_data: applePayData?.paymentData?.data,
-          apple_signature: applePayData?.paymentData?.signature,
-          apple_header: {
-            apple_transactionId:
-              applePayData?.paymentData?.header?.transactionId,
-            apple_ephemeralPublicKey:
-              applePayData?.paymentData?.header?.ephemeralPublicKey,
-            apple_publicKeyHash:
-              applePayData?.paymentData?.header?.publicKeyHash,
-          },
-          apple_paymentMethod: {
-            apple_displayName: applePayData?.paymentMethod?.displayName,
-            apple_network: applePayData?.paymentMethod?.network,
-            apple_type: applePayData?.paymentMethod?.type,
-          },
-          customer_ip: "192.178.1.10",
-        });
-
-        const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            digital_wallet: "APPLE_PAY",
-            command: "PURCHASE",
-            access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-            merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-            merchant_reference: merchanteRefrence,
-            amount: calculateReceiptResFromMainPage?.amount_to_pay,
-            currency: "SAR",
-            language: locale,
-            customer_email: "user@example.com",
-            apple_data: applePayData?.paymentData?.data,
-            apple_signature: applePayData?.paymentData?.signature,
-            apple_header: {
-              apple_transactionId:
-                applePayData?.paymentData?.header?.transactionId,
-              apple_ephemeralPublicKey:
-                applePayData?.paymentData?.header?.ephemeralPublicKey,
-              apple_publicKeyHash:
-                applePayData?.paymentData?.header?.publicKeyHash,
-            },
-            apple_paymentMethod: {
-              apple_displayName: applePayData?.paymentMethod?.displayName,
-              apple_network: applePayData?.paymentMethod?.network,
-              apple_type: applePayData?.paymentMethod?.type,
-            },
-            customer_ip: "192.178.1.10",
-            signature: generateSignatureKey,
-          }),
-        });
-
-        const result = await response.json();
-        console.log("Payment API Response:", result);
-
-        if (!response.ok || result.error) {
-          throw new Error(result.error || "Payment failed");
-        }
-
+		console.log("Payment Data:", event.payment);
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         alert("Payment successful!");
-      } catch (error) {
-        console.error("Payment error:", error);
-        alert(`Payment failed: ${error.message}`);
-        session.completePayment(ApplePaySession.STATUS_FAILURE);
-      }
+    //   try {
+    //     console.log("Apple Pay Payment Data:", event.payment);
+    //     console.error("Apple Pay Payment Data:", event.payment);
+
+    //     const applePayData =
+    //       event.payment.token || event.payment.token.paymentData;
+
+    //     const generateSignatureKey = await generateHmacSignature({
+    //       digital_wallet: "APPLE_PAY",
+    //       command: "PURCHASE",
+    //       access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //       merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //       merchant_reference: merchanteRefrence,
+    //       amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //       currency: "SAR",
+    //       language: locale,
+    //       customer_email: "user@example.com",
+    //       apple_data: applePayData?.paymentData?.data,
+    //       apple_signature: applePayData?.paymentData?.signature,
+    //       apple_header: {
+    //         apple_transactionId:
+    //           applePayData?.paymentData?.header?.transactionId,
+    //         apple_ephemeralPublicKey:
+    //           applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //         apple_publicKeyHash:
+    //           applePayData?.paymentData?.header?.publicKeyHash,
+    //       },
+    //       apple_paymentMethod: {
+    //         apple_displayName: applePayData?.paymentMethod?.displayName,
+    //         apple_network: applePayData?.paymentMethod?.network,
+    //         apple_type: applePayData?.paymentMethod?.type,
+    //       },
+    //       customer_ip: "192.178.1.10",
+    //     });
+
+    //     const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         digital_wallet: "APPLE_PAY",
+    //         command: "PURCHASE",
+    //         access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+    //         merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+    //         merchant_reference: merchanteRefrence,
+    //         amount: calculateReceiptResFromMainPage?.amount_to_pay,
+    //         currency: "SAR",
+    //         language: locale,
+    //         customer_email: "user@example.com",
+    //         apple_data: applePayData?.paymentData?.data,
+    //         apple_signature: applePayData?.paymentData?.signature,
+    //         apple_header: {
+    //           apple_transactionId:
+    //             applePayData?.paymentData?.header?.transactionId,
+    //           apple_ephemeralPublicKey:
+    //             applePayData?.paymentData?.header?.ephemeralPublicKey,
+    //           apple_publicKeyHash:
+    //             applePayData?.paymentData?.header?.publicKeyHash,
+    //         },
+    //         apple_paymentMethod: {
+    //           apple_displayName: applePayData?.paymentMethod?.displayName,
+    //           apple_network: applePayData?.paymentMethod?.network,
+    //           apple_type: applePayData?.paymentMethod?.type,
+    //         },
+    //         customer_ip: "192.178.1.10",
+    //         signature: generateSignatureKey,
+    //       }),
+    //     });
+
+    //     const result = await response.json();
+    //     console.log("Payment API Response:", result);
+
+    //     if (!response.ok || result.error) {
+    //       throw new Error(result.error || "Payment failed");
+    //     }
+
+    //     session.completePayment(ApplePaySession.STATUS_SUCCESS);
+    //     alert("Payment successful!");
+    //   } catch (error) {
+    //     console.error("Payment error:", error);
+    //     alert(`Payment failed: ${error.message}`);
+    //     session.completePayment(ApplePaySession.STATUS_FAILURE);
+    //   }
     };
 
     session.begin();
@@ -758,36 +704,68 @@ function SummaryOrder({
   //     }),
   //   });
 
-  //   console.log(
-  //     JSON.stringify({
-  //       digital_wallet: "APPLE_PAY",
-  //       command: "PURCHASE",
-  //       access_code: "fwmGcdC3DvtpUvUfIYdy",
-  //       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-  //       merchant_reference: "424445_223396",
-  //       amount: 28112.05,
-  //       currency: "SAR",
-  //       language: "ar",
-  //       customer_email: "user@example.com",
-  //       apple_data:
-  //         "f47K+PdFzOofLT85nUApvTq8RSnbDbenal2YaGhA5kQhbt9ttASZbtPd9lED7DgmPnARQozTCxdc21Z4ktr+RQotfejmaK7c9G++pP7OWq+0g9EVSXkuBEErQ+fMNTo7usg8m1F1SHDH9NgReHWbw5Z6Wt/mKpm6lz5KVIwFdO20VeedUTjq1SzptGP8ntTTJJxGxKvQ4SqsfV6q3xOLC/jigow0LQP4IM9S5uK5hPh5MV+OEeEvi7otp2O+C6/9w+Hn66/xqle8DSJpCG9eHC/s0JDbRyd2t+eCApr9t1wagkDf7IN9ISbnshNX+X5mMBWl7qKC641sjKPRYeS6DcdII0tfNFjKPKtJ1KI8VZ55hOkWNgPPqQJ3LcdlgSzyVQ5ZlTvkNTo4mumztv/WMB4Ut0azfuMUSJHftst8eGtxPNY=",
-  //       apple_signature:
-  //         "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",
-  //       apple_header: {
-  //         apple_transactionId:
-  //           "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
-  //         apple_ephemeralPublicKey:
-  //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
-  //         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-  //       },
-  //       apple_paymentMethod: {
-  //         apple_displayName: "Visa 0121",
-  //         apple_network: "Visa",
-  //         apple_type: "credit",
-  //       },
-  //       customer_ip: "192.178.1.10",
-  //     })
-  //   );
+//   console.log(
+//     JSON.stringify({
+//       digital_wallet: "APPLE_PAY",
+//       command: "PURCHASE",
+//       access_code: "fwmGcdC3DvtpUvUfIYdy",
+//       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
+//       merchant_reference: "424445_223403",
+//       amount: 26.6,
+//       currency: "SAR",
+//       language: "ar",
+//       customer_email: "user@example.com",
+//       apple_data:
+//         "0zBQWmSNqd1y4k+jCrCtFzVmS50bhuXvgz21pTJ9O2Wq0mmWsb0BILEoOX2MFQAXVm06S/NKy4W7CbUh0SGEfRFJkkEDocYbF8Uwv0AimlsfGNT5z4jd9+n9lSRQT+k8veMYFHGzUGl5qF7g2FCJ6T6ypEMFb9+rD+ESUm5HpOgeDIwskm7TOvS3ha/VGosBQbEtOMQ7a7QpeQvh/LE5UVPxD9w16li3CwkDIfEEVLIXdy0+LIX6B9OUiyycC9HnPpgvf+j14icg35FVQxX5cl/vGemoBg24s3sHKhnpx90jlFSPCyyFmp5viGMW2oG2C/uFIV1gSu+IKWjrMP+ONjmYDvxztzye5ZgyiZ01NsUut63mpL4JrDS4dgETZ/lVsM7LPoQNlTD5RMFSApJ09yDdzbAfrTVcUdFNmZx8110=",
+//       apple_signature:
+//         "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",
+//       apple_header: {
+//         apple_transactionId:
+//           "403f54569644c4c4f94a31698339dcd56286711a4ab08a40781363613d710ae8",
+//         apple_ephemeralPublicKey:
+//           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEVxRK2wvAQEL3ybppfB1SQbx/DYmyxSXzLLr7GkmG+wzA3IfgfTipSKporhB1n54K8y94379+0szbaqVqrWFhIA==",
+//         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//       },
+//       apple_paymentMethod: {
+//         apple_displayName: "Visa 0121",
+//         apple_network: "Visa",
+//         apple_type: "credit",
+//       },
+//       customer_ip: "192.178.1.10",
+//     })
+//   );
+
+//   console.log({
+//     digital_wallet: "APPLE_PAY",
+//     command: "PURCHASE",
+//     access_code: "fwmGcdC3DvtpUvUfIYdy",
+//     merchant_identifier: "merchant.com.atlobha.atlobhadebug",
+//     merchant_reference: "424445_223403",
+//     amount: 26.6,
+//     currency: "SAR",
+//     language: "ar",
+//     customer_email: "user@example.com",
+//     apple_data:
+//       "0zBQWmSNqd1y4k+jCrCtFzVmS50bhuXvgz21pTJ9O2Wq0mmWsb0BILEoOX2MFQAXVm06S/NKy4W7CbUh0SGEfRFJkkEDocYbF8Uwv0AimlsfGNT5z4jd9+n9lSRQT+k8veMYFHGzUGl5qF7g2FCJ6T6ypEMFb9+rD+ESUm5HpOgeDIwskm7TOvS3ha/VGosBQbEtOMQ7a7QpeQvh/LE5UVPxD9w16li3CwkDIfEEVLIXdy0+LIX6B9OUiyycC9HnPpgvf+j14icg35FVQxX5cl/vGemoBg24s3sHKhnpx90jlFSPCyyFmp5viGMW2oG2C/uFIV1gSu+IKWjrMP+ONjmYDvxztzye5ZgyiZ01NsUut63mpL4JrDS4dgETZ/lVsM7LPoQNlTD5RMFSApJ09yDdzbAfrTVcUdFNmZx8110=",
+//     apple_signature:
+//       "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",
+//     apple_header: {
+//       apple_transactionId:
+//         "403f54569644c4c4f94a31698339dcd56286711a4ab08a40781363613d710ae8",
+//       apple_ephemeralPublicKey:
+//         "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEVxRK2wvAQEL3ybppfB1SQbx/DYmyxSXzLLr7GkmG+wzA3IfgfTipSKporhB1n54K8y94379+0szbaqVqrWFhIA==",
+//       apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//     },
+//     apple_paymentMethod: {
+//       apple_displayName: "Visa 0121",
+//       apple_network: "Visa",
+//       apple_type: "credit",
+//     },
+//     customer_ip: "192.178.1.10",
+//     signature:
+//       "9DCA3908B2FB3A62A306053ED507B89B10D747AD6CCF445E0C42FB6A8042300704D787AE5B9299D9D0EAE068AA93CF6886F1605FDC2912D13328B500FB51189E",
+//   });
+
   return (
     <Box
       sx={{
