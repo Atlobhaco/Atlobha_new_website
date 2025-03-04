@@ -1,28 +1,43 @@
+import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+const defaultProps = {
+  $link_title: "",
+  routeToRedirect: null,
+  sectionGroup: false,
+  nameInsideGroup: "",
+  mustAuthenticated: false,
+};
+
 const arrayForRedirect = [
   {
+    ...defaultProps,
     $link_title: "Pricing",
     routeToRedirect: "/spareParts",
-    sectionGroup: false,
   },
   {
+    ...defaultProps,
+    $link_title: "OrderList",
+    routeToRedirect: "/userProfile/myOrders/",
+    mustAuthenticated: true,
+  },
+  {
+    ...defaultProps,
     $link_title: "TestDrive",
-    routeToRedirect: null,
     sectionGroup: true,
     nameInsideGroup: "test-drive",
   },
   {
+    ...defaultProps,
     $link_title: "Najm",
-    routeToRedirect: null,
     sectionGroup: true,
     nameInsideGroup: "najm-and-estimation",
   },
   {
+    ...defaultProps,
     $link_title: "Maintenance",
-    routeToRedirect: null,
     sectionGroup: true,
     nameInsideGroup: "services",
   },
@@ -90,19 +105,21 @@ const useBranch = () => {
 
       console.log("redirectItem", redirectItem);
 
-      if (redirectItem && !redirectItem?.sectionGroup) {
-        router.push(redirectItem?.routeToRedirect);
-      }
+      if (redirectItem) {
+        if (
+          (redirectItem.mustAuthenticated && isAuth()) ||
+          !redirectItem.sectionGroup
+        ) {
+          router.push(redirectItem.routeToRedirect);
+        } else if (redirectItem.sectionGroup) {
+          const findSectionData = allGroups
+            ?.flatMap((data) => data?.sections)
+            ?.find((item) => item?.type === redirectItem.nameInsideGroup);
 
-      if (redirectItem && redirectItem?.sectionGroup) {
-        const findSectionData = allGroups
-          ?.map((data) => data?.sections)
-          ?.flat()
-          ?.find((item) => item?.type === redirectItem?.nameInsideGroup);
-
-        router.push(
-          `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
-        );
+          router.push(
+            `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
+          );
+        }
       }
     }
   }, [branchData]);
