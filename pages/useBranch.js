@@ -1,17 +1,25 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const arrayForRedirect = [
   {
-    $deeplink_path: "spare-parts-section",
+    $link_title: "Pricing",
     routeToRedirect: "/spareParts",
+  },
+  {
+    $link_title: "TestDrive",
+    routeToRedirect: "/spareParts",
+    sectionGroup: true,
+    nameInsideGroup: "test-drive",
   },
 ];
 
 const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
-
+  const { allGroups } = useSelector((state) => state.appGroups);
+  console.log("allGroups", allGroups?.map((data) => data?.sections)?.flat());
   useEffect(() => {
     // Ensure we're running on the client-side
     if (typeof window === "undefined") return;
@@ -64,12 +72,24 @@ const useBranch = () => {
     if (branchData) {
       console.log("branchData", branchData);
       const redirectItem = arrayForRedirect.find(
-        (item) =>
-          item.$deeplink_path === branchData?.data_parsed?.$deeplink_path
+        (item) => item.$link_title === branchData?.data_parsed?.$link_title
       );
+
       console.log("redirectItem", redirectItem);
-      if (redirectItem) {
+
+      if (redirectItem && !redirectItem?.routeToRedirect) {
         router.push(redirectItem?.routeToRedirect);
+      }
+
+      if (redirectItem && redirectItem?.routeToRedirect) {
+        const findSectionData = allGroups
+          ?.map((data) => data?.sections)
+          ?.flat()
+          ?.find((item) => item.type === redirectItem?.nameInsideGroup);
+
+        router.push(
+          `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
+        );
       }
     }
   }, [branchData]);
