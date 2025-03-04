@@ -555,7 +555,7 @@ function SummaryOrder({
         console.log("Apple Pay Payment Data:", event.payment);
 
         const applePayData = event.payment.token.paymentData;
-        const paymentMethod = event.payment.paymentMethod;
+        const paymentMethod = event.payment.token.paymentMethod;
 
         const requestBody = {
           digital_wallet: "APPLE_PAY",
