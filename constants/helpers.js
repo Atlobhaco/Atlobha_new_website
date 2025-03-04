@@ -386,7 +386,7 @@ export const generateSignatureApple = (params) => {
 /*                           generate hmac signature                          */
 /* -------------------------------------------------------------------------- */
 // karim fn
-export const generateHmacSignature = (params) => {
+export const generateHmacSignature = async (params) => {
   const shaRequestPhrase =
     process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
 
@@ -395,7 +395,11 @@ export const generateHmacSignature = (params) => {
 
   // Step 2: Concatenate parameters into a string
   let concatenatedString = sortedKeys
-    .map((key) => `${key}=${params[key]}`)
+    .map((key) =>
+      typeof params[key] === "object"
+        ? `${key}=${JSON.stringify(params[key])}`
+        : `${key}=${params[key]}`
+    )
     .join("");
 
   // Step 3: Add SHA Request Phrase at the beginning and end
@@ -409,4 +413,3 @@ export const generateHmacSignature = (params) => {
 
   return hmac.toUpperCase(); // Convert to uppercase as required
 };
-
