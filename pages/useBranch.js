@@ -6,12 +6,25 @@ const arrayForRedirect = [
   {
     $link_title: "Pricing",
     routeToRedirect: "/spareParts",
+    sectionGroup: false,
   },
   {
     $link_title: "TestDrive",
-    routeToRedirect: "/spareParts",
+    routeToRedirect: null,
     sectionGroup: true,
     nameInsideGroup: "test-drive",
+  },
+  {
+    $link_title: "Najm",
+    routeToRedirect: null,
+    sectionGroup: true,
+    nameInsideGroup: "najm-and-estimation",
+  },
+  {
+    $link_title: "Maintenance",
+    routeToRedirect: null,
+    sectionGroup: true,
+    nameInsideGroup: "services",
   },
 ];
 
