@@ -555,6 +555,29 @@ function SummaryOrder({
         const applePayData =
           event.payment.token || event.payment.token.paymentData;
 
+        const generateSignatureKey = generateHmacSignature({
+          amount: calculateReceiptResFromMainPage?.amount_to_pay,
+          currency: "SAR",
+          digital_wallet: "APPLE_PAY",
+          command: "PURCHASE",
+          access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
+          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+          merchant_reference: merchanteRefrence,
+          customer_ip: "192.178.1.10",
+          language: locale,
+          customer_email: "user@example.com",
+          apple_data: applePayData?.paymentData?.data,
+          apple_signature: applePayData?.paymentData?.signature,
+          apple_header: applePayData?.paymentData?.header,
+          apple_transactionId: applePayData?.paymentData?.header?.transactionId,
+          apple_ephemeralPublicKey:
+            applePayData?.paymentData?.header?.ephemeralPublicKey,
+          apple_publicKeyHash: applePayData?.paymentData?.header?.publicKeyHash,
+          apple_paymentMethod: applePayData?.paymentMethod,
+          apple_displayName: applePayData?.paymentMethod?.displayName,
+          apple_network: applePayData?.paymentMethod?.network,
+          apple_type: applePayData?.paymentMethod?.type,
+        });
         const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
           method: "POST",
           headers: {
@@ -584,18 +607,7 @@ function SummaryOrder({
             apple_displayName: applePayData?.paymentMethod?.displayName,
             apple_network: applePayData?.paymentMethod?.network,
             apple_type: applePayData?.paymentMethod?.type,
-            signature: generateHmacSignature({
-              amount: calculateReceiptResFromMainPage?.amount_to_pay,
-              currency: "SAR",
-              digital_wallet: "APPLE_PAY",
-              command: "PURCHASE",
-              access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-              merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
-              merchant_reference: merchanteRefrence,
-              customer_ip: "192.178.1.10",
-              language: locale,
-              customer_email: "user@example.com",
-            }),
+            signature: generateSignatureKey,
           }),
         });
 
@@ -656,28 +668,81 @@ function SummaryOrder({
 //       apple_network: "Visa",
 //       apple_type: "credit",
 //       signature: generateHmacSignature({
+//         digital_wallet: "APPLE_PAY",
 //         command: "PURCHASE",
 //         access_code: "fwmGcdC3DvtpUvUfIYdy",
 //         merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-//         language: "ar",
-//         currency: "SAR",
-//         amount: 28112.05,
-//         customer_email: "user@example.com",
 //         merchant_reference: "424445_223396",
+//         amount: 28112.05,
+//         currency: "SAR",
+//         language: "ar",
+//         customer_email: "user@example.com",
+//         apple_data:
+//           "f47K+PdFzOofLT85nUApvTq8RSnbDbenal2YaGhA5kQhbt9ttASZbtPd9lED7DgmPnARQozTCxdc21Z4ktr+RQotfejmaK7c9G++pP7OWq+0g9EVSXkuBEErQ+fMNTo7usg8m1F1SHDH9NgReHWbw5Z6Wt/mKpm6lz5KVIwFdO20VeedUTjq1SzptGP8ntTTJJxGxKvQ4SqsfV6q3xOLC/jigow0LQP4IM9S5uK5hPh5MV+OEeEvi7otp2O+C6/9w+Hn66/xqle8DSJpCG9eHC/s0JDbRyd2t+eCApr9t1wagkDf7IN9ISbnshNX+X5mMBWl7qKC641sjKPRYeS6DcdII0tfNFjKPKtJ1KI8VZ55hOkWNgPPqQJ3LcdlgSzyVQ5ZlTvkNTo4mumztv/WMB4Ut0azfuMUSJHftst8eGtxPNY=",
+//         apple_signature:
+//           "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",
+//         apple_header: {
+//           publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//           ephemeralPublicKey:
+//             "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
+//           transactionId:
+//             "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
+//         },
+//         apple_transactionId:
+//           "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
+//         apple_ephemeralPublicKey:
+//           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
+//         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//         apple_paymentMethod: {
+//           displayName: "Visa 0121",
+//           network: "Visa",
+//           type: "credit",
+//         },
+//         apple_displayName: "Visa 0121",
+//         apple_network: "Visa",
+//         apple_type: "credit",
+//         customer_ip: "192.178.1.10",
 //       }),
 //       customer_ip: "192.178.1.10",
 //     }),
 //   });
+
 //   console.log(
 //     JSON.stringify({
+//       digital_wallet: "APPLE_PAY",
 //       command: "PURCHASE",
 //       access_code: "fwmGcdC3DvtpUvUfIYdy",
 //       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-//       language: "ar",
-//       currency: "SAR",
-//       amount: 28112.05,
-//       customer_email: "user@example.com",
 //       merchant_reference: "424445_223396",
+//       amount: 28112.05,
+//       currency: "SAR",
+//       language: "ar",
+//       customer_email: "user@example.com",
+//       apple_data:
+//         "f47K+PdFzOofLT85nUApvTq8RSnbDbenal2YaGhA5kQhbt9ttASZbtPd9lED7DgmPnARQozTCxdc21Z4ktr+RQotfejmaK7c9G++pP7OWq+0g9EVSXkuBEErQ+fMNTo7usg8m1F1SHDH9NgReHWbw5Z6Wt/mKpm6lz5KVIwFdO20VeedUTjq1SzptGP8ntTTJJxGxKvQ4SqsfV6q3xOLC/jigow0LQP4IM9S5uK5hPh5MV+OEeEvi7otp2O+C6/9w+Hn66/xqle8DSJpCG9eHC/s0JDbRyd2t+eCApr9t1wagkDf7IN9ISbnshNX+X5mMBWl7qKC641sjKPRYeS6DcdII0tfNFjKPKtJ1KI8VZ55hOkWNgPPqQJ3LcdlgSzyVQ5ZlTvkNTo4mumztv/WMB4Ut0azfuMUSJHftst8eGtxPNY=",
+//       apple_signature:
+//         "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",
+//       apple_header: {
+//         publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//         ephemeralPublicKey:
+//           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
+//         transactionId:
+//           "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
+//       },
+//       apple_transactionId:
+//         "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
+//       apple_ephemeralPublicKey:
+//         "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
+//       apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+//       apple_paymentMethod: {
+//         displayName: "Visa 0121",
+//         network: "Visa",
+//         type: "credit",
+//       },
+//       apple_displayName: "Visa 0121",
+//       apple_network: "Visa",
+//       apple_type: "credit",
+//       customer_ip: "192.178.1.10",
 //     })
 //   );
   return (

@@ -385,6 +385,7 @@ export const generateSignatureApple = (params) => {
 /* -------------------------------------------------------------------------- */
 /*                           generate hmac signature                          */
 /* -------------------------------------------------------------------------- */
+// karim fn
 export const generateHmacSignature = (params) => {
   const shaRequestPhrase =
     process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
