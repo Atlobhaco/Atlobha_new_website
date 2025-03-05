@@ -581,7 +581,7 @@ function SummaryOrder({
             apple_type: paymentMethod.type,
           },
         };
-        requestBody.signature = generateSignature(requestBody);
+        requestBody.signature = generateHmacSignatureChatGpt(requestBody);
 
         const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
           method: "POST",
@@ -609,6 +609,7 @@ function SummaryOrder({
 
     session.begin();
   };
+  
 
   //   fetch("/api/payfortApplePay", {
   //     method: "POST",
