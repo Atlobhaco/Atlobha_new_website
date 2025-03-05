@@ -117,7 +117,6 @@ function SummaryOrder({
   //     expiry_date: "1226",
   //     card_holder_name: "micheal abid",
   //     cvv: "123",
-
   const {
     data: confirmPriceRes,
     isFetching: confirmPriceFetch,
@@ -189,7 +188,7 @@ function SummaryOrder({
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       //   check if amount to pay changed before pay
-      if (+res?.amount_to_pay !== +receipt?.amount_to_pay) {
+      if (+res?.amount_to_pay !== +calculateReceiptResFromMainPage?.amount_to_pay) {
         toast.error(`${t.remainingtotal} ${t.beChanged}`);
         setTimeout(() => {
           callSingleOrder();
