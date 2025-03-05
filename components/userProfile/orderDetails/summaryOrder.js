@@ -581,7 +581,7 @@ function SummaryOrder({
             apple_type: paymentMethod.type,
           },
         };
-        requestBody.signature = generateHmacSignatureChatGpt(requestBody);
+        requestBody.signature = generateSignature(requestBody);
 
         const response = await fetch(process.env.NEXT_PUBLIC_APPLE_URL, {
           method: "POST",

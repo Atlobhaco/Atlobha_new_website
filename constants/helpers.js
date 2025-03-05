@@ -317,6 +317,8 @@ export const generateSignature = (params) => {
   // Add the secret key at the beginning and end of the string
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
+  console.log("String before Hashing:", shaString);
+
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
   return signature;
 };
@@ -430,7 +432,7 @@ export const generateHmacSignatureChatGpt = (params) => {
 
   // 🔹 Step 3: Add SHA Request Phrase at the beginning and end
   concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
-
+  console.log("Concatenated String Before Hashing:", concatenatedString);
   // 🔹 Step 4: Generate HMAC-SHA512 signature
   const hmac = crypto
     .createHmac("sha512", shaRequestPhrase)

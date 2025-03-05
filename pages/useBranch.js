@@ -31,7 +31,7 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
-    $link_title: "Najm",
+    $link_title: "Taqdeer",
     sectionGroup: true,
     nameInsideGroup: "najm-and-estimation",
   },
