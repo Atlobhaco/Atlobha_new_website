@@ -121,7 +121,7 @@ const useDeepLink = () => {
 
       //   custom conidtion for order details page
       if (redirectItemOrderDetails) {
-        if (redirectItem.mustAuthenticated && isAuth()) {
+        if (redirectItemOrderDetails?.mustAuthenticated && isAuth()) {
           const typeOfOrder = orderEnumArray()?.find(
             (item) => item?.id === branchData?.data_parsed?.$deeplink_path
           );
@@ -134,8 +134,8 @@ const useDeepLink = () => {
 
       if (redirectItem) {
         if (
-          (redirectItem.mustAuthenticated && isAuth()) ||
-          (!redirectItem.mustAuthenticated && !redirectItem.sectionGroup)
+          (redirectItem?.mustAuthenticated && isAuth()) ||
+          (!redirectItem?.mustAuthenticated && !redirectItem?.sectionGroup)
         ) {
           router.push(redirectItem.routeToRedirect);
         } else if (redirectItem.sectionGroup) {
