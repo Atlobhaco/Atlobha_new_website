@@ -29,7 +29,6 @@ export const getUserCurrentLocation = () => {
           resolve(location);
         },
         (err) => {
-          console.error("Error getting location:", err);
           reject(
             "Unable to retrieve location. Please enable location services."
           );
@@ -61,12 +60,10 @@ export const getAddressFromLatLng = async (lat, lng, locale) => {
 
       return { city, area }; // Return both city and area
     } else {
-      console.error("Error:", data.status);
-      return null;
+      return { city: "", area: "" };
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
-    return null;
+    return { city: "", area: "" };
   }
 };
 
@@ -320,7 +317,127 @@ export const generateSignature = (params) => {
   // Add the secret key at the beginning and end of the string
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
-  const signature = crypto.createHash("sha256").update(shaString).digest("hex");
+  console.log("String before Hashing:", shaString);
 
+  const signature = crypto.createHash("sha256").update(shaString).digest("hex");
   return signature;
+};
+
+/* -------------------------------------------------------------------------- */
+/*                        generate signature apple pay                        */
+/* -------------------------------------------------------------------------- */
+
+export const generateApplePaySignature = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "$2y$10$Ea43N9LFe"; // Use actual SHA phrase
+
+  // Construct signature string
+  let signatureString = shaRequestPhrase;
+  Object.keys(params)
+    .sort()
+    .forEach((key) => {
+      signatureString += `${key}=${params[key]}`;
+    });
+  signatureString += shaRequestPhrase;
+  // Generate HMAC-SHA256 hash and convert to uppercase
+  const signature = crypto
+    .createHmac("sha256", shaRequestPhrase) // Use HMAC instead of SHA-256
+    .update(signatureString, "utf-8")
+    .digest("hex")
+    .toUpperCase();
+
+  return signature?.toLowerCase();
+};
+/* -------------------------------------------------------------------------- */
+/*                         second  generate signature                         */
+/* -------------------------------------------------------------------------- */
+
+export const generateSignatureApple = (params) => {
+  let shaString = "";
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+
+  // Sort keys alphabetically
+  const sortedKeys = Object.keys(params).sort();
+
+  sortedKeys.forEach((key) => {
+    if (Array.isArray(params[key])) {
+      let shaSubString = "{";
+      Object.entries(params[key]).forEach(([k, v]) => {
+        shaSubString += `${k}=${v}, `;
+      });
+      shaSubString = shaSubString.slice(0, -2) + "}"; // Remove trailing comma
+      shaString += `${key}=${shaSubString}`;
+    } else {
+      shaString += `${key}=${String(params[key])}`; // Ensure value is string
+    }
+  });
+
+  // Add request phrase at the beginning and end
+  shaString = `${shaRequestPhrase}${shaString}${shaRequestPhrase}`;
+
+  // Generate SHA-256 hash
+  return crypto.createHash("sha256").update(shaString, "utf-8").digest("hex");
+};
+
+/* -------------------------------------------------------------------------- */
+/*                           generate hmac signature                          */
+/* -------------------------------------------------------------------------- */
+// karim fn
+export const generateHmacSignature = async (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+
+  // Step 1: Sort parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  // Step 2: Concatenate parameters into a string
+  let concatenatedString = sortedKeys
+    .map((key) =>
+      typeof params[key] === "object"
+        ? `${key}=${JSON.stringify(params[key])}`
+        : `${key}=${params[key]}`
+    )
+    .join("");
+
+  // Step 3: Add SHA Request Phrase at the beginning and end
+  concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
+
+  // Step 4: Generate HMAC-SHA512 signature
+  const hmac = crypto
+    .createHmac("sha512", shaRequestPhrase) // Using HMAC-SHA512
+    .update(concatenatedString, "utf-8")
+    .digest("hex");
+
+  return hmac.toUpperCase(); // Convert to uppercase as required
+};
+
+// chatGptResponse
+// the last acurate function
+export const generateHmacSignatureChatGpt = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "your_request_phrase";
+
+  // 🔹 Step 1: Sort parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  // 🔹 Step 2: Concatenate parameters into a string
+  let concatenatedString = sortedKeys
+    .map((key) =>
+      typeof params[key] === "object"
+        ? `${key}=${JSON.stringify(params[key])}`
+        : `${key}=${params[key]}`
+    )
+    .join("");
+
+  // 🔹 Step 3: Add SHA Request Phrase at the beginning and end
+  concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
+  console.log("Concatenated String Before Hashing:", concatenatedString);
+  // 🔹 Step 4: Generate HMAC-SHA512 signature
+  const hmac = crypto
+    .createHmac("sha512", shaRequestPhrase)
+    .update(concatenatedString, "utf-8")
+    .digest("hex");
+
+  return hmac.toUpperCase(); // Convert to uppercase as required
 };

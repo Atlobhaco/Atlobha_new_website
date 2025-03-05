@@ -5,6 +5,8 @@ import startsWith from "lodash.startswith";
 
 import ar from "react-phone-input-2/lang/ar.json";
 import useLocalization from "@/config/hooks/useLocalization";
+import { Box } from "@mui/material";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function SharedPhoneInput({
   touched,
@@ -15,16 +17,48 @@ function SharedPhoneInput({
   name,
   handleInputChange,
   inputRef,
+  label = false,
+  showAstrick = false,
+  hintBelowInput = false,
+  disabled = false,
 }) {
   const { locale, t } = useLocalization();
+  const { isMobile } = useScreenSize();
+  const defaultCountry = "sa"; // Default country (Saudi Arabia)
+  const defaultDialCode = "966";
 
   return (
     <div style={{ marginBottom: "16px", position: "relative" }}>
+      {label && (
+        <Box
+          sx={{
+            fontWeight: "500",
+            fontSize: "12px",
+            color: "#374151",
+          }}
+        >
+          {label}
+          {showAstrick && (
+            <Box
+              component="span"
+              sx={{
+                color: "#EB3C24",
+              }}
+            >
+              *
+            </Box>
+          )}
+        </Box>
+      )}
       <PhoneInput
+        disableCountryCode={false}
+        disableDropdown={true}
+        disabled={disabled}
         ref={inputRef}
         style={{
           height: "44px",
         }}
+        buttonStyle={{ display: "none" }}
         searchNotFound={t.no_results_title}
         searchPlaceholder={t.common.search}
         dropdownStyle={{ bottom: "100%" }}
@@ -33,10 +67,16 @@ function SharedPhoneInput({
         }`}
         value={values?.phone}
         onChange={(phone, country) => {
-          setFieldValue(name, phone);
+          // If the user clears the input, restore the default country code
+          if (!phone || phone === "+") {
+            setFieldValue(name, `+${defaultDialCode}`);
+          } else {
+            setFieldValue(name, phone);
+          }
+
           setFieldValue("country", country.countryCode.toUpperCase());
         }}
-		onBlur={handleBlur}
+        onBlur={handleBlur}
         enableSearch={true}
         disableSearchIcon={true}
         inputProps={{
@@ -45,8 +85,8 @@ function SharedPhoneInput({
           onChange: handleInputChange,
           // Add any additional input props you need here
         }}
-        preferredCountries={["sa", "eg"]}
-        country="sa"
+        // preferredCountries={["sa", "eg"]}
+        country={defaultCountry}
         localization={locale === "ar" && ar}
         defaultErrorMessage={null}
         isValid={(inputNumber, country, countries) => {
@@ -58,7 +98,7 @@ function SharedPhoneInput({
           });
         }}
       />
-      {touched.phone && errors.phone && (
+      {touched.phone && errors.phone ? (
         <div
           className="error-msg-inputs"
           style={{
@@ -67,6 +107,17 @@ function SharedPhoneInput({
           }}
         >
           {errors.phone}
+        </div>
+      ) : (
+        <div
+          style={{
+            position: "absolute",
+            paddingTop: "3px",
+            color: "#6B7280",
+            fontSize: "12px",
+          }}
+        >
+          {hintBelowInput}{" "}
         </div>
       )}
     </div>

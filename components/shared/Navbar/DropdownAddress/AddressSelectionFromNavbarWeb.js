@@ -68,7 +68,6 @@ function AddressSelectionFromNavbarWeb({
         );
       } catch (error) {
         toast.error(error);
-        console.error(error);
       }
     } else {
       dispatch(

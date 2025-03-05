@@ -89,12 +89,11 @@ function OrderActions({
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>
-              {t.outForDelivery}
+              {t.status["ready-to-ship"]}
               <span className={`${style["sub-title"]}`}>
-                {/* {order?.status_updated_at
+                {order?.status_updated_at
                   ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
-                  : null} */}
-				  {order?.status}
+                  : null}
               </span>
             </div>
             {/* <div className={`${style["text"]}`}>
@@ -177,6 +176,27 @@ function OrderActions({
                   e?.preventDefault();
                   e?.stopPropagation();
                   setOrderDetailsRePrice(order);
+                  window.webengage.onReady(() => {
+                    webengage.track("ORDER_SPAREPARTS_REPRICE", {
+                      car_brand: order?.vehicle?.brand?.name || "",
+                      car_model: order?.vehicle?.model?.name || "",
+                      car_year: order?.vehicle?.year || "",
+                      order_items:
+                        order?.parts?.map((part) => ({
+                          Part_Name_or_Number: part?.name || part?.id || "",
+                          Quantity: part?.quantity || 0,
+                          Image: part?.image || "",
+                        })) || [],
+                      shipping_address: order?.address?.address || "",
+                      promo_code: order?.promo_code?.code || "",
+                      comment: order?.notes || "",
+                      order_number: order?.id || "",
+                      creation_date: order?.created_at || "",
+                      status: order?.status || "",
+                      order_url: router?.asPath || "",
+                      total_price: order?.receipt?.total_price || 0,
+                    });
+                  });
                 }}
               />
             </div>

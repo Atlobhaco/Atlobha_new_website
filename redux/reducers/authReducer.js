@@ -38,6 +38,7 @@ export const authSlice = createSlice({
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
       window.location.reload();
+      webengage.user.logout();
     },
     setUser: (state, action) => {
       state.user = action.payload;

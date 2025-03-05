@@ -80,6 +80,11 @@ function SpareParts() {
     if (selectedParts?.some((obj) => obj.insideOrder === true)) {
       dispatch(clearSpareParts());
     }
+    window.webengage.onReady(() => {
+      webengage.track("SPAREPARTS_VIEWED", {
+        event_status: true,
+      });
+    });
   }, []);
 
   const {
@@ -212,7 +217,7 @@ function SpareParts() {
         try {
           const response = await callUploadMedia(); // Await the endpoint call
         } catch (error) {
-          console.error("Error uploading media:", error);
+        //   console.error("Error uploading media:", error);
         }
       })();
     } else {

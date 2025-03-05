@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserProfile from "..";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import BreadCrumb from "@/components/BreadCrumb";
@@ -61,6 +61,14 @@ function MyOrders() {
       setPage((prevPage) => prevPage + 1);
     }
   };
+
+  useEffect(() => {
+    window.webengage.onReady(() => {
+      webengage.track("APP_SECTION_VIEWED", {
+        app_section: "My Orders",
+      });
+    });
+  }, []);
 
   return (
     <div className="container-fluid">

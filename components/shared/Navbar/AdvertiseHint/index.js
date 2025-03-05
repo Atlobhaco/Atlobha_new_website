@@ -98,12 +98,12 @@ function AdvertiseHint() {
           @keyframes slide {
             0% {
               transform: translateX(${
-                locale === "ar" ? "100%" : "-100%"
+                locale === "en" ? "100%" : "-100%"
               }); /* Start outside the container */
             }
             100% {
               transform: translateX(${
-                locale === "ar" ? "-100%" : "100%"
+                locale === "en" ? "-100%" : "100%"
               }); /* End outside the container */
             }
           }

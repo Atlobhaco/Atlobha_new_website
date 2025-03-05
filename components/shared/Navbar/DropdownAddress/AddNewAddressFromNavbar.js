@@ -57,7 +57,7 @@ const AddNewAddressFromNavbar = forwardRef(
         const currentLocation = await getUserCurrentLocation();
         setLocation(currentLocation);
       } catch (err) {
-        console.log(err);
+        // console.log(err);
       }
     };
 

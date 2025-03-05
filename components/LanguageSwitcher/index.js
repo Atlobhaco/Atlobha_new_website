@@ -8,6 +8,9 @@ const LanguageSwitcher = () => {
   const { isMobile } = useScreenSize();
 
   const switchLocale = (locale) => {
+    webengage.track("LANGUAGE_SELECTED", {
+      language: locale === "ar" ? "Arabic" : "English",
+    });
     router.push(router.pathname, router.asPath, { locale }).then(() => {
       router.reload();
     });

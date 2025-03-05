@@ -37,7 +37,7 @@ import LogoutIcon from "../../public/icons/logout-icon.svg";
 import { logout } from "@/redux/reducers/authReducer";
 import CommunicationSection from "@/components/userProfile/communicationSection";
 
-function UserProfile() {
+function UserProfile({ recallUserData = false }) {
   const router = useRouter();
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -135,12 +135,12 @@ function UserProfile() {
   ]);
 
   const { data } = useCustomQuery({
-    name: "getProfileInfo",
+    name: ["getProfileInfo", recallUserData],
     url: `${USERS}/${user?.data?.user?.id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
     // staleTime: 5 * 60 * 1000,
-    enabled: user?.data?.user?.id ? true : false,
+    enabled: user?.data?.user?.id || recallUserData ? true : false,
     onSuccess: (res) => {
       dispatch(
         setUserData({
@@ -214,6 +214,10 @@ function UserProfile() {
           path: "myCars",
         },
       ]);
+      window.webengage.onReady(() => {
+        webengage.user.setAttribute("total_cars", res?.vehicles_count || 0);
+        webengage.user.setAttribute("total_orders", res?.order_count || 0);
+      });
     },
     onError: () => {},
   });
@@ -259,8 +263,8 @@ function UserProfile() {
           )}
         </div>
         <div className="row mt-3">
-          {profileSections?.map((data) => (
-            <Box className="col-md-12" key={data?.path}>
+          {profileSections?.map((data, index) => (
+            <Box className="col-md-12" key={`${data?.text}${index}`}>
               <ProfileSetting data={data} />
             </Box>
           ))}

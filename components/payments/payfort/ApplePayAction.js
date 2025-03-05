@@ -28,7 +28,7 @@ const ApplePayAction = () => {
     }
 
     const paymentResponse = await paymentRequest.show();
-    console.log("Payment Response:", paymentResponse);
+    // console.log("Payment Response:", paymentResponse);
   };
 
   return (

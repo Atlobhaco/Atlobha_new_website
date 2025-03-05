@@ -60,6 +60,25 @@ export function useLoginUser({
       setOtpView(false);
       setOpen(false);
       dispatch(loginSuccess({ data: res }));
+      window.webengage.onReady(() => {
+        webengage.user.login(res?.user?.id);
+        webengage.user.setAttribute("User ID", res?.user?.id);
+        webengage.user.setAttribute("we_email", res?.user?.email || "");
+        webengage.user.setAttribute(
+          "we_birth_date",
+          res?.user?.birthdate || ""
+        );
+        webengage.user.setAttribute("we_first_name", res?.user?.name || "");
+        webengage.user.setAttribute("we_phone", res?.user?.phone || "");
+        // custom event for login here
+        webengage.track("LOGIN", {
+          email: res?.user?.email || "",
+          mobile_number: res?.user?.phone || "",
+          user_name: res?.user?.name || "",
+          number_of_orders: res?.user?.order_count,
+          user_id: res?.user?.id,
+        });
+      });
     },
     onError: (err) => {
       toast.error(
