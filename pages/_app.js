@@ -14,7 +14,6 @@ import AxiosProvider from "@/config/network/AxiosConfig";
 import store from "@/redux/store";
 import Layout from "@/layouts/MainLayout";
 import "moment/locale/ar";
-import useBranch from "./useBranch";
 
 const theme = createTheme();
 const queryClient = new QueryClient();

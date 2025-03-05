@@ -432,7 +432,6 @@ export const generateHmacSignatureChatGpt = (params) => {
 
   // 🔹 Step 3: Add SHA Request Phrase at the beginning and end
   concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
-  console.log("Concatenated String Before Hashing:", concatenatedString);
   // 🔹 Step 4: Generate HMAC-SHA512 signature
   const hmac = crypto
     .createHmac("sha512", shaRequestPhrase)

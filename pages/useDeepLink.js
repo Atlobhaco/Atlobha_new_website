@@ -1,10 +1,12 @@
 import { isAuth } from "@/config/hooks/isAuth";
+import { orderEnumArray } from "@/constants/helpers";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 const defaultProps = {
   $link_title: "",
+  $deeplink_path: "",
   routeToRedirect: null,
   sectionGroup: false,
   nameInsideGroup: "",
@@ -21,6 +23,11 @@ const arrayForRedirect = [
     ...defaultProps,
     $link_title: "OrderList",
     routeToRedirect: "/userProfile/myOrders/",
+    mustAuthenticated: true,
+  },
+  {
+    ...defaultProps,
+    $deeplink_path: "SparePartsOrder",
     mustAuthenticated: true,
   },
   {
@@ -43,7 +50,7 @@ const arrayForRedirect = [
   },
 ];
 
-const useBranch = () => {
+const useDeepLink = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
@@ -99,11 +106,31 @@ const useBranch = () => {
   useEffect(() => {
     if (branchData) {
       console.log("branchData", branchData);
+
+      const redirectItemOrderDetails = arrayForRedirect.find(
+        (item) =>
+          item.$deeplink_path === branchData?.data_parsed?.$deeplink_path
+      );
+
       const redirectItem = arrayForRedirect.find(
         (item) => item.$link_title === branchData?.data_parsed?.$link_title
       );
 
       console.log("redirectItem", redirectItem);
+      console.log("redirectItemOrderDetails", redirectItemOrderDetails);
+
+      //   custom conidtion for order details page
+      if (redirectItemOrderDetails) {
+        if (redirectItem.mustAuthenticated && isAuth()) {
+          const typeOfOrder = orderEnumArray()?.find(
+            (item) => item?.id === branchData?.data_parsed?.$deeplink_path
+          );
+          router.push(
+            `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${typeOfOrder}`
+          );
+        }
+        return;
+      }
 
       if (redirectItem) {
         if (
@@ -126,4 +153,4 @@ const useBranch = () => {
   return branchData;
 };
 
-export default useBranch;
+export default useDeepLink;
