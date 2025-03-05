@@ -15,7 +15,8 @@ import Categories from "@/components/Categories";
 import ProductCard from "@/components/shared/ProductCard";
 import ComingSoon from "@/components/comingSoon";
 import { useEffect } from "react";
-import useDeepLink from "./useDeepLink";
+import useDeepLink from "@/config/hooks/useDeepLink";
+import useBranch from "./useBranch";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,7 @@ const geistMono = localFont({
 });
 
 export default function Home() {
-  useDeepLink();
+  const deepLinkData = useBranch();
   const style = {
     marginTop: "32px",
   };
@@ -41,6 +42,7 @@ export default function Home() {
       });
     });
   }, []);
+//   console.log("deepLinkData from index page", deepLinkData);
 
   return (
     <Box

@@ -1,5 +1,4 @@
 import { isAuth } from "@/config/hooks/isAuth";
-import { orderEnumArray } from "@/constants/helpers";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -50,7 +49,7 @@ const arrayForRedirect = [
   },
 ];
 
-const useDeepLink = () => {
+const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
@@ -116,17 +115,11 @@ const useDeepLink = () => {
         (item) => item.$link_title === branchData?.data_parsed?.$link_title
       );
 
-      console.log("redirectItem", redirectItem);
-      console.log("redirectItemOrderDetails", redirectItemOrderDetails);
-
       //   custom conidtion for order details page
       if (redirectItemOrderDetails) {
         if (redirectItemOrderDetails?.mustAuthenticated && isAuth()) {
-          const typeOfOrder = orderEnumArray()?.find(
-            (item) => item?.id === branchData?.data_parsed?.$deeplink_path
-          );
           router.push(
-            `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${typeOfOrder}`
+            `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${branchData?.data_parsed?.$deeplink_path}`
           );
         }
         return;
@@ -153,4 +146,4 @@ const useDeepLink = () => {
   return branchData;
 };
 
-export default useDeepLink;
+export default useBranch;
