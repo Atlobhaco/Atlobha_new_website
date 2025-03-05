@@ -77,7 +77,7 @@ export default function App({ Component, pageProps }) {
                 setTimeout(function(){
                   var f=e.createElement("script"),d=e.getElementById("_webengage_script_tag");
                   f.type="text/javascript",f.async=!0,
-                  f.src="https://widgets.ksa.webengage.com/js/webengage-min-v-6.0.js"				  ,
+                  f.src="https://widgets.in.webengage.com/js/webengage-min-v-6.0.js"				  ,
                   d.parentNode.insertBefore(f,d)
                 })
               }
