@@ -317,7 +317,7 @@ export const generateSignature = (params) => {
   // Add the secret key at the beginning and end of the string
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
-  console.log("String before Hashing:", shaString);
+//   console.log("String before Hashing:", shaString);
 
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
   return signature;
@@ -441,3 +441,122 @@ export const generateHmacSignatureChatGpt = (params) => {
 
   return hmac.toUpperCase(); // Convert to uppercase as required
 };
+
+export const testSignature = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "$2y$10$Ea43N9LFe";
+
+  // 🔹 Step 1: Sort parameters by key
+  const sortedKeys = Object.keys(params).sort();
+
+  // 🔹 Step 2: Concatenate parameters into a string
+  let concatenatedString = sortedKeys
+    .map((key) =>
+      typeof params[key] === "object"
+        ? // ? `${key}=${JSON.stringify(params[key])}`
+          `${params[key]}={${Object.entries(params[key])
+            .map(([key, value]) => `${key}=${value}`)
+            .join(", ")}}`
+        : `${key}=${params[key]}`
+    )
+    .join("");
+
+  // 🔹 Step 3: Add SHA Request Phrase at the beginning and end
+  concatenatedString = `${shaRequestPhrase}${concatenatedString}${shaRequestPhrase}`;
+  console.log("Concatenated String Before Hashing:", concatenatedString);
+  // 🔹 Step 4: Generate HMAC-SHA512 signature
+
+  // Log the string before hashing
+  //   console.log("String before Hashing:", shaString);
+
+  // Generate SHA-256 hash
+  const signature = crypto
+    .createHash("sha256")
+    .update(concatenatedString)
+    .digest("hex");
+
+  return signature;
+};
+
+export const flattenAndConcatenate = (obj) => {
+  let result = [];
+
+  const processObject = (obj) => {
+    Object.entries(obj).forEach(([key, value]) => {
+      if (typeof value === "object" && value !== null) {
+        processObject(value); // Recursive call for nested objects
+      } else {
+        result.push(`${key}=${value}`);
+      }
+    });
+  };
+
+  processObject(obj);
+  return result.join();
+};
+
+export const generateSignatureApplePayFinal = (params) => {
+  const shaRequestPhrase =
+    process.env.NEXT_PUBLIC_APPLE_REQ_PHRASE || "$2y$10$Ea43N9LFe";
+
+  const formatObject = (obj) => {
+    return `{${Object.entries(obj)
+      .map(([key, value]) => `${key}=${value}`)
+      .join(", ")}}`;
+  };
+
+  let formattedString = "";
+
+  // Sort keys to maintain consistent ordering
+  const sortedKeys = Object.keys(params).sort();
+
+  sortedKeys.forEach((key) => {
+    const value = params[key];
+
+    if (typeof value === "object" && value !== null) {
+      formattedString += `${key}=${formatObject(value)}`;
+    } else {
+      formattedString += `${key}=${value}`;
+    }
+  });
+
+  //   return formattedString;
+  let concatenatedString = `${shaRequestPhrase}${formattedString}${shaRequestPhrase}`;
+  //   return concatenatedString;
+  const signature = crypto
+    .createHash("sha256")
+    .update(concatenatedString)
+    .digest("hex");
+
+  return signature;
+};
+
+// Example object
+//   const data = {
+// 	digital_wallet: "APPLE_PAY",
+// 	command: "PURCHASE",
+// 	access_code: "fwmGcdC3DvtpUvUfIYdy",
+// 	merchant_identifier: "merchant.com.atlobha.atlobhadebug",
+// 	merchant_reference: "424445_223405",
+// 	amount: 18.55,
+// 	currency: "SAR",
+// 	language: "ar",
+// 	customer_email: "user@example.com",
+// 	customer_ip: "192.168.1.1",
+// 	apple_data:
+// 	  "UHC5VXti6m29GEzB7HJpG4reZUa5h3M2qj4kXnr8eWQsm9kmsmzpbyLAbgQLFQm2usxNfXkGX33/XIJfMT66lfIF6AKC/16fLr5LwYtF3LI+fJLfmyIbLONpVTisr6DwMaBeNrVt26TtgczR+XyuPKwnjx0v3G/yNw+tp/CnnTbs+xGj3sNYYh6lhwiXfJu5ir+Uagx+pqZvyVfX5ClpaalX8y9uh2FA9/NBqw7EMb9VdU0Rn9WS0uQWzpJXxAGMpDl3OzUjQ/wKoG3RgXE+BCh6ie37LppnGawr6NVY09jiRnUXhNVMTyITnGuEw0kqVoXmqsb/LSSZqx9u5P1SpPah6Iu1cM3SZgCqbn6Ye/cTS1Sw1lwrt0DkiQ73NTkwdfzYl84ya5j734+jYJEl3CL2d1hWgIkvwaJNo08NkBk=",
+// 	apple_signature:
+// 	  "MIAGCSqGSIb3DQEHAqCAMIACAQExDTALBglghkgBZQMEAgEwgAYJKoZIhvcNAQcBAACggDCCA+QwggOLoAMCAQICCFnYobyq9OPNMAoGCCqGSM49BAMCMHoxLjAsBgNVBAMMJUFwcGxlIEFwcGxpY2F0aW9uIEludGVncmF0aW9uIENBIC0gRzMxJjAkBgNVBAsMHUFwcGxlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzAeFw0yMTA0MjAxOTM3MDBaFw0yNjA0MTkxOTM2NTlaMGIxKDAmBgNVBAMMH2VjYy1zbXAtYnJva2VyLXNpZ25fVUM0LVNBTkRCT1gxFDASBgNVBAsMC2lPUyBTeXN0ZW1zMRMwEQYDVQQKDApBcHBsZSBJbmMuMQswCQYDVQQGEwJVUzBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABIIw/avDnPdeICxQ2ZtFEuY34qkB3Wyz4LHNS1JnmPjPTr3oGiWowh5MM93OjiqWwvavoZMDRcToekQmzpUbEpWjggIRMIICDTAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFCPyScRPk+TvJ+bE9ihsP6K7/S5LMEUGCCsGAQUFBwEBBDkwNzA1BggrBgEFBQcwAYYpaHR0cDovL29jc3AuYXBwbGUuY29tL29jc3AwNC1hcHBsZWFpY2EzMDIwggEdBgNVHSAEggEUMIIBEDCCAQwGCSqGSIb3Y2QFATCB/jCBwwYIKwYBBQUHAgIwgbYMgbNSZWxpYW5jZSBvbiB0aGlzIGNlcnRpZmljYXRlIGJ5IGFueSBwYXJ0eSBhc3N1bWVzIGFjY2VwdGFuY2Ugb2YgdGhlIHRoZW4gYXBwbGljYWJsZSBzdGFuZGFyZCB0ZXJtcyBhbmQgY29uZGl0aW9ucyBvZiB1c2UsIGNlcnRpZmljYXRlIHBvbGljeSBhbmQgY2VydGlmaWNhdGlvbiBwcmFjdGljYXRlIHN0YXRlbWVudHMu",
+// 	apple_header: {
+// 	  apple_transactionId:
+// 		"0c1bbd3b08375d891b7aa1cc3318a7d3f77a899e10b26540915a79f931692af3",
+// 	  apple_ephemeralPublicKey:
+// 		"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfcEV3HNhUnWVlI7yyuwJQweGgDDE2hVxmF9NAQJqwHnRMV79kx2A3qkppFgQDP27Llkra6Uepux/eVIBOBYRXQ==",
+// 	  apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk="
+// 	},
+// 	apple_paymentMethod: {
+// 	  apple_displayName: "Visa 0121",
+// 	  apple_network: "Visa",
+// 	  apple_type: "credit"
+// 	}
+//   };
