@@ -259,7 +259,7 @@ function SummaryOrder({
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: calculateReceiptResFromMainPage?.amount_to_pay, // Adjust dynamically if needed
+        amount: 100, // Adjust dynamically if needed
       },
     };
 
