@@ -607,7 +607,7 @@ function SummaryOrder({
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         alert("Payment successful!");
       } catch (error) {
-        Console.log("ramy check this error below");
+        console.log("ramy check this error below");
         console.error("Payment error:", error);
         console.log("Payment error  log:", error);
         alert(`Payment failed: ${error.message}`);
