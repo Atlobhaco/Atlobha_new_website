@@ -600,13 +600,16 @@ function SummaryOrder({
         console.log("Payment API Response:", result);
 
         if (!response.ok || result.error) {
+          console.log(error in res, result.error);
           throw new Error(result.error || "Payment failed");
         }
 
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         alert("Payment successful!");
       } catch (error) {
+        Console.log("ramy check this error below");
         console.error("Payment error:", error);
+        console.log("Payment error  log:", error);
         alert(`Payment failed: ${error.message}`);
         session.completePayment(ApplePaySession.STATUS_FAILURE);
       }
