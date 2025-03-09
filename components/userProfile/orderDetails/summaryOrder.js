@@ -623,20 +623,21 @@ function SummaryOrder({
   //       command: "PURCHASE",
   //       access_code: "fwmGcdC3DvtpUvUfIYdy",
   //       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-  //       merchant_reference: "424445_223396",
-  //       amount: 28112.05,
+  //       merchant_reference: "424445_223405",
+  //       amount: 100,
   //       currency: "SAR",
-  //       language: "ar",
+  //       language: "en",
   //       customer_email: "user@example.com",
+  //       customer_ip: "192.168.1.1",
   //       apple_data:
-  //         "f47K+PdFzOofLT85nUApvTq8RSnbDbenal2YaGhA5kQhbt9ttASZbtPd9lED7DgmPnARQozTCxdc21Z4ktr+RQotfejmaK7c9G++pP7OWq+0g9EVSXkuBEErQ+fMNTo7usg8m1F1SHDH9NgReHWbw5Z6Wt/mKpm6lz5KVIwFdO20VeedUTjq1SzptGP8ntTTJJxGxKvQ4SqsfV6q3xOLC/jigow0LQP4IM9S5uK5hPh5MV+OEeEvi7otp2O+C6/9w+Hn66/xqle8DSJpCG9eHC/s0JDbRyd2t+eCApr9t1wagkDf7IN9ISbnshNX+X5mMBWl7qKC641sjKPRYeS6DcdII0tfNFjKPKtJ1KI8VZ55hOkWNgPPqQJ3LcdlgSzyVQ5ZlTvkNTo4mumztv/WMB4Ut0azfuMUSJHftst8eGtxPNY=",
+  //         "tgwrJNbLp6uyJ+QOJ3CcPbXWU+ZeBt3MzZrDAnMzZbQfwRbZ9F6lPe8BFoETFtQBNn9D+fKwtfGswwuSyCwgUPLi2zNeDEo5aiSSPx2kQqR+94zlSD22SYpFIipN8k6kMt3DmD5SJShRxRQ2PrPCRh7akBA7bbwsGuMeKJvD7Uwh1iA9VW1b3adXLe2Zl1sEoV62wZ3YppaNGi7o0N9+bpWItNv0OTfRGckeMpHgPOP69HgSFdjs3ekK7afnLNzP9cIVzhKzPT+jX3UXh2Ar8GeGVNVJgRv/aP+r+HJ7E0NWcGrQDtnvyacEKW0KMIK25B7CdiYzyYcoYi36P6AQ88U+5oVl/w/sIOfGtdNh32IWCTMdx07sHZNXZfaW7ZsiDjD8gnnLH9D9eJFyAtVVlfap3eAoRulxatmsNhvpEo/r",
   //       apple_signature:
-  //         "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",
+  //         "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",
   //       apple_header: {
   //         apple_transactionId:
-  //           "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
+  //           "ddbde05972871a329f41f1e9cc3c86fa9b45765d74c14e4abfea81f2603c6b56",
   //         apple_ephemeralPublicKey:
-  //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
+  //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyydVR4Ma+smjliDo9V2LTzioJFsj9vPS4Fo8EBQdYcQHLQcTITDaAn7sR0od26CwAjkBsJ6TyDrxEZAcBmsv8g==",
   //         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
   //       },
   //       apple_paymentMethod: {
@@ -644,36 +645,8 @@ function SummaryOrder({
   //         apple_network: "Visa",
   //         apple_type: "credit",
   //       },
-  //       customer_ip: "192.178.1.10",
-
-  //       signature: generateHmacSignature({
-  //         digital_wallet: "APPLE_PAY",
-  //         command: "PURCHASE",
-  //         access_code: "fwmGcdC3DvtpUvUfIYdy",
-  //         merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-  //         merchant_reference: "424445_223396",
-  //         amount: 28112.05,
-  //         currency: "SAR",
-  //         language: "ar",
-  //         customer_email: "user@example.com",
-  //         apple_data:
-  //           "f47K+PdFzOofLT85nUApvTq8RSnbDbenal2YaGhA5kQhbt9ttASZbtPd9lED7DgmPnARQozTCxdc21Z4ktr+RQotfejmaK7c9G++pP7OWq+0g9EVSXkuBEErQ+fMNTo7usg8m1F1SHDH9NgReHWbw5Z6Wt/mKpm6lz5KVIwFdO20VeedUTjq1SzptGP8ntTTJJxGxKvQ4SqsfV6q3xOLC/jigow0LQP4IM9S5uK5hPh5MV+OEeEvi7otp2O+C6/9w+Hn66/xqle8DSJpCG9eHC/s0JDbRyd2t+eCApr9t1wagkDf7IN9ISbnshNX+X5mMBWl7qKC641sjKPRYeS6DcdII0tfNFjKPKtJ1KI8VZ55hOkWNgPPqQJ3LcdlgSzyVQ5ZlTvkNTo4mumztv/WMB4Ut0azfuMUSJHftst8eGtxPNY=",
-  //         apple_signature:
-  //           "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",
-  //         apple_header: {
-  //           apple_transactionId:
-  //             "d7de7f16d9080634241acb82817a49d6472b75087debea18dfc0ecb6f2d25ae4",
-  //           apple_ephemeralPublicKey:
-  //             "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE53a7xY2CGmUJxrhRRdLG1acqYcx0GU0Czdd5jXUuzaViMkHG3nBNeQZuj4LnsKyFbectJDR5NFmvVexippnLFA==",
-  //           apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-  //         },
-  //         apple_paymentMethod: {
-  //           apple_displayName: "Visa 0121",
-  //           apple_network: "Visa",
-  //           apple_type: "credit",
-  //         },
-  //         customer_ip: "192.178.1.10",
-  //       }),
+  //       signature:
+  //         "4098721b1425c4b0c199c37d25c33979cac1df09b20418fc2877642ca8e5935e",
   //     }),
   //   });
 
@@ -740,53 +713,66 @@ function SummaryOrder({
   //       "5C40BD16F3E4BA5C6699E339136B9EFE154C2943F2288348AE28EB893466ACB313EA1B16EE5512B17D166FE29F7497C29EF696694719718989421D2D4BE3A1D5",
   //   });
 
-//   console.log(
-//     formatParams({
-//       digital_wallet: "APPLE_PAY",
-//       command: "PURCHASE",
-//       access_code: "fwmGcdC3DvtpUvUfIYdy",
-//       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
-//       merchant_reference: "424445_223405",
-//       amount: 18.55,
-//       currency: "SAR",
-//       language: "ar",
-//       customer_email: "user@example.com",
-//       customer_ip: "192.168.1.1",
-//       apple_data:
-//         "UHC5VXti6m29GEzB7HJpG4reZUa5h3M2qj4kXnr8eWQsm9kmsmzpbyLAbgQLFQm2usxNfXkGX33/XIJfMT66lfIF6AKC/16fLr5LwYtF3LI+fJLfmyIbLONpVTisr6DwMaBeNrVt26TtgczR+XyuPKwnjx0v3G/yNw+tp/CnnTbs+xGj3sNYYh6lhwiXfJu5ir+Uagx+pqZvyVfX5ClpaalX8y9uh2FA9/NBqw7EMb9VdU0Rn9WS0uQWzpJXxAGMpDl3OzUjQ/wKoG3RgXE+BCh6ie37LppnGawr6NVY09jiRnUXhNVMTyITnGuEw0kqVoXmqsb/LSSZqx9u5P1SpPah6Iu1cM3SZgCqbn6Ye/cTS1Sw1lwrt0DkiQ73NTkwdfzYl84ya5j734+jYJEl3CL2d1hWgIkvwaJNo08NkBk=",
-//       apple_signature:
-//         "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",
-//       apple_header: {
-//         apple_transactionId:
-//           "0c1bbd3b08375d891b7aa1cc3318a7d3f77a899e10b26540915a79f931692af3",
-//         apple_ephemeralPublicKey:
-//           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfcEV3HNhUnWVlI7yyuwJQweGgDDE2hVxmF9NAQJqwHnRMV79kx2A3qkppFgQDP27Llkra6Uepux/eVIBOBYRXQ==",
-//         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-//       },
-//       apple_paymentMethod: {
-//         apple_displayName: "Visa 0121",
-//         apple_network: "Visa",
-//         apple_type: "credit",
-//       },
-//     })
-//   );
-//   console.log(
-//     flattenAndConcatenate({
-//       apple_header: {
-//         apple_transactionId:
-//           "0c1bbd3b08375d891b7aa1cc3318a7d3f77a899e10b26540915a79f931692af3",
-//         apple_ephemeralPublicKey:
-//           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfcEV3HNhUnWVlI7yyuwJQweGgDDE2hVxmF9NAQJqwHnRMV79kx2A3qkppFgQDP27Llkra6Uepux/eVIBOBYRXQ==",
-//         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
-//       },
-//       apple_paymentMethod: {
-//         apple_displayName: "Visa 0121",
-//         apple_network: "Visa",
-//         apple_type: "credit",
-//       },
-//       accessCode: 1234,
-//     })
-//   );
+  //   console.log(
+  //     formatParams({
+  //       digital_wallet: "APPLE_PAY",
+  //       command: "PURCHASE",
+  //       access_code: "fwmGcdC3DvtpUvUfIYdy",
+  //       merchant_identifier: "merchant.com.atlobha.atlobhadebug",
+  //       merchant_reference: "424445_223405",
+  //       amount: 18.55,
+  //       currency: "SAR",
+  //       language: "ar",
+  //       customer_email: "user@example.com",
+  //       customer_ip: "192.168.1.1",
+  //       apple_data:
+  //         "UHC5VXti6m29GEzB7HJpG4reZUa5h3M2qj4kXnr8eWQsm9kmsmzpbyLAbgQLFQm2usxNfXkGX33/XIJfMT66lfIF6AKC/16fLr5LwYtF3LI+fJLfmyIbLONpVTisr6DwMaBeNrVt26TtgczR+XyuPKwnjx0v3G/yNw+tp/CnnTbs+xGj3sNYYh6lhwiXfJu5ir+Uagx+pqZvyVfX5ClpaalX8y9uh2FA9/NBqw7EMb9VdU0Rn9WS0uQWzpJXxAGMpDl3OzUjQ/wKoG3RgXE+BCh6ie37LppnGawr6NVY09jiRnUXhNVMTyITnGuEw0kqVoXmqsb/LSSZqx9u5P1SpPah6Iu1cM3SZgCqbn6Ye/cTS1Sw1lwrt0DkiQ73NTkwdfzYl84ya5j734+jYJEl3CL2d1hWgIkvwaJNo08NkBk=",
+  //       apple_signature:
+  //         "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",
+  //       apple_header: {
+  //         apple_transactionId:
+  //           "0c1bbd3b08375d891b7aa1cc3318a7d3f77a899e10b26540915a79f931692af3",
+  //         apple_ephemeralPublicKey:
+  //           "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEfcEV3HNhUnWVlI7yyuwJQweGgDDE2hVxmF9NAQJqwHnRMV79kx2A3qkppFgQDP27Llkra6Uepux/eVIBOBYRXQ==",
+  //         apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+  //       },
+  //       apple_paymentMethod: {
+  //         apple_displayName: "Visa 0121",
+  //         apple_network: "Visa",
+  //         apple_type: "credit",
+  //       },
+  //     })
+  //   );
+  console.log(
+    generateSignatureApplePayFinal({
+      digital_wallet: "APPLE_PAY",
+      command: "PURCHASE",
+      access_code: "fwmGcdC3DvtpUvUfIYdy",
+      merchant_identifier: "merchant.com.atlobha.atlobhadebug",
+      merchant_reference: "424445_223405",
+      amount: 100,
+      currency: "SAR",
+      language: "en",
+      customer_email: "user@example.com",
+      customer_ip: "192.168.1.1",
+      apple_data:
+        "tgwrJNbLp6uyJ+QOJ3CcPbXWU+ZeBt3MzZrDAnMzZbQfwRbZ9F6lPe8BFoETFtQBNn9D+fKwtfGswwuSyCwgUPLi2zNeDEo5aiSSPx2kQqR+94zlSD22SYpFIipN8k6kMt3DmD5SJShRxRQ2PrPCRh7akBA7bbwsGuMeKJvD7Uwh1iA9VW1b3adXLe2Zl1sEoV62wZ3YppaNGi7o0N9+bpWItNv0OTfRGckeMpHgPOP69HgSFdjs3ekK7afnLNzP9cIVzhKzPT+jX3UXh2Ar8GeGVNVJgRv/aP+r+HJ7E0NWcGrQDtnvyacEKW0KMIK25B7CdiYzyYcoYi36P6AQ88U+5oVl/w/sIOfGtdNh32IWCTMdx07sHZNXZfaW7ZsiDjD8gnnLH9D9eJFyAtVVlfap3eAoRulxatmsNhvpEo/r",
+      apple_signature:
+        "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",
+      apple_header: {
+        apple_transactionId:
+          "ddbde05972871a329f41f1e9cc3c86fa9b45765d74c14e4abfea81f2603c6b56",
+        apple_ephemeralPublicKey:
+          "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEyydVR4Ma+smjliDo9V2LTzioJFsj9vPS4Fo8EBQdYcQHLQcTITDaAn7sR0od26CwAjkBsJ6TyDrxEZAcBmsv8g==",
+        apple_publicKeyHash: "0KkuwmIfSSjWYYDycDU6P9C7z2VUt75hOqXTaDkPGNk=",
+      },
+      apple_paymentMethod: {
+        apple_displayName: "Visa 0121",
+        apple_network: "Visa",
+        apple_type: "credit",
+      },
+    })
+  );
   // console.log(
   //   JSON.stringify({
   //     digital_wallet: "APPLE_PAY",
@@ -896,8 +882,8 @@ function SummaryOrder({
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.remainingtotal}</Box>
-        <Box sx={text}>
+        <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
+        <Box sx={{ ...text, ...boldText }}>
           {((calculateReceiptResFromMainPage?.amount_to_pay ??
             receipt?.amount_to_pay) === receipt?.amount_to_pay
             ? receipt?.amount_to_pay
@@ -909,7 +895,7 @@ function SummaryOrder({
       {/* logic for incomplete */}
       {orderDetails?.status === STATUS?.incomplete && (
         <>
-          <Box className="d-flex justify-content-between mb-2">
+          {/* <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
               {(calculateReceiptResFromMainPage?.total_price ??
@@ -918,7 +904,7 @@ function SummaryOrder({
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
             </Box>
-          </Box>
+          </Box> */}
           <SharedBtn
             className="big-main-btn"
             customClass="w-100"
@@ -962,7 +948,7 @@ function SummaryOrder({
       {/* logic for delivered */}
       {orderDetails?.status === STATUS?.delivered && (
         <>
-          <Box className="d-flex justify-content-between mb-2">
+          {/* <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
               {(calculateReceiptResFromMainPage?.total_price ??
@@ -971,7 +957,7 @@ function SummaryOrder({
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
             </Box>
-          </Box>
+          </Box> */}
           <SharedBtn
             className="black-btn"
             customClass="w-100"
@@ -982,7 +968,7 @@ function SummaryOrder({
       {/* logic for priced order */}
       {orderDetails?.status === STATUS?.priced && (
         <>
-          <Box className="d-flex justify-content-between mb-2">
+          {/* <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
             <Box sx={boldText}>
               {(calculateReceiptResFromMainPage?.total_price ??
@@ -991,7 +977,7 @@ function SummaryOrder({
                 : calculateReceiptResFromMainPage?.total_price}{" "}
               {t.sar}
             </Box>
-          </Box>
+          </Box> */}
           <SharedBtn
             disabled={
               !selectedPaymentMethod?.id ||

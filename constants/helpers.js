@@ -519,10 +519,12 @@ export const generateSignatureApplePayFinal = (params) => {
       formattedString += `${key}=${value}`;
     }
   });
-
+console.log('formattedString',formattedString);
   //   return formattedString;
   let concatenatedString = `${shaRequestPhrase}${formattedString}${shaRequestPhrase}`;
   //   return concatenatedString;
+  console.log('concatenatedString',concatenatedString);
+
   const signature = crypto
     .createHash("sha256")
     .update(concatenatedString)
