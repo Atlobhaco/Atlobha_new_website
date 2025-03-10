@@ -566,7 +566,7 @@ function SummaryOrder({
           digital_wallet: "APPLE_PAY",
           command: "PURCHASE",
           access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
-          merchant_identifier: process.env.NEXT_PUBLIC_APPLE_IDENTIFIER,
+          merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
           merchant_reference: merchanteRefrence,
           amount: 100,
           currency: "SAR",
