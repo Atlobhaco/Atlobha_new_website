@@ -56,8 +56,7 @@ function Layout({ children }) {
       >
         {children}
       </Box>
-
-      <Footer />
+      {!isMobile && <Footer />}
 
       <DialogCentered
         open={openCategories}

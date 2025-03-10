@@ -16,6 +16,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERS, PARTS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { riyalImgBlack } from "@/constants/helpers";
 
 function OrderProducts({
   orderDetails = {},
@@ -218,7 +219,7 @@ function OrderProducts({
                       fontSize: isMobile ? "14px" : "16px",
                     }}
                   >
-                    {part?.total_price} {t.sar}
+                    {part?.total_price} {riyalImgBlack()}
                   </div>
                 ) : null}
               </div>

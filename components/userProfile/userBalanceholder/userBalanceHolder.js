@@ -6,6 +6,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useRouter } from "next/router";
 import { Box } from "@mui/material";
+import { riyalImgBlack } from "@/constants/helpers";
 
 function UserBalanceHolder({ data, removeStyle = false }) {
   const router = useRouter();
@@ -61,7 +62,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
           />
           <Box sx={{ mt: 1 }}>{t.balanceProfile}</Box>
           <span>
-            {data?.wallet_balance || 0} {t.sar}
+            {data?.wallet_balance || 0} {riyalImgBlack()}
           </span>
         </div>
         <Image
