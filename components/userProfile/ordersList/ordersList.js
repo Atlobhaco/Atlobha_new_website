@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { ORDERS, RE_OPEN, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { toast } from "react-toastify";
+import { riyalImgBlack } from "@/constants/helpers";
 
 function OrdersList({ order, callOrders }) {
   const { t } = useLocalization();
@@ -106,7 +107,7 @@ function OrdersList({ order, callOrders }) {
                       color: order?.receipt?.total_price ? "#EE772F" : "red",
                     }}
                   >
-                    {order?.receipt?.total_price} {t.sar}
+                    {order?.receipt?.total_price} {riyalImgBlack()}
                   </Box>
                 )}
               </Box>

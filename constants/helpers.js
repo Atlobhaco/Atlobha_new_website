@@ -317,7 +317,7 @@ export const generateSignature = (params) => {
   // Add the secret key at the beginning and end of the string
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
-//   console.log("String before Hashing:", shaString);
+  //   console.log("String before Hashing:", shaString);
 
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
   return signature;
@@ -519,11 +519,11 @@ export const generateSignatureApplePayFinal = (params) => {
       formattedString += `${key}=${value}`;
     }
   });
-console.log('formattedString',formattedString);
+  console.log("formattedString", formattedString);
   //   return formattedString;
   let concatenatedString = `${shaRequestPhrase}${formattedString}${shaRequestPhrase}`;
   //   return concatenatedString;
-  console.log('concatenatedString',concatenatedString);
+  console.log("concatenatedString", concatenatedString);
 
   const signature = crypto
     .createHash("sha256")
@@ -562,3 +562,10 @@ console.log('formattedString',formattedString);
 // 	  apple_type: "credit"
 // 	}
 //   };
+
+export const riyalImgBlack = () => {
+  return <Image src="/icons/riyal-black.svg" width={20} height={20} />;
+};
+export const riyalImgRed = () => {
+  return <Image src="/icons/riyal-red.svg" width={20} height={20} />;
+};

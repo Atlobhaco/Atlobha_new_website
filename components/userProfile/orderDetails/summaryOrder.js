@@ -19,6 +19,8 @@ import {
   generateSignatureApple,
   generateSignatureApplePay,
   generateSignatureApplePayFinal,
+  riyalImgBlack,
+  riyalImgRed,
   testSignature,
 } from "@/constants/helpers";
 import { ORDERSENUM, STATUS, PAYMENT_METHODS } from "@/constants/enums";
@@ -31,6 +33,7 @@ import { useReducer } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import crypto from "crypto";
+import Image from "next/image";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -811,6 +814,7 @@ function SummaryOrder({
   //       "4BBADAF380A9B77D7EEFE744AE9AA06402222F5BA14DD804BDF40790BEA4D351A12305FED013E63644F330C79FC0990C672DE4DE07641113A4C766E706C96D1C",
   //   })
   // );
+
   return (
     <Box
       sx={{
@@ -829,7 +833,7 @@ function SummaryOrder({
               0
             )
             ?.toFixed(2)}{" "}
-          {t.sar}
+          {riyalImgBlack()}
         </Box>
       </Box>
       {/* discount */}
@@ -840,7 +844,7 @@ function SummaryOrder({
           receipt?.discount
             ? receipt?.discount
             : calculateReceiptResFromMainPage?.discount}{" "}
-          {t.sar}
+          {riyalImgRed()}
         </Box>
       </Box>
       {/* delivery fees */}
@@ -851,7 +855,7 @@ function SummaryOrder({
             receipt?.delivery_fees) === receipt?.delivery_fees
             ? receipt?.delivery_fees
             : calculateReceiptResFromMainPage?.delivery_fees}{" "}
-          {t.sar}
+          {riyalImgBlack()}
         </Box>
       </Box>
       {/* pay from wallet balance */}
@@ -862,7 +866,7 @@ function SummaryOrder({
             receipt?.wallet_payment_value) === receipt?.wallet_payment_value
             ? receipt?.wallet_payment_value
             : calculateReceiptResFromMainPage?.wallet_payment_value}{" "}
-          {t.sar}
+          {riyalImgBlack()}
         </Box>
       </Box>
       {/* total pay */}
@@ -873,7 +877,7 @@ function SummaryOrder({
             receipt?.total_price) === receipt?.total_price
             ? receipt?.total_price
             : calculateReceiptResFromMainPage?.total_price}{" "}
-          {t.sar}
+          {riyalImgBlack()}
         </Box>
       </Box>
       {/* vat  percentage */}
@@ -883,7 +887,7 @@ function SummaryOrder({
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
           : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({receipt?.tax} {t.sar})
+        ٪ {t.vatPercentage} ({receipt?.tax} {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}
@@ -895,7 +899,7 @@ function SummaryOrder({
             ? receipt?.amount_to_pay
             : calculateReceiptResFromMainPage?.amount_to_pay
           )?.toFixed(2)}{" "}
-          {t.sar}
+          {riyalImgBlack()}
         </Box>
       </Box>
       {/* logic for incomplete */}
@@ -908,7 +912,7 @@ function SummaryOrder({
                 receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
-              {t.sar}
+              {riyalImgBlack()}
             </Box>
           </Box> */}
           <SharedBtn
@@ -961,7 +965,7 @@ function SummaryOrder({
                 receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
-              {t.sar}
+              {riyalImgBlack()}
             </Box>
           </Box> */}
           <SharedBtn
@@ -981,7 +985,7 @@ function SummaryOrder({
                 receipt?.total_price) === receipt?.total_price
                 ? receipt?.total_price
                 : calculateReceiptResFromMainPage?.total_price}{" "}
-              {t.sar}
+              {riyalImgBlack()}
             </Box>
           </Box> */}
           <SharedBtn
