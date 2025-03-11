@@ -33,6 +33,8 @@ import CallUs from "../../public/icons/call-us.svg";
 import Languages from "../../public/icons/languages.svg";
 import Country from "../../public/icons/country.svg";
 import SaudiaFlag from "../../public/icons/saudia-flag.svg";
+import EnglishLang from "../../public/icons/lang-en.svg";
+import ArabicLang from "../../public/icons/lang-ar.svg";
 import LogoutIcon from "../../public/icons/logout-icon.svg";
 import { logout } from "@/redux/reducers/authReducer";
 import CommunicationSection from "@/components/userProfile/communicationSection";
@@ -61,7 +63,7 @@ function UserProfile({ recallUserData = false }) {
     },
     {
       iconSrc: <Favourite />,
-      text: t.rateAtlobha,
+      text: t.favouriteAtlobha,
       //   onClick: () => alert("clicked"),
       path: "",
     },
@@ -74,7 +76,17 @@ function UserProfile({ recallUserData = false }) {
     {
       iconSrc: <HelpCenter />,
       text: t.helpCenter,
-      //   onClick: () => alert("clicked"),
+      onClick: () => {
+        window.open(
+          `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
+          "_blank"
+        );
+        window.webengage.onReady(() => {
+          webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+            event_status: true,
+          });
+        });
+      },
       path: "",
     },
     {
@@ -83,12 +95,28 @@ function UserProfile({ recallUserData = false }) {
       //   onClick: () => alert("clicked"),
       path: "",
       hideArrow: true,
-      hint: "15276",
+      hint: (
+        <a href="tel:+966502670094">
+          {locale == "en" && "+"}966502670094{locale == "ar" && "+"}
+        </a>
+      ),
     },
     {
       iconSrc: <Languages />,
       text: t.language,
-      //   onClick: () => alert("clicked"),
+      onClick: () => {
+        webengage.track("LANGUAGE_SELECTED", {
+          language: locale === "ar" ? "Arabic" : "English",
+        });
+        router
+          .push(router.pathname, router.asPath, {
+            locale: locale === "ar" ? "en" : "ar",
+          })
+          .then(() => {
+            router.reload();
+          });
+      },
+      hint: locale === "en" ? <ArabicLang /> : <EnglishLang />,
       path: "",
     },
     {
