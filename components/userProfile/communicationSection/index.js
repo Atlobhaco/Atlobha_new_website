@@ -13,19 +13,27 @@ function CommunicationSection() {
   const socialMedia = [
     {
       src: "/icons/twitter-round.svg",
-      onclick: () => {},
+      onclick: () => {
+        window.open("https://twitter.com/Atlobha_ksa");
+      },
     },
     {
       src: "/icons/TikTok.svg",
-      onclick: () => {},
+      onclick: () => {
+        window.open("http://www.tiktok.com/@atlobha_ksa");
+      },
     },
     {
       src: "/icons/insta.svg",
-      onclick: () => {},
+      onclick: () => {
+        window.open("https://www.instagram.com/Atlobha_ksa");
+      },
     },
     {
-      src: "/icons/Facebook-round.svg",
-      onclick: () => {},
+      src: "/icons/social/Snapchat-lg.svg",
+      onclick: () => {
+        window.open("https://www.snapchat.com/add/Atlobha_ksa");
+      },
     },
   ];
   const StaticLinks = [
