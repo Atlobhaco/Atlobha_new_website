@@ -197,7 +197,8 @@ a {
 }
 
 .modal-login-width-web {
-  min-width: 30vw !important;
+  min-width: 600px !important;
+  max-width: 600px !important;
   min-height: fit-content !important;
   @include mobile-screen-style {
     width: unset;
@@ -396,4 +397,12 @@ div[aria-label="number input"] {
   width: 90% !important;
   margin: auto;
   z-index: 1;
+}
+
+.MuiPaper-root[role="dialog"] {
+  @media (min-width: 1500px) {
+    max-width: 850px !important;
+    min-width: 850px !important;
+    width: 850px !important;
+  }
 }
