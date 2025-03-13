@@ -15,8 +15,10 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useQueryClient } from "react-query";
 
 function AddAvailablePayMethods({ orderDetails = {} }) {
+  const queryClient = useQueryClient();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedPaymentMethod } = useSelector(
@@ -43,6 +45,11 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
     };
   }, []);
 
+  const callCaluclateReceiptForApplePay = (key) => {
+    if (key === PAYMENT_METHODS?.applePay) {
+      queryClient.refetchQueries(["calculateReceiptForTotalPay"]); // ✅ Refetch by name
+    }
+  };
   return (
     <Box
       sx={{
@@ -93,16 +100,20 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
               >
                 <SharedCheckbox
                   selectedId={selectedPaymentMethod?.id}
-                  handleCheckboxChange={(data) =>
-                    dispatch(setSelectedPayment({ data: data }))
-                  }
+                  handleCheckboxChange={(data) => {
+                    callCaluclateReceiptForApplePay(pay?.key);
+                    dispatch(setSelectedPayment({ data: data }));
+                  }}
                   data={pay}
                 />
                 <Box
                   sx={{
                     cursor: "pointer",
                   }}
-                  onClick={() => dispatch(setSelectedPayment({ data: pay }))}
+                  onClick={() => {
+                    callCaluclateReceiptForApplePay(pay?.key);
+                    dispatch(setSelectedPayment({ data: pay }));
+                  }}
                 >
                   {availablePaymentMethodImages({ payment_method: pay?.key })}
                 </Box>
@@ -110,7 +121,10 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                   sx={{
                     cursor: "pointer",
                   }}
-                  onClick={() => dispatch(setSelectedPayment({ data: pay }))}
+                  onClick={() => {
+                    callCaluclateReceiptForApplePay(pay?.key);
+                    dispatch(setSelectedPayment({ data: pay }));
+                  }}
                 >
                   {availablePaymentMethodText({ payment_method: pay?.key }, t)}
                 </Box>
