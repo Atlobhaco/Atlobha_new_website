@@ -223,11 +223,11 @@ function SummaryOrder({
     const request = {
       countryCode: "SA",
       currencyCode: "SAR",
-      supportedNetworks: ["visa", "masterCard", "amex"],
+      supportedNetworks: ["mada", "visa", "masterCard", "amex"],
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
+        amount: calculateReceipt?.amount_to_pay, // Adjust dynamically if needed
       },
     };
 
@@ -270,7 +270,7 @@ function SummaryOrder({
           access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
           merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
           merchant_reference: merchanteRefrence,
-          amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0),
+          amount: calculateReceipt?.amount_to_pay,
           currency: "SAR",
           language: locale,
           customer_email: "user@example.com",
