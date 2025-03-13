@@ -100,7 +100,7 @@ function SparePartsOrderDetails({
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
-  console.log("orderDetails", orderDetails);
+
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
       if (type === ORDERSENUM?.spareParts) {

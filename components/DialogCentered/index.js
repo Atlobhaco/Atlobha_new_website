@@ -24,8 +24,9 @@ const useStyles = makeStyles(({ isMobile, title }) => ({
   centerDesign: {
     bottom: "0px",
     minWidth: "60vw",
+    // maxWidth: "inh",
     maxHeight: "90vh",
-    minHeight: "72vh",
+    minHeight: "fit-content",
     left: "0",
     right: "0",
     margin: "auto 0",
