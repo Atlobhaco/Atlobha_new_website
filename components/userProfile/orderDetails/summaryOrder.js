@@ -124,7 +124,6 @@ function SummaryOrder({
         selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay &&
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
       ) {
-        handleApplePayPayment();
         return;
       }
       toast.success(t.successPayOrder);
@@ -513,6 +512,9 @@ function SummaryOrder({
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
               ) {
                 callCalculateReceipt();
+                setTimeout(() => {
+                  handleApplePayPayment();
+                }, 1000);
               } else {
                 callCalculateReceipt();
               }
