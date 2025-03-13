@@ -226,7 +226,7 @@ function SummaryOrder({
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0) || 100, // Adjust dynamically if needed
+        amount: 100, // Adjust dynamically if needed
       },
     };
 
@@ -269,7 +269,7 @@ function SummaryOrder({
           access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
           merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
           merchant_reference: merchanteRefrence,
-          amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0) || 100,
+          amount: 100,
           currency: "SAR",
           language: locale,
           customer_email: "user@example.com",
