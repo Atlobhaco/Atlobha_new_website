@@ -511,10 +511,10 @@ function SummaryOrder({
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
               ) {
-                callCalculateReceipt();
-                setTimeout(() => {
-                  handleApplePayPayment();
-                }, 1000);
+                // callCalculateReceipt();
+                // setTimeout(() => {
+                handleApplePayPayment();
+                // }, 1000);
               } else {
                 callCalculateReceipt();
               }
