@@ -168,17 +168,18 @@ function SummaryOrder({
         }, 500);
         return;
       }
-      if (+res?.amount_to_pay > 0) {
-        callConfirmPricing();
-      } else {
-        callConfirmPricing();
+      if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.applePay) {
+        if (+res?.amount_to_pay > 0) {
+          callConfirmPricing();
+        } else {
+          callConfirmPricing();
+        }
       }
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
-
   const requestData = {
     command: "PURCHASE",
     access_code: process.env.NEXT_PUBLIC_PAYFORT_ACCESS,
@@ -222,11 +223,11 @@ function SummaryOrder({
     const request = {
       countryCode: "SA",
       currencyCode: "SAR",
-      supportedNetworks: ["visa", "masterCard", "amex"],
+      supportedNetworks: ["mada", "visa", "masterCard", "amex"],
       merchantCapabilities: ["supports3DS", "supportsCredit", "supportsDebit"],
       total: {
         label: "Atlobha Store",
-        amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0), // Adjust dynamically if needed
+        amount: calculateReceipt?.amount_to_pay, // Adjust dynamically if needed
       },
     };
 
@@ -269,7 +270,7 @@ function SummaryOrder({
           access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
           merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
           merchant_reference: merchanteRefrence,
-          amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0),
+          amount: calculateReceipt?.amount_to_pay,
           currency: "SAR",
           language: locale,
           customer_email: "user@example.com",
@@ -511,10 +512,8 @@ function SummaryOrder({
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
               ) {
-                callCalculateReceipt();
-                setTimeout(() => {
-                  handleApplePayPayment();
-                }, 1000);
+                callConfirmPricing();
+                handleApplePayPayment();
               } else {
                 callCalculateReceipt();
               }
