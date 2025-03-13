@@ -162,10 +162,10 @@ a {
   }
 }
 
-.sm-popup-width {
-  min-width: 30vw !important;
-  max-width: 300px !important;
-}
+// .sm-popup-width {
+//   min-width: 30vw !important;
+//   max-width: 300px !important;
+// }
 
 // apply this style  when hover  on the dropdown
 .MuiInputBase-root {
@@ -401,6 +401,22 @@ div[aria-label="number input"] {
 
 .MuiPaper-root[role="dialog"] {
   @media (min-width: 1500px) {
+    max-width: 850px !important;
+    min-width: 850px !important;
+    width: 850px !important;
+  }
+}
+
+@media (max-width: 1899px) {
+  .sm-popup-width {
+    min-width: 30vw !important;
+    max-width: 300px !important;
+  }
+}
+
+/* Apply styles for screens 1500px and larger */
+@media (min-width: 1900px) {
+  .MuiPaper-root[role="dialog"] {
     max-width: 850px !important;
     min-width: 850px !important;
     width: 850px !important;
