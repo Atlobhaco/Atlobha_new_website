@@ -41,19 +41,14 @@ function AdvertiseHint() {
       selectedAddress?.lat || defaultAddress?.lat,
     ],
     url: `${ANNOUNCEMENT}/?lat=${
-      selectedAddress?.lat || defaultAddress?.lat
+      selectedAddress?.lat || defaultAddress?.lat || 24.7136
     }&lng=${
-      selectedAddress?.lng || defaultAddress?.lng
+      selectedAddress?.lng || defaultAddress?.lng || 46.6753
     }&type=information&app_section=${theDesiredPageIs}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
     onSuccess: (res) => setInformativeMsg(res),
-    enabled:
-      (selectedAddress?.lat || defaultAddress?.lat) &&
-      (selectedAddress?.lng || defaultAddress?.lng) &&
-      theDesiredPageIs
-        ? true
-        : false,
+    enabled: theDesiredPageIs ? true : false,
   });
 
   return informativeMsg?.is_active ? (
