@@ -270,7 +270,7 @@ function SummaryOrder({
           access_code: process.env.NEXT_PUBLIC_APPLE_ACCESS,
           merchant_identifier: process.env.NEXT_PUBLIC_PAYFORT_IDENTIFIER,
           merchant_reference: merchanteRefrence,
-          amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(2),
+          amount: (calculateReceipt?.amount_to_pay * 100)?.toFixed(0),
           currency: "SAR",
           language: locale,
           customer_email: "user@example.com",
