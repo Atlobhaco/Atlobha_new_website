@@ -21,6 +21,7 @@ import CategoriesProducts from "@/components/Marketplace/CategoriesProducts/Cate
 import RecentlyViewed from "@/components/Marketplace/RecentlyViewed";
 import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
 import PartsImages from "@/components/spareParts/PartsImages";
+import { isAuth } from "@/config/hooks/isAuth";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,8 +43,8 @@ export default function Home() {
   const { allGroups } = useSelector((state) => state.appGroups);
   const { allhomeSections } = useSelector((state) => state.homeSectionsData);
 
-  const { data } = useCustomQuery({
-    name: ["app-home-sections", allGroups?.length],
+  const { data, isLoading } = useCustomQuery({
+    name: ["app-home-sections", allGroups?.length, isAuth()],
     url: `${APP_SECTIONS}/${
       allGroups[0]?.sections?.find((sec) => sec?.type === MARKETPLACE)?.id
     }${HOME_SECTIONS}`,
@@ -66,7 +67,7 @@ export default function Home() {
     });
   }, []);
 
-  return !allhomeSections?.length ? (
+  return isLoading ? (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <CircularProgress
         size={60}

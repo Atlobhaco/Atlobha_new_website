@@ -75,7 +75,7 @@ function ManufactureShell({ sectionInfo }) {
         background: `center / cover no-repeat url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        height: isMobile ? "350px" : "900px",
+        height: isMobile ? "400px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

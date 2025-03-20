@@ -33,10 +33,10 @@ function QuickLinks({ sectionInfo }) {
         <IconInsideCircle
           key={item?.title + index} // Add a unique key for each element
           title={item.title}
-          width={isMobile ? "50px" : "88px"}
-          height={isMobile ? "50px" : "88px"}
-          imgHeight={isMobile ? "24" : "42"}
-          imgWidth={isMobile ? "24" : "42"}
+          width={isMobile ? "48px" : "88px"}
+          height={isMobile ? "48px" : "88px"}
+          imgHeight={isMobile ? "22" : "42"}
+          imgWidth={isMobile ? "22" : "42"}
           iconUrl={item?.image?.url}
           onClick={() => window.open(item?.link)}
         />
