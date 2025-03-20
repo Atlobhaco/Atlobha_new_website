@@ -17,7 +17,7 @@ function HeaderPage() {
       return t.sparePartPricing;
     }
     if (router?.pathname === "/") {
-      return "طلبات المتجر";
+      return t.marketplacePage;
     } else {
       return router?.query?.secTitle;
     }

@@ -8,6 +8,7 @@ import addSparePartsReducer from "./addSparePartsReducer";
 import quickSectionsProfile from "./quickSectionsProfile";
 import appGroups from "./appGroups";
 import selectedPaymentMethod from "./selectedPaymentMethod";
+import homeSections from "./homeSectionsReducer";
 // import yourReducer from "./yourReducer"; // Ensure the path is correct
 
 const rootReducer = combineReducers({
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   quickSection: quickSectionsProfile,
   appGroups: appGroups,
   selectedPaymentMethod: selectedPaymentMethod,
+  homeSectionsData: homeSections,
 });
 
 export default rootReducer;

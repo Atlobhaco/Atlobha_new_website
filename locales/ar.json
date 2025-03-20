@@ -87,6 +87,7 @@
   "addressAsDefault": "تعيين كعنوان افتراضي",
   "wantSpareParts": "هل تريد قطع غيار؟",
   "sparePartPricing": "تسعير قطع الغيار",
+  "marketplacePage": "طلبات المتجر",
   "bestPriceForYou": "افضل الاسعار نلاقيها لك!",
   "free": "مجاني",
   "store": "المتجر",
@@ -376,5 +377,9 @@
   "serviceSections": "أقسام الخدمات",
   "tiresBatteries": "الإطارات والبطاريات",
   "washAndCare": "الغسيل والعناية",
-  "replaceRepair": "الاستبدال والحكات"
+  "replaceRepair": "الاستبدال والحكات",
+  "havePricedOrder": "لديك طلبات مسعره..",
+  "confirmItNow": "اكدها الان قبل انتهاء التسعيرة",
+  "atlobhaCategories": "تصنيفات اطلبها",
+  "showMore": "عرض المزيد"
 }

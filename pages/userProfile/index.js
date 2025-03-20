@@ -116,7 +116,7 @@ function UserProfile({ recallUserData = false }) {
             router.reload();
           });
       },
-      hint: locale === "en" ? <ArabicLang /> : <EnglishLang />,
+      hint: locale === "ar" ? <ArabicLang /> : <EnglishLang />,
       path: "",
     },
     {

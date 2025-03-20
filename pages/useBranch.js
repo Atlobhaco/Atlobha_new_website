@@ -112,7 +112,6 @@ const useBranch = () => {
 
   useEffect(() => {
     if (branchData) {
-      console.log("branchData", branchData);
 
       const redirectItemOrderDetails = arrayForRedirect.find(
         (item) =>

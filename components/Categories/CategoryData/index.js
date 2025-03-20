@@ -3,18 +3,22 @@ import React from "react";
 import style from "./CategoryData.module.scss";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 
-function CategoryData({ imgPath = "/imgs/accessories.svg", text = "text" }) {
+function CategoryData({
+  imgPath = "/imgs/accessories.svg",
+  text = "text",
+  keyValue = null,
+}) {
   const { isMobile } = useScreenSize();
   return (
-    <Box className={`${style["category"]}`}>
-      {isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>}
+    <Box className={`${style["category"]}`} key={keyValue}>
+      {/* {isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>} */}
       <Box
         className={`${style["category-image"]}`}
         sx={{
-          backgroundImage: `url('${imgPath}')`, 
+          backgroundImage: `url('${imgPath}')`,
         }}
       ></Box>
-      {!isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>}
+      <Box className={`${style["category-text"]}`}>{text}</Box>
     </Box>
   );
 }

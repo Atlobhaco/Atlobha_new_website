@@ -16,6 +16,7 @@ function IconInsideCircle({
   hasBorder = true,
   hasBoxShadow = true,
   hasText = false,
+  title = false,
 }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -26,7 +27,7 @@ function IconInsideCircle({
     fontSize: isMobile ? "10px" : "24px",
     fontWeight: "700",
     maxWidth: "90px",
-    marginTop: isMobile ? "3px" : "1px",
+    marginTop: isMobile ? "3px" : "2px",
     lineHeight: isMobile ? "16px" : "32px",
   };
 
@@ -58,7 +59,11 @@ function IconInsideCircle({
       >
         <Image alt={alt} src={iconUrl} width={imgWidth} height={imgHeight} />
       </Box>
-      {hasText && <Box sx={textStyle}>{t[hasText]}</Box>}
+      {title ? (
+        <Box sx={textStyle}>{title}</Box>
+      ) : (
+        hasText && <Box sx={textStyle}>{t[hasText]}</Box>
+      )}
     </Box>
   );
 }
