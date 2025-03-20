@@ -23,7 +23,7 @@
     height: 190px;
     position: relative;
     @include mobile-screen-style {
-      height: 70px;
+      max-height: 70px;
     }
   }
   &-info-wrapper {
@@ -56,8 +56,8 @@
       img {
         display: inline-block;
         @include mobile-screen-style {
-          width: 15px;
-          height: 15px;
+          width: 11px;
+          height: 11px;
         }
       }
       @include mobile-screen-style {
