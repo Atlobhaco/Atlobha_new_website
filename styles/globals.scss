@@ -445,11 +445,7 @@ button[class^="slick-"] {
   background: url("/icons/arrow-left-sm.svg") center center no-repeat !important;
 }
 .slick-prev {
-  background: url("/icons/arrow-left-sm.svg") center center no-repeat !important;
-  width: 30px; /* Adjust as needed */
-  height: 30px; /* Adjust as needed */
-  display: inline-block;
-  transform: rotate(180deg);
+  background: url("/icons/arrow-right-sm.svg") center center no-repeat !important;
 }
 
 [dir="rtl"] .slick-prev {
