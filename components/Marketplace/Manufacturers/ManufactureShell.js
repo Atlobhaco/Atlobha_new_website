@@ -24,7 +24,7 @@ function ManufactureShell({ sectionInfo }) {
       page,
     ],
     url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-      isMobile ? 3 : 10
+      isMobile ? 10 : 10
     }&manufacturer_id=${sectionInfo?.manufacturer?.id}`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
