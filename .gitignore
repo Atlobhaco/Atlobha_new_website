@@ -35,4 +35,4 @@ yarn-error.log*
 next-env.d.ts
 
 # Ignore .well-known folder inside public
-/public/.well-known/
+# /public/.well-known/
