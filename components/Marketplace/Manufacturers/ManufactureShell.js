@@ -42,7 +42,6 @@ function ManufactureShell({ sectionInfo }) {
     slidesToScroll: 2,
     autoplay: true,
     autoplaySpeed: 1500,
-    rtl: locale === "ar" ? true : false,
     responsive: [
       {
         breakpoint: 1024,
@@ -90,6 +89,8 @@ function ManufactureShell({ sectionInfo }) {
               sx={{
                 display: "flex !important",
                 justifyContent: "center",
+                background: "red",
+                direction: locale === "ar" ? "rtl" : "ltr",
               }}
             >
               <ProductCard product={prod} hasNum={prod?.image} />

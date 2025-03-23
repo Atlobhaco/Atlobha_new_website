@@ -136,7 +136,7 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
                     <PackageOffers sectionInfo={item} />
                   </div>
                 </div>
