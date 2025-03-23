@@ -89,7 +89,6 @@ function ManufactureShell({ sectionInfo }) {
               sx={{
                 display: "flex !important",
                 justifyContent: "center",
-                background: "red",
                 direction: locale === "ar" ? "rtl" : "ltr",
               }}
             >
