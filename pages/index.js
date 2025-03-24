@@ -6,13 +6,6 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import IconInsideCircle from "@/components/IconInsideCircle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Box } from "@mui/material";
-import SharedInput from "@/components/shared/SharedInput";
-import Grid from "@mui/material/Grid2";
-import QuickChoose from "@/components/QuickChoose";
-import MainCarousel from "@/components/MainCarousel";
-import ColoredHint from "@/components/ColoredHint";
-import Categories from "@/components/Categories";
-import ProductCard from "@/components/shared/ProductCard";
 import ComingSoon from "@/components/comingSoon";
 import { useEffect } from "react";
 import useDeepLink from "@/config/hooks/useDeepLink";
@@ -42,7 +35,7 @@ export default function Home() {
       });
     });
   }, []);
-//   console.log("deepLinkData from index page", deepLinkData);
+  //   console.log("deepLinkData from index page", deepLinkData);
 
   return (
     <Box
@@ -101,7 +94,6 @@ export default function Home() {
       <IconInsideCircle hasText={false} />
       <SharedInput /> */}
       <ComingSoon />
-	  
     </Box>
   );
 }

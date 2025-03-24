@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import crypto from "crypto";
 import { ORDERSENUM, PAYMENT_METHODS, STATUS } from "./enums";
+import useScreenSize from "./screenSize/useScreenSize";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -317,7 +318,6 @@ export const generateSignature = (params) => {
   // Add the secret key at the beginning and end of the string
   shaString = `${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}${shaString}${process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE}`;
   // Generate SHA-256 hash
-  //   console.log("String before Hashing:", shaString);
 
   const signature = crypto.createHash("sha256").update(shaString).digest("hex");
   return signature;
@@ -350,11 +350,7 @@ export const generateSignatureApplePay = (params) => {
       formattedString += `${key}=${value}`;
     }
   });
-  console.log("formattedString", formattedString);
-  //   return formattedString;
   let concatenatedString = `${shaRequestPhrase}${formattedString}${shaRequestPhrase}`;
-  //   return concatenatedString;
-  console.log("concatenatedString", concatenatedString);
 
   const signature = crypto
     .createHash("sha256")
@@ -364,9 +360,26 @@ export const generateSignatureApplePay = (params) => {
   return signature;
 };
 
+/* -------------------------------------------------------------------------- */
+/*                            riyal colored images                            */
+/* -------------------------------------------------------------------------- */
 export const riyalImgBlack = () => {
-  return <Image src="/icons/riyal-black.svg" width={20} height={20} />;
+  return (
+    <Image src="/icons/riyal-black.svg" width={20} height={20} alt="riyal" />
+  );
 };
 export const riyalImgRed = () => {
-  return <Image src="/icons/riyal-red.svg" width={20} height={20} />;
+  return (
+    <Image src="/icons/riyal-red.svg" width={20} height={20} alt="riyal-red" />
+  );
+};
+export const riyalImgOrange = () => {
+  return (
+    <Image
+      src="/icons/riyal-orange.svg"
+      width={20}
+      height={20}
+      alt="riyal-orange"
+    />
+  );
 };

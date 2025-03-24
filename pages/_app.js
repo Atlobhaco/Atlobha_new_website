@@ -1,5 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.scss";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -15,6 +17,7 @@ import store from "@/redux/store";
 import Layout from "@/layouts/MainLayout";
 import "moment/locale/ar";
 import useBranch from "./useBranch";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -91,6 +94,10 @@ export default function App({ Component, pageProps }) {
             <AuthProvider>
               <AxiosProvider>
                 <AppContent Component={Component} pageProps={pageProps} />
+                {/* <ReactQueryDevtools
+                  initialIsOpen={false}
+                  position="bottom-right"
+                /> */}
               </AxiosProvider>
             </AuthProvider>
           </ToastifyProvider>

@@ -87,6 +87,7 @@
   "addressAsDefault": "Default Address",
   "wantSpareParts": "Do you want spare parts?",
   "sparePartPricing": "Spare parts pricing",
+  "marketplacePage": "Marketplace",
   "bestPriceForYou": "The best prices for you!",
   "free": "Free",
   "store": "Store",
@@ -377,5 +378,9 @@
   "serviceSections": "Service Sections",
   "tiresBatteries": "Tires and Batteries",
   "washAndCare": "Washing and Care",
-  "replaceRepair": "Replacement and Repairs"
+  "replaceRepair": "Replacement and Repairs",
+  "havePricedOrder": "Have priced orders",
+  "confirmItNow": "Confirm it now",
+  "atlobhaCategories": "Categories",
+  "showMore": "Show more"
 }

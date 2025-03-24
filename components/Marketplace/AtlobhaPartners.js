@@ -9,15 +9,18 @@ import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-function PartsImages() {
+function AtlobhaPartners({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const [data, setData] = useState([]);
 
   useCustomQuery({
-    name: "partenres-atlobha",
+    name: [`partenres${sectionInfo?.id}`, sectionInfo?.is_active],
     url: `${MANUFACTURERS}?page=1`,
     refetchOnWindowFocus: false,
+    enabled: sectionInfo?.requires_authentication
+      ? isAuth() && sectionInfo?.is_active
+      : sectionInfo?.is_active,
     select: (res) => res?.data,
     onSuccess: (res) => setData(res?.data),
   });
@@ -37,15 +40,15 @@ function PartsImages() {
     },
   };
 
-  return (
+  return !sectionInfo?.is_active || !data?.length ? null : (
     <Box>
       <Box
         sx={{
           fontWeight: "700",
-          fontSize: isMobile ? "16px" : "30px",
+          fontSize: isMobile ? "20px" : "30px",
         }}
       >
-        {t.partsAreOriginal}
+        {sectionInfo?.title}
       </Box>
 
       <Box sx={{ mt: 3, mb: 1 }}>
@@ -70,8 +73,8 @@ function PartsImages() {
               <Image
                 src={part?.logo?.url}
                 alt={part?.logo?.url}
-                width={isMobile ? 50 : 113}
-                height={isMobile ? 47 : 106}
+                width={isMobile ? 53 : 113}
+                height={isMobile ? 50 : 106}
                 style={{
                   width: "auto",
                   height: "auto",
@@ -88,4 +91,4 @@ function PartsImages() {
   );
 }
 
-export default PartsImages;
+export default AtlobhaPartners;

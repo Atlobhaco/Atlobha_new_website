@@ -1,6 +1,6 @@
 @import "./variables.scss";
 @import "./mixins.scss";
-@import "../components/MainCarousel/MainCarousel.scss";
+@import "../components/Marketplace/MainCarousel/MainCarousel.scss";
 
 @font-face {
   font-family: "Ping";
@@ -197,7 +197,7 @@ a {
 }
 
 .modal-login-width-web {
-  min-width: 600px !important;
+//   min-width: 600px !important;
   max-width: 600px !important;
   min-height: fit-content !important;
   @include mobile-screen-style {
@@ -367,6 +367,7 @@ div[aria-label="number input"] {
 // used in how to make pricing popup
 .carousel {
   direction: rtl;
+  z-index: 0;
 }
 
 .carousel-control-prev {
@@ -421,4 +422,45 @@ div[aria-label="number input"] {
     min-width: 850px !important;
     width: 850px !important;
   }
+}
+
+/* -------------------------------------------------------------------------- */
+/*                      buttons for react slick carousels                     */
+/* -------------------------------------------------------------------------- */
+button[class^="slick-"] {
+  background-color: rgb(255, 255, 255) !important;
+  border-radius: 50% !important;
+  padding: 15px !important;
+  position: absolute;
+  z-index: 1;
+  border: 1px solid #d1d5db;
+  &::before {
+    content: "" !important;
+  }
+  &:hover {
+    opacity: 0.8;
+  }
+}
+.slick-next {
+  background: url("/icons/arrow-left-sm.svg") center center no-repeat !important;
+}
+.slick-prev {
+  background: url("/icons/arrow-right-sm.svg") center center no-repeat !important;
+}
+
+[dir="rtl"] .slick-prev {
+  right: 0 !important;
+  left: auto;
+}
+[dir="ltr"] .slick-prev {
+  left: auto;
+  right: 0 !important;
+}
+[dir="rtl"] .slick-next {
+  right: auto;
+  left: 0 !important;
+}
+[dir="ltr"] .slick-next {
+  right: auto;
+  left: 0 !important;
 }

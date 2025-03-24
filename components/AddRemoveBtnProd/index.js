@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
 import { Add, Remove, Delete } from "@mui/icons-material";
 import SvgIcon from "@mui/material/SvgIcon";
-
-import React from "react";
+import React, { useState } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
-const CustomDeleteIcon = ({ iconStyle }) => {
+const CustomDeleteIcon = ({ iconStyle, onClick }) => {
   return (
-    <SvgIcon sx={iconStyle}>
+    <SvgIcon sx={iconStyle} onClick={onClick}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
@@ -27,62 +27,95 @@ const CustomDeleteIcon = ({ iconStyle }) => {
   );
 };
 
-function AddRemoveBtn({ prod, hasNum = false }) {
+function AddRemoveBtn({ prod, hasNum = false, timeSpent = false }) {
   const { locale } = useLocalization();
+  const { isMobile } = useScreenSize();
+  const [isHovered, setIsHovered] = useState(false);
 
-  const btnStyle = {
-    background: "black",
-    color: "white",
+  const reusedStyle = {
     position: "absolute",
-    borderRadius: "2460px",
-    minWidth: "55px",
-    height: "55px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "27px",
-    ...(locale === "ar" ? { left: "15px" } : { right: "15px" }),
+    ...(locale === "ar" ? { left: "2px" } : { right: "2px" }),
     bottom: "-22px",
+    transition: "all 0.3s ease-in-out",
+  };
+  const addRemoveBtn = {
+    background: "black",
+    color: "white",
+    borderRadius: "25px",
+    minWidth: isMobile ? "75px" : "55px",
+    height: isMobile ? "25px" : "55px",
+    transition: "all 0.3s ease-in-out",
+    opacity: isHovered ? 1 : 0,
+    visibility: isHovered ? "visible" : "hidden",
+  };
+  const circleHovered = {
+    borderRadius: "50%",
+    minWidth: isMobile ? "25px" : "55px",
+    height: isMobile ? "25px" : "55px",
+    fontSize: isMobile ? "13px" : "28px",
+    fontWeight: "500",
+    transition: "all 0.3s ease-in-out",
   };
 
   const iconStyle = {
     cursor: "pointer",
+    width: isMobile ? "12px" : "24px",
+    height: isMobile ? "12px" : "24px",
     "&:hover": {
       color: "yellow",
     },
   };
-
   return (
-    <Box sx={btnStyle}>
+    <Box
+      sx={{
+        background: hasNum ? "yellow" : "black",
+        ...reusedStyle,
+        ...(!isHovered ? circleHovered : addRemoveBtn),
+      }}
+    >
       {hasNum ? (
-        <Box
-          sx={{
-            display: "flex",
-            width: "184px",
-            alignItems: "center",
-            justifyContent: "space-around",
-          }}
-        >
-          <Box>
-            {/* <CustomDeleteIcon iconStyle={iconStyle} /> */}
-            <Remove sx={iconStyle} onClick={() => alert("cl")} />
+        !isHovered ? (
+          <Box sx={{}} onMouseEnter={() => setIsHovered(true)}>
+            12
           </Box>
+        ) : (
           <Box
+            onMouseLeave={() => setIsHovered(false)}
             sx={{
-              fontSize: "34px",
-              fontWeight: "500",
-              paddingTop: "11px",
+              display: "flex",
+              width: isMobile ? "100%" : "184px",
+              alignItems: "center",
+              justifyContent: "space-around",
             }}
           >
-            43
+            <Box>
+              <CustomDeleteIcon
+                iconStyle={iconStyle}
+                onClick={() => alert("delete-all")}
+              />
+              {/* <Remove sx={iconStyle} onClick={() => alert("cl")} /> */}
+            </Box>
+            <Box
+              sx={{
+                fontSize: isMobile ? "14px" : "34px",
+                fontWeight: "500",
+                paddingTop: isMobile ? "3px" : "11px",
+              }}
+            >
+              43
+            </Box>
+            <Box>
+              <Add sx={iconStyle} onClick={() => alert("incre 1")} />
+            </Box>
           </Box>
-          <Box>
-            <Add sx={iconStyle} onClick={() => alert("cl")} />
-          </Box>
-        </Box>
+        )
       ) : (
-        <Box>
-          <Add sx={iconStyle} onClick={() => alert("cl")} />
+        <Box sx={{ cursor: "pointer" }} onClick={() => alert("add new one")}>
+          <Add sx={{ ...iconStyle, color: "white" }} />
         </Box>
       )}
     </Box>
