@@ -1,88 +1,26 @@
+import { MANUFACTURERS } from "@/config/endPoints/endPoints";
+import { isAuth } from "@/config/hooks/isAuth";
 import useLocalization from "@/config/hooks/useLocalization";
+import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 function PartsImages() {
-  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
-  const imgs = [
-    {
-      imgPath: "/imgs/spareParts/alpha.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/chery.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/chrysler.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/citroen.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/dodge.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/fiat.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/geely.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/genisis.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/gwm.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/haval.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/honda.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/hyndai.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/isuzu.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/jeep.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/mg.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/nexen.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/nissan.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/pegeout.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/ram.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/renault.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/subaru.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/tajeer.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/tank.svg",
-    },
-    {
-      imgPath: "/imgs/spareParts/toyo-tires.svg",
-    },
-  ];
+  const { t } = useLocalization();
+  const [data, setData] = useState([]);
+
+  useCustomQuery({
+    name: "partenres-atlobha",
+    url: `${MANUFACTURERS}?page=1`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data,
+    onSuccess: (res) => setData(res?.data),
+  });
 
   const responsive = {
     desktop: {
@@ -103,14 +41,13 @@ function PartsImages() {
     <Box>
       <Box
         sx={{
-          color: "#6B7280",
-          textAlign: "center",
           fontWeight: "700",
-          fontSize: isMobile ? "10px" : "30px",
+          fontSize: isMobile ? "16px" : "30px",
         }}
       >
         {t.partsAreOriginal}
       </Box>
+
       <Box sx={{ mt: 3, mb: 1 }}>
         <Carousel
           responsive={responsive}
@@ -121,13 +58,27 @@ function PartsImages() {
           showDots={false}
           arrows={false}
         >
-          {imgs.map((img) => (
-            <Box key={img.imgPath} sx={{ textAlign: "center" }}>
+          {data?.map((part, index) => (
+            <Box
+              key={part?.logo?.url + index}
+              sx={{
+                display: "flex",
+                alignItems: "end",
+                justifyContent: "end",
+              }}
+            >
               <Image
-                src={img.imgPath}
-                alt={img.imgPath}
-                width={isMobile ? 53 : 113}
-                height={isMobile ? 50 : 106}
+                src={part?.logo?.url}
+                alt={part?.logo?.url}
+                width={isMobile ? 50 : 113}
+                height={isMobile ? 47 : 106}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  margin: "auto",
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                }}
               />
             </Box>
           ))}

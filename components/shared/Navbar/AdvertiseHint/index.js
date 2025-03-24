@@ -5,7 +5,7 @@ import { INFORMATIVE_TYPES, MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 function AdvertiseHint() {
@@ -16,6 +16,9 @@ function AdvertiseHint() {
   const router = useRouter();
   const { secTitle, secType } = router.query;
   const [informativeMsg, setInformativeMsg] = useState(false);
+  const textRef = useRef(null);
+  const containerRef = useRef(null);
+  const [isScrollingNeeded, setIsScrollingNeeded] = useState(false);
 
   const theDesiredPageIs =
     secType || (router?.pathname === "/spareParts" ? SPAREPARTS : MARKETPLACE);
@@ -47,12 +50,23 @@ function AdvertiseHint() {
     }&type=information&app_section=${theDesiredPageIs}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
-    onSuccess: (res) => setInformativeMsg(res),
+    onSuccess: (res) => {
+      setInformativeMsg(res);
+    },
     enabled: theDesiredPageIs ? true : false,
   });
 
+  useEffect(() => {
+    if (textRef.current && containerRef.current) {
+      setIsScrollingNeeded(
+        textRef.current.scrollWidth > containerRef.current.clientWidth
+      );
+    }
+  }, [informativeMsg]);
+
   return informativeMsg?.is_active ? (
     <Box
+      ref={containerRef}
       sx={{
         background: bgColor(informativeMsg?.type),
         color: "white",
@@ -65,45 +79,46 @@ function AdvertiseHint() {
         borderRadius: "4px",
         fontWeight: "500",
         fontSize: isMobile ? "10px" : "14px",
-        overflow: "hidden", // Ensures smooth animation within the box
+        overflow: "hidden",
         position: "relative",
         "&:hover span": {
-          animationPlayState: "paused", // Pause animation on hover
+          animationPlayState: "paused",
         },
       }}
     >
       <Box
+        ref={textRef}
         component="span"
         sx={{
           textAlign: "center",
           width: "fit-content",
           minWidth: "90%",
           display: "inline-block",
-          whiteSpace: "nowrap", // Prevents text wrapping
-          animation: "slide 10s linear infinite", // Animates the text
-          animationPlayState: "running", // Ensures the animation runs by default
+          whiteSpace: "nowrap",
+          ...(isScrollingNeeded && {
+            animation: "slide 10s linear infinite",
+            animationPlayState: "running",
+          }),
         }}
       >
         {informativeMsg?.body}
       </Box>
 
       {/* Define the keyframes for animation */}
-      <style>
-        {`
-          @keyframes slide {
-            0% {
-              transform: translateX(${
-                locale === "en" ? "100%" : "-100%"
-              }); /* Start outside the container */
+      {isScrollingNeeded && (
+        <style>
+          {`
+            @keyframes slide {
+              0% {
+                transform: translateX(${locale === "en" ? "100%" : "-100%"});
+              }
+              100% {
+                transform: translateX(${locale === "en" ? "-100%" : "100%"});
+              }
             }
-            100% {
-              transform: translateX(${
-                locale === "en" ? "-100%" : "100%"
-              }); /* End outside the container */
-            }
-          }
-        `}
-      </style>
+          `}
+        </style>
+      )}
     </Box>
   ) : null;
 }
