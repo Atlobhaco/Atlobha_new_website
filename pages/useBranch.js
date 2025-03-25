@@ -143,7 +143,7 @@ const useBranch = () => {
         }
         // redirect to markeplace product
         if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
-          router.push(`/product${branchData?.data_parsed?.id}`);
+          router.push(`/product/${branchData?.data_parsed?.id}`);
         }
         return;
       }
