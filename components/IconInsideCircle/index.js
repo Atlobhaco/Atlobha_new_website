@@ -17,6 +17,7 @@ function IconInsideCircle({
   hasBoxShadow = true,
   hasText = false,
   title = false,
+  hasNum = false,
 }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -29,6 +30,23 @@ function IconInsideCircle({
     maxWidth: "90px",
     marginTop: isMobile ? "3px" : "2px",
     lineHeight: isMobile ? "16px" : "32px",
+  };
+
+  const numStyle = {
+    position: "absolute",
+    top: "-9px",
+    left: "-9px",
+    background: "black",
+    borderRadius: "50%",
+    fontSize: "14px",
+    fontWeight: "bold",
+    color: "white",
+    width: "20px",
+    height: "20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: "2px",
   };
 
   return (
@@ -54,10 +72,16 @@ function IconInsideCircle({
           "&:hover": {
             opacity: "0.8",
           },
+          position: "relative",
         }}
         onClick={onClick}
       >
         <Image alt={alt} src={iconUrl} width={imgWidth} height={imgHeight} />
+        {hasNum > 0 && (
+          <Box sx={numStyle} component="span">
+            {hasNum}
+          </Box>
+        )}
       </Box>
       {title ? (
         <Box sx={textStyle}>{title}</Box>

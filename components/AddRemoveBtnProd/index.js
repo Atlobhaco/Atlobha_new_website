@@ -1,9 +1,15 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import { Add, Remove, Delete } from "@mui/icons-material";
 import SvgIcon from "@mui/material/SvgIcon";
 import React, { useState } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItemAsync,
+  deleteItemAsync,
+  updateItemQuantityAsync,
+} from "@/redux/reducers/basketReducer";
 
 const CustomDeleteIcon = ({ iconStyle, onClick }) => {
   return (
@@ -27,10 +33,12 @@ const CustomDeleteIcon = ({ iconStyle, onClick }) => {
   );
 };
 
-function AddRemoveBtn({ prod, hasNum = false, timeSpent = false }) {
+function AddRemoveBtn({ product }) {
   const { locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch();
+  const { basket, loadingCart } = useSelector((state) => state.basket);
 
   const reusedStyle = {
     position: "absolute",
@@ -69,18 +77,32 @@ function AddRemoveBtn({ prod, hasNum = false, timeSpent = false }) {
       color: "yellow",
     },
   };
+
+  const prodInsideBasket = () =>
+    basket.find((item) => item.product_id === product?.id) || null;
+
   return (
     <Box
       sx={{
-        background: hasNum ? "yellow" : "black",
+        background: prodInsideBasket() ? "yellow" : "black",
         ...reusedStyle,
         ...(!isHovered ? circleHovered : addRemoveBtn),
       }}
     >
-      {hasNum ? (
+      {prodInsideBasket() ? (
         !isHovered ? (
-          <Box sx={{}} onMouseEnter={() => setIsHovered(true)}>
-            12
+          <Box
+            sx={{
+              width: "100%",
+              height: "100%",
+              borderRadius: "inherit",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+          >
+            {prodInsideBasket()?.quantity}
           </Box>
         ) : (
           <Box
@@ -93,11 +115,29 @@ function AddRemoveBtn({ prod, hasNum = false, timeSpent = false }) {
             }}
           >
             <Box>
-              <CustomDeleteIcon
-                iconStyle={iconStyle}
-                onClick={() => alert("delete-all")}
-              />
-              {/* <Remove sx={iconStyle} onClick={() => alert("cl")} /> */}
+              {prodInsideBasket()?.quantity <= 1 ? (
+                <CustomDeleteIcon
+                  iconStyle={iconStyle}
+                  onClick={() =>
+                    !loadingCart &&
+                    dispatch(deleteItemAsync({ product_id: product?.id }))
+                  }
+                />
+              ) : (
+                <Remove
+                  sx={iconStyle}
+                  onClick={() =>
+                    !loadingCart &&
+                    dispatch(
+                      updateItemQuantityAsync({
+                        product_id: product?.id,
+                        product: product,
+                        actionType: "decrement",
+                      })
+                    )
+                  }
+                />
+              )}
             </Box>
             <Box
               sx={{
@@ -106,15 +146,43 @@ function AddRemoveBtn({ prod, hasNum = false, timeSpent = false }) {
                 paddingTop: isMobile ? "3px" : "11px",
               }}
             >
-              43
+              {loadingCart ? (
+                <CircularProgress color="inherit" size={15} />
+              ) : (
+                prodInsideBasket()?.quantity
+              )}
             </Box>
             <Box>
-              <Add sx={iconStyle} onClick={() => alert("incre 1")} />
+              <Add
+                sx={iconStyle}
+                onClick={() =>
+                  !loadingCart &&
+                  dispatch(
+                    updateItemQuantityAsync({
+                      product_id: product?.id,
+                      product: product,
+                      actionType: "increment",
+                    })
+                  )
+                }
+              />
             </Box>
           </Box>
         )
       ) : (
-        <Box sx={{ cursor: "pointer" }} onClick={() => alert("add new one")}>
+        <Box
+          sx={{
+            cursor: "pointer",
+          }}
+          onClick={() =>
+            !loadingCart &&
+            dispatch(
+              addItemAsync([
+                { product_id: product?.id, product: product, quantity: 1 },
+              ])
+            )
+          }
+        >
           <Add sx={{ ...iconStyle, color: "white" }} />
         </Box>
       )}

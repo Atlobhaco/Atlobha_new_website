@@ -45,6 +45,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { user } = useAuth();
 
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+  const { basket } = useSelector((state) => state.basket);
 
   const router = useRouter();
   const { mobileScreen } = router.query;
@@ -233,13 +234,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 onClick={() => setOpenCategories(true)}
               />
               {/* <IconInsideCircle
-			  hasText={false}
-			  iconUrl="/icons/search-black.svg"
-			/>
-			<IconInsideCircle
-			  hasText={false}
-			  iconUrl="/icons/basket-black.svg"
-			/> */}
+                hasText={false}
+                iconUrl="/icons/search-black.svg"
+              /> */}
+              <IconInsideCircle
+                hasText={false}
+                iconUrl="/icons/basket-black.svg"
+                hasNum={basket?.length}
+              />
             </>
           )}
           {/* <SharedBtn

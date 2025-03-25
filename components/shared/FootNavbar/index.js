@@ -8,10 +8,13 @@ import Main from "../../../public/icons/main.svg";
 import More from "../../../public/icons/more.svg";
 import BlackMenu from "../../../public/icons/black-menu.svg";
 import CloseYellow from "../../../public/icons/close-yellow.svg";
+import { useSelector } from "react-redux";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function FootNavbar({ setOpenCategories, openCategories }) {
   const [activeTab, setActiveTab] = useState(null);
-
+  const { basket } = useSelector((state) => state.basket);
+  const { t } = useLocalization();
   return (
     <Box
       className={`${style["footNavbar"]}`}
@@ -42,6 +45,8 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             activeTab={activeTab === "search" ? true : false}
             onClick={() => setActiveTab("search")}
           /> */}
+          <Box sx={{ width: "75px" }}></Box>
+          <Box sx={{ width: "75px" }}></Box>
           <FootNavSection
             icon={<BlackMenu />}
             customWidth="43px"
@@ -49,6 +54,14 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             activeTab={activeTab === "menu" ? true : false}
             onClick={() => setOpenCategories(true)}
           />
+          <FootNavSection
+            icon={<Basket />}
+            text={t.basket}
+            activeTab={activeTab === "basket" ? true : false}
+            onClick={() => setActiveTab("basket")}
+            hasNum={basket?.length}
+          />
+          <Box sx={{ width: "75px" }}></Box>
           {/* <FootNavSection
             icon={<Basket />}
             text="السلة"

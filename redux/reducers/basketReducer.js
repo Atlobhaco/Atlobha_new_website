@@ -1,54 +1,252 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import { getPersistedBasketItems, isAuth } from "@/config/utils";
+import { CART } from "@/config/endPoints/endPoints";
+import { isAuth } from "@/config/hooks/isAuth";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
+const BASE_URL = CART;
+const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}${BASE_URL}`;
+const API_KEY = "w123";
+
+// ➤ Reusable API Request Handler
+const requestHandler = async (method, endpoint, data = {}) => {
+  const token = localStorage?.getItem("access_token");
+  return axios({
+    method,
+    url: `${API_URL}${endpoint}`,
+    data,
+    headers: {
+      Authorization: token ? `Bearer ${token}` : "",
+      "x-api-key": API_KEY,
+    },
+  });
+};
+
+// ➤ Fetch Cart
+export const fetchCartAsync = createAsyncThunk(
+  "basket/fetchCartAsync",
+  async (_, { rejectWithValue }) => {
+    try {
+      return (await requestHandler("get", "")).data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch cart");
+    }
+  }
+);
+
+// ➤ Sync from Local Storage
+export const syncFromLocalStorage = createAsyncThunk(
+  "basket/syncFromLocalStorage",
+  async (payload, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const state = getState();
+      const newProducts = (Array.isArray(payload) ? payload : [payload]).map(
+        ({ product, ...rest }) => rest
+      );
+
+      await requestHandler("post", "", { products: newProducts });
+
+      dispatch(fetchCartAsync());
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to sync items");
+    }
+  }
+);
+
+// ➤ Add Items
+export const addItemAsync = createAsyncThunk(
+  "basket/addItemAsync",
+  async (payload, { dispatch, getState, rejectWithValue }) => {
+    if (isAuth()) {
+      try {
+        const state = getState();
+        const currentBasket = state.basket.basket || [];
+
+        const newProducts = (Array.isArray(payload) ? payload : [payload]).map(
+          ({ product, ...rest }) => rest
+        );
+
+        const products = [
+          ...currentBasket.map((item) => ({
+            product_id: item?.product?.id || item?.product_id,
+            quantity: item?.quantity,
+          })),
+          ...newProducts,
+        ];
+
+        await requestHandler("post", "", { products });
+
+        dispatch(fetchCartAsync());
+      } catch (error) {
+        return rejectWithValue(error.response?.data || "Failed to add items");
+      }
+    } else {
+      const newItems = Array.isArray(payload) ? payload : [payload];
+      const state = getState();
+      const currentBasket = {};
+
+      state.basket.basket.forEach((item) => {
+        currentBasket[item.product_id] = { ...item };
+      });
+
+      newItems.forEach(({ product_id, product, quantity }) => {
+        currentBasket[product_id] = { product_id, product, quantity };
+      });
+
+      dispatch(updateBasket(Object.values(currentBasket)));
+    }
+  }
+);
+
+// ➤ Update Item Quantity
+export const updateItemQuantityAsync = createAsyncThunk(
+  "basket/updateItemQuantityAsync",
+  async ({ product_id, actionType }, { dispatch, getState, rejectWithValue }) => {
+    if (isAuth()) {
+      try {
+        await requestHandler("put", `/${actionType}`, { product_id });
+        dispatch(fetchCartAsync());
+      } catch (error) {
+        return rejectWithValue(error.response?.data || `Failed to ${actionType} item`);
+      }
+    } else {
+      const state = getState();
+      const currentBasket = {};
+
+      state.basket.basket.forEach((item) => {
+        if (item.product_id) {
+          currentBasket[item.product_id] = { ...item };
+        }
+      });
+
+      if (!product_id) {
+        console.error("Invalid product_id:", product_id);
+        return;
+      }
+
+      const quantityChange = actionType === "increment" ? 1 : -1;
+
+      if (currentBasket[product_id]) {
+        currentBasket[product_id] = {
+          ...currentBasket[product_id],
+          quantity: Math.max(1, currentBasket[product_id].quantity + quantityChange),
+        };
+      }
+
+      dispatch(updateBasket(Object.values(currentBasket)));
+    }
+  }
+);
+
+// ➤ Delete Item
+export const deleteItemAsync = createAsyncThunk(
+  "basket/deleteItemAsync",
+  async ({ product_id }, { dispatch, getState, rejectWithValue }) => {
+    if (isAuth()) {
+      try {
+        await requestHandler("delete", "/delete", { product_id });
+        dispatch(fetchCartAsync());
+      } catch (error) {
+        return rejectWithValue(error.response?.data || "Failed to delete item");
+      }
+    } else {
+      const state = getState();
+      const updatedBasket = state.basket.basket.filter(
+        (item) => item?.product_id !== product_id
+      );
+      dispatch(updateBasket(Object.values(updatedBasket)));
+    }
+  }
+);
+
+// ➤ Initial State
 const initialState = {
   basket: [],
   items: {},
+  error: null,
+  loadingCart: false, // Added loading state
 };
 
+// ➤ Basket Slice
 const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
-    // Action to add an item or update its quantity
-    addItem(state, action) {
-      const { id, product, quantity } = action.payload;
-      if (state.items[id]) {
-        // If the item already exists, increase the quantity
-        state.items[id].cart_quantity = quantity;
-      } else {
-        // Add new item with quantity of 1
-        state.items[id] = { ...product, cart_quantity: 1 };
+    updateBasket(state, action) {
+      if (!isAuth()) {
+        localStorage.setItem("basket", JSON.stringify(action.payload));
       }
+      state.basket = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Fetch Cart
+      .addCase(fetchCartAsync.pending, (state) => {
+        state.loadingCart = true;
+      })
+      .addCase(fetchCartAsync.fulfilled, (state, action) => {
+        state.loadingCart = false;
+        state.basket =
+          action.payload?.data?.map((prod) => ({
+            product_id: prod?.product?.id,
+            ...prod,
+          })) || [];
+      })
+      .addCase(fetchCartAsync.rejected, (state, action) => {
+        state.loadingCart = false;
+        state.error = action.payload;
+      })
 
-    // Action to remove an item or decrease its quantity
-    removeItem(state, action) {
-      const id = action.payload;
-      if (state.items[id] && state.items[id].cart_quantity > 1) {
-        // Decrease quantity if more than one
-        state.items[id].cart_quantity -= 1;
-      } else {
-        // Remove item completely if quantity is 1
-        delete state.items[id];
-      }
-    },
-    // remove item completely from first time
-    removeWholeItem(state, action) {
-      const id = action.payload;
-      delete state.items[id];
-    },
+      // Sync from Local Storage
+      .addCase(syncFromLocalStorage.pending, (state) => {
+        state.loadingCart = true;
+      })
+      .addCase(syncFromLocalStorage.fulfilled, (state) => {
+        state.loadingCart = false;
+      })
+      .addCase(syncFromLocalStorage.rejected, (state, action) => {
+        state.loadingCart = false;
+        state.error = action.payload;
+      })
 
-    setItems(state, action) {
-      state.items = action.payload;
-    },
-    setBasket(state, action) {
-      state.basket = [];
-      state.basket.push(...action.payload);
-    },
+      // Add Item
+      .addCase(addItemAsync.pending, (state) => {
+        state.loadingCart = true;
+      })
+      .addCase(addItemAsync.fulfilled, (state) => {
+        state.loadingCart = false;
+      })
+      .addCase(addItemAsync.rejected, (state, action) => {
+        state.loadingCart = false;
+        state.error = action.payload;
+      })
+
+      // Delete Item
+      .addCase(deleteItemAsync.pending, (state) => {
+        state.loadingCart = true;
+      })
+      .addCase(deleteItemAsync.fulfilled, (state) => {
+        state.loadingCart = false;
+      })
+      .addCase(deleteItemAsync.rejected, (state, action) => {
+        state.loadingCart = false;
+        state.error = action.payload;
+      })
+
+      // Update Quantity
+      .addCase(updateItemQuantityAsync.pending, (state) => {
+        state.loadingCart = true;
+      })
+      .addCase(updateItemQuantityAsync.fulfilled, (state) => {
+        state.loadingCart = false;
+      })
+      .addCase(updateItemQuantityAsync.rejected, (state, action) => {
+        state.loadingCart = false;
+        state.error = action.payload;
+      });
   },
 });
 
-export const { addItem, removeItem, setItems, setBasket, removeWholeItem } =
-  basketSlice.actions;
+// ➤ Exports
+export const { updateBasket } = basketSlice.actions;
 export default basketSlice.reducer;

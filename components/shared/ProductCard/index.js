@@ -61,9 +61,9 @@ function ProductCard({ hasNum, timeSpent = false, product }) {
             margin: "auto",
           }}
         />
-        {/* <Box>
-          <AddRemoveBtn hasNum={hasNum} timeSpent={timeSpent} />
-        </Box> */}
+        <Box>
+          <AddRemoveBtn product={product} />
+        </Box>
       </Box>
       <Box className={`${style["prod-info-wrapper"]}`}>
         {!!product?.price_before_discount && (
