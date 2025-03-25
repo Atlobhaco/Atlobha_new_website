@@ -6,9 +6,11 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { QUICK_LINKS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
 import { isAuth } from "@/config/hooks/isAuth";
+import { useRouter } from "next/router";
 
 function QuickLinks({ sectionInfo }) {
   const { isMobile } = useScreenSize();
+  const router = useRouter();
 
   const { data: quickLinksData } = useCustomQuery({
     name: ["quick-links", sectionInfo?.is_active],
@@ -38,7 +40,7 @@ console.log('quickLinksData',quickLinksData);
           imgHeight={isMobile ? "22" : "42"}
           imgWidth={isMobile ? "22" : "42"}
           iconUrl={item?.image?.url}
-          onClick={() => window.open(item?.link)}
+          onClick={() => router.push(item?.link)}
         />
       ))}
     </Box>
