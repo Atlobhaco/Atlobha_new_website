@@ -32,6 +32,11 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $deeplink_path: "MarketplaceProduct",
+    routeToRedirect: "/",
+  },
+  {
+    ...defaultProps,
     $link_title: "TestDrive",
     sectionGroup: true,
     nameInsideGroup: "test-drive",
@@ -112,7 +117,6 @@ const useBranch = () => {
 
   useEffect(() => {
     if (branchData) {
-
       const redirectItemOrderDetails = arrayForRedirect.find(
         (item) =>
           item.$deeplink_path === branchData?.data_parsed?.$deeplink_path
@@ -124,10 +128,19 @@ const useBranch = () => {
 
       //   custom conidtion for order details page
       if (redirectItemOrderDetails) {
-        if (redirectItemOrderDetails?.mustAuthenticated && isAuth()) {
+        // redirect to sparePartsOrder
+        if (
+          redirectItemOrderDetails?.mustAuthenticated &&
+          isAuth() &&
+          redirectItemOrderDetails?.$deeplink_path === "SparePartsOrder"
+        ) {
           router.push(
             `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${branchData?.data_parsed?.$deeplink_path}`
           );
+        }
+        // redirect  to home page marketplace
+        if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
+          router.push(redirectItem.routeToRedirect);
         }
         return;
       }

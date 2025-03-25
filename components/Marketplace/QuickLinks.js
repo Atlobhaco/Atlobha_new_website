@@ -19,7 +19,7 @@ function QuickLinks({ sectionInfo }) {
       : sectionInfo?.is_active,
     select: (res) => res?.data?.data,
   });
-
+console.log('quickLinksData',quickLinksData);
   return !sectionInfo?.is_active || !quickLinksData?.length ? null : (
     <Box
       sx={{
