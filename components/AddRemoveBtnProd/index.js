@@ -47,7 +47,7 @@ function AddRemoveBtn({ product }) {
     justifyContent: "center",
     gap: "27px",
     ...(locale === "ar" ? { left: "2px" } : { right: "2px" }),
-    bottom: "-22px",
+    bottom: isMobile ? "-14px" : "-22px",
     transition: "all 0.3s ease-in-out",
   };
   const addRemoveBtn = {
