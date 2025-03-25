@@ -140,7 +140,7 @@ const useBranch = () => {
         }
         // redirect  to home page marketplace
         if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
-          router.push(redirectItem.routeToRedirect);
+          router.push(redirectItemOrderDetails.routeToRedirect);
         }
         return;
       }
