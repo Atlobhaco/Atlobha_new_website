@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import style from "../../components/ColoredHint/ColoredHint.module.scss";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function HeaderSection({
   arrowPath = "/icons/arrow-left.svg",
@@ -11,6 +12,7 @@ function HeaderSection({
   showArrow = false,
 }) {
   const { isMobile } = useScreenSize();
+  const { locale } = useLocalization();
 
   return (
     <Box
@@ -52,7 +54,9 @@ function HeaderSection({
               src={arrowPath}
               width={isMobile ? 15 : 28}
               height={isMobile ? 15 : 28}
-              style={{ marginBottom: isMobile ? "0px" : "-8px" }}
+              style={{
+                marginBottom: isMobile || locale === "ar" ? "0px" : "-8px",
+              }}
             />
           </Box>
         )}
