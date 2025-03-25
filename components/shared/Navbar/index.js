@@ -336,7 +336,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </div>
       </Box>
-      {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
+      {/* {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
         <Box className={`${style["searching"]}`}>
           <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
           <Box className={`${style["searching-sub"]}`}>
@@ -350,7 +350,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             </Box>
           </Box>
         </Box>
-      )}
+      )} */}
       {true && (
         <Box
           className={`${style["sections"]}`}
