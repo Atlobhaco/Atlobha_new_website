@@ -30,13 +30,13 @@ const arrayForRedirect = [
     $deeplink_path: "SparePartsOrder",
     mustAuthenticated: true,
   },
-//   need to ask where to go
-// https://links.stage.atlobha.com/A7zMOpmhSNb inside quickLinks ar1
-// https://links.stage.atlobha.com/UxzA6smhSNb inside ads
   {
     ...defaultProps,
     $deeplink_path: "MarketplaceProduct",
-    routeToRedirect: "/",
+  },
+  {
+    ...defaultProps,
+    $deeplink_path: "MarketplaceCategory",
   },
   {
     ...defaultProps,
@@ -144,6 +144,12 @@ const useBranch = () => {
         // redirect to markeplace product
         if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
           router.push(`/product/${branchData?.data_parsed?.id}`);
+        }
+        // redirect to marketplace category
+        if (
+          redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
+        ) {
+          router.push(`/category/${branchData?.data_parsed?.id}`);
         }
         return;
       }
