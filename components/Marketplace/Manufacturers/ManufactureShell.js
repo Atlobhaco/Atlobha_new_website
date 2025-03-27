@@ -6,15 +6,18 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { MARKETPLACE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Slider from "react-slick";
 
 function ManufactureShell({ sectionInfo }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const router = useRouter();
 
   const [page, setPage] = useState(1);
   const [manufactureProducts, setManProducts] = useState([]);
+  const [isDragging, setIsDragging] = useState(false);
 
   useCustomQuery({
     name: [
@@ -65,8 +68,14 @@ function ManufactureShell({ sectionInfo }) {
         },
       },
     ],
+    beforeChange: () => {
+      setIsDragging(true);
+      setTimeout(() => {
+        setIsDragging(false);
+      }, 500);
+    }, // Set dragging to true when slide changes
   };
-
+  console.log("isDragging", isDragging);
   return !sectionInfo?.is_active ||
     !manufactureProducts?.data?.length ? null : (
     <Box
@@ -85,6 +94,11 @@ function ManufactureShell({ sectionInfo }) {
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (
             <Box
+              onClick={() => {
+                if (!isDragging) {
+                  router.push(`/product/${prod?.id}`);
+                }
+              }}
               key={prod?.id}
               sx={{
                 display: "flex !important",
@@ -92,7 +106,11 @@ function ManufactureShell({ sectionInfo }) {
                 direction: locale === "ar" ? "rtl" : "ltr",
               }}
             >
-              <ProductCard product={prod} hasNum={prod?.image} />
+              <ProductCard
+                product={prod}
+                hasNum={prod?.image}
+                preventOnClick={true}
+              />
             </Box>
           ))}
         </Slider>

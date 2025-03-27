@@ -8,7 +8,7 @@ import Image from "next/image";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useRouter } from "next/router";
 
-function ProductCard({ product }) {
+function ProductCard({ product, preventOnClick = false }) {
   const router = useRouter();
 
   //   console.log(product);
@@ -37,7 +37,7 @@ function ProductCard({ product }) {
     <Box
       className={`${style["prod"]}`}
       key={product?.id}
-      onClick={() => router.push(`/product/${product?.id}`)}
+      onClick={() => !preventOnClick && router.push(`/product/${product?.id}`)}
     >
       <Box
         className={`${style["prod-img-wrapper"]}`}
