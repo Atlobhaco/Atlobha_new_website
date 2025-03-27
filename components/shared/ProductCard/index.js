@@ -6,10 +6,10 @@ import AddRemoveBtn from "@/components/AddRemoveBtnProd";
 import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
 import Image from "next/image";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { useRouter } from "next/router";
 
-function ProductCard({ hasNum, timeSpent = false, product }) {
-  const { basket, items } = useSelector((state) => state.basket);
-  const { isMobile } = useScreenSize();
+function ProductCard({ product }) {
+  const router = useRouter();
 
   //   console.log(product);
   //   const returnSpecificLabelColor = () => {
@@ -34,7 +34,11 @@ function ProductCard({ hasNum, timeSpent = false, product }) {
   //   };
 
   return (
-    <Box className={`${style["prod"]}`} key={product?.id}>
+    <Box
+      className={`${style["prod"]}`}
+      key={product?.id}
+      onClick={() => router.push(`/product/${product?.id}`)}
+    >
       <Box
         className={`${style["prod-img-wrapper"]}`}
         sx={{

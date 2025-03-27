@@ -22,7 +22,6 @@ function CategoriesMarketplace({ sectionInfo }) {
     select: (res) => res?.data?.data,
   });
 
-
   return !sectionInfo?.is_active || !categories?.length ? null : (
     <Box
       sx={{
@@ -41,9 +40,11 @@ function CategoriesMarketplace({ sectionInfo }) {
       >
         {categories?.map((cat) => (
           <CategoryData
+            category={cat}
             keyValue={cat?.name}
             imgPath={cat?.image?.url}
             text={cat?.name}
+            bgImage={cat?.background_image?.url}
           />
         ))}
       </Box>

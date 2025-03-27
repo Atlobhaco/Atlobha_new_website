@@ -3,13 +3,13 @@ import MetaTags from "@/components/shared/MetaTags";
 import { Box } from "@mui/material";
 import React from "react";
 
-function ProductDetails() {
+function ServiceCategory() {
   return (
     <Box>
-      <MetaTags title={"product"} content={"product"} />
+      <MetaTags title={"serviceCategory"} content={"serviceCategory"} />
       <ComingSoon />
     </Box>
   );
 }
 
-export default ProductDetails;
+export default ServiceCategory;

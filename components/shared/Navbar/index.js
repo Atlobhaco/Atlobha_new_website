@@ -167,7 +167,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       allGroups[1]?.sections?.find(
         (sec) => sec?.title === router?.query?.secTitle
       )?.background_color || "#DDECFF";
-
+    //   "#DDECFF" default bg color for any page no section
     if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
       return router?.pathname?.includes("/spareParts")
         ? sparePartColor || "#FFF5EF"

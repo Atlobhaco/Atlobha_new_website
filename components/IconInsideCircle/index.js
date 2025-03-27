@@ -19,7 +19,7 @@ function IconInsideCircle({
   title = false,
   hasNum = false,
 }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   const textStyle = {
@@ -35,7 +35,7 @@ function IconInsideCircle({
   const numStyle = {
     position: "absolute",
     top: "-9px",
-    left: "-9px",
+    ...(locale === "ar" ? { left: "-9px" } : { right: "-9px" }),
     background: "black",
     borderRadius: "50%",
     fontSize: "14px",

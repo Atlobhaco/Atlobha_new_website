@@ -40,6 +40,10 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $deeplink_path: "ServiceCategory",
+  },
+  {
+    ...defaultProps,
     $link_title: "TestDrive",
     sectionGroup: true,
     nameInsideGroup: "test-drive",
@@ -150,6 +154,10 @@ const useBranch = () => {
           redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
         ) {
           router.push(`/category/${branchData?.data_parsed?.id}`);
+        }
+        // redirect to service category
+        if (redirectItemOrderDetails?.$deeplink_path === "ServiceCategory") {
+          router.push(`/serviceCategory/${branchData?.data_parsed?.id}`);
         }
         return;
       }

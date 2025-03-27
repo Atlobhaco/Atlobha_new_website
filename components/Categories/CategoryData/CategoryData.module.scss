@@ -2,6 +2,7 @@
 @import "../../../styles/mixins.scss";
 
 .category {
+  cursor: pointer;
   background-color: $primary;
   display: flex;
   width: 180px;
@@ -12,6 +13,9 @@
   align-items: center;
   gap: 12px;
   border-radius: 90px;
+  &:hover {
+    opacity: 0.9;
+  }
   @include mobile-screen-style {
     // border-radius: 8px;
     width: 95px;

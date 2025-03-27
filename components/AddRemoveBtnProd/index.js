@@ -118,24 +118,28 @@ function AddRemoveBtn({ product }) {
               {prodInsideBasket()?.quantity <= 1 ? (
                 <CustomDeleteIcon
                   iconStyle={iconStyle}
-                  onClick={() =>
+                  onClick={(e) => {
+                    e?.stopPropagation();
+                    e?.preventDefault();
                     !loadingCart &&
-                    dispatch(deleteItemAsync({ product_id: product?.id }))
-                  }
+                      dispatch(deleteItemAsync({ product_id: product?.id }));
+                  }}
                 />
               ) : (
                 <Remove
                   sx={iconStyle}
-                  onClick={() =>
+                  onClick={(e) => {
+                    e?.stopPropagation();
+                    e?.preventDefault();
                     !loadingCart &&
-                    dispatch(
-                      updateItemQuantityAsync({
-                        product_id: product?.id,
-                        product: product,
-                        actionType: "decrement",
-                      })
-                    )
-                  }
+                      dispatch(
+                        updateItemQuantityAsync({
+                          product_id: product?.id,
+                          product: product,
+                          actionType: "decrement",
+                        })
+                      );
+                  }}
                 />
               )}
             </Box>
@@ -155,16 +159,18 @@ function AddRemoveBtn({ product }) {
             <Box>
               <Add
                 sx={iconStyle}
-                onClick={() =>
+                onClick={(e) => {
+                  e?.stopPropagation();
+                  e?.preventDefault();
                   !loadingCart &&
-                  dispatch(
-                    updateItemQuantityAsync({
-                      product_id: product?.id,
-                      product: product,
-                      actionType: "increment",
-                    })
-                  )
-                }
+                    dispatch(
+                      updateItemQuantityAsync({
+                        product_id: product?.id,
+                        product: product,
+                        actionType: "increment",
+                      })
+                    );
+                }}
               />
             </Box>
           </Box>
@@ -174,14 +180,16 @@ function AddRemoveBtn({ product }) {
           sx={{
             cursor: "pointer",
           }}
-          onClick={() =>
+          onClick={(e) => {
+            e?.stopPropagation();
+            e?.preventDefault();
             !loadingCart &&
-            dispatch(
-              addItemAsync([
-                { product_id: product?.id, product: product, quantity: 1 },
-              ])
-            )
-          }
+              dispatch(
+                addItemAsync([
+                  { product_id: product?.id, product: product, quantity: 1 },
+                ])
+              );
+          }}
         >
           <Add sx={{ ...iconStyle, color: "white" }} />
         </Box>
