@@ -32,6 +32,18 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $deeplink_path: "MarketplaceProduct",
+  },
+  {
+    ...defaultProps,
+    $deeplink_path: "MarketplaceCategory",
+  },
+  {
+    ...defaultProps,
+    $deeplink_path: "ServiceCategory",
+  },
+  {
+    ...defaultProps,
     $link_title: "TestDrive",
     sectionGroup: true,
     nameInsideGroup: "test-drive",
@@ -112,7 +124,6 @@ const useBranch = () => {
 
   useEffect(() => {
     if (branchData) {
-
       const redirectItemOrderDetails = arrayForRedirect.find(
         (item) =>
           item.$deeplink_path === branchData?.data_parsed?.$deeplink_path
@@ -124,10 +135,29 @@ const useBranch = () => {
 
       //   custom conidtion for order details page
       if (redirectItemOrderDetails) {
-        if (redirectItemOrderDetails?.mustAuthenticated && isAuth()) {
+        // redirect to sparePartsOrder
+        if (
+          redirectItemOrderDetails?.mustAuthenticated &&
+          isAuth() &&
+          redirectItemOrderDetails?.$deeplink_path === "SparePartsOrder"
+        ) {
           router.push(
             `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${branchData?.data_parsed?.$deeplink_path}`
           );
+        }
+        // redirect to markeplace product
+        if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
+          router.push(`/product/${branchData?.data_parsed?.id}`);
+        }
+        // redirect to marketplace category
+        if (
+          redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
+        ) {
+          router.push(`/category/${branchData?.data_parsed?.id}`);
+        }
+        // redirect to service category
+        if (redirectItemOrderDetails?.$deeplink_path === "ServiceCategory") {
+          router.push(`/serviceCategory/${branchData?.data_parsed?.id}`);
         }
         return;
       }

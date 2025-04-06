@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import HeaderSection from "../HeaderSection";
 import useLocalization from "@/config/hooks/useLocalization";
 import Slider from "react-slick";
@@ -7,10 +7,13 @@ import { MARKETPLACE, PRODUCTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { isAuth } from "@/config/hooks/isAuth";
+import { useRouter } from "next/router";
 
 function PackageOffers({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
+  const router = useRouter();
+  const [isDragging, setIsDragging] = useState(false);
 
   const { data: featuredProducts } = useCustomQuery({
     name: ["featured-products", sectionInfo?.is_active],
@@ -28,9 +31,10 @@ function PackageOffers({ sectionInfo }) {
     speed: 900,
     slidesToShow: 4,
     slidesToScroll: 2,
-    autoplay: true, // Enable autoplay
+    autoplay: true,
     autoplaySpeed: 1500,
-    rtl: locale === "ar" ? true : false,
+    rtl: locale === "ar",
+    touchThreshold: 10,
     responsive: [
       {
         breakpoint: 1024,
@@ -54,6 +58,8 @@ function PackageOffers({ sectionInfo }) {
         },
       },
     ],
+    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
+    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
 
   return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (
@@ -72,13 +78,17 @@ function PackageOffers({ sectionInfo }) {
       <Slider {...settings}>
         {featuredProducts?.data?.map((featured) => (
           <Box
-            onClick={() => alert("redirect")}
+            key={featured?.id}
+            onClick={() => {
+              if (!isDragging) {
+                router.push(featured?.deep_link); // Replace with router.push(featured?.deep_link) when needed
+              }
+            }}
             sx={{
               width: "95% !important",
               height: isMobile ? "200px" : "400px",
               cursor: "pointer",
             }}
-            key={featured?.id}
           >
             <Box
               sx={{

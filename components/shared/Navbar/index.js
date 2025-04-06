@@ -45,6 +45,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { user } = useAuth();
 
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+  const { basket } = useSelector((state) => state.basket);
 
   const router = useRouter();
   const { mobileScreen } = router.query;
@@ -166,7 +167,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       allGroups[1]?.sections?.find(
         (sec) => sec?.title === router?.query?.secTitle
       )?.background_color || "#DDECFF";
-
+    //   "#DDECFF" default bg color for any page no section
     if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
       return router?.pathname?.includes("/spareParts")
         ? sparePartColor || "#FFF5EF"
@@ -233,13 +234,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 onClick={() => setOpenCategories(true)}
               />
               {/* <IconInsideCircle
-			  hasText={false}
-			  iconUrl="/icons/search-black.svg"
-			/>
-			<IconInsideCircle
-			  hasText={false}
-			  iconUrl="/icons/basket-black.svg"
-			/> */}
+                hasText={false}
+                iconUrl="/icons/search-black.svg"
+              /> */}
+              <IconInsideCircle
+                hasText={false}
+                iconUrl="/icons/basket-black.svg"
+                hasNum={basket?.length}
+              />
             </>
           )}
           {/* <SharedBtn
@@ -334,7 +336,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </div>
       </Box>
-      {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
+      {/* {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
         <Box className={`${style["searching"]}`}>
           <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
           <Box className={`${style["searching-sub"]}`}>
@@ -348,7 +350,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             </Box>
           </Box>
         </Box>
-      )}
+      )} */}
       {true && (
         <Box
           className={`${style["sections"]}`}

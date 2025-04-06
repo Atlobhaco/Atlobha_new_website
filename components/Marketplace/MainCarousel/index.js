@@ -30,6 +30,7 @@ function MainCarousel({ sectionInfo }) {
     return ads?.map((item) => (
       <Carousel.Item key={item?.media}>
         <div
+          onClick={() => item?.link && window.open(item?.link)}
           className="carousel-item-wrapper"
           style={{
             borderRadius: "20px",
@@ -40,6 +41,7 @@ function MainCarousel({ sectionInfo }) {
             backgroundSize: "100% 100%",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
+            cursor: "pointer",
           }}
         ></div>
       </Carousel.Item>

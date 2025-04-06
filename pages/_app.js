@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import moment from "moment";
 import Script from "next/script";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import AuthProvider, { useAuth } from "@/config/providers/AuthProvider";
 import ToastifyProvider from "@/config/providers/ToastifyProvider";
 import AxiosProvider from "@/config/network/AxiosConfig";
@@ -18,6 +18,12 @@ import Layout from "@/layouts/MainLayout";
 import "moment/locale/ar";
 import useBranch from "./useBranch";
 import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  addItemAsync,
+  fetchCartAsync,
+  syncFromLocalStorage,
+} from "@/redux/reducers/basketReducer";
+import { isAuth } from "@/config/hooks/isAuth";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -25,12 +31,32 @@ const queryClient = new QueryClient();
 const AppContent = ({ Component, pageProps }) => {
   const { locale } = useRouter();
   const { user } = useAuth();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
     document.documentElement.lang = locale;
     moment.locale(locale === "ar" ? "ar" : "en");
   }, [locale]);
+
+  useEffect(() => {
+    // basket items depenc on user auth or not
+    if (localStorage.getItem("basket")) {
+      if (!isAuth()) {
+        const basket = JSON.parse(localStorage.getItem("basket"));
+        dispatch(addItemAsync(basket));
+      } else {
+        const basket = JSON.parse(localStorage.getItem("basket"));
+        dispatch(syncFromLocalStorage(basket));
+        localStorage.removeItem("basket");
+        dispatch(fetchCartAsync());
+      }
+    }
+    if (isAuth()) {
+      dispatch(fetchCartAsync());
+    }
+  }, [isAuth(), locale]);
+
 
   return (
     <Provider store={store}>

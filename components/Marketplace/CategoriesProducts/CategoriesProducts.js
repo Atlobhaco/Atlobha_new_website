@@ -12,7 +12,6 @@ import React, { useState } from "react";
 function CategoriesProducts({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
-
   const [page, setPage] = useState(1);
   const [allData, setAllData] = useState([]);
 

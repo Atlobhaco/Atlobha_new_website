@@ -45,3 +45,4 @@ export const PRODUCTS = "/products";
 export const CATEGORY = "/category";
 export const RECENTLY_VIEWED = "/recently-viewed";
 export const MANUFACTURERS = "/manufacturers";
+export const CART = "/cart";

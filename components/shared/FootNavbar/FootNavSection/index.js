@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import style from "../FootNavbar.module.scss";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function FootNavSection({
   icon,
@@ -10,7 +11,26 @@ function FootNavSection({
   onClick = () => {},
   customWidth = null,
   customHeight = null,
+  hasNum = false,
 }) {
+  const { locale } = useLocalization();
+  
+  const numStyle = {
+    position: "absolute",
+    top: "-9px",
+    ...(locale === "ar" ? { left: "-15px" } : { right: "-15px" }),
+    background: "black",
+    borderRadius: "50%",
+    fontSize: "11px",
+    fontWeight: "bold",
+    color: "white",
+    width: "20px",
+    height: "20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: "2px",
+  };
   return (
     <Box
       onClick={onClick}
@@ -29,9 +49,15 @@ function FootNavSection({
       <Box
         sx={{
           width: customWidth || "24px",
+          position: "relative",
           height: customHeight || "24px",
         }}
       >
+        {hasNum > 0 && (
+          <Box sx={numStyle} component="span">
+            {hasNum}
+          </Box>
+        )}
         {icon}
       </Box>
       {text}
