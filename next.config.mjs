@@ -12,7 +12,12 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "atlobha-staging.s3.me-south-1.amazonaws.com",
-        hostname: "/**",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "old.atlobha.com", // ✅ added this
+        pathname: "/**", // ✅ make sure this is correct
       },
       {
         protocol: "http",
