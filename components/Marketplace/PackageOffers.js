@@ -28,13 +28,14 @@ function PackageOffers({ sectionInfo }) {
   var settings = {
     dots: true,
     infinite: true,
-    speed: 900,
     slidesToShow: 4,
     slidesToScroll: 2,
     autoplay: true,
-    autoplaySpeed: 1500,
     rtl: locale === "ar",
     touchThreshold: 10,
+	speed: 3000,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
     responsive: [
       {
         breakpoint: 1024,

@@ -40,11 +40,14 @@ function ManufactureShell({ sectionInfo }) {
   var settings = {
     dots: false,
     infinite: true,
-    speed: 900,
     slidesToShow: 4,
     slidesToScroll: 2,
     autoplay: true,
-    autoplaySpeed: 1500,
+    touchThreshold: 10,
+    speed: 3000,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    rtl: locale === "ar",
     responsive: [
       {
         breakpoint: 1024,
@@ -68,12 +71,14 @@ function ManufactureShell({ sectionInfo }) {
         },
       },
     ],
-    beforeChange: () => {
-      setIsDragging(true);
-      setTimeout(() => {
-        setIsDragging(false);
-      }, 500);
-    }, // Set dragging to true when slide changes
+    // beforeChange: () => {
+    //   setIsDragging(true);
+    //   setTimeout(() => {
+    //     setIsDragging(false);
+    //   }, 500);
+    // }, // Set dragging to true when slide changes
+    // beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
+    // afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
 
   return !sectionInfo?.is_active ||
