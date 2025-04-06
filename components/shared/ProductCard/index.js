@@ -45,7 +45,7 @@ function ProductCard({ product, preventOnClick = false }) {
           //   background: `center / contain no-repeat url(${
           //     product?.image || "/imgs/no-prod-img.svg"
           //   })`,
-          height: "100%",
+        //   height: "100%",
         }}
       >
         <Image
