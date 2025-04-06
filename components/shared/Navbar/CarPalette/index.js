@@ -177,9 +177,12 @@ function CarPalette() {
                 height={isMobile ? 30 : 40}
                 src={selectedCar?.brand?.image || defaultCar?.brand?.image}
                 style={{
-                  width: "auto",
-                  height: "auto",
+                  width: isMobile ? 30 : 40,
+                  height: isMobile ? 30 : 40,
                 }}
+                unoptimized={
+                  process.env.NEXT_PUBLIC_DISABLE_IMAGE_OPTIMIZATION === "true"
+                }
               />
             </Box>
             <Box sx={{ ...textStyle, letterSpacing: "5.854px" }}>
