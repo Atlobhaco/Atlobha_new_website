@@ -102,9 +102,6 @@ function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
                   maxHeight: isMobile ? "30px" : "48px",
                   maxWidth: isMobile ? "30px" : "48px",
                 }}
-                unoptimized={
-                  process.env.NEXT_PUBLIC_DISABLE_IMAGE_OPTIMIZATION === "true"
-                }
               />
             </Box>
             {/* Car Details */}

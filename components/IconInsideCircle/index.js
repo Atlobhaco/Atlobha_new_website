@@ -76,15 +76,7 @@ function IconInsideCircle({
         }}
         onClick={onClick}
       >
-        <Image
-          alt={alt}
-          src={iconUrl}
-          width={imgWidth}
-          height={imgHeight}
-          unoptimized={
-            process.env.NEXT_PUBLIC_DISABLE_IMAGE_OPTIMIZATION === "true"
-          }
-        />
+        <Image alt={alt} src={iconUrl} width={imgWidth} height={imgHeight} />
         {hasNum > 0 && (
           <Box sx={numStyle} component="span">
             {hasNum}
