@@ -180,9 +180,6 @@ function CarPalette() {
                   width: isMobile ? 30 : 40,
                   height: isMobile ? 30 : 40,
                 }}
-                unoptimized={
-                  process.env.NEXT_PUBLIC_DISABLE_IMAGE_OPTIMIZATION === "true"
-                }
               />
             </Box>
             <Box sx={{ ...textStyle, letterSpacing: "5.854px" }}>
