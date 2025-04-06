@@ -77,8 +77,8 @@ function ManufactureShell({ sectionInfo }) {
     //     setIsDragging(false);
     //   }, 500);
     // }, // Set dragging to true when slide changes
-    // beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
-    // afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
+    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
+    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
 
   return !sectionInfo?.is_active ||

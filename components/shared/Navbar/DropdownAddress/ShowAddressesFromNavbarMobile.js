@@ -47,7 +47,10 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
         );
       }
     } catch (error) {
-      toast.error(error.message || "An error occurred");
+      toast.error(
+        error.message ||
+          "Please enable your location services for better accuracy."
+      );
     }
     setSelectCarPopUpModal(false);
   };
