@@ -7,7 +7,7 @@ import { MARKETPLACE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Slider from "react-slick";
 
 function ManufactureShell({ sectionInfo }) {
@@ -16,10 +16,9 @@ function ManufactureShell({ sectionInfo }) {
   const router = useRouter();
 
   const [page, setPage] = useState(1);
-  const [manufactureProducts, setManProducts] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
 
-  useCustomQuery({
+  const { data: manufactureProducts } = useCustomQuery({
     name: [
       `manufacturer${sectionInfo?.id}`,
       sectionInfo?.is_active,
@@ -34,7 +33,6 @@ function ManufactureShell({ sectionInfo }) {
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data,
-    onSuccess: (res) => setManProducts(res),
   });
 
   var settings = {
@@ -71,15 +69,19 @@ function ManufactureShell({ sectionInfo }) {
         },
       },
     ],
-    // beforeChange: () => {
-    //   setIsDragging(true);
-    //   setTimeout(() => {
-    //     setIsDragging(false);
-    //   }, 500);
-    // }, // Set dragging to true when slide changes
-    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
-    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
+    beforeChange: () => setIsDragging(true),
+    afterChange: () => setTimeout(() => setIsDragging(false), 500),
   };
+
+  // useCallback to prevent unnecessary re-renders on click
+  const handleProductClick = useCallback(
+    (prod) => {
+      if (!isDragging) {
+        router.push(`/product/${prod?.id}`);
+      }
+    },
+    [isDragging, router]
+  );
 
   return !sectionInfo?.is_active ||
     !manufactureProducts?.data?.length ? null : (
@@ -99,11 +101,7 @@ function ManufactureShell({ sectionInfo }) {
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (
             <Box
-              onClick={() => {
-                if (!isDragging) {
-                  router.push(`/product/${prod?.id}`);
-                }
-              }}
+              onClick={() => handleProductClick(prod)}
               key={prod?.id}
               sx={{
                 display: "flex !important",

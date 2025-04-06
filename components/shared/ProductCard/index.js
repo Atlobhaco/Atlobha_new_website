@@ -1,37 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import style from "./ProductCard.module.scss";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
 import AddRemoveBtn from "@/components/AddRemoveBtnProd";
 import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
 import Image from "next/image";
-import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { useRouter } from "next/router";
 
-function ProductCard({ product, preventOnClick = false }) {
+// Memoize the ProductCard component to optimize performance
+const ProductCard = React.memo(({ product, preventOnClick = false }) => {
   const router = useRouter();
-
-  //   console.log(product);
-  //   const returnSpecificLabelColor = () => {
-  //     if (product?.has_free_delivery) {
-  //       return "green";
-  //     }
-  //   };
-
-  //   const renderLabelForProduct = (type) => {
-  //     switch (type) {
-  //       case "red":
-  //         return { bgColor: "red", text: "redLabel" };
-  //       case "green":
-  //         return { bgColor: "#6FBC36", text: "توصيل مجاني" };
-  //       case "yellow":
-  //         return { bgColor: "#FFD400", text: "عروض الصيانة", textColor: "#000" };
-  //       case "grey":
-  //         return { bgColor: "#B0B0B0", text: "لا يوجد مخزون" };
-  //       default:
-  //         return { bgColor: "", text: "" };
-  //     }
-  //   };
 
   return (
     <Box
@@ -45,7 +22,6 @@ function ProductCard({ product, preventOnClick = false }) {
           //   background: `center / contain no-repeat url(${
           //     product?.image || "/imgs/no-prod-img.svg"
           //   })`,
-        //   height: "100%",
         }}
       >
         <Image
@@ -57,9 +33,7 @@ function ProductCard({ product, preventOnClick = false }) {
           style={{
             width: "auto",
             height: "auto",
-            // maxWidth: (product?.image || isMobile) && "100%",
             maxWidth: "100%",
-            // maxHeight: (product?.image || isMobile) && "100%",
             maxHeight: "100%",
             borderRadius: "8px",
             margin: "auto",
@@ -119,6 +93,6 @@ function ProductCard({ product, preventOnClick = false }) {
       )}
     </Box>
   );
-}
+});
 
 export default ProductCard;

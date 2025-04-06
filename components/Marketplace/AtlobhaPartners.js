@@ -60,6 +60,8 @@ function AtlobhaPartners({ sectionInfo }) {
           keyBoardControl
           showDots={false}
           arrows={false}
+		  customTransition="all 1s linear"
+		  minimumTouchDrag={80}
         >
           {data?.map((part, index) => (
             <Box

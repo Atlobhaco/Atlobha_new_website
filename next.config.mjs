@@ -11,13 +11,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "atlobha-staging.s3.me-south-1.amazonaws.com",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "old.atlobha.com", // ✅ added this
-        pathname: "/**", // ✅ make sure this is correct
+        hostname: "**",
       },
       {
         protocol: "http",
