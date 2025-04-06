@@ -75,7 +75,7 @@ function ManufactureShell({ sectionInfo }) {
       }, 500);
     }, // Set dragging to true when slide changes
   };
-  console.log("isDragging", isDragging);
+
   return !sectionInfo?.is_active ||
     !manufactureProducts?.data?.length ? null : (
     <Box
