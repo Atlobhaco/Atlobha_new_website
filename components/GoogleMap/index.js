@@ -104,7 +104,8 @@ const GoogleMapComponent = React.memo(
         map?.panTo(lngLatLocation); // Center the map to the updated location
         map?.setZoom(17); // Optional: zoom in
       }
-    }, [lngLatLocation, map]);
+    }, [map]);
+    // remove lngLatLocation
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {
@@ -128,7 +129,7 @@ const GoogleMapComponent = React.memo(
                 "Please enable your location services for better accuracy."
               );
             } else {
-            //   console.error("Error getting the location", error);
+              //   console.error("Error getting the location", error);
             }
           },
           { enableHighAccuracy: true }
@@ -143,9 +144,7 @@ const GoogleMapComponent = React.memo(
         lat: event.latLng.lat(),
         lng: event.latLng.lng(),
       };
-	  alert(event.latLng.lat())
-	  alert(event.latLng.lng())
-    //   fetchLocationDetails(clickedLocation); // Fetch address details
+      fetchLocationDetails(clickedLocation); // Fetch address details
       setLngLatLocation(clickedLocation);
     };
 
@@ -201,7 +200,7 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-        //   alert("Failed to fetch location details.");
+          //   alert("Failed to fetch location details.");
         }
       } catch (error) {
         // console.error("Error fetching location details:", error);
@@ -301,10 +300,10 @@ const GoogleMapComponent = React.memo(
         {/* Locate Me Button */}
         <button onClick={handleLocateMe} style={buttonStyle}>
           <MyLocationIcon
-            style={{
-              width: isMobile ? "20px" : "30px",
-              height: isMobile ? "20px" : "30px",
-            }}
+            // style={{
+            //   width: isMobile ? "20px" : "30px",
+            //   height: isMobile ? "20px" : "30px",
+            // }}
           />
         </button>
       </div>
