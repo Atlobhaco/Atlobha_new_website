@@ -101,6 +101,16 @@ function AddRemoveBtn({ product }) {
               justifyContent: "center",
             }}
             onMouseEnter={() => setIsHovered(true)}
+            onClick={(e) => {
+              e?.stopPropagation();
+              e?.preventDefault();
+              if (isMobile) {
+                setIsHovered(true);
+                setTimeout(() => {
+                  setIsHovered(false);
+                }, 2000);
+              }
+            }}
           >
             {prodInsideBasket()?.quantity}
           </Box>
@@ -121,6 +131,10 @@ function AddRemoveBtn({ product }) {
                   onClick={(e) => {
                     e?.stopPropagation();
                     e?.preventDefault();
+                    isMobile &&
+                      setTimeout(() => {
+                        setIsHovered(false);
+                      }, 2000);
                     !loadingCart &&
                       dispatch(deleteItemAsync({ product_id: product?.id }));
                   }}
@@ -131,6 +145,10 @@ function AddRemoveBtn({ product }) {
                   onClick={(e) => {
                     e?.stopPropagation();
                     e?.preventDefault();
+                    isMobile &&
+                      setTimeout(() => {
+                        setIsHovered(false);
+                      }, 2000);
                     !loadingCart &&
                       dispatch(
                         updateItemQuantityAsync({
@@ -162,6 +180,10 @@ function AddRemoveBtn({ product }) {
                 onClick={(e) => {
                   e?.stopPropagation();
                   e?.preventDefault();
+                  isMobile &&
+                    setTimeout(() => {
+                      setIsHovered(false);
+                    }, 2000);
                   !loadingCart &&
                     dispatch(
                       updateItemQuantityAsync({

@@ -83,6 +83,10 @@ function ManufactureShell({ sectionInfo }) {
     [isDragging, router]
   );
 
+  const redirectToManufacturePage = () => {
+    router.push(`/manufacture/${sectionInfo?.manufacturer?.id}`);
+  };
+
   return !sectionInfo?.is_active ||
     !manufactureProducts?.data?.length ? null : (
     <Box
@@ -95,6 +99,7 @@ function ManufactureShell({ sectionInfo }) {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-end",
+        position: "relative",
       }}
     >
       <Box sx={{ width: isMobile ? "100%" : "90%" }}>
@@ -119,7 +124,7 @@ function ManufactureShell({ sectionInfo }) {
         </Slider>
       </Box>
       <Box
-        onClick={() => alert("redirect")}
+        onClick={() => redirectToManufacturePage()}
         sx={{
           mt: isMobile ? 1 : 5,
           mb: isMobile ? 1 : 2,
@@ -133,6 +138,16 @@ function ManufactureShell({ sectionInfo }) {
       >
         {t.showMore}
       </Box>
+      <Box
+        onClick={() => redirectToManufacturePage()}
+        sx={{
+          position: "absolute",
+          top: "0",
+          width: "100%",
+          cursor: "pointer",
+          height: isMobile ? "150px" : "300px",
+        }}
+      ></Box>
     </Box>
   );
 }

@@ -40,6 +40,7 @@ const GoogleMapComponent = React.memo(
     const [map, setMap] = useState(null);
     const autocompleteRef = useRef(null);
     const { t, locale } = useLocalization();
+    const [hasCenteredOnce, setHasCenteredOnce] = useState(false);
 
     // Memoize container style based on screen size
     const containerStyle = useMemo(
@@ -56,7 +57,7 @@ const GoogleMapComponent = React.memo(
         position: "absolute",
         bottom: "15px",
         right: "10px",
-        padding: isMobile ? "8px" : "10px",
+        padding: isMobile ? "1px" : "10px",
         border: "1px solid #B7B7B5",
         borderRadius: "10px",
         background: "#FBFBFB",
@@ -66,37 +67,73 @@ const GoogleMapComponent = React.memo(
     );
 
     //   auto detect user location  when map opened
-    const onLoadMap = useCallback((map) => {
-      mapRef.current = map;
-      setMap(map);
-      if (!idAddress) {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const userLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-              };
-              setLngLatLocation(userLocation);
-              fetchLocationDetails(userLocation); // Fetch address details
-              if (map) {
-                map.panTo(userLocation);
-                map.setZoom(17);
-              }
-            },
-            () => {
-              setLngLatLocation(center);
-              fetchLocationDetails(center); // Fetch address details
+    // const onLoadMap = useCallback((map) => {
+    //   mapRef.current = map;
+    //   setMap(map);
+    //   if (!idAddress) {
+    //     if (navigator.geolocation) {
+    //       navigator.geolocation.getCurrentPosition(
+    //         (position) => {
+    //           const userLocation = {
+    //             lat: position.coords.latitude,
+    //             lng: position.coords.longitude,
+    //           };
+    //           setLngLatLocation(userLocation);
+    //           fetchLocationDetails(userLocation); // Fetch address details
+    //           if (map) {
+    //             map.panTo(userLocation);
+    //             map.setZoom(17);
+    //           }
+    //         },
+    //         () => {
+    //           setLngLatLocation(center);
+    //           fetchLocationDetails(center); // Fetch address details
+    //         }
+    //       );
+    //     } else {
+    //       alert("Geolocation is not supported by this browser.");
+    //     }
+    //   } else {
+    //     setLngLatLocation(lngLatLocation);
+    //     fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
+    //   }
+    // }, []);
+    const onLoadMap = useCallback(
+      (map) => {
+        mapRef.current = map;
+        setMap(map);
+
+        if (!hasCenteredOnce) {
+          if (!idAddress) {
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  const userLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+                  setLngLatLocation(userLocation);
+                  fetchLocationDetails(userLocation);
+                  map.panTo(userLocation);
+                  map.setZoom(17);
+                  setHasCenteredOnce(true); // Prevent future re-centering
+                },
+                () => {
+                  setLngLatLocation(center);
+                  fetchLocationDetails(center);
+                  setHasCenteredOnce(true); // Prevent future re-centering
+                }
+              );
             }
-          );
-        } else {
-          alert("Geolocation is not supported by this browser.");
+          } else {
+            setLngLatLocation(lngLatLocation);
+            fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
+            setHasCenteredOnce(true); // Prevent future re-centering
+          }
         }
-      } else {
-        setLngLatLocation(lngLatLocation);
-        fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
-      }
-    }, []);
+      },
+      [hasCenteredOnce, idAddress, lngLatLocation]
+    );
 
     useEffect(() => {
       if (map && lngLatLocation) {
@@ -128,7 +165,7 @@ const GoogleMapComponent = React.memo(
                 "Please enable your location services for better accuracy."
               );
             } else {
-            //   console.error("Error getting the location", error);
+              //   console.error("Error getting the location", error);
             }
           },
           { enableHighAccuracy: true }
@@ -199,7 +236,7 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-        //   alert("Failed to fetch location details.");
+          //   alert("Failed to fetch location details.");
         }
       } catch (error) {
         // console.error("Error fetching location details:", error);
@@ -298,6 +335,7 @@ const GoogleMapComponent = React.memo(
 
         {/* Locate Me Button */}
         <button onClick={handleLocateMe} style={buttonStyle}>
+			locate
           <MyLocationIcon
             style={{
               width: isMobile ? "20px" : "30px",
