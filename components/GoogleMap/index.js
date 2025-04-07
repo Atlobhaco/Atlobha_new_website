@@ -66,69 +66,37 @@ const GoogleMapComponent = React.memo(
     );
 
     //   auto detect user location  when map opened
-    // const onLoadMap = useCallback((map) => {
-    //   mapRef.current = map;
-    //   setMap(map);
-    //   if (!idAddress) {
-    //     if (navigator.geolocation) {
-    //       navigator.geolocation.getCurrentPosition(
-    //         (position) => {
-    //           const userLocation = {
-    //             lat: position.coords.latitude,
-    //             lng: position.coords.longitude,
-    //           };
-    //           setLngLatLocation(userLocation);
-    //           fetchLocationDetails(userLocation); // Fetch address details
-    //           if (map) {
-    //             map.panTo(userLocation);
-    //             map.setZoom(17);
-    //           }
-    //         },
-    //         () => {
-    //           setLngLatLocation(center);
-    //           fetchLocationDetails(center); // Fetch address details
-    //         }
-    //       );
-    //     } else {
-    //       alert("Geolocation is not supported by this browser.");
-    //     }
-    //   } else {
-    //     setLngLatLocation(lngLatLocation);
-    //     fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
-    //   }
-    // }, []);
-	const onLoadMap = useCallback((map) => {
-		mapRef.current = map;
-		setMap(map);
-	  
-		// Don't reset location if it's already set
-		if (!idAddress && !lngLatLocation?.lat) {
-		  if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(
-			  (position) => {
-				const userLocation = {
-				  lat: position.coords.latitude,
-				  lng: position.coords.longitude,
-				};
-				setLngLatLocation(userLocation);
-				fetchLocationDetails(userLocation);
-				map.panTo(userLocation);
-				map.setZoom(17);
-			  },
-			  () => {
-				setLngLatLocation(center);
-				fetchLocationDetails(center);
-			  }
-			);
-		  } else {
-			alert("Geolocation is not supported by this browser.");
-		  }
-		} else if (lngLatLocation?.lat) {
-		  map.panTo(lngLatLocation);
-		  map.setZoom(17);
-		}
-	  }, [idAddress, lngLatLocation]);
-	  
+    const onLoadMap = useCallback((map) => {
+      mapRef.current = map;
+      setMap(map);
+      if (!idAddress) {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              };
+              setLngLatLocation(userLocation);
+              fetchLocationDetails(userLocation); // Fetch address details
+              if (map) {
+                map.panTo(userLocation);
+                map.setZoom(17);
+              }
+            },
+            () => {
+              setLngLatLocation(center);
+              fetchLocationDetails(center); // Fetch address details
+            }
+          );
+        } else {
+          alert("Geolocation is not supported by this browser.");
+        }
+      } else {
+        setLngLatLocation(lngLatLocation);
+        fetchLocationDetails(lngLatLocation || { lat: "", lng: "" });
+      }
+    }, []);
 
     useEffect(() => {
       if (map && lngLatLocation) {
@@ -231,7 +199,7 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-        //   alert("Failed to fetch location details.");
+          //   alert("Failed to fetch location details.");
         }
       } catch (error) {
         // console.error("Error fetching location details:", error);
@@ -304,7 +272,7 @@ const GoogleMapComponent = React.memo(
             mapContainerStyle={containerStyle}
             center={lngLatLocation || center}
             zoom={10}
-            onLoad={onLoadMap}
+            onLoad={!isMobile && onLoadMap}
             onClick={handleMapClick}
             options={{
               disableDefaultUI: true,
