@@ -272,7 +272,7 @@ const GoogleMapComponent = React.memo(
             mapContainerStyle={containerStyle}
             center={lngLatLocation || center}
             zoom={10}
-            onLoad={!isMobile && onLoadMap}
+            onLoad={onLoadMap}
             onClick={handleMapClick}
             options={{
               disableDefaultUI: true,
