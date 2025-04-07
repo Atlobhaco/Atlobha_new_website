@@ -6,6 +6,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { MARKETPLACE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useCallback } from "react";
 import Slider from "react-slick";
@@ -42,8 +43,8 @@ function ManufactureShell({ sectionInfo }) {
     slidesToScroll: 2,
     autoplay: true,
     touchThreshold: 10,
-    speed: 3000,
-    autoplaySpeed: 3000,
+    speed: 8000,
+    autoplaySpeed: 8000,
     cssEase: "linear",
     rtl: locale === "ar",
     responsive: [
@@ -91,10 +92,14 @@ function ManufactureShell({ sectionInfo }) {
     !manufactureProducts?.data?.length ? null : (
     <Box
       sx={{
-        background: `center / cover no-repeat url(${
+        backgroundImage: `url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        height: isMobile ? "400px" : "900px",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        width: "100%",
+        height: isMobile ? "360px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -102,6 +107,16 @@ function ManufactureShell({ sectionInfo }) {
         position: "relative",
       }}
     >
+      {/* <Image
+        src={sectionInfo?.manufacturer?.cover_image?.url}
+        width={200}
+        height={900}
+        style={{
+          width: "100%",
+          height: "100%",
+          position: "absolute",
+        }}
+      /> */}
       <Box sx={{ width: isMobile ? "100%" : "90%" }}>
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (

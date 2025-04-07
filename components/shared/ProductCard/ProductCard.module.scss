@@ -23,6 +23,7 @@
     width: 100%;
     height: 190px;
     position: relative;
+    display: flex;
     @include mobile-screen-style {
       max-height: 70px;
     }

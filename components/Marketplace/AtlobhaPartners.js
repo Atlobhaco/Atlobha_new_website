@@ -11,7 +11,7 @@ import "react-multi-carousel/lib/styles.css";
 
 function AtlobhaPartners({ sectionInfo }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const [data, setData] = useState([]);
 
   useCustomQuery({
@@ -22,7 +22,7 @@ function AtlobhaPartners({ sectionInfo }) {
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data,
-    onSuccess: (res) => setData(res?.data),
+    onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
   });
 
   const responsive = {
@@ -56,12 +56,12 @@ function AtlobhaPartners({ sectionInfo }) {
           responsive={responsive}
           infinite
           autoPlay
-          autoPlaySpeed={1000}
-          keyBoardControl
+          autoPlaySpeed={3000}
           showDots={false}
           arrows={false}
-		  customTransition="all 1s linear"
-		  minimumTouchDrag={80}
+          transitionDuration={900}
+          slidesToSlide={2}
+          rtl={locale === "ar"}
         >
           {data?.map((part, index) => (
             <Box

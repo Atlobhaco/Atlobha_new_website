@@ -19,7 +19,7 @@ function PartsImages() {
     url: `${MANUFACTURERS}?page=1`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    onSuccess: (res) => setData(res?.data),
+    onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
   });
 
   const responsive = {

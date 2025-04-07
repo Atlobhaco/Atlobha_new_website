@@ -39,6 +39,7 @@ function AddRemoveBtn({ product }) {
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch();
   const { basket, loadingCart } = useSelector((state) => state.basket);
+  const [prodIdClicked, setProdIdClicked] = useState(false);
 
   const reusedStyle = {
     position: "absolute",
@@ -112,7 +113,16 @@ function AddRemoveBtn({ product }) {
               }
             }}
           >
-            {prodInsideBasket()?.quantity}
+            {loadingCart && prodIdClicked === product?.id ? (
+              <CircularProgress
+                size={15}
+                sx={{
+                  color: "black",
+                }}
+              />
+            ) : (
+              prodInsideBasket()?.quantity
+            )}
           </Box>
         ) : (
           <Box
@@ -129,6 +139,10 @@ function AddRemoveBtn({ product }) {
                 <CustomDeleteIcon
                   iconStyle={iconStyle}
                   onClick={(e) => {
+                    setProdIdClicked(product?.id);
+                    setTimeout(() => {
+                      setProdIdClicked(false);
+                    }, 3000);
                     e?.stopPropagation();
                     e?.preventDefault();
                     isMobile &&
@@ -143,6 +157,10 @@ function AddRemoveBtn({ product }) {
                 <Remove
                   sx={iconStyle}
                   onClick={(e) => {
+                    setProdIdClicked(product?.id);
+                    setTimeout(() => {
+                      setProdIdClicked(false);
+                    }, 3000);
                     e?.stopPropagation();
                     e?.preventDefault();
                     isMobile &&
@@ -178,6 +196,10 @@ function AddRemoveBtn({ product }) {
               <Add
                 sx={iconStyle}
                 onClick={(e) => {
+                  setProdIdClicked(product?.id);
+                  setTimeout(() => {
+                    setProdIdClicked(false);
+                  }, 3000);
                   e?.stopPropagation();
                   e?.preventDefault();
                   isMobile &&
@@ -203,6 +225,10 @@ function AddRemoveBtn({ product }) {
             cursor: "pointer",
           }}
           onClick={(e) => {
+            setProdIdClicked(product?.id);
+            setTimeout(() => {
+              setProdIdClicked(false);
+            }, 3000);
             e?.stopPropagation();
             e?.preventDefault();
             !loadingCart &&
@@ -213,7 +239,16 @@ function AddRemoveBtn({ product }) {
               );
           }}
         >
-          <Add sx={{ ...iconStyle, color: "white" }} />
+          {loadingCart && prodIdClicked === product?.id ? (
+            <CircularProgress
+              size={15}
+              sx={{
+                color: "white",
+              }}
+            />
+          ) : (
+            <Add sx={{ ...iconStyle, color: "white" }} />
+          )}
         </Box>
       )}
     </Box>
