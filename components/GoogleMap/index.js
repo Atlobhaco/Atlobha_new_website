@@ -135,13 +135,25 @@ const GoogleMapComponent = React.memo(
       [hasCenteredOnce, idAddress, lngLatLocation]
     );
 
-    useEffect(() => {
-      if (map && lngLatLocation) {
-        fetchLocationDetails(lngLatLocation);
-        map?.panTo(lngLatLocation); // Center the map to the updated location
-        map?.setZoom(17); // Optional: zoom in
-      }
-    }, [lngLatLocation, map]);
+    // useEffect(() => {
+    //   if (map && lngLatLocation) {
+    //     fetchLocationDetails(lngLatLocation);
+    //     map?.panTo(lngLatLocation); // Center the map to the updated location
+    //     map?.setZoom(17); // Optional: zoom in
+    //   }
+    // }, [lngLatLocation, map]);
+	useEffect(() => {
+		if (map && lngLatLocation) {
+		  fetchLocationDetails(lngLatLocation);
+	  
+		  // Only auto-pan if not centered before
+		  if (!hasCenteredOnce) {
+			map.panTo(lngLatLocation);
+			map.setZoom(17);
+			setHasCenteredOnce(true);
+		  }
+		}
+	  }, [lngLatLocation, map, hasCenteredOnce]);
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {
@@ -194,22 +206,48 @@ const GoogleMapComponent = React.memo(
     };
 
     const handlePlaceChanged = () => {
-      const place = autocompleteRef.current.getPlace();
-      if (place && place.geometry) {
-        const location = {
-          lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
-        };
-        fetchLocationDetails(location); // Fetch address details
-        setLngLatLocation(location);
-        if (map) {
-          map.panTo(location);
-          map.setZoom(17);
-        }
-      } else {
-        // console.error("Place not found. Please try again.");
+      const autocomplete = autocompleteRef.current;
+      if (!autocomplete || typeof autocomplete.getPlace !== "function") {
+        console.warn("Autocomplete instance not ready");
+        return;
+      }
+
+      const place = autocomplete.getPlace();
+      if (!place.geometry || !place.geometry.location) {
+        alert("No location found for the selected place.");
+        return;
+      }
+
+      const location = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+
+      fetchLocationDetails(location);
+      setLngLatLocation(location);
+      if (map) {
+        map.panTo(location);
+        map.setZoom(17);
       }
     };
+
+    // const handlePlaceChanged = () => {
+    //   const place = autocompleteRef.current.getPlace();
+    //   if (place && place.geometry) {
+    //     const location = {
+    //       lat: place.geometry.location.lat(),
+    //       lng: place.geometry.location.lng(),
+    //     };
+    //     fetchLocationDetails(location); // Fetch address details
+    //     setLngLatLocation(location);
+    //     if (map) {
+    //       map.panTo(location);
+    //       map.setZoom(17);
+    //     }
+    //   } else {
+    //     // console.error("Place not found. Please try again.");
+    //   }
+    // };
 
     const fetchLocationDetails = async (location) => {
       const { lat, lng } = location;
@@ -335,11 +373,10 @@ const GoogleMapComponent = React.memo(
 
         {/* Locate Me Button */}
         <button onClick={handleLocateMe} style={buttonStyle}>
-			locate
           <MyLocationIcon
             style={{
-              width: isMobile ? "20px" : "30px",
-              height: isMobile ? "20px" : "30px",
+              width: isMobile ? "10px" : "30px",
+              height: isMobile ? "10px" : "30px",
             }}
           />
         </button>
