@@ -104,8 +104,7 @@ const GoogleMapComponent = React.memo(
         map?.panTo(lngLatLocation); // Center the map to the updated location
         map?.setZoom(17); // Optional: zoom in
       }
-    }, [map]);
-    // remove lngLatLocation
+    }, [lngLatLocation, map]);
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {
@@ -200,11 +199,11 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-          //   alert("Failed to fetch location details.");
+          alert("Failed to fetch location details.");
         }
       } catch (error) {
         // console.error("Error fetching location details:", error);
-        // alert("Error fetching location details. Please try again.");
+        alert("Error fetching location details. Please try again.");
       }
     };
 
@@ -300,10 +299,10 @@ const GoogleMapComponent = React.memo(
         {/* Locate Me Button */}
         <button onClick={handleLocateMe} style={buttonStyle}>
           <MyLocationIcon
-            // style={{
-            //   width: isMobile ? "20px" : "30px",
-            //   height: isMobile ? "20px" : "30px",
-            // }}
+            style={{
+              width: isMobile ? "20px" : "30px",
+              height: isMobile ? "20px" : "30px",
+            }}
           />
         </button>
       </div>
