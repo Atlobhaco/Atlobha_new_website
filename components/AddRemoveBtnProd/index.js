@@ -100,7 +100,7 @@ function AddRemoveBtn({ product }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              pt: 1,
+              pt: isMobile ? 0 : 1,
             }}
             onMouseEnter={() => setIsHovered(true)}
             onClick={(e) => {

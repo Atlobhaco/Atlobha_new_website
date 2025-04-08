@@ -197,7 +197,7 @@ a {
 }
 
 .modal-login-width-web {
-//   min-width: 600px !important;
+  //   min-width: 600px !important;
   max-width: 600px !important;
   min-height: fit-content !important;
   @include mobile-screen-style {
@@ -434,6 +434,9 @@ button[class^="slick-"] {
   position: absolute;
   z-index: 1;
   border: 1px solid #d1d5db;
+  @include mobile-screen-style {
+    padding: 11px !important;
+  }
   &::before {
     content: "" !important;
   }

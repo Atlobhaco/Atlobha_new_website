@@ -47,6 +47,7 @@ function ManufactureShell({ sectionInfo }) {
     autoplaySpeed: 8000,
     cssEase: "linear",
     rtl: locale === "ar",
+	isDragging: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -95,11 +96,11 @@ function ManufactureShell({ sectionInfo }) {
         backgroundImage: `url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        backgroundSize: "cover",
+        backgroundSize: isMobile ? "cover" : "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         width: "100%",
-        height: isMobile ? "360px" : "900px",
+        height: isMobile ? "320px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

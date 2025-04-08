@@ -36,6 +36,7 @@ function PackageOffers({ sectionInfo }) {
     speed: 8000,
     autoplaySpeed: 8000,
     cssEase: "linear",
+    isDragging: false,
     responsive: [
       {
         breakpoint: 1024,
