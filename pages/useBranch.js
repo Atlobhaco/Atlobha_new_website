@@ -121,7 +121,7 @@ const useBranch = () => {
       document.body.removeChild(script); // Cleanup script on unmount
     };
   }, [router]);
-
+console.log('branchData',branchData);
   useEffect(() => {
     if (branchData) {
       const redirectItemOrderDetails = arrayForRedirect.find(
