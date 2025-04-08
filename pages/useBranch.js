@@ -73,9 +73,10 @@ const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
+  
   const clearBranchData = () => {
-    window.location.reload();
     setTimeout(() => {
+      window.location.reload();
       setBranchData(null);
     }, 500);
   };
