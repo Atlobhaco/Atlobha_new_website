@@ -74,6 +74,7 @@ const useBranch = () => {
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
   const clearBranchData = () => {
+    window.reload();
     setTimeout(() => {
       setBranchData(null);
     }, 500);
@@ -127,7 +128,7 @@ const useBranch = () => {
     return () => {
       document.body.removeChild(script); // Cleanup script on unmount
     };
-  }, []);
+  }, [router]);
 
   console.log("branchData", branchData);
 
