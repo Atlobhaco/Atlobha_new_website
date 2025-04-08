@@ -10,6 +10,7 @@ function HeaderSection({
   title = "اشتر مرة اخري !",
   subtitle = false,
   showArrow = false,
+  onClick = () => {},
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -39,22 +40,25 @@ function HeaderSection({
       >
         {subtitle && (
           <Box
+            onClick={onClick}
             sx={{
               fontSize: isMobile ? "10px" : "24px",
               fontWeight: "700",
+              cursor: "pointer",
             }}
           >
             {subtitle}
           </Box>
         )}
         {showArrow && (
-          <Box className={`${style["hint-icon"]}`}>
+          <Box className={`${style["hint-icon"]}`} onClick={onClick}>
             <Image
               alt="img"
               src={arrowPath}
               width={isMobile ? 15 : 28}
               height={isMobile ? 15 : 28}
               style={{
+                cursor: "pointer",
                 marginBottom: isMobile || locale === "ar" ? "0px" : "-8px",
               }}
             />

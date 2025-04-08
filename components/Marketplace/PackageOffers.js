@@ -76,6 +76,7 @@ function PackageOffers({ sectionInfo }) {
         showArrow={true}
         subtitle={t.showAll}
         title={sectionInfo?.title}
+        onClick={() => router.push("/packages")}
       />
       <Slider {...settings}>
         {featuredProducts?.data?.map((featured) => (
