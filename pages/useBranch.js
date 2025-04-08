@@ -73,6 +73,11 @@ const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
+  const clearBranchData = () => {
+    setTimeout(() => {
+      setBranchData(null);
+    }, 500);
+  };
 
   useEffect(() => {
     // Ensure we're running on the client-side
@@ -82,8 +87,9 @@ const useBranch = () => {
     if (window.branch) {
       window.branch.data((err, data) => {
         if (!err) {
-			console.log('data',data);
+          console.log("data", data);
           setBranchData(data || null);
+          clearBranchData();
         }
       });
       return;
@@ -124,12 +130,6 @@ const useBranch = () => {
   }, [router]);
 
   console.log("branchData", branchData);
-
-  const clearBranchData = () => {
-    setTimeout(() => {
-      setBranchData(null);
-    }, 500);
-  };
 
   useEffect(() => {
     if (branchData) {
