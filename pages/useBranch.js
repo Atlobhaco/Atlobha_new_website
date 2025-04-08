@@ -82,6 +82,7 @@ const useBranch = () => {
     if (window.branch) {
       window.branch.data((err, data) => {
         if (!err) {
+			console.log('data',data);
           setBranchData(data || null);
         }
       });
