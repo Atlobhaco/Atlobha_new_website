@@ -80,8 +80,11 @@ const useBranch = () => {
 
     // Check if Branch is already loaded
     console.log("window.branch", window.branch);
-    console.log(router);
+    console.log(router?.pathname);
     if (window.branch) {
+      if (router.pathname === "/") {
+        return;
+      }
       window.branch.data((err, data) => {
         if (!err) {
           console.log("data", data);
