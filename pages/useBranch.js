@@ -90,7 +90,6 @@ const useBranch = () => {
         if (!err) {
           console.log("data", data);
           setBranchData(data || null);
-          clearBranchData();
         }
       });
       return;
