@@ -100,6 +100,7 @@ function AddRemoveBtn({ product }) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              pt: 1,
             }}
             onMouseEnter={() => setIsHovered(true)}
             onClick={(e) => {
@@ -223,10 +224,15 @@ function AddRemoveBtn({ product }) {
         <Box
           sx={{
             cursor: "pointer",
+            display: "flex",
           }}
           onClick={(e) => {
             setProdIdClicked(product?.id);
             setTimeout(() => {
+              setIsHovered(true);
+              setTimeout(() => {
+                setIsHovered(false);
+              }, 2000);
               setProdIdClicked(false);
             }, 3000);
             e?.stopPropagation();

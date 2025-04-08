@@ -154,11 +154,15 @@ export default function Home() {
             );
           case "manufacturer":
             return (
-              <div
-                className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}
-                key={item?.id}
-              >
-                <ManufactureShell sectionInfo={item} />
+              <div className="container" key={item?.id}>
+                <div className="row">
+                  <div
+                    className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}
+                    key={item?.id}
+                  >
+                    <ManufactureShell sectionInfo={item} />
+                  </div>
+                </div>
               </div>
             );
           case "recently-viewed":

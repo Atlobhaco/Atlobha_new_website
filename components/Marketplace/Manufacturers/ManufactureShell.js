@@ -112,7 +112,7 @@ function ManufactureShell({ sectionInfo }) {
         width={200}
         height={900}
         style={{
-          width: "100%",
+        //   width: "100%",
           height: "100%",
           position: "absolute",
         }}
