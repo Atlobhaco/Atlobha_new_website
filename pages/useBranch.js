@@ -121,7 +121,15 @@ const useBranch = () => {
       document.body.removeChild(script); // Cleanup script on unmount
     };
   }, [router]);
-console.log('branchData',branchData);
+
+  console.log("branchData", branchData);
+
+  const clearBranchData = () => {
+    setTimeout(() => {
+      setBranchData(null);
+    }, 500);
+  };
+
   useEffect(() => {
     if (branchData) {
       const redirectItemOrderDetails = arrayForRedirect.find(
@@ -144,20 +152,24 @@ console.log('branchData',branchData);
           router.push(
             `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${branchData?.data_parsed?.$deeplink_path}`
           );
+          clearBranchData();
         }
         // redirect to markeplace product
         if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
           router.push(`/product/${branchData?.data_parsed?.id}`);
+          clearBranchData();
         }
         // redirect to marketplace category
         if (
           redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
         ) {
           router.push(`/category/${branchData?.data_parsed?.id}`);
+          clearBranchData();
         }
         // redirect to service category
         if (redirectItemOrderDetails?.$deeplink_path === "ServiceCategory") {
           router.push(`/serviceCategory/${branchData?.data_parsed?.id}`);
+          clearBranchData();
         }
         return;
       }
@@ -168,6 +180,7 @@ console.log('branchData',branchData);
           (!redirectItem?.mustAuthenticated && !redirectItem?.sectionGroup)
         ) {
           router.push(redirectItem.routeToRedirect);
+          clearBranchData();
         } else if (redirectItem.sectionGroup) {
           const findSectionData = allGroups
             ?.flatMap((data) => data?.sections)
@@ -176,6 +189,7 @@ console.log('branchData',branchData);
           router.push(
             `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
           );
+          clearBranchData();
         }
       }
     }
