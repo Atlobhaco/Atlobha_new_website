@@ -127,7 +127,7 @@ const useBranch = () => {
     return () => {
       document.body.removeChild(script); // Cleanup script on unmount
     };
-  }, [router]);
+  }, []);
 
   console.log("branchData", branchData);
 
