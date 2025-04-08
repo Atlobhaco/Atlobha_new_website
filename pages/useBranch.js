@@ -74,18 +74,13 @@ const useBranch = () => {
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
 
-  const clearBranchData = () => {
-    setTimeout(() => {
-      setBranchData(null);
-    }, 3000);
-  };
-
   useEffect(() => {
     // Ensure we're running on the client-side
     if (typeof window === "undefined") return;
 
     // Check if Branch is already loaded
-	console.log('window.branch',window.branch);
+    console.log("window.branch", window.branch);
+    console.log(router);
     if (window.branch) {
       window.branch.data((err, data) => {
         if (!err) {
@@ -154,24 +149,20 @@ const useBranch = () => {
           router.push(
             `/userProfile/myOrders/${branchData?.data_parsed?.id}?type=${branchData?.data_parsed?.$deeplink_path}`
           );
-          clearBranchData();
         }
         // redirect to markeplace product
         if (redirectItemOrderDetails?.$deeplink_path === "MarketplaceProduct") {
           router.push(`/product/${branchData?.data_parsed?.id}`);
-          clearBranchData();
         }
         // redirect to marketplace category
         if (
           redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
         ) {
           router.push(`/category/${branchData?.data_parsed?.id}`);
-          clearBranchData();
         }
         // redirect to service category
         if (redirectItemOrderDetails?.$deeplink_path === "ServiceCategory") {
           router.push(`/serviceCategory/${branchData?.data_parsed?.id}`);
-          clearBranchData();
         }
         return;
       }
@@ -182,7 +173,6 @@ const useBranch = () => {
           (!redirectItem?.mustAuthenticated && !redirectItem?.sectionGroup)
         ) {
           router.push(redirectItem.routeToRedirect);
-          clearBranchData();
         } else if (redirectItem.sectionGroup) {
           const findSectionData = allGroups
             ?.flatMap((data) => data?.sections)
@@ -191,7 +181,6 @@ const useBranch = () => {
           router.push(
             `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
           );
-          clearBranchData();
         }
       }
     }
