@@ -73,12 +73,11 @@ const useBranch = () => {
   const router = useRouter();
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
-  
+
   const clearBranchData = () => {
     setTimeout(() => {
-      window.location.reload();
       setBranchData(null);
-    }, 500);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -86,6 +85,7 @@ const useBranch = () => {
     if (typeof window === "undefined") return;
 
     // Check if Branch is already loaded
+	console.log('window.branch',window.branch);
     if (window.branch) {
       window.branch.data((err, data) => {
         if (!err) {
