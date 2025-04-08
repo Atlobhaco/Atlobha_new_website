@@ -74,7 +74,7 @@ const useBranch = () => {
   const [branchData, setBranchData] = useState(null);
   const { allGroups } = useSelector((state) => state.appGroups);
   const clearBranchData = () => {
-    window.reload();
+    window.location.reload();
     setTimeout(() => {
       setBranchData(null);
     }, 500);
