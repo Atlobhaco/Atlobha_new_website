@@ -38,6 +38,7 @@ function CategoriesPopupcontent({
 }) {
   const router = useRouter();
   const { route } = router;
+  const { mobileScreen } = router.query;
   const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -119,7 +120,11 @@ function CategoriesPopupcontent({
       setAppGroups(res);
       setMainGroups(res);
       // open anyway but not in order page or confirmation
-      if (!route?.includes("myOrders") && !route?.includes("confirmation")) {
+      if (
+        !route?.includes("myOrders") &&
+        !route?.includes("confirmation") &&
+        !mobileScreen
+      ) {
         setOpenCategories(true);
       }
       dispatch(setAllGroups(res));
