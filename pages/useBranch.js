@@ -79,15 +79,13 @@ const useBranch = () => {
     if (typeof window === "undefined") return;
 
     // Check if Branch is already loaded
-    console.log("window.branch", window.branch);
-    console.log(router?.pathname);
     if (window.branch) {
+      // to can go back in browsing
       if (router.pathname === "/") {
         return;
       }
       window.branch.data((err, data) => {
         if (!err) {
-          console.log("data", data);
           setBranchData(data || null);
         }
       });
@@ -127,8 +125,6 @@ const useBranch = () => {
       document.body.removeChild(script); // Cleanup script on unmount
     };
   }, [router]);
-
-  console.log("branchData", branchData);
 
   useEffect(() => {
     if (branchData) {

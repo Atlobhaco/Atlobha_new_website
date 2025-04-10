@@ -119,6 +119,7 @@ function AddRemoveBtn({ product }) {
                 size={15}
                 sx={{
                   color: "black",
+                  mb: isMobile ? 0 : 1,
                 }}
               />
             ) : (

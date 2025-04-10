@@ -452,18 +452,26 @@ button[class^="slick-"] {
 }
 
 [dir="rtl"] .slick-prev {
-  right: 0 !important;
-  left: auto;
+  left: 0 !important;
+  right: auto;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="ltr"] .slick-prev {
-  left: auto;
-  right: 0 !important;
+  right: auto;
+  left: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="rtl"] .slick-next {
-  right: auto;
-  left: 0 !important;
+  left: auto;
+  right: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="ltr"] .slick-next {
-  right: auto;
-  left: 0 !important;
+  left: auto;
+  right: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
