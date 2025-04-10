@@ -40,7 +40,7 @@ function QuickLinks({ sectionInfo }) {
           imgHeight={isMobile ? "22" : "42"}
           imgWidth={isMobile ? "22" : "42"}
           iconUrl={item?.image?.url}
-          onClick={() => window.open(item?.link)}
+          onClick={() => router.push(item?.link)}
         />
       ))}
     </Box>

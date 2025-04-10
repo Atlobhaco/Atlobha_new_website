@@ -20,7 +20,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
       className={`${style["footNavbar"]}`}
       sx={{
         justifyContent: openCategories ? "center" : "center",
-        zIndex: !openCategories ? 1 : 9999,
+        zIndex: !openCategories ? 2 : 9999,
         // hide when any popoup open except the main one
       }}
     >

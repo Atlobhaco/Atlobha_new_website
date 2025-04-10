@@ -20,6 +20,7 @@ function Layout({ children }) {
   const { t } = useLocalization();
   const router = useRouter();
   const { route } = router;
+  const { mobileScreen } = router.query;
   const { isMobile } = useScreenSize();
   const [openCategories, setOpenCategories] = useState(false);
   const [activeSection, setActiveSection] = useState(true);
@@ -40,7 +41,7 @@ function Layout({ children }) {
         setOpenCategories={setOpenCategories}
         hideNavbarInUrls={hideNavbarInUrls}
       />
-      {isMobile && (
+      {isMobile && !mobileScreen && (
         <FootNavbar
           setOpenCategories={setOpenCategories}
           openCategories={openCategories}
@@ -77,7 +78,7 @@ function Layout({ children }) {
           />
         }
       />
-      <ScrollToTop />
+      {!mobileScreen && <ScrollToTop />}
     </div>
   );
 }

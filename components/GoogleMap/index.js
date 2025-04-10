@@ -128,7 +128,7 @@ const GoogleMapComponent = React.memo(
                 "Please enable your location services for better accuracy."
               );
             } else {
-            //   console.error("Error getting the location", error);
+              //   console.error("Error getting the location", error);
             }
           },
           { enableHighAccuracy: true }
@@ -199,7 +199,7 @@ const GoogleMapComponent = React.memo(
 
           setLocationInfo(details); // Save details in state
         } else {
-        //   alert("Failed to fetch location details.");
+          //   alert("Failed to fetch location details.");
         }
       } catch (error) {
         // console.error("Error fetching location details:", error);

@@ -10,6 +10,11 @@ import Image from "next/image";
 const ProductCard = React.memo(({ product, preventOnClick = false }) => {
   const router = useRouter();
 
+  const isHTMLString = (str) => {
+    const doc = new DOMParser().parseFromString(str, "text/html");
+    return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
+  };
+
   return (
     <Box
       className={`${style["prod"]}`}
@@ -18,11 +23,13 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
     >
       <Box
         className={`${style["prod-img-wrapper"]}`}
-        sx={{
-          //   background: `center / contain no-repeat url(${
-          //     product?.image || "/imgs/no-prod-img.svg"
-          //   })`,
-        }}
+        sx={
+          {
+            //   background: `center / contain no-repeat url(${
+            //     product?.image || "/imgs/no-prod-img.svg"
+            //   })`,
+          }
+        }
       >
         <Image
           src={product?.image || "/imgs/no-prod-img.svg"}
@@ -73,9 +80,13 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           </Box>
         )}
 
-        {product?.desc && (
+        {product?.name && (
           <Box className={`${style["prod-info-wrapper_describe"]}`}>
-            {product?.desc}
+            {isHTMLString(product?.name) ? (
+              <div dangerouslySetInnerHTML={{ __html: product?.name }} />
+            ) : (
+              product?.name
+            )}
           </Box>
         )}
       </Box>

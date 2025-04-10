@@ -30,12 +30,13 @@ function PackageOffers({ sectionInfo }) {
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 2,
-    autoplay: true,
-    rtl: locale === "ar",
-    touchThreshold: 10,
-	speed: 3000,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
+    // autoplay: true,
+    // rtl: locale === "ar",
+    // touchThreshold: 10,
+    // speed: 8000,
+    // autoplaySpeed: 8000,
+    // cssEase: "linear",
+    // isDragging: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -75,6 +76,7 @@ function PackageOffers({ sectionInfo }) {
         showArrow={true}
         subtitle={t.showAll}
         title={sectionInfo?.title}
+        onClick={() => router.push("/packages")}
       />
       <Slider {...settings}>
         {featuredProducts?.data?.map((featured) => (
@@ -87,7 +89,7 @@ function PackageOffers({ sectionInfo }) {
             }}
             sx={{
               width: "95% !important",
-              height: isMobile ? "200px" : "400px",
+              height: isMobile ? "200px" : "440px",
               cursor: "pointer",
             }}
           >

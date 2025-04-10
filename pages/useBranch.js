@@ -80,6 +80,10 @@ const useBranch = () => {
 
     // Check if Branch is already loaded
     if (window.branch) {
+      // to can go back in browsing
+      if (router.pathname === "/") {
+        return;
+      }
       window.branch.data((err, data) => {
         if (!err) {
           setBranchData(data || null);

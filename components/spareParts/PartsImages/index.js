@@ -19,7 +19,7 @@ function PartsImages() {
     url: `${MANUFACTURERS}?page=1`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    onSuccess: (res) => setData(res?.data),
+    onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
   });
 
   const responsive = {
@@ -57,6 +57,8 @@ function PartsImages() {
           keyBoardControl
           showDots={false}
           arrows={false}
+          customTransition="all 1s linear"
+          minimumTouchDrag={80}
         >
           {data?.map((part, index) => (
             <Box

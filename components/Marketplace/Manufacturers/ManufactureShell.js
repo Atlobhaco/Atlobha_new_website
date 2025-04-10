@@ -6,6 +6,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { MARKETPLACE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useCallback } from "react";
 import Slider from "react-slick";
@@ -40,12 +41,13 @@ function ManufactureShell({ sectionInfo }) {
     infinite: true,
     slidesToShow: 4,
     slidesToScroll: 2,
-    autoplay: true,
-    touchThreshold: 10,
-    speed: 3000,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
-    rtl: locale === "ar",
+    // autoplay: true,
+    // touchThreshold: 10,
+    // speed: 8000,
+    // autoplaySpeed: 8000,
+    // cssEase: "linear",
+    // rtl: locale === "ar",
+	// isDragging: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -83,20 +85,39 @@ function ManufactureShell({ sectionInfo }) {
     [isDragging, router]
   );
 
+  const redirectToManufacturePage = () => {
+    router.push(`/manufacture/${sectionInfo?.manufacturer?.id}`);
+  };
+
   return !sectionInfo?.is_active ||
     !manufactureProducts?.data?.length ? null : (
     <Box
       sx={{
-        background: `center / cover no-repeat url(${
+        backgroundImage: `url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        height: isMobile ? "400px" : "900px",
+        backgroundSize: isMobile ? "cover" : "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        width: "100%",
+        height: isMobile ? "320px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "flex-end",
+        position: "relative",
       }}
     >
+      {/* <Image
+        src={sectionInfo?.manufacturer?.cover_image?.url}
+        width={200}
+        height={900}
+        style={{
+        //   width: "100%",
+          height: "100%",
+          position: "absolute",
+        }}
+      /> */}
       <Box sx={{ width: isMobile ? "100%" : "90%" }}>
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (
@@ -119,7 +140,7 @@ function ManufactureShell({ sectionInfo }) {
         </Slider>
       </Box>
       <Box
-        onClick={() => alert("redirect")}
+        onClick={() => redirectToManufacturePage()}
         sx={{
           mt: isMobile ? 1 : 5,
           mb: isMobile ? 1 : 2,
@@ -133,6 +154,16 @@ function ManufactureShell({ sectionInfo }) {
       >
         {t.showMore}
       </Box>
+      <Box
+        onClick={() => redirectToManufacturePage()}
+        sx={{
+          position: "absolute",
+          top: "0",
+          width: "100%",
+          cursor: "pointer",
+          height: isMobile ? "150px" : "300px",
+        }}
+      ></Box>
     </Box>
   );
 }

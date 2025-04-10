@@ -197,7 +197,7 @@ a {
 }
 
 .modal-login-width-web {
-//   min-width: 600px !important;
+  //   min-width: 600px !important;
   max-width: 600px !important;
   min-height: fit-content !important;
   @include mobile-screen-style {
@@ -434,6 +434,9 @@ button[class^="slick-"] {
   position: absolute;
   z-index: 1;
   border: 1px solid #d1d5db;
+  @include mobile-screen-style {
+    padding: 11px !important;
+  }
   &::before {
     content: "" !important;
   }
@@ -449,18 +452,26 @@ button[class^="slick-"] {
 }
 
 [dir="rtl"] .slick-prev {
-  right: 0 !important;
-  left: auto;
+  left: 0 !important;
+  right: auto;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="ltr"] .slick-prev {
-  left: auto;
-  right: 0 !important;
+  right: auto;
+  left: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="rtl"] .slick-next {
-  right: auto;
-  left: 0 !important;
+  left: auto;
+  right: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
 [dir="ltr"] .slick-next {
-  right: auto;
-  left: 0 !important;
+  left: auto;
+  right: 0 !important;
+  transform: rotate(180deg);
+  top: 45%;
 }
