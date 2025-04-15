@@ -384,5 +384,17 @@
   "atlobhaCategories": "Categories",
   "showMore": "Show more",
   "basket": "Basket",
-  "packagesOffers": "Packages and offers"
+  "packagesOffers": "Packages and offers",
+  "thisEveryThing": "Thats everything, thank you",
+  "youHavePricedOrder": "Your order",
+  "youHavePricedOrderSecond": "has been priced.",
+  "CanConfirmItNow": "Confirm it now.",
+  "confirmOrder": "Confirm order",
+  "orderNumber": "Your order",
+  "onDelivery": "is out for delivery.",
+  "nowOnTheWay": "now on the way",
+  "trackYourOrder": "track order",
+  "deliveredDone": "delivered",
+  "rateYourOrder": "rate order",
+  "orderDoneDelivery": "has been delivered."
 }

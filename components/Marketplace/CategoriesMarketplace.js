@@ -23,8 +23,12 @@ function CategoriesMarketplace({ sectionInfo }) {
     }&lng=${defaultAddress?.lng || selectedAddress?.lng}`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
-      ? isAuth() && sectionInfo?.is_active
-      : sectionInfo?.is_active,
+      ? isAuth() &&
+        sectionInfo?.is_active &&
+        (defaultAddress?.lat || selectedAddress?.lat)
+      : (sectionInfo?.is_active &&
+          (defaultAddress?.lat || selectedAddress?.lat)) ||
+        false,
     select: (res) => res?.data?.data,
   });
 

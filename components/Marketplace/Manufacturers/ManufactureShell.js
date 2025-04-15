@@ -47,7 +47,7 @@ function ManufactureShell({ sectionInfo }) {
     // autoplaySpeed: 8000,
     // cssEase: "linear",
     // rtl: locale === "ar",
-	// isDragging: false,
+    // isDragging: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -86,7 +86,12 @@ function ManufactureShell({ sectionInfo }) {
   );
 
   const redirectToManufacturePage = () => {
-    router.push(`/manufacture/${sectionInfo?.manufacturer?.id}`);
+    router.push({
+      pathname: `/manufacture/${sectionInfo?.manufacturer?.id}`,
+      query: {
+        name: `${sectionInfo?.title}`,
+      },
+    });
   };
 
   return !sectionInfo?.is_active ||

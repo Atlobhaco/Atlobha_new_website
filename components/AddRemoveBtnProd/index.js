@@ -49,22 +49,22 @@ function AddRemoveBtn({ product }) {
     gap: "27px",
     ...(locale === "ar" ? { left: "2px" } : { right: "2px" }),
     bottom: isMobile ? "-14px" : "-22px",
-    transition: "all 0.3s ease-in-out",
+    transition: "all 0.9s ease-in-out",
   };
   const addRemoveBtn = {
     background: "black",
     color: "white",
-    borderRadius: "25px",
-    minWidth: isMobile ? "75px" : "55px",
-    height: isMobile ? "25px" : "55px",
-    transition: "all 0.3s ease-in-out",
+    minWidth: isMobile ? "75px" : "50px",
+    height: isMobile ? "25px" : "50px",
+    transition: "all 0.5s ease-in-out",
     opacity: isHovered ? 1 : 0,
     visibility: isHovered ? "visible" : "hidden",
+    borderRadius: isHovered ? "25px !important" : "50% !important",
   };
   const circleHovered = {
     borderRadius: "50%",
-    minWidth: isMobile ? "25px" : "55px",
-    height: isMobile ? "25px" : "55px",
+    minWidth: isMobile ? "25px" : "50px",
+    height: isMobile ? "25px" : "50px",
     fontSize: isMobile ? "13px" : "28px",
     fontWeight: "500",
     transition: "all 0.3s ease-in-out",
@@ -128,12 +128,17 @@ function AddRemoveBtn({ product }) {
           </Box>
         ) : (
           <Box
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={() =>
+              setTimeout(() => {
+                setIsHovered(false);
+              }, 2000)
+            }
             sx={{
               display: "flex",
-              width: isMobile ? "100%" : "184px",
+              width: isMobile ? "100%" : "170px",
               alignItems: "center",
               justifyContent: "space-around",
+              borderRadius: "25px",
             }}
           >
             <Box>
@@ -254,7 +259,13 @@ function AddRemoveBtn({ product }) {
               }}
             />
           ) : (
-            <Add sx={{ ...iconStyle, color: "white" }} />
+            <Add
+              sx={{
+                ...iconStyle,
+                color: "white",
+                borderRadius: "50% !important",
+              }}
+            />
           )}
         </Box>
       )}

@@ -47,35 +47,35 @@ function AtlobhaPartners({ sectionInfo }) {
   var settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 7,
-    slidesToScroll: 2,
-    autoplay: true,
+    slidesToShow: 7.5,
+    slidesToScroll: 4,
+    // autoplay: true,
     rtl: locale === "ar",
-    touchThreshold: 1,
-    speed: 8000,
-    autoplaySpeed: 8000,
+    // touchThreshold: 1,
+    // speed: 8000,
+    // autoplaySpeed: 8000,
     cssEase: "linear",
     arrows: false,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 4.5,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 4.5,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 3.5,
+          slidesToScroll: 3,
         },
       },
     ],
@@ -144,11 +144,11 @@ function AtlobhaPartners({ sectionInfo }) {
               }}
             >
               <Image
-                onClick={() => {
-                  if (!isDragging) {
-                    router.push(`/manufacture/${part?.id}`);
-                  }
-                }}
+                // onClick={() => {
+                //   if (!isDragging) {
+                //     router.push(`/manufacture/${part?.id}`);
+                //   }
+                // }}
                 src={part?.logo?.url}
                 alt={part?.logo?.url}
                 width={isMobile ? 53 : 113}
