@@ -12,7 +12,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import QuickLinks from "@/components/Marketplace/QuickLinks";
 import MainCarousel from "@/components/Marketplace/MainCarousel";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import HintPricedParts from "@/components/Marketplace/HintPricedParts";
+import HintPricedParts from "@/components/Marketplace/NotificationsHints/HintPricedParts";
 import CategoriesMarketplace from "@/components/Marketplace/CategoriesMarketplace";
 import BoughtAgain from "@/components/Marketplace/BoughtAgain";
 import PackageOffers from "@/components/Marketplace/PackageOffers";
@@ -42,7 +42,9 @@ export default function Home() {
   const { t } = useLocalization();
   const { allGroups } = useSelector((state) => state.appGroups);
   const { allhomeSections } = useSelector((state) => state.homeSectionsData);
-
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
   const { data, isLoading } = useCustomQuery({
     name: ["app-home-sections", allGroups?.length, isAuth()],
     url: `${APP_SECTIONS}/${
@@ -93,15 +95,18 @@ export default function Home() {
               </div>
             );
           case "ads":
-            return (
-              <div className="container" key={item?.id}>
-                <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-                    <MainCarousel sectionInfo={item} />
+            if (selectedAddress?.lat || defaultAddress?.lat) {
+              return (
+                <div className="container" key={item?.id}>
+                  <div className="row">
+                    <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                      <MainCarousel sectionInfo={item} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            }
+            return null;
           case "notifications":
             return (
               <div className="container" key={item?.id}>
@@ -113,15 +118,18 @@ export default function Home() {
               </div>
             );
           case "marketplace-categories":
-            return (
-              <div className="container" key={item?.id}>
-                <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-                    <CategoriesMarketplace sectionInfo={item} />
+            if (item?.requires_authentication && isAuth()) {
+              return (
+                <div className="container" key={item?.id}>
+                  <div className="row">
+                    <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                      <CategoriesMarketplace sectionInfo={item} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
+              );
+            }
+            return null;
           case "buy-it-again":
             return (
               <div className="container" key={item?.id}>
