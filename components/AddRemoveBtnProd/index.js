@@ -187,13 +187,17 @@ function AddRemoveBtn({ product }) {
               )}
             </Box>
             <Box
+              onClick={(e) => {
+                e?.stopPropagation();
+                e?.preventDefault();
+              }}
               sx={{
                 fontSize: isMobile ? "14px" : "34px",
                 fontWeight: "500",
-                paddingTop: isMobile ? "3px" : "11px",
+                paddingTop: isMobile ? "3px" : "3px",
               }}
             >
-              {loadingCart ? (
+              {loadingCart && prodIdClicked === product?.id ? (
                 <CircularProgress color="inherit" size={15} />
               ) : (
                 prodInsideBasket()?.quantity

@@ -118,7 +118,10 @@ export default function Home() {
         //       </div>
         //     );
           case "marketplace-categories":
-            if (item?.requires_authentication && isAuth()) {
+            if (
+              (item?.requires_authentication && isAuth()) ||
+              !item?.requires_authentication
+            ) {
               return (
                 <div className="container" key={item?.id}>
                   <div className="row">

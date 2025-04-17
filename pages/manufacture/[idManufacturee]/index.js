@@ -40,7 +40,14 @@ function ManufactureDetails() {
     refetchOnWindowFocus: false,
     enabled: idManufacturee ? true : false,
     select: (res) => res?.data,
-    onSuccess: (res) => setManData(res),
+    onSuccess: (res) => {
+      const element = document.getElementById("products-man");
+      if (element) {
+        const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
+      setManData(res);
+    },
   });
 
   return (
@@ -68,7 +75,7 @@ function ManufactureDetails() {
       ) : (
         <div className="container">
           <div className="row">
-            <div className="col-12">
+            <div className="col-12" id="products-man">
               <Box
                 sx={{
                   backgroundImage: `url(${

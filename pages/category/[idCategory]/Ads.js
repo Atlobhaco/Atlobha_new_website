@@ -1,48 +1,33 @@
-import { Box } from "@mui/material";
-import React, { useState } from "react";
-import Slider from "react-slick";
 import { ADS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { isAuth } from "@/config/hooks/isAuth";
+import { Box } from "@mui/material";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import Slider from "react-slick";
 
-function MainCarousel({ sectionInfo }) {
+function Ads({ id }) {
   const { isMobile } = useScreenSize();
-  const [isDragging, setIsDragging] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const [isDragging, setIsDragging] = useState(false);
 
   const { data: ads } = useCustomQuery({
-    name: "ads",
+    name: ["adsCategory", id],
     url: `${ADS}?lat=${defaultAddress?.lat || selectedAddress?.lat}&lng=${
       defaultAddress?.lng || selectedAddress?.lng
-    }`,
+    }&category_id=${id}`,
     refetchOnWindowFocus: false,
-    enabled: sectionInfo?.requires_authentication
-      ? isAuth() &&
-        sectionInfo?.is_active &&
-        (defaultAddress?.id || selectedAddress?.id)
-      : sectionInfo?.is_active && (defaultAddress?.id || selectedAddress?.id)
-      ? true
-      : false,
     select: (res) => res?.data,
+    enabled: (defaultAddress?.lng || selectedAddress?.lng) && id ? true : false,
   });
 
   var settings = {
     dots: true,
     infinite: true,
-    slidesToShow: ads?.data?.length > 1 ? 1 : 1,
+    slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
-    // rtl: locale === "ar",
-    // touchThreshold: 10,
-    // speed: 6000,
-    // autoplaySpeed: 2000,
-    // cssEase: "linear",
-    // isDragging: false,
-    // initialSlide: 1,
     responsive: [
       {
         breakpoint: 1024,
@@ -70,16 +55,8 @@ function MainCarousel({ sectionInfo }) {
     afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
 
-  return !sectionInfo?.is_active || !ads?.data?.length ? null : (
-    <Box
-      sx={{
-        display: "flex",
-        gap: isMobile ? "10px" : "25px",
-        flexDirection: "column",
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
-    >
+  return ads?.length ? (
+    <Box>
       <Slider {...settings}>
         {ads?.data?.map((featured) => (
           <Box
@@ -91,7 +68,7 @@ function MainCarousel({ sectionInfo }) {
             }}
             sx={{
               width: "100% !important",
-              height: isMobile ? "150px" : "510px",
+              height: isMobile ? "150px" : "560px",
               cursor: "pointer",
               borderRadius: "10px",
             }}
@@ -112,7 +89,7 @@ function MainCarousel({ sectionInfo }) {
         ))}
       </Slider>
     </Box>
-  );
+  ) : null;
 }
 
-export default MainCarousel;
+export default Ads;

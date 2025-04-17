@@ -1,4 +1,3 @@
-import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import React from "react";
 import HeaderSection from "../HeaderSection";
@@ -10,7 +9,6 @@ import { isAuth } from "@/config/hooks/isAuth";
 import { useSelector } from "react-redux";
 
 function CategoriesMarketplace({ sectionInfo }) {
-  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
@@ -19,16 +17,15 @@ function CategoriesMarketplace({ sectionInfo }) {
   const { data: categories } = useCustomQuery({
     name: ["marketplace-categories"],
     url: `${MARKETPLACE}${CATEGORY}?lat=${
-      defaultAddress?.lat || selectedAddress?.lat
-    }&lng=${defaultAddress?.lng || selectedAddress?.lng}`,
+      defaultAddress?.lat || selectedAddress?.lat || 24.7136
+    }&lng=${defaultAddress?.lng || selectedAddress?.lng || 46.6753}`,
     refetchOnWindowFocus: false,
-    enabled: sectionInfo?.requires_authentication
-      ? isAuth() &&
-        sectionInfo?.is_active &&
-        (defaultAddress?.lat || selectedAddress?.lat)
-      : (sectionInfo?.is_active &&
-          (defaultAddress?.lat || selectedAddress?.lat)) ||
-        false,
+    enabled:
+      (sectionInfo?.is_active &&
+        sectionInfo?.requires_authentication &&
+        isAuth() &&
+        (defaultAddress?.lat || selectedAddress?.lat)) ||
+      (sectionInfo?.is_active && !sectionInfo?.requires_authentication),
     select: (res) => res?.data?.data,
   });
 
