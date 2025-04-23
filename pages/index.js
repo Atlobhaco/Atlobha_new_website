@@ -107,16 +107,16 @@ export default function Home() {
               );
             }
             return null;
-        //   case "notifications":
-        //     return (
-        //       <div className="container" key={item?.id}>
-        //         <div className="row">
-        //           <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-        //             <HintPricedParts sectionInfo={item} />{" "}
-        //           </div>
-        //         </div>
-        //       </div>
-        //     );
+          //   case "notifications":
+          //     return (
+          //       <div className="container" key={item?.id}>
+          //         <div className="row">
+          //           <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+          //             <HintPricedParts sectionInfo={item} />{" "}
+          //           </div>
+          //         </div>
+          //       </div>
+          //     );
           case "marketplace-categories":
             if (
               (item?.requires_authentication && isAuth()) ||

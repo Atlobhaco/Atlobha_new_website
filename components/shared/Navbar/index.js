@@ -34,12 +34,6 @@ const firstPartStyle = {
   width: "fit-content",
 };
 
-const secondPartStyle = {
-  display: "flex",
-  gap: "10px",
-  height: "fit-content",
-};
-
 function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const dispatch = useDispatch();
   const { user } = useAuth();
@@ -51,9 +45,11 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { mobileScreen } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
-  const hideInSpareOrSectionsPage =
+  const appearAt =
     router?.pathname?.includes("spare") ||
-    router?.pathname?.includes("sections");
+    router?.pathname?.includes("sections") ||
+    router?.pathname === "/";
+
   const hideComponent = hideNavbarInUrls.some((url) =>
     router?.pathname?.includes(url)
   );
@@ -61,6 +57,12 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedSection, setSelectedSection] = useState(false);
+
+  const secondPartStyle = {
+    display: "flex",
+    gap: isMobile && isAuth() ? "0px" : "10px",
+    height: "fit-content",
+  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -166,8 +168,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     const sectionBgColor =
       allGroups[1]?.sections?.find(
         (sec) => sec?.title === router?.query?.secTitle
-      )?.background_color || "#DDECFF";
-    //   "#DDECFF" default bg color for any page no section
+      )?.background_color || marketPlaceColor;
+    //   marketPlaceColor default bg color for any page no section
+    //   the correct one to detect the old path not marketPlaceColor
     if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
       return router?.pathname?.includes("/spareParts")
         ? sparePartColor || "#FFF5EF"
@@ -215,14 +218,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             onMouseLeave={(e) => (e.currentTarget.style.opacity = "1")}
           />
 
-          {!isMobile && hideInSpareOrSectionsPage && <CarPalette />}
+          {!isMobile && appearAt && <CarPalette />}
           {!hideComponent && (
             <>
               <AdvertiseHint />
               <HeaderPage />
             </>
           )}
-          {isMobile && hideInSpareOrSectionsPage && <CarPalette />}
+          {isMobile && appearAt && <CarPalette />}
         </div>
         <div style={secondPartStyle}>
           <LanguageSwitcher />
@@ -250,23 +253,26 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 		/> */}
 
           <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleMenu}
-              color="inherit"
-              sx={{ margin: 0, padding: 0 }}
-            >
-              <IconInsideCircle
-                hasText={false}
-                iconUrl="/icons/user-black.svg"
-                width={isMobile ? "24px" : "41px"}
-                height={isMobile ? "24px" : "41px"}
-                imgWidth={isMobile ? 16 : 28}
-                imgHeight={isMobile ? 16 : 28}
-              />
-            </IconButton>
+            {/* user profile icon in or no auth */}
+            {(!isMobile || !isAuth()) && (
+              <IconButton
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+                sx={{ margin: 0, padding: 0 }}
+              >
+                <IconInsideCircle
+                  hasText={false}
+                  iconUrl="/icons/user-black.svg"
+                  width={isMobile ? "24px" : "41px"}
+                  height={isMobile ? "24px" : "41px"}
+                  imgWidth={isMobile ? 16 : 28}
+                  imgHeight={isMobile ? 16 : 28}
+                />
+              </IconButton>
+            )}
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}
@@ -336,7 +342,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </div>
       </Box>
-      {/* {!isMobile && !hideInSpareOrSectionsPage && !hideComponent && (
+      {/* {!isMobile && !appearAt && !hideComponent && (
         <Box className={`${style["searching"]}`}>
           <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
           <Box className={`${style["searching-sub"]}`}>

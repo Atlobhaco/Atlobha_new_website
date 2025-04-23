@@ -54,7 +54,7 @@ function RecentlyViewed({ sectionInfo }) {
         sx={{
           display: "flex",
           flexWrap: isMobile ? "no-wrap" : "wrap",
-          gap: isMobile ? "5px" : "32px",
+          gap: isMobile ? "5px" : "20px",
           justifyContent: isMobile ? "center" : "start",
         }}
       >

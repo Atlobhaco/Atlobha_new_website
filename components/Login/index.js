@@ -206,7 +206,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
                 {t.loginNow}
               </Box>
               <Box sx={{ mb: 2 }}>
-                {!checkApplePayAvailability() && (
+                {checkApplePayAvailability() && (
                   <SharedBtn
                     text="appleLogin"
                     className="grey-btn"

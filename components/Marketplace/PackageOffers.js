@@ -8,16 +8,32 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function PackageOffers({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1&model_id=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }`;
+    }
+    return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1`;
+  };
 
   const { data: featuredProducts } = useCustomQuery({
-    name: ["featured-products", sectionInfo?.is_active],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1`,
+    name: [
+      "featured-products",
+      sectionInfo?.is_active,
+      selectedCar?.model?.id,
+      defaultCar?.model?.id,
+    ],
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
       ? isAuth() && sectionInfo?.is_active
@@ -27,9 +43,11 @@ function PackageOffers({ sectionInfo }) {
 
   var settings = {
     dots: true,
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 2,
+    infinite: +featuredProducts?.data?.length > 1,
+    slidesToShow:
+      +featuredProducts?.data?.length > 4 ? 4 : +featuredProducts?.data?.length,
+    slidesToScroll:
+      +featuredProducts?.data?.length > 4 ? 2 : +featuredProducts?.data?.length,
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
@@ -48,22 +66,22 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
         },
       },
     ],
     beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
     afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
-
+  console.log("featuredProducts?.data?.length", featuredProducts?.data?.length);
   return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (
     <Box
       sx={{

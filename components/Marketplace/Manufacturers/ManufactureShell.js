@@ -6,18 +6,32 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { MARKETPLACE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState, useCallback } from "react";
+import { useSelector } from "react-redux";
 import Slider from "react-slick";
 
 function ManufactureShell({ sectionInfo }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const [page, setPage] = useState(1);
   const [isDragging, setIsDragging] = useState(false);
+
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+        isMobile ? 10 : 10
+      }&manufacturer_id=${sectionInfo?.manufacturer?.id}&model_id=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }`;
+    }
+    return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+      isMobile ? 10 : 10
+    }&manufacturer_id=${sectionInfo?.manufacturer?.id}`;
+  };
 
   const { data: manufactureProducts } = useCustomQuery({
     name: [
@@ -25,10 +39,10 @@ function ManufactureShell({ sectionInfo }) {
       sectionInfo?.is_active,
       isMobile,
       page,
+      selectedCar?.model?.id,
+      defaultCar?.model?.id,
     ],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-      isMobile ? 10 : 10
-    }&manufacturer_id=${sectionInfo?.manufacturer?.id}`,
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
       ? isAuth() && sectionInfo?.is_active
@@ -38,9 +52,15 @@ function ManufactureShell({ sectionInfo }) {
 
   var settings = {
     dots: false,
-    infinite: true,
-    slidesToShow: 4,
-    slidesToScroll: 2,
+    infinite: +manufactureProducts?.data?.length > 1,
+    slidesToShow:
+      +manufactureProducts?.data?.length > 4
+        ? 4
+        : +manufactureProducts?.data?.length,
+    slidesToScroll:
+      +manufactureProducts?.data?.length > 4
+        ? 2
+        : +manufactureProducts?.data?.length,
     // autoplay: true,
     // touchThreshold: 10,
     // speed: 8000,
@@ -59,15 +79,15 @@ function ManufactureShell({ sectionInfo }) {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
         },
       },
     ],

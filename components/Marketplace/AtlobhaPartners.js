@@ -48,14 +48,17 @@ function AtlobhaPartners({ sectionInfo }) {
     dots: false,
     infinite: true,
     slidesToShow: 7.5,
-    slidesToScroll: 4,
-    // autoplay: true,
+    slidesToScroll: 1,
+    autoplay: true,
     rtl: locale === "ar",
-    // touchThreshold: 1,
-    // speed: 8000,
-    // autoplaySpeed: 8000,
-    cssEase: "linear",
+    touchThreshold: 0.5,
+    speed: 2000,
+    autoplaySpeed: 0,
+    cssEase: "ease",
     arrows: false,
+    isDragging: false,
+    swipe: false,
+    pauseOnHover: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -159,7 +162,7 @@ function AtlobhaPartners({ sectionInfo }) {
                   margin: "auto",
                   maxWidth: "100%",
                   maxHeight: "100%",
-                  cursor: "pointer",
+                  //   cursor: "pointer",
                 }}
               />
             </Box>

@@ -10,11 +10,15 @@ import BlackMenu from "../../../public/icons/black-menu.svg";
 import CloseYellow from "../../../public/icons/close-yellow.svg";
 import { useSelector } from "react-redux";
 import useLocalization from "@/config/hooks/useLocalization";
+import { useRouter } from "next/router";
+import { isAuth } from "@/config/hooks/isAuth";
 
 function FootNavbar({ setOpenCategories, openCategories }) {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState(null);
   const { basket } = useSelector((state) => state.basket);
   const { t } = useLocalization();
+
   return (
     <Box
       className={`${style["footNavbar"]}`}
@@ -61,7 +65,25 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             onClick={() => setActiveTab("basket")}
             hasNum={basket?.length}
           />
-          <Box sx={{ width: "75px" }}></Box>
+          {isAuth() ? (
+            <FootNavSection
+              icon={<More />}
+              text={t.more}
+              activeTab={
+                activeTab === "more" &&
+                router?.pathname?.includes("userProfile")
+                  ? true
+                  : false
+              }
+              onClick={() => {
+                router.push("/userProfile");
+                setActiveTab("more");
+              }}
+            />
+          ) : (
+            <Box sx={{ width: "75px" }}></Box>
+          )}
+
           {/* <FootNavSection
             icon={<Basket />}
             text="السلة"

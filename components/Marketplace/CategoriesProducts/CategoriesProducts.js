@@ -8,12 +8,27 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 function CategoriesProducts({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const [page, setPage] = useState(1);
   const [allData, setAllData] = useState([]);
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${CATEGORY}/${
+        sectionInfo?.marketplace_category?.id
+      }${PRODUCTS}?page=${page}&per_page=${isMobile ? 3 : 10}&model_id=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }`;
+    }
+    return `${MARKETPLACE}${CATEGORY}/${
+      sectionInfo?.marketplace_category?.id
+    }${PRODUCTS}?page=${page}&per_page=${isMobile ? 3 : 10}`;
+  };
 
   const { isLoading } = useCustomQuery({
     name: [
@@ -21,10 +36,10 @@ function CategoriesProducts({ sectionInfo }) {
       sectionInfo?.is_active,
       isMobile,
       page,
+      selectedCar?.model?.id,
+      defaultCar?.model?.id,
     ],
-    url: `${MARKETPLACE}${CATEGORY}/${
-      sectionInfo?.marketplace_category?.id
-    }${PRODUCTS}?page=${page}&per_page=${isMobile ? 3 : 10}`,
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
       ? isAuth() && sectionInfo?.is_active
@@ -50,7 +65,7 @@ function CategoriesProducts({ sectionInfo }) {
         sx={{
           display: "flex",
           flexWrap: isMobile ? "no-wrap" : "wrap",
-          gap: isMobile ? "5px" : "32px",
+          gap: isMobile ? "5px" : "20px",
           justifyContent: isMobile ? "center" : "start",
         }}
       >
