@@ -91,15 +91,15 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
         )}
       </Box>
 
-      {!!product?.tags?.length && (
+      {!!product?.combined_tags?.length && (
         <Box
           sx={{
-            background: product?.tags[0]?.color,
+            background: product?.combined_tags[0]?.color,
             color: "white",
           }}
           className={`${style["prod-label"]}`}
         >
-          {product?.tags[0]?.name}
+          {product?.combined_tags[0]?.name}
         </Box>
       )}
     </Box>

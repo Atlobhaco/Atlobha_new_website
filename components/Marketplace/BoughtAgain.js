@@ -14,7 +14,7 @@ import PaginateComponent from "../Pagination";
 
 function BoughtAgain({ sectionInfo }) {
   const { t } = useLocalization();
-  const { isMobile } = useScreenSize();
+  const { isMobile, isTablet } = useScreenSize();
   const [page, setPage] = useState(1);
   const [allData, setAllData] = useState([]);
 
@@ -53,7 +53,7 @@ function BoughtAgain({ sectionInfo }) {
         sx={{
           display: "flex",
           flexWrap: isMobile ? "no-wrap" : "wrap",
-          gap: isMobile ? "5px" : "32px",
+          gap: isMobile ? "5px" : "20px",
           justifyContent: "start",
         }}
       >

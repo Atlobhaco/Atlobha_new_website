@@ -73,6 +73,9 @@
     border: unset !important;
     outline: unset !important;
   }
+  &:disabled {
+    opacity: 1 !important;
+  }
 }
 
 .btn-outline-green {

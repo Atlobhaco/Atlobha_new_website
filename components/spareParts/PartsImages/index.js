@@ -59,6 +59,7 @@ function PartsImages() {
           arrows={false}
           customTransition="all 1s linear"
           minimumTouchDrag={80}
+          draggable={false}
         >
           {data?.map((part, index) => (
             <Box

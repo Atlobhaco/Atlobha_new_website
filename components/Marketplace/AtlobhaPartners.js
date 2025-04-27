@@ -47,35 +47,38 @@ function AtlobhaPartners({ sectionInfo }) {
   var settings = {
     dots: false,
     infinite: true,
-    slidesToShow: 7,
-    slidesToScroll: 2,
+    slidesToShow: 7.5,
+    slidesToScroll: 1,
     autoplay: true,
     rtl: locale === "ar",
-    touchThreshold: 1,
-    speed: 8000,
-    autoplaySpeed: 8000,
-    cssEase: "linear",
+    touchThreshold: 0.5,
+    speed: 2000,
+    autoplaySpeed: 0,
+    cssEase: "ease",
     arrows: false,
+    isDragging: false,
+    swipe: false,
+    pauseOnHover: true,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 4.5,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 4.5,
+          slidesToScroll: 3,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 3.5,
+          slidesToScroll: 3,
         },
       },
     ],
@@ -144,11 +147,11 @@ function AtlobhaPartners({ sectionInfo }) {
               }}
             >
               <Image
-                onClick={() => {
-                  if (!isDragging) {
-                    router.push(`/manufacture/${part?.id}`);
-                  }
-                }}
+                // onClick={() => {
+                //   if (!isDragging) {
+                //     router.push(`/manufacture/${part?.id}`);
+                //   }
+                // }}
                 src={part?.logo?.url}
                 alt={part?.logo?.url}
                 width={isMobile ? 53 : 113}
@@ -159,7 +162,7 @@ function AtlobhaPartners({ sectionInfo }) {
                   margin: "auto",
                   maxWidth: "100%",
                   maxHeight: "100%",
-                  cursor: "pointer",
+                  //   cursor: "pointer",
                 }}
               />
             </Box>

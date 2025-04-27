@@ -383,5 +383,17 @@
   "atlobhaCategories": "تصنيفات اطلبها",
   "showMore": "عرض المزيد",
   "basket": "السلة",
-  "packagesOffers": "الباقات و العروض"
+  "packagesOffers": "الباقات و العروض",
+  "thisEveryThing": "هذا كل شئ، شكرا لك",
+  "youHavePricedOrder": "تم تسعير طلبك #",
+  "CanConfirmItNow": "اكدها الان قبل انتهاء التسعيرة",
+  "confirmOrder": "اكد الطلب",
+  "orderNumber": "طلبك",
+  "onDelivery": "قيد التوصيل",
+  "nowOnTheWay": "الان في الطريق",
+  "trackYourOrder": "تتبع الطلب",
+  "deliveredDone": "تم توصيله",
+  "rateYourOrder": "قيم الطلب",
+  "orderDoneDelivery": "تم توصيل طلبك",
+  "more": "المزيد"
 }

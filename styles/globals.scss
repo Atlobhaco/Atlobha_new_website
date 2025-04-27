@@ -392,7 +392,7 @@ div[aria-label="number input"] {
 
 .data-over-foot-nav {
   position: fixed;
-  bottom: 85px;
+  bottom: 83px;
   left: 0px;
   right: 0px;
   width: 90% !important;
@@ -452,26 +452,52 @@ button[class^="slick-"] {
 }
 
 [dir="rtl"] .slick-prev {
-  left: 0 !important;
+  left: -25px !important;
   right: auto;
   transform: rotate(180deg);
   top: 45%;
+  @include mobile-screen-style {
+    left: 0px !important;
+  }
 }
 [dir="ltr"] .slick-prev {
   right: auto;
-  left: 0 !important;
+  left: -25px !important;
   transform: rotate(180deg);
   top: 45%;
+  @include mobile-screen-style {
+    left: 0px !important;
+  }
 }
 [dir="rtl"] .slick-next {
   left: auto;
-  right: 0 !important;
+  right: -25px !important;
   transform: rotate(180deg);
   top: 45%;
+  @include mobile-screen-style {
+    right: 0px !important;
+  }
 }
 [dir="ltr"] .slick-next {
   left: auto;
-  right: 0 !important;
+  right: -25px !important;
   transform: rotate(180deg);
   top: 45%;
+  @include mobile-screen-style {
+    right: 0px !important;
+  }
+}
+
+.slick-dots {
+  @include mobile-screen-style {
+    bottom: -18px;
+  }
+}
+
+.slick-slider {
+  width: 95%;
+  margin: auto;
+  @include mobile-screen-style {
+    width: 99%;
+  }
 }

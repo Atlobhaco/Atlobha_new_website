@@ -2,7 +2,12 @@ import React from "react";
 import Pagination from "@mui/material/Pagination";
 import PaginationItem from "@mui/material/PaginationItem";
 import useLocalization from "@/config/hooks/useLocalization";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material"; // Custom icons
+import {
+  ArrowBackIos,
+  ArrowForwardIos,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+} from "@mui/icons-material"; // Custom icons
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { CircularProgress } from "@mui/material";
 
@@ -31,13 +36,22 @@ function PaginateComponent({ meta, setPage, isLoading }) {
           <PaginationItem
             {...item}
             page={item.page ? formatNumber(item.page) : item.page} // Convert numbers to Arabic if needed
-            slots={{
-              previous: locale === "ar" ? ArrowForwardIos : ArrowBackIos, // Custom left arrow
-              next: locale === "ar" ? ArrowBackIos : ArrowForwardIos, // Custom right arrow
-            }}
+            // slots={{
+            //   previous: locale === "ar" ? ArrowRightIcon : ArrowRightIcon, // Custom left arrow
+            //   next: locale === "ar" ? ArrowRightIcon : ArrowRightIcon, // Custom right arrow
+            // }}
             sx={{
               "& .MuiSvgIcon-root": {
-                fontSize: isMobile ? "12px" : "16px", // Adjust arrow icon size
+                width: isMobile ? 30 : 32,
+                height: isMobile ? 30 : 32,
+                borderRadius: "50%", // Make it circular
+                border: "1px solid #6B7280", // Circle border
+                backgroundColor: "#fff",
+                color: "#6B7280", // Arrow color
+                padding: "3px", // Space inside circle
+                margin: "0px 0px",
+                fontSize: isMobile ? "12px" : "16px",
+                transform: locale === "ar" ? "rotate(180deg)" : "none", // Add this line
               },
             }}
           />

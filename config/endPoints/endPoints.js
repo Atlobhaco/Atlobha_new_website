@@ -46,3 +46,6 @@ export const CATEGORY = "/category";
 export const RECENTLY_VIEWED = "/recently-viewed";
 export const MANUFACTURERS = "/manufacturers";
 export const CART = "/cart";
+export const ORDER_STATUS_NOTIFICATIONS = "/order-status-update-notifications";
+export const DISMISS = "/dismiss";
+export const MARK_READ = "/mark-read";

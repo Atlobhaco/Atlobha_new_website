@@ -18,7 +18,7 @@ function Packages() {
 
   const { isFetching, isLoading } = useCustomQuery({
     name: ["featured-products-packages", page, isMobile],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${4}&is_featured=1`,
+    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${10}&is_featured=1`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     onSuccess: (res) => setAllData(res),
