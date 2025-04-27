@@ -119,14 +119,16 @@ function CategoriesPopupcontent({
     onSuccess: (res) => {
       setAppGroups(res);
       setMainGroups(res);
-      // open anyway but not in order page or confirmation
-      if (
-        !route?.includes("myOrders") &&
-        !route?.includes("confirmation") &&
-        !mobileScreen
-      ) {
-        setOpenCategories(true);
-      }
+      // open anyway but not in order page or confirmation or mobileScreen query
+      setTimeout(() => {
+        if (
+          !route?.includes("myOrders") &&
+          !route?.includes("confirmation") &&
+          !mobileScreen
+        ) {
+          setOpenCategories(true);
+        }
+      }, 500);
       dispatch(setAllGroups(res));
     },
     onError: () => {
