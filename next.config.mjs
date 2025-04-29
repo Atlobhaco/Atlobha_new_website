@@ -35,6 +35,16 @@ const nextConfig = {
 
     return config;
   },
+
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/spareParts",
+        permanent: false, // Set to true if it's a permanent redirect
+      },
+    ];
+  },
 };
 
 export default nextConfig;
