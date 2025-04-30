@@ -20,7 +20,7 @@ function Layout({ children }) {
   const { t } = useLocalization();
   const router = useRouter();
   const { route } = router;
-  const { mobileScreen } = router.query;
+  const { mobileScreen, hideFooter } = router.query;
   const { isMobile } = useScreenSize();
   const [openCategories, setOpenCategories] = useState(false);
   const [activeSection, setActiveSection] = useState(true);
@@ -58,7 +58,7 @@ function Layout({ children }) {
       >
         {children}
       </Box>
-      {!isMobile && <Footer />}
+      {!isMobile && !hideFooter && <Footer />}
 
       <DialogCentered
         open={openCategories}
