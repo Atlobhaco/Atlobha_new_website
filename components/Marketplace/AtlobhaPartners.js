@@ -54,7 +54,7 @@ function AtlobhaPartners({ sectionInfo }) {
     touchThreshold: 0,
     speed: 2500,
     autoplaySpeed: 0,
-    cssEase: "linear",
+    // cssEase: "ease-in",
     arrows: false,
     isDragging: false,
     swipe: false,
