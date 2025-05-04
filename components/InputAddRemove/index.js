@@ -9,6 +9,8 @@ function InputAddRemove({
   handleBlur = () => {},
   actionClickrightIcon = () => {},
   actionClickIcon = () => {},
+  disabled = false,
+  customHeight = false,
 }) {
   return (
     <div>
@@ -26,6 +28,8 @@ function InputAddRemove({
         actionClickrightIcon={actionClickrightIcon}
         actionClickIcon={actionClickIcon}
         customPadding="0px 3px"
+        disabled={disabled}
+        customHeight={customHeight}
       />
     </div>
   );

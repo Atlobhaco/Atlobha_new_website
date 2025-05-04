@@ -61,8 +61,15 @@ function FootNavbar({ setOpenCategories, openCategories }) {
           <FootNavSection
             icon={<Basket />}
             text={t.basket}
-            activeTab={activeTab === "basket" ? true : false}
-            onClick={() => setActiveTab("basket")}
+            activeTab={
+              activeTab === "basket" || router?.pathname?.includes("basket")
+                ? true
+                : false
+            }
+            onClick={() => {
+              router.push("/basket");
+              setActiveTab("basket");
+            }}
             hasNum={basket?.length}
           />
           {isAuth() ? (
@@ -70,7 +77,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
               icon={<More />}
               text={t.more}
               activeTab={
-                activeTab === "more" &&
+                activeTab === "more" ||
                 router?.pathname?.includes("userProfile")
                   ? true
                   : false

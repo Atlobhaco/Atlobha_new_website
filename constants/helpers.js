@@ -383,3 +383,13 @@ export const riyalImgOrange = () => {
     />
   );
 };
+export const riyalImgGrey = (width, height) => {
+  return (
+    <Image
+      src="/icons/riyal-grey.svg"
+      width={width || 20}
+      height={height || 20}
+      alt="riyal-grey"
+    />
+  );
+};

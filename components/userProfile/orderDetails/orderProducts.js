@@ -125,7 +125,7 @@ function OrderProducts({
                   addOrUpdateSparePart(
                     ...orderDetails?.parts?.map((d) => ({
                       ...d,
-                      insideOrder: true,
+                      showPrice: true,
                     }))
                   )
                 );
@@ -176,7 +176,7 @@ function OrderProducts({
       <Box>
         {editMode
           ? selectedParts?.map((data) => (
-              <SparePartItem data={data} insideOrder={true} />
+              <SparePartItem data={data} showPrice={true} />
             ))
           : orderDetails?.parts?.map((part) => (
               <div

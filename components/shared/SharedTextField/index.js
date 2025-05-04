@@ -28,6 +28,7 @@ function SharedTextField({
   alignPosition = false,
   id = "",
   disabled = false,
+  customHeight = false,
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -117,7 +118,7 @@ function SharedTextField({
         sx={{
           "& .MuiOutlinedInput-root": {
             background: rightIcon ? "white" : "unset",
-            height: isMobile && rightIcon ? "31px" : "44px", // Set the height of the input
+            height: isMobile && rightIcon ? "31px" : customHeight || "40px", // Set the height of the input
             borderRadius: "8px", // Set border radius
             paddingRight: "8px", // Adjust padding for the icon
             paddingLeft: rightIcon ? "8px" : "inherit", // Adjust padding for the icon

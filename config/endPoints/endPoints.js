@@ -49,3 +49,4 @@ export const CART = "/cart";
 export const ORDER_STATUS_NOTIFICATIONS = "/order-status-update-notifications";
 export const DISMISS = "/dismiss";
 export const MARK_READ = "/mark-read";
+export const CALCULATE = "/calculate";

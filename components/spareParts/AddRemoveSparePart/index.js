@@ -7,7 +7,7 @@ import { addOrUpdateSparePart } from "@/redux/reducers/addSparePartsReducer";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 
-function AddRemoveSparePart({ data, insideOrder = false }) {
+function AddRemoveSparePart({ data, showPrice = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ function AddRemoveSparePart({ data, insideOrder = false }) {
 
   const updateSparePart = (quantity, extra = {}) => {
     // can not delete the laste item from the order
-    if (insideOrder && selectedParts?.length === 1 && +quantity === 0) {
+    if (showPrice && selectedParts?.length === 1 && +quantity === 0) {
       toast.error(t.canNotDeletePart);
       return null;
     }

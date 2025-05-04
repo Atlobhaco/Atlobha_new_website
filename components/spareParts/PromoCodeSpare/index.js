@@ -9,7 +9,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { PROMO_CODES } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 
-function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
+function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
   const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -59,9 +59,10 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId }) {
           sx={{
             fontSize: isMobile ? "16px" : "20px",
             fontWeight: "500",
+            color: customTitle ? "#1C1C28" : "inherit",
           }}
         >
-          {t.promoCode}
+          {customTitle || t.promoCode}
         </Box>
         {/* <Box
           sx={{

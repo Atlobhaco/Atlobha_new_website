@@ -81,7 +81,7 @@ function PackageOffers({ sectionInfo }) {
     beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
     afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
-  console.log("featuredProducts?.data?.length", featuredProducts?.data?.length);
+
   return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (
     <Box
       sx={{

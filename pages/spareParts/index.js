@@ -77,7 +77,7 @@ function SpareParts() {
 
   //  clear the part that may be selected from order details
   useEffect(() => {
-    if (selectedParts?.some((obj) => obj.insideOrder === true)) {
+    if (selectedParts?.some((obj) => obj.showPrice === true)) {
       dispatch(clearSpareParts());
     }
     window.webengage.onReady(() => {
