@@ -6,7 +6,7 @@ const nextConfig = {
     defaultLocale: "ar",
     localeDetection: false,
   },
-  trailingSlash: true,
+  trailingSlash: false,
   images: {
     remotePatterns: [
       {
