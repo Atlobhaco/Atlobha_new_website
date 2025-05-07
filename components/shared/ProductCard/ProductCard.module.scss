@@ -17,6 +17,7 @@
   @include mobile-screen-style {
     width: 110px;
     padding: 7px;
+    height: 162px;
     // border: 1.594px solid #ff0000;
   }
   &-img-wrapper {
@@ -31,11 +32,12 @@
   &-info-wrapper {
     margin-top: 25px;
     width: 100%;
-    min-height: 130px;
+    min-height: 152px;
     text-align: start;
     @include mobile-screen-style {
       min-height: 84px;
       margin-top: 10px !important;
+	  overflow: hidden;
     }
     &_old-price {
       color: #b0b0b0;

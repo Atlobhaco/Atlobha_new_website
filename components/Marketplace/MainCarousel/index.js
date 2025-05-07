@@ -6,6 +6,12 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useSelector } from "react-redux";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 
 function MainCarousel({ sectionInfo }) {
   const { isMobile } = useScreenSize();
@@ -35,6 +41,7 @@ function MainCarousel({ sectionInfo }) {
     infinite: true,
     slidesToShow: ads?.data?.length > 1 ? 1 : 1,
     slidesToScroll: 1,
+    fade: true,
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
@@ -72,45 +79,44 @@ function MainCarousel({ sectionInfo }) {
 
   return !sectionInfo?.is_active || !ads?.data?.length ? null : (
     <Box
-      sx={{
-        display: "flex",
-        gap: isMobile ? "10px" : "25px",
-        flexDirection: "column",
-        borderRadius: "10px",
-        overflow: "hidden",
-      }}
+      sx={
+        {
+          // borderRadius: "20px",
+        }
+      }
     >
-      <Slider {...settings}>
-        {ads?.data?.map((featured) => (
-          <Box
-            key={featured?.id}
-            onClick={() => {
-              if (!isDragging) {
-                featured?.link && window.open(featured?.link);
-              }
-            }}
-            sx={{
-              width: "100% !important",
-              height: isMobile ? "150px" : "510px",
-              cursor: "pointer",
-              borderRadius: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                backgroundImage: `url('${featured?.media}')`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundSize: isMobile ? "cover" : "cover",
-                height: "100%",
-                width: "100%",
-                borderRadius: "10px",
-                overflow: "hidden",
+      <Swiper
+        spaceBetween={10}
+        effect={"fade"}
+        speed={500} // Duration of fade effect in milliseconds
+        fadeEffect={{ crossFade: true }}
+        navigation={true}
+        loop={true}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[EffectFade, Navigation, Pagination]}
+        className="mySwiper"
+      >
+        {ads?.data?.map((img) => (
+          <SwiperSlide>
+            <img
+              style={{
+                borderRadius: "20px",
+                maxWidth: "100%",
+                display: "flex",
+                margin: "auto",
               }}
-            ></Box>
-          </Box>
+              src={img?.media}
+              onClick={() => {
+                if (img?.link) {
+                  window.open(img?.link);
+                }
+              }}
+            />
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </Box>
   );
 }

@@ -109,6 +109,7 @@ function PackageOffers({ sectionInfo }) {
               width: "95% !important",
               height: isMobile ? "200px" : "440px",
               cursor: "pointer",
+              //   background:'yellow'
             }}
           >
             <Box
@@ -118,7 +119,11 @@ function PackageOffers({ sectionInfo }) {
                 backgroundPosition: "center",
                 backgroundSize: "contain",
                 height: "100%",
-                width: "100%",
+                width: isMobile
+                  ? "100%"
+                  : +featuredProducts?.data?.length === 1
+                  ? "280px"
+                  : "100%",
                 borderRadius: "10px",
               }}
             ></Box>
