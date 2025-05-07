@@ -3,7 +3,8 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import crypto from "crypto";
 import { ORDERSENUM, PAYMENT_METHODS, STATUS } from "./enums";
-import useScreenSize from "./screenSize/useScreenSize";
+import { useEffect, useRef } from "react";
+import isEqual from "lodash.isequal";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -392,4 +393,18 @@ export const riyalImgGrey = (width, height) => {
       alt="riyal-grey"
     />
   );
+};
+/* -------------------------------------------------------------------------- */
+/*                check if there is any change happen in array                */
+/* -------------------------------------------------------------------------- */
+export const useArrayChangeDetector = (array, onChange) => {
+  const prevRef = useRef();
+
+  useEffect(() => {
+    if (prevRef.current && !isEqual(prevRef.current, array)) {
+      onChange(prevRef.current, array); // You get both old and new values
+    }
+
+    prevRef.current = array;
+  }, [array, onChange]);
 };

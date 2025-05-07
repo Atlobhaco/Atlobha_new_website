@@ -16,6 +16,9 @@ import LinearProgress, {
   linearProgressClasses,
 } from "@mui/material/LinearProgress";
 import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymentMethodsImgs";
+import Login from "@/components/Login";
+import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
+import { isAuth } from "@/config/hooks/isAuth";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 8,
@@ -42,6 +45,7 @@ function Basket() {
   const { t, locale } = useLocalization();
   const router = useRouter();
   const [prodIdClicked, setProdIdClicked] = useState(false);
+  const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
   const minForFreeDelivery = 120;
   const noImgStyle = {
@@ -219,7 +223,13 @@ function Basket() {
                     className="big-main-btn"
                     customClass="w-100 mt-3"
                     text="continueCheckout"
-                    onClick={() => router.push("/checkout")}
+                    onClick={() => {
+                      if (isAuth()) {
+                        router.push("/checkout");
+                      } else {
+                        setOpenLogin(true);
+                      }
+                    }}
                   />
                 </Box>
                 <Box sx={{ mb: 3 }}>
@@ -241,6 +251,7 @@ function Basket() {
           />
         </div>
       </div>
+      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
     </div>
   );
 }

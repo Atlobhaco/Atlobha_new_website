@@ -9,6 +9,7 @@ const initialState = {
   promoCode: null,
   isLoading: false,
   error: null,
+  voucherCode: null,
 };
 
 // Thunk to fetch data from the endpoint
@@ -50,6 +51,9 @@ export const addSparePartsReducer = createSlice({
     },
     setPromoCodeForSpareParts: (state, action) => {
       state.promoCode = action.payload?.data || null;
+    },
+    setVoucher: (state, action) => {
+      state.voucherCode = action.payload?.data || null;
     },
     addOrUpdateSparePart: (state, action) => {
       const incomingPart = action.payload;
@@ -107,6 +111,7 @@ export const {
   setPromoCodeForSpareParts,
   addOrUpdateSparePart,
   clearSpareParts,
+  setVoucher,
 } = addSparePartsReducer.actions;
 
 export default addSparePartsReducer.reducer;

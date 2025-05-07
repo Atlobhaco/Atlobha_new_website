@@ -113,6 +113,7 @@
   "addSparePart": "Add Spare Part",
   "willAdd": "Adding",
   "promoCode": "Promo Code",
+  "voucher": "Voucher",
   "showAll": "Show All",
   "promoCodePlaceHolder": "Add Promo Code",
   "activate": "Activate",
@@ -126,6 +127,7 @@
   "copySuccess": "Success Copy",
   "goOrder": "Go To Orders",
   "promoNotFound": "Promo code not valid",
+  "voucherNotFound": " Voucher not valid",
   "thankYou": "Thank you !",
   "orderNum": "Order number",
   "confirmMessage": "You will receive a confirmation email once you use it. If you have an account, the order will appear there once you receive the email.",
@@ -192,6 +194,7 @@
   "enterOtpSendto": "Enter the confirmation code that was sent to you.",
   "confirmYouPhone": "Confirm your phone number",
   "canMakeSparePartReq": "Can request spare part pricing",
+  "canAddOrder": "Can order now",
   "invalidOtp": "Wrong OTP",
   "creatianDateFrom": "creation date from",
   "creationDateTo": "creation date to",
@@ -415,5 +418,8 @@
   "couponDiscount": "coupon discount",
   "giftVoucher": "gift voucher",
   "addGiftVoucher": "Add gift voucher",
-  "deliverTomorrow": "deliver tomorrow"
+  "deliverTomorrow": "Deliver tomorrow",
+  "addBalanceToWallet": "add balance to wallet",
+  "availablePurchase": "Use the available purchase vouchers, whether from Alalaab or from partners, to add Request the balance in your wallet",
+  "justUseVoucher": "Just use the voucher below and the balance will be added directly to your account"
 }

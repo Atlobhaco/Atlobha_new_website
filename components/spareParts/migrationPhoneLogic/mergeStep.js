@@ -10,6 +10,7 @@ import Image from "next/image";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 const closeHolder = {
   display: "flex",
@@ -31,6 +32,8 @@ function MergeStep({
   const { isMobile } = useScreenSize();
   const { login } = useAuth();
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { route } = router;
 
   const {
     data: mergeRes,
@@ -83,7 +86,9 @@ function MergeStep({
       setOpenAddMobile(false);
       setMigrationStep(1);
       dispatch(loginSuccess({ data: res }));
-      toast.success(t.canMakeSparePartReq);
+      toast.success(
+        route !== `/checkout` ? t.canMakeSparePartReq : t.canAddOrder
+      );
     },
   });
 

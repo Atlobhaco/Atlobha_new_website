@@ -113,6 +113,7 @@
   "addSparePart": "أضف قطعة غيار",
   "willAdd": "جاري الاضافة",
   "promoCode": "كود الخصم",
+  "voucher": "قسيمة الشراء",
   "showAll": "عرض الكل",
   "promoCodePlaceHolder": "أدخل الرمز الترويجي",
   "activate": "تفعيل",
@@ -125,6 +126,7 @@
   "copySuccess": "تم النسخ",
   "goOrder": "الذهاب إلي الطلبات",
   "promoNotFound": "كود الخصم غير صالح",
+  "voucherNotFound": " قسيمة الشراء غير صالح",
   "thankYou": "شكرًا لك !",
   "orderNum": "رقم الطلب",
   "confirmMessage": "ستتلقى رسالة تأكيد عبر البريد الإلكتروني بمجرد معالجة طلبك. إذا كان لديك حساب، فسيظهر الطلب هناك بمجرد استلامك للبريد الإلكتروني.",
@@ -191,6 +193,7 @@
   "enterOtpSendto": "أدخل كود التأكيد الذي تم إرساله إلي",
   "confirmYouPhone": "تأكيد رقم الهاتف الخاص بك",
   "canMakeSparePartReq": "يمكنك طلب تسعير القطع",
+  "canAddOrder": "يمكنك الطلب الان",
   "invalidOtp": "كود التاكيد غير صحيح",
   "creatianDateFrom": "تاريخ الانشاء من",
   "creationDateTo": "تاريخ الانشاء الي",
@@ -413,5 +416,8 @@
   "couponDiscount": "كوبون الخصم",
   "giftVoucher": "قسيمة شراء",
   "addGiftVoucher": "اضف قسيمة شراء",
-  "deliverTomorrow": "التسليم غدا"
+  "deliverTomorrow": "التسليم غدا",
+  "addBalanceToWallet": "اضافة رصيد الي المحفظة",
+  "availablePurchase": "استخدم قسائم الشراء المتاحة سواء من اطلبها او من الشركاء لاضافة الرصيد الي محفطة اطلبها",
+  "justUseVoucher": "فقط استخدم القسيمة ادناه و سيتم اضافة الرصيد مباشرة لحسابك"
 }
