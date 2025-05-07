@@ -15,7 +15,7 @@ import { setSelectedPayment } from "@/redux/reducers/selectedPaymentMethod";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -35,6 +35,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
   const merchanteRefrence = `${user?.data?.user?.id}_${Math.floor(
     1000 + Math.random() * 9000
   )}`;
+  const [payFortForm, setPayfortForm] = useState(false);
 
   const receipt = {};
   const header = {
@@ -90,7 +91,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
         selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
         +oldAmountToPay > 0
       ) {
-        form.submit();
+        payFortForm.submit();
         setTimeout(() => {
           setRedirectToPayfort(false);
         }, 6000);
@@ -203,18 +204,30 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
     process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
   );
 
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+  /* -------------------------------------------------------------------------- */
+  /*                   to fix the reference error for document                  */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    if (document) {
+      setPayfortForm(document.createElement("form"));
+    }
+  }, [document]);
 
-  Object.keys(requestData).forEach((key) => {
-    const input = document.createElement("input");
-    input.type = "hidden";
-    input.name = key;
-    input.value = requestData[key];
-    form.appendChild(input);
-  });
-  document.body.appendChild(form);
+  useEffect(() => {
+    if (payFortForm) {
+      payFortForm.method = "POST";
+      payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+
+      Object.keys(requestData).forEach((key) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = requestData[key];
+        payFortForm.appendChild(input);
+      });
+      document.body.appendChild(payFortForm);
+    }
+  }, [payFortForm]);
 
   /* -------------------------------------------------------------------------- */
   /*                              apple pay payment                             */
