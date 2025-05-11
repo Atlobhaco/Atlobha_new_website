@@ -126,7 +126,7 @@ function ManufactureShell({ sectionInfo }) {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         width: "100%",
-        height: isMobile ? "317px" : "900px",
+        height: isMobile ? "286px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",

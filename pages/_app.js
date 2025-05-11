@@ -24,6 +24,10 @@ import {
   syncFromLocalStorage,
 } from "@/redux/reducers/basketReducer";
 import { isAuth } from "@/config/hooks/isAuth";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const theme = createTheme();
 const queryClient = new QueryClient();

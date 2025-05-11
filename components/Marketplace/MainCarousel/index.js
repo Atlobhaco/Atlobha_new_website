@@ -7,10 +7,6 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 
 function MainCarousel({ sectionInfo }) {
