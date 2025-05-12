@@ -38,6 +38,8 @@ function Login({
   open = false,
   setOpen = () => {},
   id = "customID",
+  customIDLogin = "login-btn",
+  customIDOtpField = "otpField",
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -300,7 +302,7 @@ function Login({
               </Box>
               <Box sx={{ mt: 4 }}>
                 <SharedBtn
-                  id="login-btn"
+                  id={customIDLogin}
                   disabled={!formik.isValid || registerLoad || otpLoad}
                   text={registerLoad || otpLoad ? null : "continue"}
                   className="black-btn"
@@ -337,6 +339,7 @@ function Login({
           </>
         ) : (
           <OtpView
+            customIDOtpField={customIDOtpField}
             containerStyle={containerStyle}
             setOtpView={setOtpView}
             recallReqOtp={recallReqOtp}

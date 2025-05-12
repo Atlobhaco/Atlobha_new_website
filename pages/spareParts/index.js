@@ -372,6 +372,8 @@ function SpareParts() {
         open={openLogin}
         setOpen={setOpenLogin}
         id="fiveLogin"
+        customIDOtpField="fiveOtpField"
+        customIDLogin="fiveBtnLogin"
       />
     </Box>
   );

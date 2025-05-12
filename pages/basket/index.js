@@ -256,6 +256,8 @@ function Basket() {
         open={openLogin}
         setOpen={setOpenLogin}
         id="fourLogin"
+        customIDOtpField="fourOtpField"
+        customIDLogin="fourBtnLogin"
       />
     </div>
   );

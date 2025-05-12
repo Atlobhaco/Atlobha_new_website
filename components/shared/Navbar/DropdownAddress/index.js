@@ -252,6 +252,8 @@ function DropDownAddress() {
         open={openLogin}
         setOpen={setOpenLogin}
         id="thirdLogin"
+        customIDOtpField="thirdOtpField"
+        customIDLogin="thirdBtnLogin"
       />
     </Box>
   );

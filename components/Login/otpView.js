@@ -22,6 +22,7 @@ function OtpView({
   confirmOtpEntered = false,
   setOtpPayload = () => {},
   confirmOtpFetch = false,
+  customIDOtpField = "",
 }) {
   const { t, locale } = useLocalization();
   const dispatch = useDispatch();
@@ -123,7 +124,7 @@ function OtpView({
           }}
         >
           <SharedTextField
-            id="otpField"
+            id={customIDOtpField}
             placeholder={null}
             label={false}
             imgIcon={false}

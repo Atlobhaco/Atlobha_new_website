@@ -452,6 +452,8 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
         open={openLogin}
         setOpen={setOpenLogin}
         id="firstLogin"
+        customIDOtpField="firstOtpField"
+        customIDLogin="firstBtnLogin"
       />
     </Box>
   ) : null;

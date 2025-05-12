@@ -317,6 +317,8 @@ function CarPalette() {
         open={openLogin}
         setOpen={setOpenLogin}
         id="secondLogin"
+		customIDOtpField="secondOtpField"
+        customIDLogin="secondBtnLogin"
       />
     </>
   );
