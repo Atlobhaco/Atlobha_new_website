@@ -33,7 +33,12 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-function Login({ showBtn = false, open = false, setOpen = () => {} }) {
+function Login({
+  showBtn = false,
+  open = false,
+  setOpen = () => {},
+  id = "customID",
+}) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
@@ -247,7 +252,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               <Box sx={{ mt: 2, position: "relative" }}>
                 {true ? (
                   <SharedTextField
-                    id="loginField"
+                    id={id}
                     customPadding={`${
                       formik?.values?.phone?.length && !textInput
                         ? "0px 55px"

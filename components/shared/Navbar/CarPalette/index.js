@@ -312,7 +312,12 @@ function CarPalette() {
         content={<VinNumIInfo />}
         renderCustomBtns={false}
       />
-      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
+      <Login
+        showBtn={!showBtn}
+        open={openLogin}
+        setOpen={setOpenLogin}
+        id="secondLogin"
+      />
     </>
   );
 }
