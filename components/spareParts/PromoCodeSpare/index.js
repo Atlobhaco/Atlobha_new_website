@@ -3,7 +3,10 @@ import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPromoCodeForSpareParts } from "@/redux/reducers/addSparePartsReducer";
+import {
+  setPromoCodeAllData,
+  setPromoCodeForSpareParts,
+} from "@/redux/reducers/addSparePartsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { PROMO_CODES } from "@/config/endPoints/endPoints";
@@ -13,7 +16,9 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
   const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
-  const { promoCode } = useSelector((state) => state.addSpareParts);
+  const { promoCode, allPromoCodeData } = useSelector(
+    (state) => state.addSpareParts
+  );
   const [error, setError] = useState(false);
 
   const { refetch: checkPromo } = useCustomQuery({
@@ -27,6 +32,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
       if (res?.can_be_redeemed) {
         setPromoCodeId(res?.id);
         setError(false);
+        dispatch(setPromoCodeAllData({ data: res }));
       } else {
         toast.error(t.promoNotFound);
       }
@@ -38,6 +44,18 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
       }
     },
   });
+
+  const returnValueInsideInput = () => {
+    if (allPromoCodeData?.id) {
+      if (allPromoCodeData?.type === "FIXED") {
+        return `${allPromoCodeData?.code} (${allPromoCodeData?.value} ${t.sar})`;
+      } else {
+        return `${allPromoCodeData?.code} (${allPromoCodeData?.value}%) `;
+      }
+    } else {
+      return promoCode || "";
+    }
+  };
 
   return (
     <Box
@@ -89,18 +107,22 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
           variant="outlined"
           placeholder={t.promoCodePlaceHolder}
           fullWidth
-          disabled={promoCodeId ? true : false}
+          disabled={promoCodeId || allPromoCodeData ? true : false}
           onChange={(e) => {
             setError(false);
             dispatch(setPromoCodeForSpareParts({ data: e?.target?.value }));
           }}
-          value={promoCode || ""}
+          value={returnValueInsideInput()}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
                   alt="img"
-                  src={`/icons/${promoCodeId ? "green-tick.svg" : "promo.svg"}`}
+                  src={`/icons/${
+                    promoCodeId || allPromoCodeData
+                      ? "green-tick.svg"
+                      : "promo.svg"
+                  }`}
                   width={24}
                   height={24}
                 />
@@ -113,7 +135,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                     fontSize: "16px",
                     fontWeight: "500",
                     color:
-                      promoCodeId || error
+                      promoCodeId || allPromoCodeData || error
                         ? "#EB3C24"
                         : promoCode?.length >= 3
                         ? "black"
@@ -121,10 +143,11 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    if (promoCodeId || error) {
+                    if (promoCodeId || allPromoCodeData || error) {
                       setError(false);
                       setPromoCodeId(false);
                       dispatch(setPromoCodeForSpareParts({ data: null }));
+                      dispatch(setPromoCodeAllData({ data: null }));
                     } else {
                       if (promoCode?.length >= 3) {
                         checkPromo();
@@ -132,7 +155,9 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                     }
                   }}
                 >
-                  {promoCodeId || error ? t.delete : t.activate}
+                  {promoCodeId || allPromoCodeData || error
+                    ? t.delete
+                    : t.activate}
                 </span>
               </InputAdornment>
             ),
@@ -142,7 +167,11 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
               height: "44px",
               borderRadius: "8px",
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: error ? "red" : promoCodeId ? "#1FB256" : "", // Set hover border color
+                borderColor: error
+                  ? "red"
+                  : promoCodeId || allPromoCodeData
+                  ? "#1FB256"
+                  : "", // Set hover border color
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "black", // Change border color to black when focused
@@ -157,7 +186,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
               borderRadius: "8px",
               border: error
                 ? "1px solid red"
-                : promoCodeId
+                : promoCodeId || allPromoCodeData
                 ? "1px solid #1FB256"
                 : "",
             },

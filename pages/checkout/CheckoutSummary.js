@@ -20,7 +20,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
-  const { voucherCode } = useSelector((state) => state.addSpareParts);
+  const { voucherCode, allPromoCodeData } = useSelector(
+    (state) => state.addSpareParts
+  );
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const [oldAmountToPay, setOldAmountToPay] = useState(false);
   const { basket } = useSelector((state) => state.basket);
@@ -35,6 +37,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
   const merchanteRefrence = `${user?.data?.user?.id}_${Math.floor(
     1000 + Math.random() * 9000
   )}`;
+
   const [payFortForm, setPayfortForm] = useState(false);
 
   const receipt = {};
@@ -82,7 +85,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
         id: d?.product_id,
         service_center_id: null,
       })),
-      promo_code: promoCodeId ? { id: promoCodeId } : null,
+      promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
       ref_num: null,
     },
     onSuccess: (res) => {
@@ -137,6 +140,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       promoCodeId,
       voucherCode,
       selectAddress,
+      allPromoCodeData,
     ],
     url: "/marketplace/orders/calculate",
     refetchOnWindowFocus: true,
@@ -148,7 +152,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       payment_reference: null,
       payment_method: "CREDIT",
       products: basket?.map((d) => ({ ...d, id: d?.product_id })),
-      promo_code: promoCodeId ? { id: promoCodeId } : null,
+      promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
       ref_num: null,
     },
     select: (res) => res?.data?.data,
@@ -401,11 +405,11 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       {/* vat  percentage */}
       <Box sx={vat}>
         {t.include}{" "}
-        {((calculateReceiptResFromMainPage?.tax_percentage ??
+        {(((calculateReceiptResFromMainPage?.tax_percentage ??
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
-          : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax}{" "}
+          : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
+        ٪ {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax || 0}{" "}
         {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />

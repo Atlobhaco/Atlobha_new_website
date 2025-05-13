@@ -6,8 +6,11 @@ import {
   MANUFACTURERS,
   MARKETPLACE,
   PRODUCTS,
+  USERS,
+  VEHICLES,
 } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
+import { useAuth } from "@/config/providers/AuthProvider";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
@@ -15,10 +18,19 @@ import React, { useState } from "react";
 
 function ManufactureDetails() {
   const router = useRouter();
+  const { user } = useAuth();
   const { idManufacturee, name } = router.query;
   const { isMobile } = useScreenSize();
   const [page, setPage] = useState(1);
   const [manData, setManData] = useState(false);
+
+  const { data: defaultCar } = useCustomQuery({
+    name: "defaultCarForEndpoint",
+    url: `${USERS}/${user?.data?.user?.id}${VEHICLES}`,
+    refetchOnWindowFocus: false,
+    enabled: user?.data?.user?.id ? true : false,
+    select: (res) => res?.data?.data?.find((d) => d?.is_default),
+  });
 
   const { data: manufactureInfo } = useCustomQuery({
     name: [`manufactureInfo`, idManufacturee],
@@ -33,10 +45,18 @@ function ManufactureDetails() {
     isLoading,
     isFetching,
   } = useCustomQuery({
-    name: [`manufacturerProducts`, idManufacturee, page, isMobile],
+    name: [
+      `manufacturerProducts`,
+      idManufacturee,
+      page,
+      isMobile,
+      defaultCar?.year,
+    ],
     url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
       isMobile ? 12 : 16
-    }&manufacturer_id=${idManufacturee}`,
+    }&manufacturer_id=${idManufacturee}&years[]=${
+      defaultCar?.year || ""
+    }&model_ids[]=${defaultCar?.model?.id || ""}`,
     refetchOnWindowFocus: false,
     enabled: idManufacturee ? true : false,
     select: (res) => res?.data,
@@ -83,7 +103,9 @@ function ManufactureDetails() {
                   })`,
                   backgroundSize: isMobile ? "cover" : "cover",
                   backgroundRepeat: "no-repeat",
-                  backgroundPosition: "top",
+                  backgroundPosition: manufactureInfo?.cover_image?.url
+                    ? "top"
+                    : "center",
                   width: "100%",
                   height: isMobile ? "115px" : "350px",
                   display: "flex",

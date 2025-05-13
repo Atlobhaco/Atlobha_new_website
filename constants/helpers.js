@@ -2,7 +2,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import crypto from "crypto";
-import { ORDERSENUM, PAYMENT_METHODS, STATUS } from "./enums";
+import { ORDERSENUM, PAYMENT_METHODS, PRODUCT_TYPES, STATUS } from "./enums";
 import { useEffect, useRef } from "react";
 import isEqual from "lodash.isequal";
 
@@ -407,4 +407,15 @@ export const useArrayChangeDetector = (array, onChange) => {
 
     prevRef.current = array;
   }, [array, onChange]);
+};
+/* -------------------------------------------------------------------------- */
+/*                          product types localizaed                          */
+/* -------------------------------------------------------------------------- */
+export const prodTypeArray = () => {
+  const { t } = useLocalization();
+
+  return Object.values(PRODUCT_TYPES).map((value) => ({
+    id: value,
+    name: t.types[`${value}`],
+  }));
 };

@@ -44,3 +44,12 @@ export const INFORMATIVE_TYPES = {
   warning: "warning",
   other: "other",
 };
+
+export const PRODUCT_TYPES = {
+  oils: "oils",
+  spareParts: "spare-parts",
+  tires: "tires",
+  accessories: "accessories",
+  others: "others",
+  batteries: "batteries",
+};

@@ -54,6 +54,15 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const hideComponent = hideNavbarInUrls.some((url) =>
     router?.pathname?.includes(url)
   );
+
+  const hideIfTrue = ["checkout"].some((url) =>
+    router?.pathname?.includes(url)
+  );
+
+  const hideAddress = ["category"].some((url) =>
+    router?.pathname?.includes(url)
+  );
+
   const { allGroups } = useSelector((state) => state.appGroups);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -212,7 +221,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     >
       <Box className={`${style["navbar-container"]}`}>
         <div style={firstPartStyle}>
-          {!hideComponent && <DropDownAddress />}
+          {!hideComponent && !hideIfTrue && !hideAddress && <DropDownAddress />}
           <Image
             alt="logo"
             width={isMobile ? 80 : 130}
@@ -428,25 +437,26 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </Box>
         </Box>
       )} */}
-      {true && (
-        <Box
-          className={`${style["sections"]}`}
-          sx={{
-            padding:
-              isMobile && !hideComponent
-                ? "0px 5px"
-                : hideComponent
-                ? "0px"
-                : "0px 25px",
-          }}
-        >
+      <Box
+        className={`${style["sections"]}`}
+        sx={{
+          padding: hideIfTrue
+            ? "0px"
+            : isMobile && !hideComponent
+            ? "0px 5px"
+            : hideComponent
+            ? "0px"
+            : "0px 25px",
+        }}
+      >
+        {!hideIfTrue && (
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
             handleClick={(section) => handleAppSectionRedirection(section)}
           />
-        </Box>
-      )}
+        )}
+      </Box>
       <Login
         showBtn={!showBtn}
         open={openLogin}

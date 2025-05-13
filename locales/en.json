@@ -421,5 +421,13 @@
   "deliverTomorrow": "Deliver tomorrow",
   "addBalanceToWallet": "add balance to wallet",
   "availablePurchase": "Use the available purchase vouchers, whether from Alalaab or from partners, to add Request the balance in your wallet",
-  "justUseVoucher": "Just use the voucher below and the balance will be added directly to your account"
+  "justUseVoucher": "Just use the voucher below and the balance will be added directly to your account",
+  "types": {
+    "oils": "Oils",
+    "spare-parts": "Spare parts",
+    "tires": "Tires",
+    "accessories": "Accessories",
+    "others": "Others",
+    "batteries": "Batteries"
+  }
 }

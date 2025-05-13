@@ -2,7 +2,10 @@ import { VOUCHERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { setVoucher } from "@/redux/reducers/addSparePartsReducer";
+import {
+  setVoucher,
+  setVoucherAllData,
+} from "@/redux/reducers/addSparePartsReducer";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -20,7 +23,9 @@ function VoucherCode({
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const dispatch = useDispatch();
-  const { voucherCode } = useSelector((state) => state.addSpareParts);
+  const { voucherCode, allvoucherCodeData } = useSelector(
+    (state) => state.addSpareParts
+  );
 
   const { refetch: checkVoucher } = useCustomQuery({
     name: "checkVoucher",
@@ -35,6 +40,11 @@ function VoucherCode({
         setError(false);
         setCanAddVoucher(res);
         dispatch(setVoucher({ data: res }));
+        dispatch(
+          setVoucherAllData({
+            data: { amount: res?.amount, name: inputValVoucher },
+          })
+        );
       } else {
         toast.error(t.voucherNotFound);
       }
@@ -46,6 +56,16 @@ function VoucherCode({
       }
     },
   });
+
+  const returnValueInsideInput = () => {
+    if (allvoucherCodeData?.amount) {
+      return `${inputValVoucher || allvoucherCodeData?.name} (${
+        allvoucherCodeData?.amount
+      } ${t.sar})`;
+    } else {
+      return inputValVoucher || "";
+    }
+  };
 
   return (
     <Box
@@ -77,19 +97,21 @@ function VoucherCode({
           variant="outlined"
           placeholder={t.addGiftVoucher}
           fullWidth
-          disabled={canAddVoucher ? true : false}
+          disabled={canAddVoucher||voucherCode ? true : false}
           onChange={(e) => {
             setError(false);
             setInputValVoucher(e?.target?.value);
           }}
-          value={inputValVoucher || ""}
+          value={returnValueInsideInput()}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
                   alt="img-voucher"
                   src={`/icons/${
-                    canAddVoucher ? "green-tick.svg" : "promo.svg"
+                    canAddVoucher || voucherCode
+                      ? "green-tick.svg"
+                      : "promo.svg"
                   }`}
                   width={24}
                   height={24}
@@ -103,7 +125,7 @@ function VoucherCode({
                     fontSize: "16px",
                     fontWeight: "500",
                     color:
-                      canAddVoucher || error
+                      canAddVoucher || voucherCode || error
                         ? "#EB3C24"
                         : inputValVoucher?.length >= 3
                         ? "black"
@@ -123,7 +145,7 @@ function VoucherCode({
                     }
                   }}
                 >
-                  {voucherCode ? "" : error ? t.delete : t.activate}
+                  {voucherCode?.amount ? "" : error ? t.delete : t.activate}
                 </span>
               </InputAdornment>
             ),
@@ -133,7 +155,11 @@ function VoucherCode({
               height: "44px",
               borderRadius: "8px",
               "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: error ? "red" : canAddVoucher ? "#1FB256" : "", // Set hover border color
+                borderColor: error
+                  ? "red"
+                  : canAddVoucher || voucherCode
+                  ? "#1FB256"
+                  : "", // Set hover border color
               },
               "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                 borderColor: "black", // Change border color to black when focused
@@ -148,7 +174,7 @@ function VoucherCode({
               borderRadius: "8px",
               border: error
                 ? "1px solid red"
-                : canAddVoucher
+                : canAddVoucher || voucherCode
                 ? "1px solid #1FB256"
                 : "",
             },

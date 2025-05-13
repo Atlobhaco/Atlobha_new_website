@@ -18,6 +18,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import ProductCard from "@/components/shared/ProductCard";
 import PaginateComponent from "@/components/Pagination";
 import useLocalization from "@/config/hooks/useLocalization";
+import { isAuth } from "@/config/hooks/isAuth";
 
 function Category() {
   const router = useRouter();
@@ -58,10 +59,14 @@ function Category() {
       isMobile ? 15 : 16
     }&category_id=${selectedCategory}&subcategory_id=${subCatId}&years[]=${
       defaultCar?.year
-    }`,
+    }&model_ids[]=${defaultCar?.model?.id || ""}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    enabled: defaultCar?.year && selectedCategory && subCatId ? true : false,
+    enabled:
+      (isAuth() && defaultCar?.year && selectedCategory && subCatId) ||
+      !isAuth()
+        ? true
+        : false,
     onSuccess: (res) => {
       const element = document.getElementById("categroy_id");
       if (element) {

@@ -20,7 +20,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
   const { isMobile } = useScreenSize();
   const [openAddCoupon, setOpenAddCoupon] = useState(false);
   const [openAddVoucher, setOpenAddVoucher] = useState(false);
-  const { promoCode, voucherCode } = useSelector(
+  const { promoCode, voucherCode, allPromoCodeData } = useSelector(
     (state) => state.addSpareParts
   );
   const [canAddVoucher, setCanAddVoucher] = useState(false);
@@ -57,35 +57,29 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
           justifyContent: "space-between",
           py: 3,
           borderBottom: "1px solid #E6E6E6",
+          //   background: "red",
         }}
       >
-        <Box sx={textPromoStyle}>{t.couponDiscount}</Box>
-        {promoCodeId ? (
-          <Box sx={{ display: "flex" }}>
-            {promoCode}
-            <Box
-              sx={{
-                mx: 2,
-                color: "#EB3C24",
-                fontWeight: "500",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setPromoCodeId(null);
-                dispatch(setPromoCodeForSpareParts({ data: null }));
-              }}
-            >
-              Delete
-            </Box>
-          </Box>
-        ) : (
-          <Box>
-            <SharedBtn
-              text="AddCoupon"
-              className="outline-btn"
-              onClick={() => setOpenAddCoupon(true)}
+        {allPromoCodeData ? (
+          <Box className="w-100">
+            <PromoCodeSpare
+              promoCodeId={promoCodeId}
+              setPromoCodeId={setPromoCodeId}
+              customTitle={t.couponDiscount}
             />
           </Box>
+        ) : (
+          <>
+            <Box sx={textPromoStyle}>{t.couponDiscount}</Box>
+            <Box>
+              <SharedBtn
+                text="AddCoupon"
+                className="outline-btn"
+                onClick={() => setOpenAddCoupon(true)}
+                customStyle={{ minWidth: isMobile ? "140px" : "180px" }}
+              />
+            </Box>
+          </>
         )}
       </Box>
       <Box
@@ -96,10 +90,14 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
           py: 3,
         }}
       >
-        <Box sx={textPromoStyle}>{t.giftVoucher}</Box>
         {voucherCode?.amount ? (
-          <Box sx={{ display: "flex", fontWeight: "bold" }}>
-            {voucherCode?.amount} {riyalImgBlack()}
+          <Box className="w-100">
+            <VoucherCode
+              setCanAddVoucher={setCanAddVoucher}
+              canAddVoucher={canAddVoucher}
+              setInputValVoucher={setInputValVoucher}
+              inputValVoucher={inputValVoucher}
+            />
             {/* <Box
               sx={{
                 mx: 2,
@@ -115,14 +113,18 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
             </Box> */}
           </Box>
         ) : (
-          <Box>
-            {/* اضف كوبون الخصم */}
-            <SharedBtn
-              text="addGiftVoucher"
-              className="outline-btn"
-              onClick={() => setOpenAddVoucher(true)}
-            />
-          </Box>
+          <>
+            <Box sx={textPromoStyle}>{t.giftVoucher}</Box>
+            <Box>
+              {/* اضف كوبون الخصم */}
+              <SharedBtn
+                text="addGiftVoucher"
+                className="outline-btn"
+                onClick={() => setOpenAddVoucher(true)}
+                customStyle={{ minWidth: isMobile ? "140px" : "180px" }}
+              />
+            </Box>
+          </>
         )}
       </Box>
       <DialogCentered
@@ -153,7 +155,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 customTitle={t.couponDiscount}
               />
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 gap: "10px",
@@ -184,7 +186,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                   dispatch(setPromoCodeForSpareParts({ data: null }));
                 }}
               />
-            </Box>
+            </Box> */}
           </>
         }
       />
@@ -221,7 +223,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 inputValVoucher={inputValVoucher}
               />
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 gap: "10px",
@@ -231,7 +233,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 pt: !isMobile && 3,
               }}
             >
-              {/* <SharedBtn
+              <SharedBtn
                 type="submit"
                 text="common.add"
                 className="big-main-btn"
@@ -244,9 +246,9 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                   setOpenAddVoucher(false);
                 }}
                 disabled={!canAddVoucher}
-              /> */}
+              />
 
-              {/* <SharedBtn
+              <SharedBtn
                 text="common.cancel"
                 className="outline-btn"
                 customClass={`${isMobile ? "w-50" : "w-25"}`}
@@ -256,8 +258,8 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                   setOpenAddVoucher(false);
                   setInputValVoucher(null);
                 }}
-              /> */}
-            </Box>
+              /> 
+            </Box> */}
           </>
         }
       />
