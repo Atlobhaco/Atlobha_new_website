@@ -3,7 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "@/styles/globals.scss";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { Box, ThemeProvider, createTheme } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -28,6 +28,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import LogoLoader from "@/components/LogoLoader";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -61,12 +62,38 @@ const AppContent = ({ Component, pageProps }) => {
     }
   }, [isAuth(), locale]);
 
+  useEffect(() => {
+    if (document) {
+      const loadingScreen = document?.getElementById("loading-screen");
+      setTimeout(() => {
+        loadingScreen.style.display = "none";
+      }, 2500);
+    }
+  }, []);
 
   return (
     <Provider store={store}>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <>
+        <Box
+          sx={{
+            background: "#F3F5F8",
+            position: "absolute",
+            zIndex: "999",
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+          id="loading-screen"
+        >
+          <LogoLoader />
+        </Box>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </>
     </Provider>
   );
 };
