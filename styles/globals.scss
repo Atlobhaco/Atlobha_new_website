@@ -509,6 +509,12 @@ button[class^="slick-"] {
 /* -------------------------------------------------------------------------- */
 /*                                  swiper js                                 */
 /* -------------------------------------------------------------------------- */
+.swiper {
+  overflow: unset !important;
+}
+.swiper-pagination {
+  bottom: -25px !important;
+}
 .swiper-button-prev,
 .swiper-button-next {
   background-color: rgb(255, 255, 255) !important;

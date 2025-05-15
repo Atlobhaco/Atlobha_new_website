@@ -50,7 +50,7 @@ function ContentForBasket({ handleCloseBasket = () => {} }) {
           </div>
           <div className={style["products"]}>
             <div>
-              <BasketDataReused />
+              <BasketDataReused handleCloseBasket={handleCloseBasket} />
             </div>
           </div>
           <SharedBtn

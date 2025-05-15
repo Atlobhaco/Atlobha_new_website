@@ -15,7 +15,7 @@ import ErrorIcon from "@mui/icons-material/Error";
 import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
 
-function BasketDataReused() {
+function BasketDataReused({ handleCloseBasket = () => {} }) {
   const { t } = useLocalization();
   const router = useRouter();
   const { basket, loadingCart } = useSelector((state) => state.basket);
@@ -56,7 +56,10 @@ function BasketDataReused() {
             <div className="d-flex">
               <div
                 className={style["products-contain_img"]}
-                onClick={() => router.push(`/product/${data?.product?.id}`)}
+                onClick={() => {
+                  router.push(`/product/${data?.product?.id}`);
+                  handleCloseBasket();
+                }}
               >
                 <Image
                   src={data?.product?.image || "/imgs/no-img-holder.svg"}
@@ -70,7 +73,7 @@ function BasketDataReused() {
                     maxHeight: "100%",
                     borderRadius: "8px",
                     margin: "auto",
-                    objectFit: "cover",
+                    objectFit: "contain",
                   }}
                 />{" "}
               </div>

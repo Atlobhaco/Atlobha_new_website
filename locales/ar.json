@@ -427,5 +427,14 @@
     "accessories": "الاكسسوارات",
     "others": "اخري",
     "batteries": "بطاريات"
-  }
+  },
+  "addToBasket": "اضف للسلة",
+  "removeFromBasket": "ازالة من السلة",
+  "foundInBasket": "مُضاف في السلة",
+  "PriceIncludeVat": "الاسعار تشمل ضريبة القيمة المضافة",
+  "deliver": "التسليم ",
+  "compatibleWith": "متوافق مع",
+  "prodDetails": "تفاصيل المنتج",
+  "pay": "ادفع",
+  "otherInstallment": "الان والباقي علي 4 دفعات بدون فوائد ولارسوم مخفية"
 }

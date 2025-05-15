@@ -429,5 +429,14 @@
     "accessories": "Accessories",
     "others": "Others",
     "batteries": "Batteries"
-  }
+  },
+  "addToBasket": "Add to basket",
+  "removeFromBasket": "Remove from basket",
+  "foundInBasket": "Added to basket",
+  "PriceIncludeVat": "Price included VAT",
+  "deliver": "Deliver ",
+  "compatibleWith": "Compatible with",
+  "prodDetails": "Product details",
+  "pay": "Pay",
+  "otherInstallment": "and ther rest in 4 installments without interest or hidden fees."
 }
