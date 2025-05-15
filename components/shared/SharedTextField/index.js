@@ -86,8 +86,8 @@ function SharedTextField({
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={imgIcon}
-                    width={isMobile ? 15 : 20}
-                    height={isMobile ? 15 : 20}
+                    width={isMobile ? 18 : 20}
+                    height={isMobile ? 18 : 20}
                   />
                 </Tooltip>
               )}

@@ -27,7 +27,7 @@ function QuickLinks({ sectionInfo }) {
       sx={{
         display: "flex",
         overflow: "auto hidden",
-        gap: "35px",
+        gap: isMobile ? "15px" : "30px",
         paddingBottom: "5px",
       }}
     >

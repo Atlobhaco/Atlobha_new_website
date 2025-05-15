@@ -73,7 +73,7 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToShow: +featuredProducts?.data?.length > 1 ? 3 : 1,
           slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
         },
       },
@@ -106,8 +106,8 @@ function PackageOffers({ sectionInfo }) {
               }
             }}
             sx={{
-              width: "95% !important",
-              height: isMobile ? "200px" : "440px",
+              width: isMobile ? "99% !important" : "95% !important",
+              height: isMobile ? "180px" : "440px",
               cursor: "pointer",
               //   background:'yellow'
             }}
@@ -120,7 +120,7 @@ function PackageOffers({ sectionInfo }) {
                 backgroundSize: "contain",
                 height: "100%",
                 width: isMobile
-                  ? "100%"
+                  ? "95%"
                   : +featuredProducts?.data?.length === 1
                   ? "280px"
                   : "100%",
