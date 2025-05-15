@@ -196,6 +196,8 @@ function DropDownAddress() {
         }
       />
 
+      {/* key={addressModalKey} */}
+      {/* this key was make multiple render in mobile screen */}
       {/* add new address from navbar popup data inputs */}
       <DialogCentered
         title={t.addNewAddress}
@@ -228,7 +230,7 @@ function DropDownAddress() {
               text="addAddress"
               className="big-main-btn"
               customClass={`${isMobile ? "w-100" : ""}`}
-            //   disabled={canAddAddress}
+              //   disabled={canAddAddress}
               onClick={() => {
                 handleClick();
               }}
