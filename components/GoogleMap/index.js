@@ -103,7 +103,7 @@ const GoogleMapComponent = React.memo(
         map?.panTo(lngLatLocation); // Center the map to the updated location
         map?.setZoom(17); // Optional: zoom in
       }
-    }, [lngLatLocation, map]);
+    }, [map]);
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {
@@ -218,7 +218,7 @@ const GoogleMapComponent = React.memo(
           libraries={["places"]} // Ensure "places" library is loaded
         >
           {/* Autocomplete Search Input */}
-          {/* <Autocomplete
+          <Autocomplete
             onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
             onPlaceChanged={handlePlaceChanged}
           >
@@ -265,11 +265,11 @@ const GoogleMapComponent = React.memo(
                 }}
               />
             </div>
-          </Autocomplete> */}
+          </Autocomplete>
 
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={lngLatLocation}
+            center={lngLatLocation || center}
             zoom={10}
             onLoad={onLoadMap}
             onClick={handleMapClick}
