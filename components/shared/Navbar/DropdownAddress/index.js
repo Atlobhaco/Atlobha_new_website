@@ -205,8 +205,8 @@ function DropDownAddress() {
         hasCloseIcon
         content={
           <AddNewAddressFromNavbar
-            key={addressModalKey}
-            ref={false}
+            // key={addressModalKey}
+            ref={childRef}
             setCanAddAddress={setCanAddAddress}
             setOpenAddNewAddress={setOpenAddNewAddress}
           />
