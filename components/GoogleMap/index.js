@@ -45,9 +45,9 @@ const GoogleMapComponent = React.memo(
     const containerStyle = useMemo(
       () => ({
         width: "100%",
-        height: isMobile ? "350px" : customHeight,
+        height: false ? "350px" : customHeight,
       }),
-      [customHeight]
+      [false, customHeight]
     );
     // Memoize the button style to avoid recalculation
     const buttonStyle = useMemo(
@@ -55,13 +55,13 @@ const GoogleMapComponent = React.memo(
         position: "absolute",
         bottom: "15px",
         right: "10px",
-        padding: isMobile ? "8px" : "10px",
+        padding: false ? "8px" : "10px",
         border: "1px solid #B7B7B5",
         borderRadius: "10px",
         background: "#FBFBFB",
         boxShadow: "10px 1px 2px 0px rgba(18, 26, 43, 0.05)",
       }),
-      [isMobile]
+      [false]
     );
 
     //   auto detect user location  when map opened
@@ -252,16 +252,16 @@ const GoogleMapComponent = React.memo(
               />
               <Image
                 src="/icons/search-yellow.svg"
-                width={isMobile ? 20 : 24}
-                height={isMobile ? 20 : 24}
+                width={false ? 20 : 24}
+                height={false ? 20 : 24}
                 alt="search icon"
                 style={{
                   position: "absolute",
-                  right: `${isMobile ? "7%" : "5.5%"}`,
+                  right: `${false ? "7%" : "5.5%"}`,
                   ...(locale !== "ar"
-                    ? { left: isMobile ? "7%" : "5.5%" }
-                    : { right: isMobile ? "7%" : "5.5%" }),
-                  top: `${isMobile ? "10px" : "8px"}`,
+                    ? { left: false ? "7%" : "5.5%" }
+                    : { right: false ? "7%" : "5.5%" }),
+                  top: `${false ? "10px" : "8px"}`,
                 }}
               />
             </div>
@@ -299,8 +299,8 @@ const GoogleMapComponent = React.memo(
         <button onClick={handleLocateMe} style={buttonStyle}>
           <MyLocationIcon
             style={{
-              width: isMobile ? "20px" : "30px",
-              height: isMobile ? "20px" : "30px",
+              width: false ? "20px" : "30px",
+              height: false ? "20px" : "30px",
             }}
           />
         </button>
