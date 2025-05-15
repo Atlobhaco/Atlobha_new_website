@@ -36,6 +36,13 @@ function AddNewCar() {
                 formikRef={formikRef}
                 hideDividerAndShowBtn={false}
                 clickTooltipOpenVinHint={clickTooltipOpenVinHint}
+                customIDs={{
+                  brandId: "secondBrandID",
+                  modalId: "secondModalID",
+                  yearId: "secondYearID",
+                  vinId: "secondVinID",
+                  toggleId: "secondToggleID",
+                }}
               />
             </div>
           </div>
