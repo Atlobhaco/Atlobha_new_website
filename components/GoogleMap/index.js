@@ -45,9 +45,9 @@ const GoogleMapComponent = React.memo(
     const containerStyle = useMemo(
       () => ({
         width: "100%",
-        height: false ? "350px" : customHeight,
+        height: isMobile ? "350px" : customHeight,
       }),
-      [false, customHeight]
+      [isMobile, customHeight]
     );
     // Memoize the button style to avoid recalculation
     const buttonStyle = useMemo(
@@ -55,13 +55,13 @@ const GoogleMapComponent = React.memo(
         position: "absolute",
         bottom: "15px",
         right: "10px",
-        padding: false ? "8px" : "10px",
+        padding: isMobile ? "8px" : "10px",
         border: "1px solid #B7B7B5",
         borderRadius: "10px",
         background: "#FBFBFB",
         boxShadow: "10px 1px 2px 0px rgba(18, 26, 43, 0.05)",
       }),
-      [false]
+      [isMobile]
     );
 
     //   auto detect user location  when map opened
@@ -218,7 +218,7 @@ const GoogleMapComponent = React.memo(
           libraries={["places"]} // Ensure "places" library is loaded
         >
           {/* Autocomplete Search Input */}
-          <Autocomplete
+          {/* <Autocomplete
             onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)}
             onPlaceChanged={handlePlaceChanged}
           >
@@ -252,24 +252,24 @@ const GoogleMapComponent = React.memo(
               />
               <Image
                 src="/icons/search-yellow.svg"
-                width={false ? 20 : 24}
-                height={false ? 20 : 24}
+                width={isMobile ? 20 : 24}
+                height={isMobile ? 20 : 24}
                 alt="search icon"
                 style={{
                   position: "absolute",
-                  right: `${false ? "7%" : "5.5%"}`,
+                  right: `${isMobile ? "7%" : "5.5%"}`,
                   ...(locale !== "ar"
-                    ? { left: false ? "7%" : "5.5%" }
-                    : { right: false ? "7%" : "5.5%" }),
-                  top: `${false ? "10px" : "8px"}`,
+                    ? { left: isMobile ? "7%" : "5.5%" }
+                    : { right: isMobile ? "7%" : "5.5%" }),
+                  top: `${isMobile ? "10px" : "8px"}`,
                 }}
               />
             </div>
-          </Autocomplete>
+          </Autocomplete> */}
 
           <GoogleMap
             mapContainerStyle={containerStyle}
-            center={lngLatLocation || center}
+            center={lngLatLocation}
             zoom={10}
             onLoad={onLoadMap}
             onClick={handleMapClick}
@@ -299,8 +299,8 @@ const GoogleMapComponent = React.memo(
         <button onClick={handleLocateMe} style={buttonStyle}>
           <MyLocationIcon
             style={{
-              width: false ? "20px" : "30px",
-              height: false ? "20px" : "30px",
+              width: isMobile ? "20px" : "30px",
+              height: isMobile ? "20px" : "30px",
             }}
           />
         </button>
