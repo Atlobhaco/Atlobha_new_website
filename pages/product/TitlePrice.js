@@ -63,7 +63,7 @@ function TitlePrice({ prod }) {
             sx={{
               color: "#EB3C24",
               fontWeight: "500",
-              fontSize: "24px",
+              fontSize: isMobile ? "19px" : "24px",
             }}
           >
             {prod?.price?.toFixed(2)} {riyalImgRed()}

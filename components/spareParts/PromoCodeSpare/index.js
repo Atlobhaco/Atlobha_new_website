@@ -75,7 +75,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
       >
         <Box
           sx={{
-            fontSize: isMobile ? "16px" : "20px",
+            fontSize: isMobile ? "15px" : "20px",
             fontWeight: "500",
             color: customTitle ? "#1C1C28" : "inherit",
           }}

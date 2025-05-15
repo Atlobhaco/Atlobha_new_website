@@ -4,6 +4,7 @@ const initialState = {
   allAddresses: [],
   selectedAddress: {},
   defaultAddress: {},
+  endpointCalledAddress: false,
 };
 
 const selectedAddressReducer = createSlice({
@@ -15,9 +16,11 @@ const selectedAddressReducer = createSlice({
     },
     setSelectedAddress: (state, action) => {
       state.selectedAddress = action?.payload?.data || {};
+      state.endpointCalledAddress = true;
     },
     setDefaultAddress: (state, action) => {
       state.defaultAddress = action?.payload?.data || {};
+      state.endpointCalledAddress = true;
     },
   },
 });

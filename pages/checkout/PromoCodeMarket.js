@@ -28,7 +28,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
 
   const textPromoStyle = {
     color: "#232323",
-    fontSize: "15px",
+    fontSize: isMobile ? "14px" : "15px",
     fontWeight: "500",
   };
 
@@ -37,15 +37,15 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
       <Box
         sx={{
           color: "#232323",
-          fontSize: "18px",
+          fontSize: isMobile ? "14px" : "18px",
           fontWeight: "700",
         }}
       >
         <Image
           alt="yellow-promo"
           src={`/icons/promo-yellow.svg`}
-          width={30}
-          height={30}
+          width={isMobile ? 25 : 30}
+          height={isMobile ? 25 : 30}
           className={`${locale === "ar" ? "ms-2" : "me-2"}`}
         />
         {t.couponVoucher}
@@ -76,7 +76,13 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 text="AddCoupon"
                 className="outline-btn"
                 onClick={() => setOpenAddCoupon(true)}
-                customStyle={{ minWidth: isMobile ? "140px" : "180px" }}
+                customStyle={{
+                  minWidth: isMobile
+                    ? "140px"
+                    : locale === "en"
+                    ? "220px"
+                    : "180px",
+                }}
               />
             </Box>
           </>
@@ -121,7 +127,13 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 text="addGiftVoucher"
                 className="outline-btn"
                 onClick={() => setOpenAddVoucher(true)}
-                customStyle={{ minWidth: isMobile ? "140px" : "180px" }}
+                customStyle={{
+                  minWidth: isMobile
+                    ? "140px"
+                    : locale === "en"
+                    ? "220px"
+                    : "180px",
+                }}
               />
             </Box>
           </>

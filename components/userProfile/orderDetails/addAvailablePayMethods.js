@@ -127,9 +127,12 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                       dispatch(setSelectedPayment({ data: pay }));
                     }}
                   >
-                    {availablePaymentMethodImages({
-                      payment_method: pay?.key,
-                    })}
+                    {availablePaymentMethodImages(
+                      {
+                        payment_method: pay?.key,
+                      },
+                      isMobile
+                    )}
                   </Box>
                   <Box
                     sx={{
@@ -142,7 +145,8 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                   >
                     {availablePaymentMethodText(
                       { payment_method: pay?.key },
-                      t
+                      t,
+                      isMobile
                     )}
                   </Box>
                 </Box>

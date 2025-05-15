@@ -68,7 +68,7 @@ function Checkout() {
                 setPromoCodeId={setPromoCodeId}
               />
             </div>
-            <div className="col-md-4 col-12 mb-4">
+            <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
               {selectAddress?.id && (
                 <CheckoutSummary
                   selectAddress={selectAddress}

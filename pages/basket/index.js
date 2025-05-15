@@ -1,7 +1,7 @@
 import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
 import useLocalization from "@/config/hooks/useLocalization";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import style from "../../components/shared/Navbar/ContentForBasketPopup/ContentForBasket.module.scss";
 import SharedBtn from "@/components/shared/SharedBtn";
@@ -19,6 +19,7 @@ import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymen
 import Login from "@/components/Login";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import { isAuth } from "@/config/hooks/isAuth";
+import { fetchCartAsync } from "@/redux/reducers/basketReducer";
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 8,
@@ -46,6 +47,8 @@ function Basket() {
   const router = useRouter();
   const [prodIdClicked, setProdIdClicked] = useState(false);
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+  const { selectedAddress, defaultAddress, endpointCalledAddress } =
+    useSelector((state) => state.selectedAddress);
 
   const minForFreeDelivery = 120;
   const noImgStyle = {
@@ -65,6 +68,27 @@ function Basket() {
     e?.preventDefault();
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (
+        typeof document !== "undefined" &&
+        !selectedAddress?.id &&
+        (!defaultAddress?.id || defaultAddress?.id === "currentLocation") &&
+        isAuth() &&
+        endpointCalledAddress
+      ) {
+        document.getElementById("openAddAddressModalProgramatically")?.click();
+      }
+    }, 1000); // Wait 1 second after DOM is ready
+
+    return () => clearTimeout(timeout); // Clean up
+  }, [endpointCalledAddress]);
+
+  console.log(selectedAddress, defaultAddress);
+
+  useEffect(() => {
+    dispatch(fetchCartAsync());
+  }, []);
   return (
     <div className="container">
       <div className="row">
@@ -224,10 +248,20 @@ function Basket() {
                     customClass="w-100 mt-3"
                     text="continueCheckout"
                     onClick={() => {
+                      if (
+                        !selectedAddress?.id &&
+                        (!defaultAddress?.id ||
+                          defaultAddress?.id === "currentLocation") &&
+                        isAuth()
+                      ) {
+                        return document
+                          .getElementById("openAddAddressModalProgramatically")
+                          ?.click();
+                      }
                       if (isAuth()) {
-                        router.push("/checkout");
+                        return router.push("/checkout");
                       } else {
-                        setOpenLogin(true);
+                        return setOpenLogin(true);
                       }
                     }}
                   />

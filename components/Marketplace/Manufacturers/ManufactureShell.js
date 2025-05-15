@@ -187,7 +187,7 @@ function ManufactureShell({ sectionInfo }) {
           top: "0",
           width: "100%",
           cursor: "pointer",
-          height: isMobile ? "150px" : "300px",
+          height: isMobile ? "90px" : "300px",
         }}
       ></Box>
     </Box>

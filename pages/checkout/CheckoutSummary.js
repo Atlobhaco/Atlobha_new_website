@@ -123,8 +123,11 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       }, 1000);
     },
     onError: (err) => {
+      console.log(err);
       setRedirectToPayfort(false);
-      setOpenAddMobile(true);
+      if (err?.response?.data?.error?.includes("phone")) {
+        setOpenAddMobile(true);
+      }
       toast.error(err?.response?.data?.message || t.someThingWrong);
     },
   });

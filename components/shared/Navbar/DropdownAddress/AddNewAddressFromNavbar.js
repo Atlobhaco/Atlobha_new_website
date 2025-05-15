@@ -19,12 +19,23 @@ import React, {
 } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
 import { getUserCurrentLocation } from "@/constants/helpers";
+import { toast } from "react-toastify";
 
 const AddNewAddressFromNavbar = forwardRef(
   ({ setCanAddAddress, setOpenAddNewAddress }, ref) => {
     // called from the parent component
     const childFunction = () => {
-      callAddNewAddress();
+      if (
+        !manualAddress ||
+        (addressNameOrCustom?.type === "custom" &&
+          addressNameOrCustom?.cutomName?.length < 3) ||
+        !lngLatLocation?.lng ||
+        !locationInfo
+      ) {
+        toast.error(`${t.common.add} ${t.addressDetails}`);
+      } else {
+        callAddNewAddress();
+      }
     };
 
     // Expose the function to the parent using useImperativeHandle

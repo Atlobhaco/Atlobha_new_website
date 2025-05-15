@@ -37,7 +37,7 @@ const useStyles = makeStyles(({ isMobile, title }) => ({
     bottom: "0px",
     minWidth: "100vw",
     maxHeight: "85vh !important",
-    minHeight: "50vh",
+    minHeight: "30vh",
     left: "0",
     right: "0",
     margin: "auto 0 !important",
