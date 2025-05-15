@@ -103,7 +103,7 @@ const GoogleMapComponent = React.memo(
         map?.panTo(lngLatLocation); // Center the map to the updated location
         map?.setZoom(17); // Optional: zoom in
       }
-    }, [map]);
+    }, [lngLatLocation, map]);
 
     const handleLocateMe = () => {
       if (navigator.geolocation) {

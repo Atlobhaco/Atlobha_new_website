@@ -206,7 +206,7 @@ function DropDownAddress() {
         content={
           <AddNewAddressFromNavbar
             key={addressModalKey}
-            ref={childRef}
+            ref={false}
             setCanAddAddress={setCanAddAddress}
             setOpenAddNewAddress={setOpenAddNewAddress}
           />
