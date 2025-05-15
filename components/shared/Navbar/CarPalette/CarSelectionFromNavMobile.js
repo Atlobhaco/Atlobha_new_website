@@ -13,6 +13,7 @@ import { userDefaultCar } from "@/config/network/Shared/SetDataHelper";
 import { useAuth } from "@/config/providers/AuthProvider";
 import { usersVehiclesQuery } from "@/config/network/Shared/GetDataHelper";
 import { setAllCars } from "@/redux/reducers/selectedCarReducer";
+import NoCarAdded from "@/components/userProfile/myCars/noCarAdded";
 
 function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
   const { user } = useAuth();
@@ -62,103 +63,106 @@ function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
         }}
       >
         <Box sx={header}>{!!allCars?.length && t.myCars}</Box>
-        {allCars.map((car) => (
-          <Box
-            key={car.id}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              padding: "10px 0px",
-            }}
-          >
-            {/* Checkbox */}
-            <SharedCheckbox
-              selectedId={selectedCar?.id || defaultCar?.id}
-              handleCheckboxChange={handleCheckboxChange}
-              data={car}
-            />
-
-            {/* Car Logo */}
+        {allCars?.length ? (
+          allCars.map((car) => (
             <Box
+              key={car.id}
               sx={{
                 display: "flex",
-                justifyContent: "center",
                 alignItems: "center",
-                width: isMobile ? "30px" : "48px",
-                height: isMobile ? "30px" : "48px",
-                cursor: "pointer",
+                gap: "12px",
+                padding: "10px 0px",
               }}
-              onClick={() => handleCheckboxChange(car)}
             >
-              <Image
-                alt={car?.brand?.name}
-                src={car?.brand?.image} // Car logo
-                width={isMobile ? 30 : 48}
-                height={isMobile ? 30 : 48}
-                style={{
-                  width: "auto",
-                  height: "auto",
-                  maxHeight: isMobile ? "30px" : "48px",
-                  maxWidth: isMobile ? "30px" : "48px",
-                }}
+              {/* Checkbox */}
+              <SharedCheckbox
+                selectedId={selectedCar?.id || defaultCar?.id}
+                handleCheckboxChange={handleCheckboxChange}
+                data={car}
               />
-            </Box>
-            {/* Car Details */}
-            <Box
-              sx={{
-                flexGrow: 1,
-                textAlign: "right",
-                //   background: "red",
-                display: "flex",
-                gap: "15px",
-                alignItems: "center",
-              }}
-            >
+
+              {/* Car Logo */}
               <Box
                 sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: isMobile ? "30px" : "48px",
+                  height: isMobile ? "30px" : "48px",
                   cursor: "pointer",
                 }}
                 onClick={() => handleCheckboxChange(car)}
               >
-                <Typography
-                  sx={{
-                    fontSize: isMobile ? "12px" : "16px",
-                    fontWeight: 500,
+                <Image
+                  alt={car?.brand?.name}
+                  src={car?.brand?.image} // Car logo
+                  width={isMobile ? 30 : 48}
+                  height={isMobile ? 30 : 48}
+                  style={{
+                    width: "auto",
+                    height: "auto",
+                    maxHeight: isMobile ? "30px" : "48px",
+                    maxWidth: isMobile ? "30px" : "48px",
                   }}
-                >
-                  {car?.brand?.name} {car?.model?.name}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: isMobile ? "12px" : "16px",
-                    fontWeight: 500,
-                    textAlign: "start",
-                  }}
-                >
-                  {car.year}
-                </Typography>
+                />
               </Box>
-              {!!car?.is_default && (
+              {/* Car Details */}
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  textAlign: "right",
+                  display: "flex",
+                  gap: "15px",
+                  alignItems: "center",
+                }}
+              >
                 <Box
                   sx={{
-                    background: "#E9F4FC",
-                    color: "#3D96F7",
-                    padding: "2px 8px",
-                    fontSize: "10px",
-                    fontWeight: "400",
-                    borderRadius: "50px",
-                    // height: "26px",
-                    display: "flex",
-                    alignItems: "center",
+                    cursor: "pointer",
                   }}
+                  onClick={() => handleCheckboxChange(car)}
                 >
-                  {t.default}
+                  <Typography
+                    sx={{
+                      fontSize: isMobile ? "12px" : "16px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    {car?.brand?.name} {car?.model?.name}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: isMobile ? "12px" : "16px",
+                      fontWeight: 500,
+                      textAlign: "start",
+                    }}
+                  >
+                    {car.year}
+                  </Typography>
                 </Box>
-              )}
+                {!!car?.is_default && (
+                  <Box
+                    sx={{
+                      background: "#E9F4FC",
+                      color: "#3D96F7",
+                      padding: "2px 8px",
+                      fontSize: "10px",
+                      fontWeight: "400",
+                      borderRadius: "50px",
+                      // height: "26px",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    {t.default}
+                  </Box>
+                )}
+              </Box>
             </Box>
-          </Box>
-        ))}
+          ))
+        ) : (
+          <NoCarAdded hideBtn />
+        )}
       </Box>
     </Box>
   );

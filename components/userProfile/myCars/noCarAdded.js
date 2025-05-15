@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
-function NoCarAdded() {
+function NoCarAdded({ hideBtn = false }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
@@ -41,18 +41,20 @@ function NoCarAdded() {
           {t.addOwnCar}
         </Box>
       </Box>
-      <Box>
-        <SharedBtn
-          onClick={() => {
-            router.push("/userProfile/myCars/addNewCar");
-          }}
-          className="big-main-btn"
-          text="addNewCar"
-          customStyle={{
-            width: isMobile ? "80vw" : "400px",
-          }}
-        />
-      </Box>
+      {!hideBtn && (
+        <Box>
+          <SharedBtn
+            onClick={() => {
+              router.push("/userProfile/myCars/addNewCar");
+            }}
+            className="big-main-btn"
+            text="addNewCar"
+            customStyle={{
+              width: isMobile ? "80vw" : "400px",
+            }}
+          />
+        </Box>
+      )}
     </Box>
   );
 }

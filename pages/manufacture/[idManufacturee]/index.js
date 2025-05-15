@@ -122,7 +122,7 @@ function ManufactureDetails() {
           <div className="row mt-1">
             {manData?.data?.map((prod) => (
               <div
-                className="col-md-3 col-4 mb-2  d-flex justify-content-center"
+                className="col-md-3 col-4 mb-3 px-0 d-flex justify-content-center"
                 key={prod?.id}
               >
                 <ProductCard product={prod} />

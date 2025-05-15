@@ -121,7 +121,7 @@ function Category() {
           ) : (
             <>
               {prodInfo?.data?.map((prod) => (
-                <Box className="col-md-3 col-4 mb-3">
+                <Box className="col-md-3 col-4 mb-3 px-0">
                   <ProductCard product={prod} />
                 </Box>
               ))}
