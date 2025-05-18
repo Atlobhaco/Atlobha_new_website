@@ -16,7 +16,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
 
 function BasketDataReused({ handleCloseBasket = () => {} }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
   const { basket, loadingCart } = useSelector((state) => state.basket);
   const dispatch = useDispatch();
@@ -52,137 +52,150 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
           );
         })
         ?.map((data) => (
-          <div key={data?.id} className={style["products-contain"]}>
-            <div className="d-flex">
-              <div
-                className={style["products-contain_img"]}
-                onClick={() => {
-                  router.push(`/product/${data?.product?.id}`);
-                  handleCloseBasket();
-                }}
-              >
-                <Image
-                  src={data?.product?.image || "/imgs/no-img-holder.svg"}
-                  width={isMobile ? 55 : 200}
-                  height={isMobile ? 55 : 200}
-                  alt={data?.id}
-                  onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
-                  style={{
-                    cursor: "pointer",
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    borderRadius: "8px",
-                    margin: "auto",
-                    objectFit: "contain",
+          <div key={data?.id} className="position-relative">
+            <div
+              className={`${style["products-contain"]} ${
+                !data?.product?.is_active && "pb-3"
+              }`}
+            >
+              <div className="d-flex">
+                <div
+                  className={style["products-contain_img"]}
+                  onClick={() => {
+                    router.push(`/product/${data?.product?.id}`);
+                    handleCloseBasket();
                   }}
-                />{" "}
-              </div>
-              <div className={style["products-contain_name"]}>
-                <Box sx={{ mb: 1 }}>{data?.product?.name}</Box>
-                <Box sx={{ width: isMobile ? "90px" : "115px" }}>
-                  {loadingCart && prodIdClicked === data?.product?.id ? (
-                    <ProductCardSkeleton
-                      height={"40px"}
-                      customMarginBottom="0px"
-                    />
-                  ) : (
-                    <InputAddRemove
-                      value={data}
-                      disabled={true}
-                      customHeight="35px"
-                      actionClickrightIcon={(e) => {
-                        if (!prodIdClicked) {
-                          handleChangeProdQty(e, data);
+                >
+                  <Image
+                    src={data?.product?.image || "/imgs/no-img-holder.svg"}
+                    width={isMobile ? 55 : 200}
+                    height={isMobile ? 55 : 200}
+                    alt={data?.id}
+                    onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
+                    style={{
+                      cursor: "pointer",
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      borderRadius: "8px",
+                      margin: "auto",
+                      objectFit: "contain",
+                    }}
+                  />{" "}
+                </div>
+                <div className={style["products-contain_name"]}>
+                  <Box sx={{ mb: 1 }}>{data?.product?.name}</Box>
+                  <Box sx={{ width: isMobile ? "90px" : "115px" }}>
+                    {loadingCart && prodIdClicked === data?.product?.id ? (
+                      <ProductCardSkeleton
+                        height={"40px"}
+                        customMarginBottom="0px"
+                      />
+                    ) : (
+                      <InputAddRemove
+                        value={data}
+                        disabled={true}
+                        customHeight="35px"
+                        actionClickrightIcon={(e) => {
+                          if (!prodIdClicked) {
+                            handleChangeProdQty(e, data);
 
-                          if (+data?.quantity === 1) {
-                            dispatch(
-                              deleteItemAsync({
-                                product_id: data?.product?.id,
-                              })
-                            );
-                          } else {
+                            if (+data?.quantity === 1) {
+                              dispatch(
+                                deleteItemAsync({
+                                  product_id: data?.product?.id,
+                                })
+                              );
+                            } else {
+                              dispatch(
+                                updateItemQuantityAsync({
+                                  product_id: data?.product?.id,
+                                  product: data?.product,
+                                  actionType: "decrement",
+                                })
+                              );
+                            }
+                          }
+                        }}
+                        actionClickIcon={(e) => {
+                          if (!prodIdClicked) {
+                            handleChangeProdQty(e, data);
                             dispatch(
                               updateItemQuantityAsync({
                                 product_id: data?.product?.id,
                                 product: data?.product,
-                                actionType: "decrement",
+                                actionType: "increment",
                               })
                             );
                           }
-                        }
-                      }}
-                      actionClickIcon={(e) => {
-                        if (!prodIdClicked) {
-                          handleChangeProdQty(e, data);
-                          dispatch(
-                            updateItemQuantityAsync({
-                              product_id: data?.product?.id,
-                              product: data?.product,
-                              actionType: "increment",
-                            })
-                          );
-                        }
-                      }}
-                    />
-                  )}
-                </Box>
+                        }}
+                      />
+                    )}
+                  </Box>
+                </div>
               </div>
-            </div>
-            <div className={style["products-contain_price"]}>
-              {loadingCart && prodIdClicked === data?.product?.id ? (
-                <ProductCardSkeleton
-                  height={"30px"}
-                  width="70px"
-                  customMarginBottom="0px"
-                />
-              ) : (
-                <>
-                  {data?.product?.offer_price && false
-                    ? data?.product?.offer_price.toFixed(2)
-                    : data?.product?.price?.toFixed(2)}
-                  {data?.product?.offer_price || data?.product?.price
-                    ? riyalImgOrange()
-                    : null}
-                </>
+              <div className={style["products-contain_price"]}>
+                {loadingCart && prodIdClicked === data?.product?.id ? (
+                  <ProductCardSkeleton
+                    height={"30px"}
+                    width="70px"
+                    customMarginBottom="0px"
+                  />
+                ) : (
+                  <>
+                    {data?.product?.offer_price && false
+                      ? data?.product?.offer_price.toFixed(2)
+                      : data?.product?.price?.toFixed(2)}
+                    {data?.product?.offer_price || data?.product?.price
+                      ? riyalImgOrange()
+                      : null}
+                  </>
+                )}
+              </div>
+              {/* overlay over in active products */}
+              {!data?.product?.is_active && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    width: "100%",
+                    height: "100%",
+                    background: "#ffffff8c",
+                  }}
+                ></Box>
               )}
             </div>
-            {/* overlay over in active products */}
+
             {!data?.product?.is_active && (
               <Box
                 sx={{
+                  padding: isMobile ? "4px 6px" : "4px 10px",
+                  background: "rgba(224, 110, 14, 0.10)",
+                  color: "#E06E0E",
+                  fontWeight: "500",
+                  width: "fit-content",
+                  borderRadius: "8px",
+                  fontSize: isMobile ? "11px" : "12px",
+                  display: "flex",
+                  alignItems: "center",
                   position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  background: "#ffffff8c",
+                  bottom: "-14px",
+                  ...(locale === "ar"
+                    ? { right: isMobile ? "20px" : "45px" }
+                    : { left: isMobile ? "20px" : "45px" }),
+                  opacity: "0.7",
                 }}
-              ></Box>
+              >
+                <ErrorIcon
+                  sx={{
+                    fill: "#E06E0E",
+                    marginInlineEnd: "5px",
+                    fontSize: isMobile ? "15px" : "18px",
+                  }}
+                />
+                <Box>{t.notFoundInBasket}</Box>
+              </Box>
             )}
           </div>
         ))}
-      {!!hasOnlyOneNonActive && (
-        <Box
-          sx={{
-            padding: isMobile ? "4px 15px" : "6px 24px",
-            background: "rgba(224, 110, 14, 0.10)",
-            color: "#E06E0E",
-            fontWeight: "500",
-            width: "fit-content",
-            borderRadius: "8px",
-            fontSize: isMobile ? "13px" : "20px",
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <ErrorIcon
-            sx={{
-              fill: "#E06E0E",
-              marginInlineEnd: "5px",
-              fontSize: isMobile ? "18px" : "24px",
-            }}
-          />
-          <Box>{t.notFoundInBasket}</Box>
-        </Box>
-      )}
     </>
   );
 }

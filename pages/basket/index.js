@@ -84,11 +84,10 @@ function Basket() {
     return () => clearTimeout(timeout); // Clean up
   }, [endpointCalledAddress]);
 
-  console.log(selectedAddress, defaultAddress);
-
   useEffect(() => {
     dispatch(fetchCartAsync());
   }, []);
+
   return (
     <div className="container">
       <div className="row">
@@ -163,7 +162,8 @@ function Basket() {
                     mb: 3,
                   }}
                 >
-                  {basket?.length} {t.basketQty}
+                  {basket?.filter((item) => item?.product?.is_active)?.length}{" "}
+                  {t.basketQty}
                 </Box>
                 <Box
                   sx={{
@@ -187,10 +187,13 @@ function Basket() {
                     variant="determinate"
                     value={Math.min(
                       100,
-                      (basket?.reduce(
-                        (sum, item) => sum + item.quantity * item.product.price,
-                        0
-                      ) /
+                      (basket
+                        ?.filter((item) => item?.product?.is_active)
+                        ?.reduce(
+                          (sum, item) =>
+                            sum + item.quantity * item.product.price,
+                          0
+                        ) /
                         minForFreeDelivery) *
                         100
                     )}
@@ -227,6 +230,7 @@ function Basket() {
                     ) : (
                       <>
                         {basket
+                          ?.filter((item) => item?.product?.is_active)
                           ?.reduce(
                             (sum, item) =>
                               sum + item.quantity * item.product.price,

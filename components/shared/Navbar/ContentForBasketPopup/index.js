@@ -40,7 +40,9 @@ function ContentForBasket({ handleCloseBasket = () => {} }) {
         <>
           <div className={style["count"]}>
             <BlurText
-              text={`${basket?.length} ${t.basketQty}`}
+              text={`${
+                basket?.filter((item) => item?.product?.is_active)?.length
+              } ${t.basketQty}`}
               delay={1}
               animateBy="words"
               direction="bottom"

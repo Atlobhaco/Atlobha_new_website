@@ -80,11 +80,13 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       notes: null,
       payment_reference: merchanteRefrence,
       payment_method: selectedPaymentMethod?.key,
-      products: basket?.map((d) => ({
-        ...d,
-        id: d?.product_id,
-        service_center_id: null,
-      })),
+      products: basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.map((d) => ({
+          ...d,
+          id: d?.product_id,
+          service_center_id: null,
+        })),
       promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
       ref_num: null,
     },
@@ -154,7 +156,9 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       notes: null,
       payment_reference: null,
       payment_method: "CREDIT",
-      products: basket?.map((d) => ({ ...d, id: d?.product_id })),
+      products: basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.map((d) => ({ ...d, id: d?.product_id })),
       promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
       ref_num: null,
     },
@@ -352,6 +356,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
         <Box sx={text}>{t.productsPrice}</Box>
         <Box sx={text}>
           {basket
+            ?.filter((item) => item?.product?.is_active)
             ?.map((d) => ({ total_price: d?.quantity * d?.product?.price }))
             ?.reduce(
               (accumulator, current) => accumulator + current.total_price,
