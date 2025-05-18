@@ -121,7 +121,7 @@ function ProdImages({ prod }) {
                 maxWidth: "100%",
                 display: "flex",
                 margin: "auto",
-                maxHeight: "80px",
+                maxHeight: isMobile ? "100%" : "80px",
                 cursor: "pointer",
               }}
               src={img?.url || img || "/imgs/no-prod-img.svg"}
