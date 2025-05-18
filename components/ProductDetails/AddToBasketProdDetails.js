@@ -36,7 +36,7 @@ function AddToBasketProdDetails({ prod }) {
   return (
     <Box
       sx={{
-        mt: 4,
+        mt: isMobile ? 0 : 4,
         display: "flex",
         justifyContent: "center",
         "& div": {
