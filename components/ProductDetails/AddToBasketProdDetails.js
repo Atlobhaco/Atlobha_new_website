@@ -1,5 +1,6 @@
 import InputAddRemove from "@/components/InputAddRemove";
 import SharedBtn from "@/components/shared/SharedBtn";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 import {
   addItemAsync,
   deleteItemAsync,
@@ -11,13 +12,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 function AddToBasketProdDetails({ prod }) {
   const dispatch = useDispatch();
+  const { isMobile } = useScreenSize();
 
   const { basket, loadingCart } = useSelector((state) => state.basket);
 
   const checkInsideBasket = () =>
     basket?.find((product) => product?.product_id === prod?.id) || null;
 
-  const removeFromBasket = () => {};
+  const removeFromBasket = () => {
+    dispatch(
+      deleteItemAsync({
+        product_id: prod?.id,
+      })
+    );
+  };
 
   const addToBasket = () => {
     dispatch(
@@ -86,9 +94,14 @@ function AddToBasketProdDetails({ prod }) {
                 sx={{
                   background: "white",
                   color: "black",
-                  width: "20px",
-                  height: "20px",
+                  width: isMobile ? "15px" : "20px",
+                  height: isMobile ? "15px" : "20px",
                   borderRadius: "50%",
+                  fontWeight: "500",
+                  paddingTop: "1px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 {checkInsideBasket()?.quantity}
@@ -106,9 +119,9 @@ function AddToBasketProdDetails({ prod }) {
             )
           }
           disabled={loadingCart}
-          customClass="w-100"
+          customClass={`w-100 ${isMobile && "data-over-foot-nav"}`}
           className={checkInsideBasket() ? "black-btn" : "big-main-btn"}
-          text={checkInsideBasket() ? "foundInBasket" : "addToBasket"}
+          text={checkInsideBasket() ? "removeFromBasket" : "addToBasket"}
           onClick={
             checkInsideBasket() ? () => removeFromBasket() : () => addToBasket()
           }

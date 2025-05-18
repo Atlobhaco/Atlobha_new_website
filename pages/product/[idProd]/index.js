@@ -6,14 +6,14 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import ProdImages from "../ProdImages";
-import ManufactureData from "../ManufactureData";
-import TitlePrice from "../TitlePrice";
-import DeliveryTime from "../DeliveryTime";
-import CompatibleWith from "../CompatibleWith";
-import DetailsProd from "../DetailsProd";
-import AnotherProducts from "../AnotherProducts";
-import AddToBasketProdDetails from "../AddToBasketProdDetails";
+import ProdImages from "../../../components/ProductDetails/ProdImages";
+import ManufactureData from "../../../components/ProductDetails/ManufactureData";
+import TitlePrice from "../../../components/ProductDetails/TitlePrice";
+import DeliveryTime from "../../../components/ProductDetails/DeliveryTime";
+import CompatibleWith from "../../../components/ProductDetails/CompatibleWith";
+import DetailsProd from "../../../components/ProductDetails/DetailsProd";
+import AnotherProducts from "../../../components/ProductDetails/AnotherProducts";
+import AddToBasketProdDetails from "../../../components/ProductDetails/AddToBasketProdDetails";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function ProductDetails() {

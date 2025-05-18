@@ -101,8 +101,8 @@ function ProdImages({ prod }) {
         {imgArray?.map((img, index) => (
           <Box
             sx={{
-              minWidth: "100px",
-              minHeight: "100px",
+              width: isMobile ? "80px" : "100px",
+              height: isMobile ? "80px" : "100px",
               display: "flex",
               border: activeIndex === index && "2px solid #FFD400",
               padding: "5px",

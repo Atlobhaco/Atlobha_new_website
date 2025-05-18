@@ -127,7 +127,9 @@ function SharedDropDown({
                 >
                   <CloseIcon fontSize="small" />
                 </IconButton>
-              ) : <ArrowDropDownIcon />
+              ) : (
+                <ArrowDropDownIcon />
+              )
             ) : (
               <ArrowDropDownIcon />
             )

@@ -57,7 +57,14 @@ function TitlePrice({ prod }) {
         }}
       />
 
-      <Box sx={{ display: "flex", alignItems: "start", gap: "10px", mt: 2 }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "start",
+          gap: isMobile ? "6px" : "10px",
+          mt: 2,
+        }}
+      >
         <Box>
           <Box
             sx={{
@@ -79,7 +86,7 @@ function TitlePrice({ prod }) {
               <Box
                 sx={{
                   textDecoration: "line-through",
-                  fontSize: "16px",
+                  fontSize: isMobile ? "14px" : "16px",
                   color: "grey",
                   letterSpacing: "1.4px",
                 }}
@@ -91,7 +98,7 @@ function TitlePrice({ prod }) {
                 sx={{
                   textDecoration: "unset",
                   color: "#EB3C24",
-                  fontSize: "12px",
+                  fontSize: isMobile ? "11px" : "12px",
                   fontWeight: "500",
                 }}
               >
