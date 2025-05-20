@@ -126,7 +126,7 @@ function MyOrders() {
                 fontSize="14px"
                 arrayData={[
                   { id: "all", name: t.showAll },
-                  ...orderEnumArray(),
+                  ...orderEnumArray()?.filter((d, index) => index <= 1),
                 ]}
                 handleClick={(data) => {
                   if (data === "all") {
