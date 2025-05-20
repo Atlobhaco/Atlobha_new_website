@@ -90,7 +90,8 @@ function Confirmation() {
   const deliveryDate = () => {
     if (!data) return null;
 
-    if (data?.status === STATUS?.new) return t.dateLater;
+    if (data?.status === STATUS?.new && type !== MARKETPLACE)
+      return t.dateLater;
 
     const date =
       data?.estimated_packaging_date || data?.estimated_delivery_date;
@@ -210,7 +211,7 @@ function Confirmation() {
             width={24}
             height={24}
           />
-          {t.partsData}
+          {type === MARKETPLACE ? t.marketData : t.partsData}
         </div>
         {(data?.products || data?.parts)?.map((part) => (
           <div className={`${style["details-parts"]}`} key={part?.id}>

@@ -53,7 +53,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
       <Box className={`${style["prod-info-wrapper"]}`}>
         {!!product?.price_before_discount && (
           <Box className={`${style["prod-info-wrapper_old-price"]}`}>
-            {product?.price_before_discount}
+            {product?.price_before_discount?.toFixed(2)}
           </Box>
         )}
 
@@ -64,9 +64,11 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           className={`${style["prod-info-wrapper_price"]}`}
         >
           {product?.price_before_discount
-            ? product?.offer_price.toFixed(2)
+            ? product?.offer_price?.toFixed(2)
             : product?.price?.toFixed(2)}
-          {product?.price_before_discount ? riyalImgRed() : riyalImgOrange()}
+          {product?.price_before_discount?.toFixed(2)
+            ? riyalImgRed()
+            : riyalImgOrange()}
         </Box>
 
         {!!product?.price_before_discount && (

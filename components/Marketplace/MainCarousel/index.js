@@ -91,7 +91,11 @@ function MainCarousel({ sectionInfo }) {
         pagination={{
           clickable: true,
         }}
-        modules={[EffectFade, Navigation, Pagination]}
+        autoplay={{
+          delay: 3000, // 3 seconds between slides
+          disableOnInteraction: false, // Keeps autoplay after interaction
+        }}
+        modules={[EffectFade, Navigation, Pagination, Autoplay]}
         className="mySwiper"
       >
         {ads?.data?.map((img) => (

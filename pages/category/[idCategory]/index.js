@@ -63,15 +63,13 @@ function Category() {
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled:
-      (isAuth() && defaultCar?.year && selectedCategory && subCatId) ||
-      !isAuth()
-        ? true
-        : false,
+      (isAuth() && selectedCategory && subCatId) || !isAuth() ? true : false,
     onSuccess: (res) => {
       const element = document.getElementById("categroy_id");
       if (element) {
-        const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        const y =
+          element?.getBoundingClientRect()?.top + window.pageYOffset - 80;
+        window?.scrollTo({ top: y, behavior: "smooth" });
       }
       setProdInfo(res);
     },
@@ -132,11 +130,23 @@ function Category() {
                   justifyContent: "center",
                 }}
               >
-                <PaginateComponent
-                  meta={prodInfo?.meta}
-                  setPage={setPage}
-                  isLoading={isFetching}
-                />
+                {prodInfo?.data?.length ? (
+                  <PaginateComponent
+                    meta={prodInfo?.meta}
+                    setPage={setPage}
+                    isLoading={isFetching}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      mt: 3,
+                      fontWeight: "500",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {t.noResultsFound}
+                  </Box>
+                )}
               </Box>
             </>
           )}

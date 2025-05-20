@@ -1,93 +1,66 @@
 import { ADS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
-import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 
 function Ads({ id }) {
-  const { isMobile } = useScreenSize();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
-  const [isDragging, setIsDragging] = useState(false);
 
   const { data: ads } = useCustomQuery({
-    name: ["adsCategory", id],
-    url: `${ADS}?lat=${defaultAddress?.lat || selectedAddress?.lat}&lng=${
-      defaultAddress?.lng || selectedAddress?.lng
+    name: ["adsCategory", id, defaultAddress?.lat, selectedAddress?.lat],
+    url: `${ADS}?lat=${
+      defaultAddress?.lat || selectedAddress?.lat || 24.7136
+    }&lng=${
+      defaultAddress?.lng || selectedAddress?.lng || 46.6753
     }&category_id=${id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    enabled: (defaultAddress?.lng || selectedAddress?.lng) && id ? true : false,
+    enabled: true,
   });
 
-  var settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
-    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
-  };
-
-  return ads?.length ? (
+  return ads?.data?.length ? (
     <Box>
-      <Slider {...settings}>
-        {ads?.data?.map((featured) => (
-          <Box
-            key={featured?.id}
-            onClick={() => {
-              if (!isDragging) {
-                featured?.link && window.open(featured?.link);
-              }
-            }}
-            sx={{
-              width: "100% !important",
-              height: isMobile ? "150px" : "560px",
-              cursor: "pointer",
-              borderRadius: "10px",
-            }}
-          >
-            <Box
-              sx={{
-                backgroundImage: `url('${featured?.media}')`,
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundSize: isMobile ? "cover" : "cover",
-                height: "100%",
-                width: "100%",
-                borderRadius: "10px",
-                overflow: "hidden",
+      <Swiper
+        spaceBetween={10}
+        effect={"fade"}
+        speed={500} // Duration of fade effect in milliseconds
+        fadeEffect={{ crossFade: true }}
+        navigation={true}
+        loop={true}
+        pagination={{
+          clickable: true,
+        }}
+        // autoplay={{
+        //   delay: 3000, // 3 seconds between slides
+        //   disableOnInteraction: false, // Keeps autoplay after interaction
+        // }}
+        modules={[EffectFade, Navigation, Pagination]}
+        className="mySwiper"
+      >
+        {ads?.data?.map((img) => (
+          <SwiperSlide>
+            <img
+              style={{
+                borderRadius: "20px",
+                maxWidth: "100%",
+                display: "flex",
+                margin: "auto",
               }}
-            ></Box>
-          </Box>
+              src={img?.media}
+              onClick={() => {
+                if (img?.link) {
+                  window.open(img?.link);
+                }
+              }}
+            />
+          </SwiperSlide>
         ))}
-      </Slider>
+      </Swiper>
     </Box>
   ) : null;
 }

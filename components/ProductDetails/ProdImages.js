@@ -52,7 +52,7 @@ function ProdImages({ prod }) {
                 maxWidth: "100%",
                 display: "flex",
                 margin: "auto",
-                maxHeight: "230px",
+                maxHeight: isMobile ? "150px" : "230px",
               }}
               src={img?.url || img || "/imgs/no-prod-img.svg"}
               onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
@@ -88,48 +88,50 @@ function ProdImages({ prod }) {
 
       <Divider sx={{ background: "#EAECF0", my: 1 }} />
 
-      <Box
-        sx={{
-          display: "flex",
-          gap: "10px",
-          overflow: "auto hidden",
-          maxWidth: "100%",
-          pb: 1,
-          mt: 4,
-        }}
-      >
-        {imgArray?.map((img, index) => (
-          <Box
-            sx={{
-              width: isMobile ? "80px" : "100px",
-              height: isMobile ? "80px" : "100px",
-              display: "flex",
-              border: activeIndex === index && "2px solid #FFD400",
-              padding: "5px",
-              borderRadius: "10px",
-            }}
-          >
-            <Image
-              onClick={() => swiperRef.current?.slideToLoop(index)}
-              width={90}
-              height={80}
-              alt="prod-img-preview"
-              style={{
-                width: "auto",
-                height: "auto",
-                borderRadius: "10px",
-                maxWidth: "100%",
+      {!isMobile && (
+        <Box
+          sx={{
+            display: "flex",
+            gap: "10px",
+            overflow: "auto hidden",
+            maxWidth: "100%",
+            pb: 1,
+            mt: 4,
+          }}
+        >
+          {imgArray?.map((img, index) => (
+            <Box
+              sx={{
+                width: isMobile ? "80px" : "100px",
+                height: isMobile ? "80px" : "100px",
                 display: "flex",
-                margin: "auto",
-                maxHeight: isMobile ? "100%" : "80px",
-                cursor: "pointer",
+                border: activeIndex === index && "2px solid #FFD400",
+                padding: "5px",
+                borderRadius: "10px",
               }}
-              src={img?.url || img || "/imgs/no-prod-img.svg"}
-              onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
-            />
-          </Box>
-        ))}
-      </Box>
+            >
+              <Image
+                onClick={() => swiperRef.current?.slideToLoop(index)}
+                width={90}
+                height={80}
+                alt="prod-img-preview"
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  borderRadius: "10px",
+                  maxWidth: "100%",
+                  display: "flex",
+                  margin: "auto",
+                  maxHeight: isMobile ? "100%" : "80px",
+                  cursor: "pointer",
+                }}
+                src={img?.url || img || "/imgs/no-prod-img.svg"}
+                onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
+              />
+            </Box>
+          ))}
+        </Box>
+      )}
     </>
   );
 }
