@@ -52,7 +52,9 @@ function SectionsNav({
                 handleClick(data?.id);
               }}
               className={`${
-                selectedSection === data?.id && `${style["active"]}`
+                (selectedSection === data?.id ||
+                  (!selectedSection && data?.id === "all")) &&
+                `${style["active"]}`
               }`}
               sx={{
                 fontWeight: selectedSection === data?.id ? "700" : "500",

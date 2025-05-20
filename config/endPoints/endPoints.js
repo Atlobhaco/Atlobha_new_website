@@ -52,3 +52,5 @@ export const MARK_READ = "/mark-read";
 export const CALCULATE = "/calculate";
 export const VOUCHERS = "/vouchers";
 export const CITIES = "/cities";
+export const CITY_SETTINGS = "/city-settings";
+export const LAT_LNG = "/lat-lng";

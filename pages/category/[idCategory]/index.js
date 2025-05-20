@@ -82,7 +82,7 @@ function Category() {
       <Box className="container">
         <Box className="row">
           <Box className="col-12">
-            <Ads id={idCategory} />
+            <Ads id={selectedCategory} />
           </Box>
           <Box
             className={`col-12 ${isMobile ? "mt-4" : "mt-5"}`}

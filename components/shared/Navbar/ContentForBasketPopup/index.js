@@ -6,7 +6,7 @@ import Image from "next/image";
 import SharedBtn from "../../SharedBtn";
 import BlurText from "../../BlurText";
 import { useRouter } from "next/router";
-import BasketDataReused from "@/pages/basket/BasketDataReused";
+import BasketDataReused from "@/components/Basket/BasketDataReused";
 
 function ContentForBasket({ handleCloseBasket = () => {} }) {
   const router = useRouter();

@@ -47,6 +47,7 @@ function SparePartItem({ data, showPrice = false }) {
           height={isMobile ? 50 : 100}
           alt="spare-part"
           style={noImgStyle}
+          onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")}
         />
       </Box>
       <Box>

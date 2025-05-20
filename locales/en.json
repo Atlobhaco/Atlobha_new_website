@@ -439,5 +439,7 @@
   "pay": "Pay",
   "otherInstallment": "and ther rest in 4 installments without interest or hidden fees.",
   "discount": "discount",
-  "marketData": "Marketplace data"
+  "marketData": "Marketplace data",
+  "minPriceOrder": "Minimun order price",
+  "earnFreeDelivery": "🚚✨ Congrats you have free delivery 🎉"
 }

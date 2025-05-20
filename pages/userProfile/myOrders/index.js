@@ -25,7 +25,7 @@ function MyOrders() {
     created_at_from: "",
     created_at_to: "",
     status: "",
-    class: "SparePartsOrder",
+    class: "",
   };
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -128,20 +128,19 @@ function MyOrders() {
                   { id: "all", name: t.showAll },
                   ...orderEnumArray(),
                 ]}
-                // handleClick={(data) => {
-                //   console.log("data", data);
-                //   if (data === "all") {
-                //     setFilters({
-                //       ...filters,
-                //       class: "",
-                //     });
-                //   } else {
-                //     setFilters({
-                //       ...filters,
-                //       class: data,
-                //     });
-                //   }
-                // }}
+                handleClick={(data) => {
+                  if (data === "all") {
+                    setFilters({
+                      ...filters,
+                      class: "",
+                    });
+                  } else {
+                    setFilters({
+                      ...filters,
+                      class: data,
+                    });
+                  }
+                }}
                 selectedSection={filters?.class}
                 showLineBelow={true}
               />
@@ -181,7 +180,7 @@ function MyOrders() {
                   onClick={handleNextPage}
                 >
                   {page === lastPage
-                    ? `${t.total}: ${data?.meta?.total}`
+                    ? `${t.total}: ${data?.meta?.total || ""}`
                     : t.loadMore}{" "}
                   {isFetching && (
                     <CircularProgress

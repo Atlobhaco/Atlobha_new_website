@@ -10,7 +10,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import ProductCardSkeleton from "@/components/cardSkeleton";
 import { riyalImgBlack, riyalImgGrey } from "@/constants/helpers";
 import { Box } from "@mui/material";
-import BasketDataReused from "./BasketDataReused";
+import BasketDataReused from "../../components/Basket/BasketDataReused";
 import { styled } from "@mui/material/styles";
 import LinearProgress, {
   linearProgressClasses,
@@ -20,24 +20,7 @@ import Login from "@/components/Login";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import { isAuth } from "@/config/hooks/isAuth";
 import { fetchCartAsync } from "@/redux/reducers/basketReducer";
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 8,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[200],
-    ...theme.applyStyles("dark", {
-      backgroundColor: theme.palette.grey[800],
-    }),
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: "#1FB256",
-    ...theme.applyStyles("dark", {
-      backgroundColor: "#308fe8",
-    }),
-  },
-}));
+import ProgressBarMinFreeDeliery from "@/components/Basket/ProgressBarMinFreeDeliery";
 
 function Basket() {
   const { isMobile } = useScreenSize();
@@ -49,8 +32,15 @@ function Basket() {
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const { selectedAddress, defaultAddress, endpointCalledAddress } =
     useSelector((state) => state.selectedAddress);
+  const [citySettings, setCitySettings] = useState({
+    delivery_free_price: 120,
+    minimum_order_fee: 0,
+  });
+  const totalOfBasket = basket
+    ?.filter((item) => item?.product?.is_active)
+    ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+    ?.toFixed(2);
 
-  const minForFreeDelivery = 120;
   const noImgStyle = {
     borderRadius: "8px",
     opacity: "1",
@@ -165,83 +155,15 @@ function Basket() {
                   {basket?.filter((item) => item?.product?.is_active)?.length}{" "}
                   {t.basketQty}
                 </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    fontSize: "13px",
-                    color: "#374151",
-                    fontWeight: "500",
-                  }}
-                >
-                  <Box>{t.minForDelivery}</Box>
-                  <Box>
-                    {minForFreeDelivery} {riyalImgGrey(15, 15)}
-                  </Box>
-                </Box>
-                <Box
-                  sx={{ transform: locale == "ar" && "rotateY(180deg)", my: 1 }}
-                >
-                  <BorderLinearProgress
-                    variant="determinate"
-                    value={Math.min(
-                      100,
-                      (basket
-                        ?.filter((item) => item?.product?.is_active)
-                        ?.reduce(
-                          (sum, item) =>
-                            sum + item.quantity * item.product.price,
-                          0
-                        ) /
-                        minForFreeDelivery) *
-                        100
-                    )}
+
+                {/* progress bar */}
+                {isAuth() && (
+                  <ProgressBarMinFreeDeliery
+                    citySettings={citySettings}
+                    setCitySettings={setCitySettings}
                   />
-                </Box>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    mb: 3,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      fontSize: isMobile ? "15px" : "20px",
-                      fontWeight: "700",
-                    }}
-                  >
-                    {t.totalBasket}
-                  </Box>
-                  <Box
-                    sx={{
-                      fontSize: isMobile ? "13px" : "15px",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {loadingCart ? (
-                      <ProductCardSkeleton
-                        height={"30px"}
-                        width="70px"
-                        customMarginBottom="0px"
-                      />
-                    ) : (
-                      <>
-                        {basket
-                          ?.filter((item) => item?.product?.is_active)
-                          ?.reduce(
-                            (sum, item) =>
-                              sum + item.quantity * item.product.price,
-                            0
-                          )
-                          ?.toFixed(2)}
-                        {riyalImgBlack()}
-                      </>
-                    )}
-                  </Box>
-                </Box>
+                )}
+
                 <Box
                   sx={{
                     mb: 3,
@@ -251,6 +173,10 @@ function Basket() {
                     className="big-main-btn"
                     customClass="w-100 mt-3"
                     text="continueCheckout"
+                    disabled={
+                      +totalOfBasket < +citySettings?.minimum_order_fee ||
+                      loadingCart
+                    }
                     onClick={() => {
                       if (
                         !selectedAddress?.id &&

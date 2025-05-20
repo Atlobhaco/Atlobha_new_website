@@ -102,7 +102,7 @@ function PackageOffers({ sectionInfo }) {
             key={featured?.id}
             onClick={() => {
               if (!isDragging) {
-                router.push(featured?.deep_link); // Replace with router.push(featured?.deep_link) when needed
+                router.push(`/product/${featured?.id}`); // Replace with router.push(featured?.deep_link) when needed
               }
             }}
             sx={{
