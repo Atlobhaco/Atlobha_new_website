@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import LinearProgress, {
@@ -90,19 +90,30 @@ function ProgressBarMinFreeDeliery({ citySettings, setCitySettings }) {
           fontWeight: "500",
         }}
       >
-        <Box>
-          {+totalOfBasket < +citySettings?.minimum_order_fee
-            ? t.minPriceOrder
-            : +totalOfBasket >= citySettings?.delivery_free_price
-            ? t.earnFreeDelivery
-            : t.minForDelivery}
-        </Box>
-        <Box>
-          {+totalOfBasket < +citySettings?.minimum_order_fee
-            ? citySettings?.minimum_order_fee
-            : citySettings?.delivery_free_price}{" "}
-          {riyalImgGrey(15, 15)}
-        </Box>
+        {isFetching ? (
+          <CircularProgress
+            size={15}
+            sx={{
+              color: "black",
+            }}
+          />
+        ) : (
+          <>
+            <Box>
+              {+totalOfBasket < +citySettings?.minimum_order_fee
+                ? t.minPriceOrder
+                : +totalOfBasket >= citySettings?.delivery_free_price
+                ? t.earnFreeDelivery
+                : t.minForDelivery}
+            </Box>
+            <Box>
+              {+totalOfBasket < +citySettings?.minimum_order_fee
+                ? citySettings?.minimum_order_fee
+                : citySettings?.delivery_free_price}{" "}
+              {riyalImgGrey(15, 15)}
+            </Box>
+          </>
+        )}
       </Box>
       <Box sx={{ transform: locale == "ar" && "rotateY(180deg)", my: 1 }}>
         <BorderLinearProgress

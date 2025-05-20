@@ -33,7 +33,7 @@ function Basket() {
   const { selectedAddress, defaultAddress, endpointCalledAddress } =
     useSelector((state) => state.selectedAddress);
   const [citySettings, setCitySettings] = useState({
-    delivery_free_price: 120,
+    delivery_free_price: 0,
     minimum_order_fee: 0,
   });
   const totalOfBasket = basket
