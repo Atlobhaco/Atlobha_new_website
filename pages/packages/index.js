@@ -18,6 +18,15 @@ function Packages() {
   const router = useRouter();
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1&model_id=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }`;
+    }
+    return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1`;
+  };
+
   const { isFetching, isLoading } = useCustomQuery({
     name: [
       "featured-products-packages",
@@ -26,9 +35,7 @@ function Packages() {
       selectedCar?.model?.id,
       defaultCar?.model?.id,
     ],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${10}&is_featured=1&model_id=${
-      selectedCar?.model?.id || defaultCar?.model?.id
-    }`,
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     onSuccess: (res) => setAllData(res),
@@ -60,7 +67,7 @@ function Packages() {
                 >
                   <Box
                     onClick={() => {
-                      router.push(pack?.deep_link);
+                      router.push(`/product/${pack?.id}`);
                     }}
                     sx={{
                       backgroundImage: `url('${pack?.featured_image?.url}')`,

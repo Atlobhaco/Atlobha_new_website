@@ -34,7 +34,10 @@ function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
   const handleCheckboxChange = (car) => {
     dispatch(setSelectedCar({ data: car }));
     setSelectCarPopUpModal(false);
-    // callUserDefaultCar();
+    // setCar as default everty change happen
+    // setTimeout(() => {
+    //   callUserDefaultCar();
+    // }, 500);
   };
 
   const { refetch: callUserVehicles } = usersVehiclesQuery({
@@ -45,7 +48,7 @@ function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
     setDefaultCar,
   });
 
-  userDefaultCar({
+  const { refetch: callUserDefaultCar } = userDefaultCar({
     user,
     dispatch,
     setSelectedCar,

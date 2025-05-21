@@ -14,9 +14,9 @@ function Ads({ id }) {
   const { data: ads } = useCustomQuery({
     name: ["adsCategory", id, defaultAddress?.lat, selectedAddress?.lat],
     url: `${ADS}?lat=${
-      defaultAddress?.lat || selectedAddress?.lat || 24.7136
+      selectedAddress?.lat || defaultAddress?.lat || 24.7136
     }&lng=${
-      defaultAddress?.lng || selectedAddress?.lng || 46.6753
+      selectedAddress?.lng || defaultAddress?.lng || 46.6753
     }&category_id=${id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,

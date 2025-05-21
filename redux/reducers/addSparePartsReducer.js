@@ -64,24 +64,25 @@ export const addSparePartsReducer = createSlice({
       state.allvoucherCodeData = action.payload?.data || null;
     },
     addOrUpdateSparePart: (state, action) => {
-      const incomingPart = action.payload;
+      const incomingParts = Array.isArray(action.payload)
+        ? action.payload
+        : [action.payload];
 
-      const existingIndex = state.selectedParts.findIndex(
-        (part) => part.id === incomingPart.id
-      );
+      incomingParts.forEach((incomingPart) => {
+        const existingIndex = state.selectedParts.findIndex(
+          (part) => part.id === incomingPart.id
+        );
 
-      if (incomingPart.delete === true) {
-        // Force delete for the part
-        if (existingIndex !== -1) {
-          state.selectedParts.splice(existingIndex, 1);
+        if (incomingPart.delete === true) {
+          if (existingIndex !== -1) {
+            state.selectedParts.splice(existingIndex, 1);
+          }
+        } else if (existingIndex !== -1) {
+          state.selectedParts[existingIndex].quantity = incomingPart.quantity;
+        } else {
+          state.selectedParts.push(incomingPart);
         }
-      } else if (existingIndex !== -1) {
-        // Update quantity if the part already exists
-        state.selectedParts[existingIndex].quantity = incomingPart.quantity;
-      } else {
-        // Add the new part
-        state.selectedParts.push(incomingPart);
-      }
+      });
     },
     clearSpareParts: (state, action) => {
       state.selectedParts = [];

@@ -18,8 +18,8 @@ function MainCarousel({ sectionInfo }) {
 
   const { data: ads } = useCustomQuery({
     name: "ads",
-    url: `${ADS}?lat=${defaultAddress?.lat || selectedAddress?.lat}&lng=${
-      defaultAddress?.lng || selectedAddress?.lng
+    url: `${ADS}?lat=${selectedAddress?.lat || defaultAddress?.lat}&lng=${
+      selectedAddress?.lng || defaultAddress?.lng
     }`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication

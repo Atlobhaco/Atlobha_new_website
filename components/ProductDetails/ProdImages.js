@@ -19,7 +19,7 @@ function ProdImages({ prod }) {
   const imgArray = (
     prod?.images?.length
       ? [...prod?.images, prod?.image ? { url: prod?.image } : null]
-      : [prod?.image]
+      : [{ url: prod?.image }]
   )?.filter((d) => d);
 
   return (
@@ -40,21 +40,21 @@ function ProdImages({ prod }) {
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
       >
         {imgArray?.map((img, index) => (
-          <SwiperSlide key={img}>
+          <SwiperSlide key={img?.url}>
             <Image
               width={280}
               height={226}
               alt="prod-img"
               style={{
-                width: "auto",
-                height: "auto",
+                width: !img?.url ? "100%" : "auto",
+                height: !img?.url ? "100%" : "auto",
                 borderRadius: "20px",
                 maxWidth: "100%",
                 display: "flex",
                 margin: "auto",
-                maxHeight: isMobile ? "150px" : "230px",
+                maxHeight: !img?.url ? "unset" : isMobile ? "150px" : "230px",
               }}
-              src={img?.url || img || "/imgs/no-prod-img.svg"}
+              src={img?.url || "/imgs/no-prod-img.svg"}
               onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
             />
           </SwiperSlide>
@@ -101,6 +101,7 @@ function ProdImages({ prod }) {
         >
           {imgArray?.map((img, index) => (
             <Box
+              key={img?.url + index}
               sx={{
                 width: isMobile ? "80px" : "100px",
                 height: isMobile ? "80px" : "100px",
@@ -125,7 +126,7 @@ function ProdImages({ prod }) {
                   maxHeight: isMobile ? "100%" : "80px",
                   cursor: "pointer",
                 }}
-                src={img?.url || img || "/imgs/no-prod-img.svg"}
+                src={img?.url || "/imgs/no-prod-img.svg"}
                 onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
               />
             </Box>

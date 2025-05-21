@@ -18,8 +18,8 @@ function CategoriesMarketplace({ sectionInfo }) {
   const { data: categories } = useCustomQuery({
     name: ["marketplace-categories"],
     url: `${MARKETPLACE}${CATEGORY}?lat=${
-      defaultAddress?.lat || selectedAddress?.lat || 24.7136
-    }&lng=${defaultAddress?.lng || selectedAddress?.lng || 46.6753}&model_id=${
+      selectedAddress?.lat || defaultAddress?.lat || 24.7136
+    }&lng=${selectedAddress?.lng || defaultAddress?.lng || 46.6753}&model_id=${
       selectedCar?.model?.id || defaultCar?.model?.id
     }`,
     refetchOnWindowFocus: false,

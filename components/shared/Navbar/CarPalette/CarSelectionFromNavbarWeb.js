@@ -59,7 +59,10 @@ function CarSelectionFromNavbarWeb({
   const handleCheckboxChange = (car) => {
     dispatch(setSelectedCar({ data: car }));
     handleClose();
-    // callUserDefaultCar();
+    // setCar as default everty change happen
+    // setTimeout(() => {
+    //   callUserDefaultCar();
+    // }, 500);
   };
 
   const { refetch: callUserVehicles } = usersVehiclesQuery({
@@ -70,7 +73,7 @@ function CarSelectionFromNavbarWeb({
     setDefaultCar,
   });
 
-  userDefaultCar({
+  const { refetch: callUserDefaultCar } = userDefaultCar({
     user,
     dispatch,
     setSelectedCar,

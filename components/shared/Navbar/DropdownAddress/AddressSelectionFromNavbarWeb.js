@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Popover, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useLocalization from "@/config/hooks/useLocalization";
@@ -17,6 +17,8 @@ import { usersAddressesQuery } from "@/config/network/Shared/GetDataHelper";
 import { useAuth } from "@/config/providers/AuthProvider";
 import { getUserCurrentLocation } from "@/constants/helpers";
 import { toast } from "react-toastify";
+import { ADDRESS, DEFAULT, USERS } from "@/config/endPoints/endPoints";
+import useCustomQuery from "@/config/network/Apiconfig";
 
 function AddressSelectionFromNavbarWeb({
   open,
@@ -32,6 +34,7 @@ function AddressSelectionFromNavbarWeb({
   const { allAddresses, selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const [addressIdDefault, setAddressIdDefault] = useState(false);
 
   const Addresses = allAddresses?.length ? allAddresses : [];
 
@@ -58,6 +61,30 @@ function AddressSelectionFromNavbarWeb({
     color: "black",
   };
 
+  const { refetch: callAddresses } = usersAddressesQuery({
+    setAllAddresses,
+    user,
+    dispatch,
+    setDefaultAddress,
+  });
+
+  useCustomQuery({
+    name: ["changeDefaultAddress", addressIdDefault],
+    url: `${USERS}${ADDRESS}${DEFAULT}/${addressIdDefault}`,
+    refetchOnWindowFocus: false,
+    enabled: addressIdDefault ? true : false,
+    select: (res) => res?.data?.data,
+    method: "post",
+    onSuccess: (res) => {
+      setAddressIdDefault(false);
+      callAddresses();
+      setAddressIdDefault(false);
+    },
+    onError: (err) => {
+      setAddressIdDefault(false);
+    },
+  });
+
   const handleCheckboxChange = async (addressSelected) => {
     if (addressSelected?.id === "currentLocation") {
       try {
@@ -71,6 +98,7 @@ function AddressSelectionFromNavbarWeb({
         toast.error(error);
       }
     } else {
+    //   setAddressIdDefault(addressSelected?.id);
       dispatch(
         setSelectedAddress({
           data: { ...addressSelected },
@@ -79,13 +107,6 @@ function AddressSelectionFromNavbarWeb({
     }
     handleClose();
   };
-
-  const { refetch: callAddresses } = usersAddressesQuery({
-    setAllAddresses,
-    user,
-    dispatch,
-    setDefaultAddress,
-  });
 
   const { refetch: callUserDefaultCar } = userDefaultCar({
     user,

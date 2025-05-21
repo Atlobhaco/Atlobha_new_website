@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Tooltip } from "@mui/material";
 import React from "react";
 import { styled } from "@mui/material/styles";
 import LinearProgress, {
@@ -58,7 +58,7 @@ function ProgressBarMinFreeDeliery({ citySettings, setCitySettings }) {
       selectedAddress?.lat,
     ],
     url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${
-      defaultAddress?.lat || selectedAddress?.lat
+      selectedAddress?.lat || defaultAddress?.lat
     }&longitude=${selectedAddress?.lng || defaultAddress?.lng}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
@@ -116,19 +116,31 @@ function ProgressBarMinFreeDeliery({ citySettings, setCitySettings }) {
         )}
       </Box>
       <Box sx={{ transform: locale == "ar" && "rotateY(180deg)", my: 1 }}>
-        <BorderLinearProgress
-          variant="determinate"
-          value={Math.min(
+        <Tooltip
+          title={`${Math.min(
             100,
             (totalOfBasket /
               (+totalOfBasket < +citySettings?.minimum_order_fee
                 ? citySettings?.minimum_order_fee
                 : citySettings?.delivery_free_price)) *
               100
-          )}
-          citySettings={citySettings}
-          totalOfBasket={totalOfBasket}
-        />
+          ).toFixed(0)}%`}
+          arrow
+        >
+          <BorderLinearProgress
+            variant="determinate"
+            value={Math.min(
+              100,
+              (totalOfBasket /
+                (+totalOfBasket < +citySettings?.minimum_order_fee
+                  ? citySettings?.minimum_order_fee
+                  : citySettings?.delivery_free_price)) *
+                100
+            )}
+            citySettings={citySettings}
+            totalOfBasket={totalOfBasket}
+          />
+        </Tooltip>
       </Box>
       <Box
         sx={{
