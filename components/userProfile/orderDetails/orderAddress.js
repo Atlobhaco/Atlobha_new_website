@@ -117,22 +117,23 @@ function OrderAddress({
         </div>
       </div>
       {(orderDetails?.status === STATUS?.new ||
-        orderDetails?.status === STATUS?.priced) && (
-        <Box
-          sx={{ p: isMobile ? 0 : 3, cursor: "pointer" }}
-          onClick={() => setOpenChangeAddress(true)}
-        >
-          <Image
-            src="/icons/arrow-left-sm.svg"
-            width={isMobile ? 9 : 20}
-            height={15}
-            alt="arrow"
-            style={{
-              transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
-            }}
-          />
-        </Box>
-      )}
+        orderDetails?.status === STATUS?.priced) &&
+        type !== ORDERSENUM?.marketplace && (
+          <Box
+            sx={{ p: isMobile ? 0 : 3, cursor: "pointer" }}
+            onClick={() => setOpenChangeAddress(true)}
+          >
+            <Image
+              src="/icons/arrow-left-sm.svg"
+              width={isMobile ? 9 : 20}
+              height={15}
+              alt="arrow"
+              style={{
+                transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
+              }}
+            />
+          </Box>
+        )}
       {/* change the address for the order from here */}
       <DialogCentered
         title={t.changeAddress}

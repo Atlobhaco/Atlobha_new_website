@@ -64,7 +64,7 @@ function SparePartItem({ data, showPrice = false }) {
             fontWeight: "500",
           }}
         >
-          {data?.total_price} {riyalImgOrange()}
+          {data?.total_price || data?.price} {riyalImgOrange()}
         </Box>
       )}
     </Box>

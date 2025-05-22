@@ -245,7 +245,8 @@
     "INSTALLMENT": "تقسيط",
     "BANK-TRANSFER": "تحويل بنكي",
     "TABBY": "تابي",
-    "wallet": "محفظة اطلبها"
+    "wallet": "محفظة اطلبها",
+    "tamara": "تمارا"
   },
   "orderSummary": "ملخص الطلب",
   "productsPrice": "سعر المنتجات",

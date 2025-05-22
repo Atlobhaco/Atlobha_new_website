@@ -186,7 +186,8 @@ function SparePartsOrderDetails({
         </>
       )}
       {(orderDetails?.status === STATUS?.confirmed ||
-        orderDetails?.status === STATUS?.delivered) && (
+        orderDetails?.status === STATUS?.delivered ||
+        type === ORDERSENUM?.marketplace) && (
         <>
           <PaymentMethodOrder orderDetails={orderDetails} />
           <Divider sx={{ background: "#EAECF0", mb: 2 }} />
@@ -200,6 +201,8 @@ function SparePartsOrderDetails({
       {(orderDetails?.status === STATUS?.confirmed ||
         orderDetails?.status === STATUS?.incomplete ||
         orderDetails?.status === STATUS?.delivered ||
+        (orderDetails?.status === STATUS?.new &&
+          type === ORDERSENUM?.marketplace) ||
         orderDetails?.status === STATUS?.priced) && (
         <Box sx={{ mt: 4 }}>
           <SummaryOrder

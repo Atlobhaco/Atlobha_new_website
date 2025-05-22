@@ -9,6 +9,7 @@ import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
+import MarketplaceOrderDetails from "@/components/userProfile/orderDetails/marketplaceOrderDetails";
 
 function OrderDetails() {
   const router = useRouter();
@@ -54,7 +55,13 @@ function OrderDetails() {
   const returnOrderDetailsPage = () => {
     switch (type) {
       case ORDERSENUM?.marketplace:
-        return `/marketplace${ORDERS}/${idOrder}`;
+        return (
+          <MarketplaceOrderDetails
+            orderDetails={data}
+            callSingleOrder={callSingleOrder}
+            orderDetailsFetching={orderDetailsFetching}
+          />
+        );
       case ORDERSENUM?.spareParts:
         return (
           <SparePartsOrderDetails

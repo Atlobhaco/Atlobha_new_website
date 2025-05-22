@@ -25,19 +25,23 @@ function MyOrders() {
     created_at_from: "",
     created_at_to: "",
     status: "",
-    class: "",
   };
   const [filters, setFilters] = useState(defaultFilters);
+  const [classFilter, setClassFilter] = useState({
+    class: "",
+  });
 
   const {
     data,
     isFetching,
     refetch: callOrders,
   } = useCustomQuery({
-    name: ["getAllOrders", page, filters],
+    name: ["getAllOrders", page, filters, classFilter],
     url: `${USERS}/${
       user?.data?.user?.id
-    }${ORDERS}?page=${page}&${getFilterParams(filters)}`,
+    }${ORDERS}?page=${page}&${getFilterParams(filters)}&${getFilterParams(
+      classFilter
+    )}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled: !!user?.data?.user?.id,
@@ -130,18 +134,16 @@ function MyOrders() {
                 ]}
                 handleClick={(data) => {
                   if (data === "all") {
-                    setFilters({
-                      ...filters,
+                    setClassFilter({
                       class: "",
                     });
                   } else {
-                    setFilters({
-                      ...filters,
+                    setClassFilter({
                       class: data,
                     });
                   }
                 }}
-                selectedSection={filters?.class}
+                selectedSection={classFilter?.class}
                 showLineBelow={true}
               />
             </Box>
