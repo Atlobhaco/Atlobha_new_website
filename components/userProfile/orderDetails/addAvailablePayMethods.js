@@ -16,9 +16,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { useQueryClient } from "react-query";
+import ProductCardSkeleton from "@/components/cardSkeleton";
+import { useRouter } from "next/router";
 
 function AddAvailablePayMethods({ orderDetails = {} }) {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { route } = router;
+
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedPaymentMethod } = useSelector(
@@ -27,7 +32,11 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
   const dispatch = useDispatch();
 
   const { data: availablePayments, isFetching } = useCustomQuery({
-    name: ["getPaymentsMethods"],
+    name: [
+      "getPaymentsMethods",
+      orderDetails?.address?.lat,
+      orderDetails?.address?.lng,
+    ],
     url: `${PAYMENT}?lat=${orderDetails?.address?.lat}&lng=${orderDetails?.address?.lng}`,
     refetchOnWindowFocus: false,
     enabled:
@@ -46,7 +55,7 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
   }, []);
 
   const callCaluclateReceiptForApplePay = (key) => {
-    if (key === PAYMENT_METHODS?.applePay) {
+    if (key === PAYMENT_METHODS?.applePay && route !== `/checkout`) {
       queryClient.refetchQueries(["calculateReceiptForTotalPay"]); // ✅ Refetch by name
     }
   };
@@ -76,60 +85,73 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
           {t.availablePayments}
         </Box>
       </Box>
-      {availablePayments
-        ?.filter(
-          (d) =>
-            d?.key === PAYMENT_METHODS?.credit ||
-            d?.key === PAYMENT_METHODS?.applePay
-        )
-        ?.map(
-          (pay) =>
-            (pay?.key !== PAYMENT_METHODS?.applePay ||
-              checkApplePayAvailability()) && (
-              <Box
-                key={pay?.id}
-                sx={{
-                  pb: 1,
-                  pt: 1,
-                  display: "flex",
-                  gap: 2,
-                  alignItems: "center",
-                  borderBottom: "1px solid #E6E6E6",
-                }}
-              >
-                <SharedCheckbox
-                  selectedId={selectedPaymentMethod?.id}
-                  handleCheckboxChange={(data) => {
-                    callCaluclateReceiptForApplePay(pay?.key);
-                    dispatch(setSelectedPayment({ data: data }));
-                  }}
-                  data={pay}
-                />
+      {isFetching ? (
+        <ProductCardSkeleton height={140} />
+      ) : (
+        availablePayments
+          ?.filter(
+            (d) =>
+              d?.key === PAYMENT_METHODS?.credit ||
+              d?.key === PAYMENT_METHODS?.applePay
+          )
+          ?.map(
+            (pay) =>
+              (pay?.key !== PAYMENT_METHODS?.applePay ||
+                checkApplePayAvailability()) && (
                 <Box
+                  key={pay?.id}
                   sx={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    callCaluclateReceiptForApplePay(pay?.key);
-                    dispatch(setSelectedPayment({ data: pay }));
+                    pb: 1,
+                    pt: 1,
+                    display: "flex",
+                    gap: 2,
+                    alignItems: "center",
+                    borderBottom: "1px solid #E6E6E6",
                   }}
                 >
-                  {availablePaymentMethodImages({ payment_method: pay?.key })}
+                  <SharedCheckbox
+                    selectedId={selectedPaymentMethod?.id}
+                    handleCheckboxChange={(data) => {
+                      callCaluclateReceiptForApplePay(pay?.key);
+                      dispatch(setSelectedPayment({ data: data }));
+                    }}
+                    data={pay}
+                  />
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      callCaluclateReceiptForApplePay(pay?.key);
+                      dispatch(setSelectedPayment({ data: pay }));
+                    }}
+                  >
+                    {availablePaymentMethodImages(
+                      {
+                        payment_method: pay?.key,
+                      },
+                      isMobile
+                    )}
+                  </Box>
+                  <Box
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      callCaluclateReceiptForApplePay(pay?.key);
+                      dispatch(setSelectedPayment({ data: pay }));
+                    }}
+                  >
+                    {availablePaymentMethodText(
+                      { payment_method: pay?.key },
+                      t,
+                      isMobile
+                    )}
+                  </Box>
                 </Box>
-                <Box
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    callCaluclateReceiptForApplePay(pay?.key);
-                    dispatch(setSelectedPayment({ data: pay }));
-                  }}
-                >
-                  {availablePaymentMethodText({ payment_method: pay?.key }, t)}
-                </Box>
-              </Box>
-            )
-        )}
+              )
+          )
+      )}
     </Box>
   );
 }

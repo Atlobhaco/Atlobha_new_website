@@ -27,7 +27,11 @@ const header = {
   mb: 2,
 };
 
-function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
+function OrderAddress({
+  orderDetails = {},
+  callSingleOrder = () => {},
+  handleChangeAddress = false,
+}) {
   const router = useRouter();
   const { idOrder, type } = router.query;
   const { t, locale } = useLocalization();
@@ -80,6 +84,13 @@ function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
     setNewAddressId(data?.id);
   };
 
+  const handleChangeAddressCutom = (data) => {
+    if (handleChangeAddress) {
+      handleChangeAddress(data);
+    }
+    setOpenChangeAddress(false);
+  };
+
   return (
     <div
       className={`${style["deliverySec"]} justify-content-between align-items-center mb-1 border-bottom-0`}
@@ -106,22 +117,23 @@ function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
         </div>
       </div>
       {(orderDetails?.status === STATUS?.new ||
-        orderDetails?.status === STATUS?.priced) && (
-        <Box
-          sx={{ p: isMobile ? 0 : 3, cursor: "pointer" }}
-          onClick={() => setOpenChangeAddress(true)}
-        >
-          <Image
-            src="/icons/arrow-left-sm.svg"
-            width={isMobile ? 9 : 20}
-            height={15}
-            alt="arrow"
-            style={{
-              transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
-            }}
-          />
-        </Box>
-      )}
+        orderDetails?.status === STATUS?.priced) &&
+        type !== ORDERSENUM?.marketplace && (
+          <Box
+            sx={{ p: isMobile ? 0 : 3, cursor: "pointer" }}
+            onClick={() => setOpenChangeAddress(true)}
+          >
+            <Image
+              src="/icons/arrow-left-sm.svg"
+              width={isMobile ? 9 : 20}
+              height={15}
+              alt="arrow"
+              style={{
+                transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
+              }}
+            />
+          </Box>
+        )}
       {/* change the address for the order from here */}
       <DialogCentered
         title={t.changeAddress}
@@ -130,7 +142,11 @@ function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
         setOpen={setOpenChangeAddress}
         hasCloseIcon
         content={
-          <Box>
+          <Box
+            sx={{
+              maxHeight: "60vh",
+            }}
+          >
             {allAddresses.map((address) => (
               <Box
                 key={address.id}
@@ -144,7 +160,9 @@ function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
                 {/* Checkbox */}
                 <SharedCheckbox
                   selectedId={orderDetails?.address?.id}
-                  handleCheckboxChange={handleCheckboxChange}
+                  handleCheckboxChange={
+                    handleChangeAddressCutom || handleCheckboxChange
+                  }
                   data={address}
                 />
 
@@ -184,7 +202,16 @@ function OrderAddress({ orderDetails = {}, callSingleOrder = () => {} }) {
                     cursor: "pointer",
                   }}
                 >
-                  <Box onClick={() => handleCheckboxChange(address)}>
+                  <Box
+                    onClick={() => {
+                      if (handleChangeAddress) {
+                        handleChangeAddress(address);
+                        setOpenChangeAddress(false);
+                      } else {
+                        handleCheckboxChange(address);
+                      }
+                    }}
+                  >
                     <Typography
                       sx={{
                         fontSize: isMobile ? "12px" : "16px",

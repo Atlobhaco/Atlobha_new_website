@@ -293,6 +293,7 @@ function EditInfo() {
             />
           ) : (
             <OtpView
+              customIDOtpField="editInfoId"
               containerStyle={containerStyle}
               setOtpView={setOtpView}
               recallReqOtp={recallReqOtp}

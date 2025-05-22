@@ -28,6 +28,7 @@ function SharedDropDown({
   items = [],
   disabled = false,
   id = "",
+  showCloseIcon = true,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -61,7 +62,7 @@ function SharedDropDown({
         )}
       </Box>
       <FormControl
-        id={id}
+        // id={id}
         fullWidth
         sx={{
           //   border: false
@@ -114,17 +115,21 @@ function SharedDropDown({
             ((typeof value === "object" && value?.length) ||
               (typeof value !== "object" && value)) &&
             !disabled ? (
-              <IconButton
-                onClick={handleClear}
-                sx={{
-                  position: "absolute",
-                  right: locale === "ar" ? "unset" : 8,
-                  left: locale === "ar" ? 8 : "unset",
-                }}
-                size="small"
-              >
-                <CloseIcon fontSize="small" />
-              </IconButton>
+              showCloseIcon ? (
+                <IconButton
+                  onClick={handleClear}
+                  sx={{
+                    position: "absolute",
+                    right: locale === "ar" ? "unset" : 8,
+                    left: locale === "ar" ? 8 : "unset",
+                  }}
+                  size="small"
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+              ) : (
+                <ArrowDropDownIcon />
+              )
             ) : (
               <ArrowDropDownIcon />
             )

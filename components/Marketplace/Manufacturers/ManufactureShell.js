@@ -13,7 +13,7 @@ import Slider from "react-slick";
 
 function ManufactureShell({ sectionInfo }) {
   const { t, locale } = useLocalization();
-  const { isMobile } = useScreenSize();
+  const { isMobile, isTablet } = useScreenSize();
   const router = useRouter();
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
@@ -38,6 +38,7 @@ function ManufactureShell({ sectionInfo }) {
       `manufacturer${sectionInfo?.id}`,
       sectionInfo?.is_active,
       isMobile,
+      isTablet,
       page,
       selectedCar?.model?.id,
       defaultCar?.model?.id,
@@ -72,8 +73,8 @@ function ManufactureShell({ sectionInfo }) {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
         },
       },
       {
@@ -121,11 +122,11 @@ function ManufactureShell({ sectionInfo }) {
         backgroundImage: `url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        backgroundSize: isMobile ? "cover" : "cover",
+        backgroundSize: isMobile ? "contain" : "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         width: "100%",
-        height: isMobile ? "320px" : "900px",
+        height: isMobile ? "286px" : "900px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -143,7 +144,7 @@ function ManufactureShell({ sectionInfo }) {
           position: "absolute",
         }}
       /> */}
-      <Box sx={{ width: isMobile ? "100%" : "90%" }}>
+      <Box sx={{ width: isMobile ? "100%" : "98%" }}>
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (
             <Box
@@ -186,7 +187,7 @@ function ManufactureShell({ sectionInfo }) {
           top: "0",
           width: "100%",
           cursor: "pointer",
-          height: isMobile ? "150px" : "300px",
+          height: isMobile ? "90px" : "300px",
         }}
       ></Box>
     </Box>

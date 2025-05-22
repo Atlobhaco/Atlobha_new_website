@@ -33,7 +33,14 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-function Login({ showBtn = false, open = false, setOpen = () => {} }) {
+function Login({
+  showBtn = false,
+  open = false,
+  setOpen = () => {},
+  id = "customID",
+  customIDLogin = "login-btn",
+  customIDOtpField = "otpField",
+}) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
@@ -247,7 +254,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               <Box sx={{ mt: 2, position: "relative" }}>
                 {true ? (
                   <SharedTextField
-                    id="loginField"
+                    id={id}
                     customPadding={`${
                       formik?.values?.phone?.length && !textInput
                         ? "0px 55px"
@@ -295,7 +302,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
               </Box>
               <Box sx={{ mt: 4 }}>
                 <SharedBtn
-                  id="login-btn"
+                  id={customIDLogin}
                   disabled={!formik.isValid || registerLoad || otpLoad}
                   text={registerLoad || otpLoad ? null : "continue"}
                   className="black-btn"
@@ -332,6 +339,7 @@ function Login({ showBtn = false, open = false, setOpen = () => {} }) {
           </>
         ) : (
           <OtpView
+            customIDOtpField={customIDOtpField}
             containerStyle={containerStyle}
             setOtpView={setOtpView}
             recallReqOtp={recallReqOtp}

@@ -16,7 +16,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERS, PARTS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { riyalImgBlack } from "@/constants/helpers";
+import { riyalImgOrange } from "@/constants/helpers";
 
 function OrderProducts({
   orderDetails = {},
@@ -45,7 +45,7 @@ function OrderProducts({
   const renderUrlDependOnType = () => {
     switch (type) {
       case ORDERSENUM?.marketplace:
-        return `/marketplace${ORDERS}/${idOrder}`;
+        return `/marketplace${ORDERS}/${idOrder}${PARTS}`;
       case ORDERSENUM?.spareParts:
         return `${SPARE_PARTS}${ORDERS}/${idOrder}${PARTS}`;
       default:
@@ -97,41 +97,47 @@ function OrderProducts({
             fontWeight: 700,
           }}
         >
-          {t.selectedProducts} ({orderDetails?.parts?.length})
+          {t.selectedProducts} (
+          {orderDetails?.parts?.length || orderDetails?.products?.length})
         </Box>
 
         {(orderDetails?.status === STATUS?.new ||
           orderDetails?.status === STATUS?.incomplete ||
           orderDetails?.status === STATUS?.priced) &&
           (!editMode ? (
-            <SharedBtn
-              compBeforeText={
-                (isFetching || orderDetailsFetching) && (
-                  <CircularProgress color="inherit" size={15} />
-                )
-              }
-              id="editOrderProd"
-              className="outline-btn"
-              text="common.edit"
-              customStyle={{
-                padding: isMobile ? "6px  20px" : "8px 25px",
-                fontSize: "10px",
-                height: "unset",
-              }}
-              onClick={() => {
-                dispatch(clearSpareParts());
-                setEditMode(!editMode);
-                dispatch(
-                  addOrUpdateSparePart(
-                    ...orderDetails?.parts?.map((d) => ({
-                      ...d,
-                      insideOrder: true,
-                    }))
+            type !== ORDERSENUM?.marketplace && (
+              <SharedBtn
+                compBeforeText={
+                  (isFetching || orderDetailsFetching) && (
+                    <CircularProgress color="inherit" size={15} />
                   )
-                );
-              }}
-              disabled={isFetching}
-            />
+                }
+                id="editOrderProd"
+                className="outline-btn"
+                text="common.edit"
+                customStyle={{
+                  padding: isMobile ? "6px  20px" : "8px 25px",
+                  fontSize: "10px",
+                  height: "unset",
+                }}
+                onClick={() => {
+                  dispatch(clearSpareParts());
+                  setEditMode(!editMode);
+                  dispatch(
+                    addOrUpdateSparePart(
+                      (orderDetails?.parts?.length
+                        ? orderDetails.parts
+                        : orderDetails?.products || []
+                      ).map((d) => ({
+                        ...d,
+                        showPrice: true,
+                      }))
+                    )
+                  );
+                }}
+                disabled={isFetching}
+              />
+            )
           ) : (
             <Box className="d-flex gap-2">
               <SharedBtn
@@ -176,9 +182,9 @@ function OrderProducts({
       <Box>
         {editMode
           ? selectedParts?.map((data) => (
-              <SparePartItem data={data} insideOrder={true} />
+              <SparePartItem data={data} showPrice={true} />
             ))
-          : orderDetails?.parts?.map((part) => (
+          : (orderDetails?.parts || orderDetails?.products)?.map((part) => (
               <div
                 className={`${style["details-parts"]} justify-content-between`}
                 key={part?.id}
@@ -189,6 +195,9 @@ function OrderProducts({
                     className={`${style["details-parts_imgHolder"]}`}
                   >
                     <Image
+                      onError={(e) =>
+                        (e.target.srcset = "/imgs/no-img-holder.svg")
+                      }
                       src={part?.image || "/imgs/no-img-holder.svg"}
                       width={isMobile ? 50 : 61}
                       height={isMobile ? 50 : 61}
@@ -211,7 +220,8 @@ function OrderProducts({
                     </div>
                   </div>
                 </div>
-                {orderDetails?.status !== STATUS?.new ? (
+                {orderDetails?.status !== STATUS?.new ||
+                type === ORDERSENUM?.marketplace ? (
                   <div
                     style={{
                       color: "#EE772F",
@@ -219,7 +229,7 @@ function OrderProducts({
                       fontSize: isMobile ? "14px" : "16px",
                     }}
                   >
-                    {part?.total_price} {riyalImgBlack()}
+                    {part?.total_price || part?.price} {riyalImgOrange()}
                   </div>
                 ) : null}
               </div>

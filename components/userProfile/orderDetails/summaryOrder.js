@@ -329,12 +329,20 @@ function SummaryOrder({
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.productsPrice}</Box>
         <Box sx={text}>
-          {orderDetails?.parts
-            ?.reduce(
-              (accumulator, current) => accumulator + current.total_price,
-              0
-            )
-            ?.toFixed(2)}{" "}
+          {orderDetails?.parts?.length
+            ? orderDetails?.parts
+                ?.reduce(
+                  (accumulator, current) => accumulator + current.total_price,
+                  0
+                )
+                ?.toFixed(2)
+            : orderDetails?.products
+                ?.reduce(
+                  (accumulator, current) =>
+                    accumulator + current.price * current?.quantity,
+                  0
+                )
+                ?.toFixed(2)}{" "}
           {riyalImgBlack()}
         </Box>
       </Box>

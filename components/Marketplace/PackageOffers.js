@@ -73,7 +73,7 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToShow: +featuredProducts?.data?.length > 1 ? 3 : 1,
           slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
         },
       },
@@ -81,7 +81,7 @@ function PackageOffers({ sectionInfo }) {
     beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
     afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
-  console.log("featuredProducts?.data?.length", featuredProducts?.data?.length);
+
   return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (
     <Box
       sx={{
@@ -102,13 +102,14 @@ function PackageOffers({ sectionInfo }) {
             key={featured?.id}
             onClick={() => {
               if (!isDragging) {
-                router.push(featured?.deep_link); // Replace with router.push(featured?.deep_link) when needed
+                router.push(`/product/${featured?.id}`); // Replace with router.push(featured?.deep_link) when needed
               }
             }}
             sx={{
-              width: "95% !important",
-              height: isMobile ? "200px" : "440px",
+              width: isMobile ? "99% !important" : "95% !important",
+              height: isMobile ? "180px" : "440px",
               cursor: "pointer",
+              //   background:'yellow'
             }}
           >
             <Box
@@ -118,7 +119,11 @@ function PackageOffers({ sectionInfo }) {
                 backgroundPosition: "center",
                 backgroundSize: "contain",
                 height: "100%",
-                width: "100%",
+                width: isMobile
+                  ? "95%"
+                  : +featuredProducts?.data?.length === 1
+                  ? "280px"
+                  : "100%",
                 borderRadius: "10px",
               }}
             ></Box>

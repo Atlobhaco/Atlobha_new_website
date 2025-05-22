@@ -15,7 +15,6 @@ import { isAuth } from "@/config/hooks/isAuth";
 
 function FootNavbar({ setOpenCategories, openCategories }) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState(null);
   const { basket } = useSelector((state) => state.basket);
   const { t } = useLocalization();
 
@@ -55,14 +54,16 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             icon={<BlackMenu />}
             customWidth="43px"
             customHeight="43px"
-            activeTab={activeTab === "menu" ? true : false}
+            activeTab={false}
             onClick={() => setOpenCategories(true)}
           />
           <FootNavSection
             icon={<Basket />}
             text={t.basket}
-            activeTab={activeTab === "basket" ? true : false}
-            onClick={() => setActiveTab("basket")}
+            activeTab={router?.pathname?.includes("basket") ? true : false}
+            onClick={() => {
+              router.push("/basket");
+            }}
             hasNum={basket?.length}
           />
           {isAuth() ? (
@@ -70,14 +71,10 @@ function FootNavbar({ setOpenCategories, openCategories }) {
               icon={<More />}
               text={t.more}
               activeTab={
-                activeTab === "more" &&
-                router?.pathname?.includes("userProfile")
-                  ? true
-                  : false
+                router?.pathname?.includes("userProfile") ? true : false
               }
               onClick={() => {
                 router.push("/userProfile");
-                setActiveTab("more");
               }}
             />
           ) : (

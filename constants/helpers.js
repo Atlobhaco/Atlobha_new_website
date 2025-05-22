@@ -2,8 +2,9 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import crypto from "crypto";
-import { ORDERSENUM, PAYMENT_METHODS, STATUS } from "./enums";
-import useScreenSize from "./screenSize/useScreenSize";
+import { ORDERSENUM, PAYMENT_METHODS, PRODUCT_TYPES, STATUS } from "./enums";
+import { useEffect, useRef } from "react";
+import isEqual from "lodash.isequal";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -219,6 +220,15 @@ export const availablePaymentMethodImages = (
           height={isMobile ? 26 : 40}
         />
       );
+	  case PAYMENT_METHODS?.tamara:
+      return (
+        <Image
+          src="/icons/payments/tamara-pay.svg"
+          alt="cash-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 40}
+        />
+      );
     default:
       return orderDetails?.payment_method;
   }
@@ -297,6 +307,12 @@ export const availablePaymentMethodText = (
       return (
         <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
           {t.payMethods[`CASH`]}
+        </Box>
+      );
+	  case PAYMENT_METHODS?.tamara:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`tamara`]}
         </Box>
       );
     default:
@@ -382,4 +398,39 @@ export const riyalImgOrange = () => {
       alt="riyal-orange"
     />
   );
+};
+export const riyalImgGrey = (width, height) => {
+  return (
+    <Image
+      src="/icons/riyal-grey.svg"
+      width={width || 20}
+      height={height || 20}
+      alt="riyal-grey"
+    />
+  );
+};
+/* -------------------------------------------------------------------------- */
+/*                check if there is any change happen in array                */
+/* -------------------------------------------------------------------------- */
+export const useArrayChangeDetector = (array, onChange) => {
+  const prevRef = useRef();
+
+  useEffect(() => {
+    if (prevRef.current && !isEqual(prevRef.current, array)) {
+      onChange(prevRef.current, array); // You get both old and new values
+    }
+
+    prevRef.current = array;
+  }, [array, onChange]);
+};
+/* -------------------------------------------------------------------------- */
+/*                          product types localizaed                          */
+/* -------------------------------------------------------------------------- */
+export const prodTypeArray = () => {
+  const { t } = useLocalization();
+
+  return Object.values(PRODUCT_TYPES).map((value) => ({
+    id: value,
+    name: t.types[`${value}`],
+  }));
 };

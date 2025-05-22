@@ -1,11 +1,12 @@
 import AddRemoveSparePart from "@/components/spareParts/AddRemoveSparePart";
 import useLocalization from "@/config/hooks/useLocalization";
+import { riyalImgOrange } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function SparePartItem({ data, insideOrder = false }) {
+function SparePartItem({ data, showPrice = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
 
@@ -46,12 +47,13 @@ function SparePartItem({ data, insideOrder = false }) {
           height={isMobile ? 50 : 100}
           alt="spare-part"
           style={noImgStyle}
+          onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")}
         />
       </Box>
       <Box>
-        <AddRemoveSparePart data={data} insideOrder={insideOrder} />
+        <AddRemoveSparePart data={data} showPrice={showPrice} />
       </Box>
-      {/* {insideOrder && (
+      {showPrice && (
         <Box
           sx={{
             display: "flex",
@@ -62,9 +64,9 @@ function SparePartItem({ data, insideOrder = false }) {
             fontWeight: "500",
           }}
         >
-          {data?.total_price} {t.sar}
+          {data?.total_price || data?.price} {riyalImgOrange()}
         </Box>
-      )} */}
+      )}
     </Box>
   );
 }

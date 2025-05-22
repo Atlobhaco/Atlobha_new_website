@@ -19,14 +19,16 @@ function SectionsNav({
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
 
+  // logic inside function to make marketplace default selection
   const activeDependOnUrl = (section) => {
-    if (
-      section?.title === secTitle ||
+    return section?.title === secTitle ||
       (section?.type === SPAREPARTS && router.pathname === "/spareParts") ||
-      (section?.type === MARKETPLACE && router.pathname === "/")
-    ) {
-      return `${style["active"]}`;
-    }
+      (section?.type === MARKETPLACE && router.pathname === "/") ||
+      (!secTitle &&
+        section?.type === MARKETPLACE &&
+        router.pathname !== "/spareParts")
+      ? style["active"]
+      : "";
   };
 
   return (
@@ -50,7 +52,9 @@ function SectionsNav({
                 handleClick(data?.id);
               }}
               className={`${
-                selectedSection === data?.id && `${style["active"]}`
+                (selectedSection === data?.id ||
+                  (!selectedSection && data?.id === "all")) &&
+                `${style["active"]}`
               }`}
               sx={{
                 fontWeight: selectedSection === data?.id ? "700" : "500",

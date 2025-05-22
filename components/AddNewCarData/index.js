@@ -21,6 +21,7 @@ function AddNewCarData({
   clickTooltipOpenVinHint = () => {},
   hideDividerAndShowBtn = true,
   editableCar = null,
+  customIDs = {},
 }) {
   const { user } = useAuth();
   const router = useRouter();
@@ -138,6 +139,7 @@ function AddNewCarData({
               formikRef={formikRef}
               clickTooltipOpenVinHint={clickTooltipOpenVinHint}
               editableCar={editableCar}
+              customIDs={customIDs}
             />
           </div>
         </div>

@@ -18,6 +18,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import ProductCard from "@/components/shared/ProductCard";
 import PaginateComponent from "@/components/Pagination";
 import useLocalization from "@/config/hooks/useLocalization";
+import { isAuth } from "@/config/hooks/isAuth";
 
 function Category() {
   const router = useRouter();
@@ -58,15 +59,17 @@ function Category() {
       isMobile ? 15 : 16
     }&category_id=${selectedCategory}&subcategory_id=${subCatId}&years[]=${
       defaultCar?.year
-    }`,
+    }&model_ids[]=${defaultCar?.model?.id || ""}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    enabled: defaultCar?.year && selectedCategory && subCatId ? true : false,
+    enabled:
+      (isAuth() && selectedCategory && subCatId) || !isAuth() ? true : false,
     onSuccess: (res) => {
       const element = document.getElementById("categroy_id");
       if (element) {
-        const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        const y =
+          element?.getBoundingClientRect()?.top + window.pageYOffset - 80;
+        window?.scrollTo({ top: y, behavior: "smooth" });
       }
       setProdInfo(res);
     },
@@ -79,7 +82,7 @@ function Category() {
       <Box className="container">
         <Box className="row">
           <Box className="col-12">
-            <Ads id={idCategory} />
+            <Ads id={selectedCategory} />
           </Box>
           <Box
             className={`col-12 ${isMobile ? "mt-4" : "mt-5"}`}
@@ -116,7 +119,7 @@ function Category() {
           ) : (
             <>
               {prodInfo?.data?.map((prod) => (
-                <Box className="col-md-3 col-4 mb-3">
+                <Box className="col-md-3 col-4 mb-3 px-0">
                   <ProductCard product={prod} />
                 </Box>
               ))}
@@ -127,11 +130,23 @@ function Category() {
                   justifyContent: "center",
                 }}
               >
-                <PaginateComponent
-                  meta={prodInfo?.meta}
-                  setPage={setPage}
-                  isLoading={isFetching}
-                />
+                {prodInfo?.data?.length ? (
+                  <PaginateComponent
+                    meta={prodInfo?.meta}
+                    setPage={setPage}
+                    isLoading={isFetching}
+                  />
+                ) : (
+                  <Box
+                    sx={{
+                      mt: 3,
+                      fontWeight: "500",
+                      fontSize: "20px",
+                    }}
+                  >
+                    {t.noResultsFound}
+                  </Box>
+                )}
               </Box>
             </>
           )}

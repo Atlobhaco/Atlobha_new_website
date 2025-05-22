@@ -45,11 +45,10 @@ const GoogleMapComponent = React.memo(
     const containerStyle = useMemo(
       () => ({
         width: "100%",
-        height: isMobile ? "450px" : customHeight,
+        height: isMobile ? "350px" : customHeight,
       }),
       [isMobile, customHeight]
     );
-
     // Memoize the button style to avoid recalculation
     const buttonStyle = useMemo(
       () => ({

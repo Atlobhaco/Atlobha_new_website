@@ -48,13 +48,13 @@ function AtlobhaPartners({ sectionInfo }) {
     dots: false,
     infinite: true,
     slidesToShow: 7.5,
-    slidesToScroll: 1,
+    slidesToScroll: 1.5,
     autoplay: true,
     rtl: locale === "ar",
-    touchThreshold: 0.5,
-    speed: 2000,
+    touchThreshold: 0,
+    speed: 2500,
     autoplaySpeed: 0,
-    cssEase: "ease",
+    // cssEase: "ease-in",
     arrows: false,
     isDragging: false,
     swipe: false,
@@ -91,7 +91,9 @@ function AtlobhaPartners({ sectionInfo }) {
       <Box
         sx={{
           fontWeight: "700",
-          fontSize: isMobile ? "20px" : "30px",
+          fontSize: isMobile ? sectionInfo?.customFont || "20px" : "30px",
+          textAlign: sectionInfo?.textAlign || "start",
+          color: sectionInfo?.textColor || "inherit",
         }}
       >
         {sectionInfo?.title}

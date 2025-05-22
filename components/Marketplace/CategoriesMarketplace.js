@@ -13,12 +13,15 @@ function CategoriesMarketplace({ sectionInfo }) {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const { data: categories } = useCustomQuery({
     name: ["marketplace-categories"],
     url: `${MARKETPLACE}${CATEGORY}?lat=${
-      defaultAddress?.lat || selectedAddress?.lat || 24.7136
-    }&lng=${defaultAddress?.lng || selectedAddress?.lng || 46.6753}`,
+      selectedAddress?.lat || defaultAddress?.lat || 24.7136
+    }&lng=${selectedAddress?.lng || defaultAddress?.lng || 46.6753}&model_id=${
+      selectedCar?.model?.id || defaultCar?.model?.id
+    }`,
     refetchOnWindowFocus: false,
     enabled:
       (sectionInfo?.is_active &&
@@ -43,6 +46,7 @@ function CategoriesMarketplace({ sectionInfo }) {
           display: "flex",
           flexWrap: "wrap",
           gap: isMobile ? "12px" : "32px",
+          justifyContent: isMobile ? "space-between" : "flex-start",
         }}
       >
         {categories?.map((cat) => (

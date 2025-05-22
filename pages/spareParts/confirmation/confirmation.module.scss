@@ -2,7 +2,7 @@
 @import "../../../styles/mixins.scss";
 
 .confirmation {
-  padding: 32px 0px;
+  padding: 32px 20px;
   &_thank {
     display: flex;
     height: 102px;
@@ -220,7 +220,7 @@
 	  &-second-qty {
         display: flex;
         height: 38px;
-        justify-content: center;
+        // justify-content: center;
         align-items: center;
         background: #fff;
         color: #6B7280;

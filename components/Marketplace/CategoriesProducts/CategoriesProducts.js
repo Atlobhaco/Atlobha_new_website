@@ -7,11 +7,14 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
 function CategoriesProducts({ sectionInfo }) {
   const { isMobile } = useScreenSize();
+  const router = useRouter();
+
   const { t } = useLocalization();
   const [page, setPage] = useState(1);
   const [allData, setAllData] = useState([]);
@@ -47,7 +50,6 @@ function CategoriesProducts({ sectionInfo }) {
     select: (res) => res?.data,
     onSuccess: (res) => setAllData(res),
   });
-
   return !sectionInfo?.is_active || !allData?.data?.length ? null : (
     <Box
       sx={{
@@ -60,7 +62,8 @@ function CategoriesProducts({ sectionInfo }) {
         showArrow={true}
         subtitle={t.showAll}
         title={sectionInfo?.title}
-      />
+		onClick={() => router.push(`/category/${sectionInfo?.marketplace_category?.id}`)}
+		/>
       <Box
         sx={{
           display: "flex",

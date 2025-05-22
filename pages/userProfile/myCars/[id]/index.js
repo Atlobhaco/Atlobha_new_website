@@ -90,6 +90,13 @@ function EditCarProfile() {
                 hideDividerAndShowBtn={false}
                 clickTooltipOpenVinHint={clickTooltipOpenVinHint}
                 editableCar={editableCar}
+                customIDs={{
+                  brandId: "thirdBrandID",
+                  modalId: "thirdModalID",
+                  yearId: "thirdYearID",
+                  vinId: "thirdVinID",
+                  toggleId: "thirdToggleID",
+                }}
               />
             </div>
           </div>

@@ -25,7 +25,7 @@ function FilterOrder({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const [tempfilters, setTempFilters] = useState(defaultFilters);
+  const [tempfilters, setTempFilters] = useState(filters);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,7 +41,6 @@ function FilterOrder({
     fontWeight: "700",
     mb: 2,
   };
-
   return (
     <div>
       <Button

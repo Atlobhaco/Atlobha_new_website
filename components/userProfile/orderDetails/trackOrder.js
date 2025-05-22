@@ -43,20 +43,35 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   };
 
   const renderColorDependOnStatusProgress = (currentStep, index) => {
-    if (orderDetails?.status === STATUS?.new) {
+    // for spare parts in pricing  (0 index)
+    if (
+      orderDetails?.status === STATUS?.new &&
+      ORDERSENUM?.spareParts === type
+    ) {
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
+    // for marketplace confirmed (first index)
+    if (
+      orderDetails?.status === STATUS?.new &&
+      ORDERSENUM?.marketplace === type
+    ) {
+      return index === 1 ? "#EE772F" : "#A1AEBE";
+    }
+
     if (orderDetails?.status === STATUS?.priced) {
       return index === 0 ? "#1FB256" : index === 1 ? "#EE772F" : "#A1AEBE";
     }
+
     if (
       orderDetails?.status === STATUS?.confirmed ||
       orderDetails?.status === STATUS?.readyToShip
     ) {
-      return index === 0 || index === 1
+      return index === 0 ||
+        index === 1 ||
+        (index === 2 && ORDERSENUM?.marketplace === type)
         ? "#1FB256"
         : (ORDERSENUM?.marketplace === type && index === 2) ||
-          (ORDERSENUM?.spareParts === type && index === 3)
+          (ORDERSENUM?.marketplace === type && index === 3)
         ? "#EE772F"
         : "#A1AEBE";
     }
@@ -65,7 +80,9 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
     if (orderDetails?.status === STATUS?.shipping) {
       return index === 0 ||
         index === 1 ||
+        index === 3 ||
         (ORDERSENUM?.marketplace === type && index === 2) ||
+        (ORDERSENUM?.marketplace === type && index === 3) ||
         (ORDERSENUM?.spareParts === type && index === 3)
         ? "#1FB256"
         : index === 4

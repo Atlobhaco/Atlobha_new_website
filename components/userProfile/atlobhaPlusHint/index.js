@@ -5,31 +5,30 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function AtlobhaPlusHint() {
+function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   return (
     <Box
       sx={{
         background: "#000",
-        padding: isMobile ? "14px" : "16px 24px",
+        padding: isMobile || alwaysHorizontalDesgin ? "14px" : "16px 24px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         borderRadius: "10px",
-        gap: isMobile ? "5px" : "20px",
-        flexDirection: isMobile ? "row" : "column",
+        gap: isMobile || alwaysHorizontalDesgin ? "5px" : "20px",
+        flexDirection: isMobile || alwaysHorizontalDesgin ? "row" : "column",
         position: "relative",
         cursor: "pointer",
       }}
-      onClick={() => alert("clicked")}
     >
-      {!isMobile && (
+      {!isMobile && !alwaysHorizontalDesgin && (
         <Image
           src="/imgs/logo-brand.png"
           alt="logo"
-          width={isMobile ? 38 : 424}
-          height={isMobile ? 38 : 200}
+          width={isMobile || alwaysHorizontalDesgin ? 38 : 424}
+          height={isMobile || alwaysHorizontalDesgin ? 38 : 200}
           style={{
             left: "2.25px",
             bottom: "1px",
@@ -43,13 +42,13 @@ function AtlobhaPlusHint() {
         sx={{
           display: "flex",
           alignItems: "center",
-          gap: isMobile ? "10px" : "20px",
+          gap: isMobile || alwaysHorizontalDesgin ? "10px" : "20px",
           maxWidth: "70%",
-          flexDirection: isMobile ? "row" : "column",
+          flexDirection: isMobile || alwaysHorizontalDesgin ? "row" : "column",
         }}
       >
         <Image
-          src="/logo/road-atlobha-text-white.svg"
+          src="/logo/atlobha-logo-brand.svg"
           alt="logo"
           width={isMobile ? 30 : 55}
           height={isMobile ? 30 : 55}
@@ -61,7 +60,8 @@ function AtlobhaPlusHint() {
               fontSize: isMobile ? "10px" : "20px",
               fontWeight: "700",
               marginBottom: isMobile ? "2px" : "5px",
-              textAlign: isMobile ? "start" : "center",
+              textAlign:
+                isMobile || alwaysHorizontalDesgin ? "start" : "center",
             }}
           >
             {t.wantFreeDelivery}
@@ -71,7 +71,8 @@ function AtlobhaPlusHint() {
               color: "#fff",
               fontSize: isMobile ? "8px" : "14px",
               fontWeight: "400",
-              textAlign: isMobile ? "start" : "center",
+              textAlign:
+                isMobile || alwaysHorizontalDesgin ? "start" : "center",
             }}
           >
             {t.subscribeNow}

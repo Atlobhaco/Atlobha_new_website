@@ -1,10 +1,11 @@
 import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { STATUS } from "@/constants/enums";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { Image } from "react-bootstrap";
 import { toast } from "react-toastify";
@@ -13,6 +14,10 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [LngLat, setLngLat] = useState();
+
+  const {
+    query: { type },
+  } = useRouter();
 
   const { data: estimateRes } = useCustomQuery({
     name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng],
@@ -40,7 +45,11 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const deliveryDate = () => {
     if (!orderDetails) return null;
 
-    if (orderDetails?.status === STATUS?.new) return t.dateLater;
+    if (
+      orderDetails?.status === STATUS?.new &&
+      ORDERSENUM?.marketplace !== type
+    )
+      return t.dateLater;
 
     const date =
       orderDetails?.estimated_packaging_date ||

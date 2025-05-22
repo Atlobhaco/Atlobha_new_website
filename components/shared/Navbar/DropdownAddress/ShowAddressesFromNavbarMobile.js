@@ -1,8 +1,7 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import SharedCheckbox from "../../SharedCheckbox";
-import { setSelectedAddress } from "@/redux/reducers/selectedAddressReducer";
 import Image from "next/image";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -10,7 +9,17 @@ import {
   getUserCurrentLocation,
   translateAddressName,
 } from "@/constants/helpers";
+
+import {
+  setAllAddresses,
+  setSelectedAddress,
+  setDefaultAddress,
+} from "@/redux/reducers/selectedAddressReducer";
 import { toast } from "react-toastify";
+import useCustomQuery from "@/config/network/Apiconfig";
+import { usersAddressesQuery } from "@/config/network/Shared/GetDataHelper";
+import { useAuth } from "@/config/providers/AuthProvider";
+import { ADDRESS, DEFAULT, USERS } from "@/config/endPoints/endPoints";
 
 const header = {
   fontSize: "20px",
@@ -23,12 +32,36 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
+  const { user } = useAuth();
 
   const { allAddresses, selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const [addressIdDefault, setAddressIdDefault] = useState(false);
 
-  //   const Addresses = allAddresses?.length ? allAddresses : [];
+  const { refetch: callAddresses } = usersAddressesQuery({
+    setAllAddresses,
+    user,
+    dispatch,
+    setDefaultAddress,
+  });
+
+  useCustomQuery({
+    name: ["changeDefaultAddressMobile", addressIdDefault],
+    url: `${USERS}${ADDRESS}${DEFAULT}/${addressIdDefault}`,
+    refetchOnWindowFocus: false,
+    enabled: addressIdDefault ? true : false,
+    select: (res) => res?.data?.data,
+    method: "post",
+    onSuccess: (res) => {
+      setAddressIdDefault(false);
+      callAddresses();
+      setAddressIdDefault(false);
+    },
+    onError: (err) => {
+      setAddressIdDefault(false);
+    },
+  });
 
   const handleCheckboxChange = async (addressSelected) => {
     try {
@@ -40,6 +73,7 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
           })
         );
       } else {
+        // setAddressIdDefault(addressSelected?.id);
         dispatch(
           setSelectedAddress({
             data: { ...addressSelected },

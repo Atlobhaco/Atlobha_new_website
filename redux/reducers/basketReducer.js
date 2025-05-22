@@ -25,10 +25,14 @@ const requestHandler = async (method, endpoint, data = {}) => {
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
   async (_, { rejectWithValue }) => {
-    try {
-      return (await requestHandler("get", "")).data;
-    } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch cart");
+    if (isAuth()) {
+      try {
+        return (await requestHandler("get", "")).data;
+      } catch (error) {
+        return rejectWithValue(error.response?.data || "Failed to fetch cart");
+      }
+    } else {
+      return rejectWithValue(error.response?.data || "no logged in user");
     }
   }
 );
@@ -93,6 +97,7 @@ export const addItemAsync = createAsyncThunk(
       });
 
       dispatch(updateBasket(Object.values(currentBasket)));
+	  dispatch(fetchCartAsync());
     }
   }
 );
@@ -100,13 +105,18 @@ export const addItemAsync = createAsyncThunk(
 // ➤ Update Item Quantity
 export const updateItemQuantityAsync = createAsyncThunk(
   "basket/updateItemQuantityAsync",
-  async ({ product_id, actionType }, { dispatch, getState, rejectWithValue }) => {
+  async (
+    { product_id, actionType },
+    { dispatch, getState, rejectWithValue }
+  ) => {
     if (isAuth()) {
       try {
         await requestHandler("put", `/${actionType}`, { product_id });
         dispatch(fetchCartAsync());
       } catch (error) {
-        return rejectWithValue(error.response?.data || `Failed to ${actionType} item`);
+        return rejectWithValue(
+          error.response?.data || `Failed to ${actionType} item`
+        );
       }
     } else {
       const state = getState();
@@ -128,11 +138,15 @@ export const updateItemQuantityAsync = createAsyncThunk(
       if (currentBasket[product_id]) {
         currentBasket[product_id] = {
           ...currentBasket[product_id],
-          quantity: Math.max(1, currentBasket[product_id].quantity + quantityChange),
+          quantity: Math.max(
+            1,
+            currentBasket[product_id].quantity + quantityChange
+          ),
         };
       }
 
       dispatch(updateBasket(Object.values(currentBasket)));
+	  dispatch(fetchCartAsync());
     }
   }
 );
@@ -154,6 +168,7 @@ export const deleteItemAsync = createAsyncThunk(
         (item) => item?.product_id !== product_id
       );
       dispatch(updateBasket(Object.values(updatedBasket)));
+      dispatch(fetchCartAsync());
     }
   }
 );
@@ -202,10 +217,10 @@ const basketSlice = createSlice({
         state.loadingCart = true;
       })
       .addCase(syncFromLocalStorage.fulfilled, (state) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
       })
       .addCase(syncFromLocalStorage.rejected, (state, action) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
         state.error = action.payload;
       })
 
@@ -214,10 +229,10 @@ const basketSlice = createSlice({
         state.loadingCart = true;
       })
       .addCase(addItemAsync.fulfilled, (state) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
       })
       .addCase(addItemAsync.rejected, (state, action) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
         state.error = action.payload;
       })
 
@@ -226,10 +241,10 @@ const basketSlice = createSlice({
         state.loadingCart = true;
       })
       .addCase(deleteItemAsync.fulfilled, (state) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
       })
       .addCase(deleteItemAsync.rejected, (state, action) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
         state.error = action.payload;
       })
 
@@ -238,10 +253,10 @@ const basketSlice = createSlice({
         state.loadingCart = true;
       })
       .addCase(updateItemQuantityAsync.fulfilled, (state) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
       })
       .addCase(updateItemQuantityAsync.rejected, (state, action) => {
-        state.loadingCart = false;
+        // state.loadingCart = false;
         state.error = action.payload;
       });
   },

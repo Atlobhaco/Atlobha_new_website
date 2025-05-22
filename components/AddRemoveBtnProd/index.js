@@ -49,25 +49,25 @@ function AddRemoveBtn({ product }) {
     gap: "27px",
     ...(locale === "ar" ? { left: "2px" } : { right: "2px" }),
     bottom: isMobile ? "-14px" : "-22px",
-    transition: "all 0.9s ease-in-out",
+    transition: "all 0.4s linear",
   };
   const addRemoveBtn = {
     background: "black",
     color: "white",
     minWidth: isMobile ? "75px" : "50px",
     height: isMobile ? "25px" : "50px",
-    transition: "all 0.5s ease-in-out",
+    transition: "all 0.4s linear",
     opacity: isHovered ? 1 : 0,
     visibility: isHovered ? "visible" : "hidden",
     borderRadius: isHovered ? "25px !important" : "50% !important",
   };
   const circleHovered = {
-    borderRadius: "50%",
+    borderRadius: "25px",
     minWidth: isMobile ? "25px" : "50px",
     height: isMobile ? "25px" : "50px",
     fontSize: isMobile ? "13px" : "28px",
     fontWeight: "500",
-    transition: "all 0.3s ease-in-out",
+    transition: "all 0.4s linear",
   };
 
   const iconStyle = {
@@ -75,7 +75,7 @@ function AddRemoveBtn({ product }) {
     width: isMobile ? "12px" : "24px",
     height: isMobile ? "12px" : "24px",
     "&:hover": {
-      color: "yellow",
+      color: "#F9DD4B",
     },
   };
 
@@ -85,7 +85,7 @@ function AddRemoveBtn({ product }) {
   return (
     <Box
       sx={{
-        background: prodInsideBasket() ? "yellow" : "black",
+        background: prodInsideBasket() ? "#F9DD4B" : "black",
         ...reusedStyle,
         ...(!isHovered ? circleHovered : addRemoveBtn),
       }}

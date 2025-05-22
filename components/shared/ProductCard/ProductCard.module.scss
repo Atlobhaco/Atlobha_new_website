@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 20px;
+  border-radius: 18px;
   border: 1.594px solid #f4f4f4;
   width: 296.5px;
   max-width: 99%;
@@ -17,6 +17,7 @@
   @include mobile-screen-style {
     width: 110px;
     padding: 7px;
+    height: 162px;
     // border: 1.594px solid #ff0000;
   }
   &-img-wrapper {
@@ -31,11 +32,12 @@
   &-info-wrapper {
     margin-top: 25px;
     width: 100%;
-    min-height: 130px;
+    min-height: 152px;
     text-align: start;
     @include mobile-screen-style {
       min-height: 84px;
       margin-top: 10px !important;
+	  overflow: hidden;
     }
     &_old-price {
       color: #b0b0b0;
@@ -91,7 +93,7 @@
     position: absolute;
     // height: 40px;
     padding: 2px 7px 1px 7px;
-    border-radius: 10px;
+    border-radius: 8px;
     font-weight: 500;
     font-size: 19px;
     max-width: fit-content;

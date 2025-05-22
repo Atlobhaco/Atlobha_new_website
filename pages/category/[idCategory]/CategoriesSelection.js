@@ -16,8 +16,8 @@ const CategoriesSelection = ({
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
-  const lat = defaultAddress?.lat || selectedAddress?.lat;
-  const lng = defaultAddress?.lng || selectedAddress?.lng;
+  const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
+  const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
 
   const { data: categories } = useCustomQuery({
     name: ["marketplace-categories", lng],

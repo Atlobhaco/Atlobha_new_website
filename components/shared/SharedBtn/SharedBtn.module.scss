@@ -191,6 +191,11 @@
     border: unset;
     color: $white !important;
   }
+  @include mobile-screen-style {
+    padding: 5px 7px;
+    font-size: 11px;
+    height: 35px;
+  }
 }
 
 // used in order spare parts

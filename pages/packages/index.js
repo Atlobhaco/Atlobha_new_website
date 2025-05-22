@@ -8,6 +8,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 function Packages() {
   const { t } = useLocalization();
@@ -15,10 +16,26 @@ function Packages() {
   const [page, setPage] = useState(1);
   const [data, setAllData] = useState([]);
   const router = useRouter();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1&model_id=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }`;
+    }
+    return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1`;
+  };
 
   const { isFetching, isLoading } = useCustomQuery({
-    name: ["featured-products-packages", page, isMobile],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${10}&is_featured=1`,
+    name: [
+      "featured-products-packages",
+      page,
+      isMobile,
+      selectedCar?.model?.id,
+      defaultCar?.model?.id,
+    ],
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     onSuccess: (res) => setAllData(res),
@@ -50,7 +67,7 @@ function Packages() {
                 >
                   <Box
                     onClick={() => {
-                      router.push(pack?.deep_link);
+                      router.push(`/product/${pack?.id}`);
                     }}
                     sx={{
                       backgroundImage: `url('${pack?.featured_image?.url}')`,

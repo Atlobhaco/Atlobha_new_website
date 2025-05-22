@@ -14,16 +14,16 @@ function FootNavSection({
   hasNum = false,
 }) {
   const { locale } = useLocalization();
-  
+
   const numStyle = {
     position: "absolute",
     top: "-9px",
     ...(locale === "ar" ? { left: "-15px" } : { right: "-15px" }),
-    background: "black",
+    background: activeTab ? "#f9dd4b" : "black",
     borderRadius: "50%",
     fontSize: "11px",
     fontWeight: "bold",
-    color: "white",
+    color: activeTab ? "black" :"white",
     width: "20px",
     height: "20px",
     display: "flex",

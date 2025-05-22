@@ -25,19 +25,23 @@ function MyOrders() {
     created_at_from: "",
     created_at_to: "",
     status: "",
-    class: "SparePartsOrder",
   };
   const [filters, setFilters] = useState(defaultFilters);
+  const [classFilter, setClassFilter] = useState({
+    class: "",
+  });
 
   const {
     data,
     isFetching,
     refetch: callOrders,
   } = useCustomQuery({
-    name: ["getAllOrders", page, filters],
+    name: ["getAllOrders", page, filters, classFilter],
     url: `${USERS}/${
       user?.data?.user?.id
-    }${ORDERS}?page=${page}&${getFilterParams(filters)}`,
+    }${ORDERS}?page=${page}&${getFilterParams(filters)}&${getFilterParams(
+      classFilter
+    )}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled: !!user?.data?.user?.id,
@@ -126,23 +130,20 @@ function MyOrders() {
                 fontSize="14px"
                 arrayData={[
                   { id: "all", name: t.showAll },
-                  ...orderEnumArray(),
+                  ...orderEnumArray()?.filter((d, index) => index <= 1),
                 ]}
-                // handleClick={(data) => {
-                //   console.log("data", data);
-                //   if (data === "all") {
-                //     setFilters({
-                //       ...filters,
-                //       class: "",
-                //     });
-                //   } else {
-                //     setFilters({
-                //       ...filters,
-                //       class: data,
-                //     });
-                //   }
-                // }}
-                selectedSection={filters?.class}
+                handleClick={(data) => {
+                  if (data === "all") {
+                    setClassFilter({
+                      class: "",
+                    });
+                  } else {
+                    setClassFilter({
+                      class: data,
+                    });
+                  }
+                }}
+                selectedSection={classFilter?.class}
                 showLineBelow={true}
               />
             </Box>
@@ -181,7 +182,7 @@ function MyOrders() {
                   onClick={handleNextPage}
                 >
                   {page === lastPage
-                    ? `${t.total}: ${data?.meta?.total}`
+                    ? `${t.total}: ${data?.meta?.total || ""}`
                     : t.loadMore}{" "}
                   {isFetching && (
                     <CircularProgress

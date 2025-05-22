@@ -25,6 +25,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
+import ContentForBasket from "./ContentForBasketPopup";
 
 const firstPartStyle = {
   display: "flex",
@@ -53,9 +54,19 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const hideComponent = hideNavbarInUrls.some((url) =>
     router?.pathname?.includes(url)
   );
+
+  const hideIfTrue = ["checkout"].some((url) =>
+    router?.pathname?.includes(url)
+  );
+
+  const hideAddress = ["category"].some((url) =>
+    router?.pathname?.includes(url)
+  );
+
   const { allGroups } = useSelector((state) => state.appGroups);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElBasket, setAnchorElBasket] = React.useState(null);
   const [selectedSection, setSelectedSection] = useState(false);
 
   const secondPartStyle = {
@@ -69,6 +80,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleMenuBasket = (event) => {
+    setAnchorElBasket(event.currentTarget);
+  };
+  const handleCloseBasket = () => {
+    setAnchorElBasket(null);
   };
 
   const { data } = useCustomQuery({
@@ -203,7 +221,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     >
       <Box className={`${style["navbar-container"]}`}>
         <div style={firstPartStyle}>
-          {!hideComponent && <DropDownAddress />}
+          {!hideComponent && !hideIfTrue && !hideAddress && <DropDownAddress />}
           <Image
             alt="logo"
             width={isMobile ? 80 : 130}
@@ -240,11 +258,73 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 hasText={false}
                 iconUrl="/icons/search-black.svg"
               /> */}
-              <IconInsideCircle
+              {/* <IconInsideCircle
                 hasText={false}
                 iconUrl="/icons/basket-black.svg"
                 hasNum={basket?.length}
-              />
+              /> */}
+              <div>
+                {/* user profile icon in or no auth */}
+                {(!isMobile || !isAuth()) && (
+                  <IconButton
+                    aria-label="abasket of user"
+                    aria-controls="basket-popup"
+                    aria-haspopup="true"
+                    onClick={handleMenuBasket}
+                    color="inherit"
+                    sx={{ margin: 0, padding: 0 }}
+                  >
+                    {/* <IconInsideCircle
+                  hasText={false}
+                  iconUrl="/icons/user-black.svg"
+                  width={isMobile ? "24px" : "41px"}
+                  height={isMobile ? "24px" : "41px"}
+                  imgWidth={isMobile ? 16 : 28}
+                  imgHeight={isMobile ? 16 : 28}
+                /> */}
+                    <IconInsideCircle
+                      hasText={false}
+                      iconUrl="/icons/basket-black.svg"
+                      hasNum={basket?.length}
+                    />
+                  </IconButton>
+                )}
+                <Menu
+                  id="basket-popup"
+                  anchorEl={anchorElBasket}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                  open={Boolean(anchorElBasket)}
+                  onClose={handleCloseBasket}
+                  PaperProps={{
+                    sx: {
+                      ml: 3,
+                      ...(locale !== "ar"
+                        ? {
+                            right: isMobile
+                              ? "8vw !important"
+                              : "6vw !important",
+                            left: "unset !important",
+                            minWidth: isMobile ? "80px" : "120px",
+                          }
+                        : { left: "6vw !important" }),
+                      width: "fit-content",
+                      padding: isAuth() ? "20px" : "20px",
+                      minWidth: isAuth() ? "25vw" : "25vw",
+                      borderRadius: "20px  !important",
+                    },
+                  }}
+                >
+                  <ContentForBasket handleCloseBasket={handleCloseBasket} />
+                </Menu>
+              </div>
             </>
           )}
           {/* <SharedBtn
@@ -357,26 +437,34 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </Box>
         </Box>
       )} */}
-      {true && (
-        <Box
-          className={`${style["sections"]}`}
-          sx={{
-            padding:
-              isMobile && !hideComponent
-                ? "0px 5px"
-                : hideComponent
-                ? "0px"
-                : "0px 25px",
-          }}
-        >
+      <Box
+        className={`${style["sections"]}`}
+        sx={{
+          padding: hideIfTrue
+            ? "0px"
+            : isMobile && !hideComponent
+            ? "0px 5px"
+            : hideComponent
+            ? "0px"
+            : "0px 25px",
+        }}
+      >
+        {!hideIfTrue && (
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}
             handleClick={(section) => handleAppSectionRedirection(section)}
           />
-        </Box>
-      )}
-      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
+        )}
+      </Box>
+      <Login
+        showBtn={!showBtn}
+        open={openLogin}
+        setOpen={setOpenLogin}
+        id="firstLogin"
+        customIDOtpField="firstOtpField"
+        customIDLogin="firstBtnLogin"
+      />
     </Box>
   ) : null;
 }

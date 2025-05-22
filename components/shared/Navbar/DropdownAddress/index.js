@@ -196,6 +196,8 @@ function DropDownAddress() {
         }
       />
 
+      {/* key={addressModalKey} */}
+      {/* this key was make multiple render in mobile screen */}
       {/* add new address from navbar popup data inputs */}
       <DialogCentered
         title={t.addNewAddress}
@@ -205,7 +207,7 @@ function DropDownAddress() {
         hasCloseIcon
         content={
           <AddNewAddressFromNavbar
-            key={addressModalKey}
+            // key={addressModalKey}
             ref={childRef}
             setCanAddAddress={setCanAddAddress}
             setOpenAddNewAddress={setOpenAddNewAddress}
@@ -228,7 +230,7 @@ function DropDownAddress() {
               text="addAddress"
               className="big-main-btn"
               customClass={`${isMobile ? "w-100" : ""}`}
-              disabled={canAddAddress}
+              //   disabled={canAddAddress}
               onClick={() => {
                 handleClick();
               }}
@@ -247,7 +249,14 @@ function DropDownAddress() {
         }
       />
 
-      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
+      <Login
+        showBtn={!showBtn}
+        open={openLogin}
+        setOpen={setOpenLogin}
+        id="thirdLogin"
+        customIDOtpField="thirdOtpField"
+        customIDLogin="thirdBtnLogin"
+      />
     </Box>
   );
 }

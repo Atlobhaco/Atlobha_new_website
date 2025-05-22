@@ -1,7 +1,7 @@
 {
   "name": "Atlobha-اطلبها",
   "short_name": "Atlobha-اطلبها",
-  "start_url": "/spareParts",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "icons": [

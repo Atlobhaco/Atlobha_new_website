@@ -55,6 +55,7 @@ function BoughtAgain({ sectionInfo }) {
           flexWrap: isMobile ? "no-wrap" : "wrap",
           gap: isMobile ? "5px" : "20px",
           justifyContent: "start",
+          margin: isMobile ? "auto" : "",
         }}
       >
         {allData?.data?.map((prod) => (

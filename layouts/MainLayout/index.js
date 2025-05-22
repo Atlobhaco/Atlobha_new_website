@@ -53,7 +53,7 @@ function Layout({ children }) {
           maxWidth: hideNavbarInUrls ? "98%" : "90vw",
           marginRight: "auto",
           marginLeft: "auto",
-          minHeight: "200px",
+          minHeight: "300px",
         }}
       >
         {children}

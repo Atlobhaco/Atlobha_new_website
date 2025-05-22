@@ -36,6 +36,7 @@ export const PAYMENT_METHODS = {
   banktransfer: "BANK-TRANSFER",
   tabby: "TABBY",
   wallet: "WALLET",
+  tamara: "TAMARA",
 };
 
 export const INFORMATIVE_TYPES = {
@@ -43,4 +44,13 @@ export const INFORMATIVE_TYPES = {
   offer: "offer",
   warning: "warning",
   other: "other",
+};
+
+export const PRODUCT_TYPES = {
+  oils: "oils",
+  spareParts: "spare-parts",
+  tires: "tires",
+  accessories: "accessories",
+  others: "others",
+  batteries: "batteries",
 };

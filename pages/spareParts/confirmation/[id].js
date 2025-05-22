@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./confirmation.module.scss";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
@@ -16,17 +16,19 @@ import {
   SETTINGS,
   SPARE_PARTS,
 } from "@/config/endPoints/endPoints";
+import { MARKETPLACE } from "@/constants/enums";
 import moment from "moment";
 import { STATUS } from "@/constants/enums";
 import { CircularProgress } from "@mui/material";
+import { availablePaymentMethodImages } from "@/constants/helpers";
 
 function Confirmation() {
-  const { isMobile } = useScreenSize();
-
-  const router = useRouter();
-  const { id } = router.query;
-  const { t, locale } = useLocalization();
+  const [orderId, setOrderId] = useState(null);
   const [LngLat, setLngLat] = useState(null);
+  const { isMobile } = useScreenSize();
+  const router = useRouter();
+  const { id, type } = router.query;
+  const { t } = useLocalization();
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -48,11 +50,28 @@ function Confirmation() {
     },
   });
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const orderIdFromStorage =
+        type === MARKETPLACE ? sessionStorage.getItem("order_id_market") : null;
+      setOrderId(orderIdFromStorage);
+    }
+  }, [type]);
+
+  const renderUrlDependOnType = () => {
+    switch (type) {
+      case MARKETPLACE:
+        return `/marketplace/orders/${+id || orderId}`;
+      default:
+        return `${SPARE_PARTS}${ORDERS}/${+id || orderId}`;
+    }
+  };
+
   const { data, refetch: addPricing } = useCustomQuery({
-    name: ["getDataforPricing", id],
-    url: `${SPARE_PARTS}${ORDERS}/${id}`,
+    name: ["getDataforPricing", id, orderId],
+    url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
-    enabled: id ? true : false,
+    enabled: id || orderId ? true : false,
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       if (!res?.estimated_packaging_date && !res?.estimated_delivery_date) {
@@ -61,6 +80,7 @@ function Confirmation() {
           lat: res?.address?.lat,
         });
       }
+      sessionStorage.removeItem("order_id_market");
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
@@ -70,7 +90,8 @@ function Confirmation() {
   const deliveryDate = () => {
     if (!data) return null;
 
-    if (data?.status === STATUS?.new) return t.dateLater;
+    if (data?.status === STATUS?.new && type !== MARKETPLACE)
+      return t.dateLater;
 
     const date =
       data?.estimated_packaging_date || data?.estimated_delivery_date;
@@ -112,11 +133,11 @@ function Confirmation() {
       </div>
       <div className={`${style["deliverySec"]}`}>
         <div>
-          <LocationOnOutlinedIcon
-            sx={{
-              width: "24px",
-              height: "24px",
-            }}
+          <Image
+            src="/icons/location-yellow.svg"
+            alt="alert"
+            width={24}
+            height={24}
           />
         </div>
         <div className={`${style["deliverySec_address"]}`}>
@@ -130,11 +151,11 @@ function Confirmation() {
       </div>
       <div className={`${style["timeSec"]}`}>
         <div>
-          <CalendarMonthOutlinedIcon
-            sx={{
-              width: "24px",
-              height: "24px",
-            }}
+          <Image
+            src="/icons/yellow-calendar.svg"
+            alt="alert"
+            width={24}
+            height={24}
           />
         </div>
         <div className={`${style["timeSec_appoin"]}`}>
@@ -156,6 +177,32 @@ function Confirmation() {
           </div>
         </div>
       </div>
+
+      {/* show payment method for marketplace */}
+      {type === MARKETPLACE ? (
+        <div className={`${style["deliverySec"]}`}>
+          <div>
+            <Image
+              src="/icons/wallet-yellow.svg"
+              width={24}
+              height={24}
+              alt="pay-method"
+            />
+          </div>
+          <div className={`${style["deliverySec_address"]}`}>
+            <div className={`${style["deliverySec_address-holder"]}`}>
+              {t.paymentMethod}
+            </div>
+            <div className={`${style["deliverySec_address-location"]}`}>
+              {availablePaymentMethodImages(
+                { payment_method: data?.payment_method },
+                isMobile
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div className={`${style["details"]}`}>
         <div className={`${style["details-header"]}`}>
           <Image
@@ -164,16 +211,17 @@ function Confirmation() {
             width={24}
             height={24}
           />
-          {t.partsData}
+          {type === MARKETPLACE ? t.marketData : t.partsData}
         </div>
-        {data?.parts?.map((part) => (
+        {(data?.products || data?.parts)?.map((part) => (
           <div className={`${style["details-parts"]}`} key={part?.id}>
             <div className={`${style["details-parts_imgHolder"]}`}>
               <Image
                 src={part?.image || "/imgs/no-img-holder.svg"}
                 width={isMobile ? 50 : 70}
                 height={isMobile ? 50 : 70}
-                alt="spare-part"
+                alt={part?.quantity}
+                onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
               />
             </div>
             <div className={`${style["details-parts_details"]}`}>

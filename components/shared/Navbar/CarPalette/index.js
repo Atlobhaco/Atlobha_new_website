@@ -263,6 +263,13 @@ function CarPalette() {
           <AddNewCarData
             formikRef={formikRef}
             clickTooltipOpenVinHint={clickTooltipOpenVinHint}
+            customIDs={{
+              brandId: "firstBrandID",
+              modalId: "firstModalID",
+              yearId: "firstYearID",
+              vinId: "firstVinID",
+              toggleId: "firstToggleID",
+            }}
           />
         }
         renderCustomBtns={
@@ -312,7 +319,14 @@ function CarPalette() {
         content={<VinNumIInfo />}
         renderCustomBtns={false}
       />
-      <Login showBtn={!showBtn} open={openLogin} setOpen={setOpenLogin} />
+      <Login
+        showBtn={!showBtn}
+        open={openLogin}
+        setOpen={setOpenLogin}
+        id="secondLogin"
+        customIDOtpField="secondOtpField"
+        customIDLogin="secondBtnLogin"
+      />
     </>
   );
 }
