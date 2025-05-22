@@ -95,7 +95,13 @@ function OrderAddress({
     <div
       className={`${style["deliverySec"]} justify-content-between align-items-center mb-1 border-bottom-0`}
     >
-      <div className="d-flex align-items-center">
+      <div
+        className="d-flex align-items-center"
+        onClick={() => setOpenChangeAddress(true)}
+        style={{
+          cursor: "pointer",
+        }}
+      >
         <div>
           <LocationOnOutlinedIcon
             sx={{

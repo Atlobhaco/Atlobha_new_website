@@ -36,20 +36,20 @@ function FootNavbar({ setOpenCategories, openCategories }) {
         />
       ) : (
         <>
-          {/* <FootNavSection
+          <FootNavSection
             icon={<Main />}
-            text="الرئيسية"
-            activeTab={activeTab === "main" ? true : false}
-            onClick={() => setActiveTab("main")}
+            text={t.homePage}
+            activeTab={router?.pathname === "/" ? true : false}
+            onClick={() => router.push("/")}
           />
           <FootNavSection
             icon={<Search />}
-            text="البحث"
-            activeTab={activeTab === "search" ? true : false}
-            onClick={() => setActiveTab("search")}
-          /> */}
-          <Box sx={{ width: "75px" }}></Box>
-          <Box sx={{ width: "75px" }}></Box>
+            text={t.common.search}
+            activeTab={router?.pathname?.includes("search") ? true : false}
+            onClick={() => router.push("/search")}
+          />
+          {/* <Box sx={{ width: "75px" }}></Box>
+          <Box sx={{ width: "75px" }}></Box> */}
           <FootNavSection
             icon={<BlackMenu />}
             customWidth="43px"

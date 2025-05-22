@@ -32,9 +32,6 @@ function ProductDetails() {
     refetchOnWindowFocus: false,
     enabled: !!idProd,
     select: (res) => res?.data?.data,
-    onSuccess: (res) => {
-      console.log(res);
-    },
     onError: (err) => {
       toast.error(t.someThingWrong);
     },
