@@ -103,6 +103,7 @@ function ProdImages({ prod }) {
             <Box
               key={img?.url + index}
               sx={{
+                minWidth: isMobile ? "80px" : "100px",
                 width: isMobile ? "80px" : "100px",
                 height: isMobile ? "80px" : "100px",
                 display: "flex",
