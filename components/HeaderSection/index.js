@@ -25,7 +25,7 @@ function HeaderSection({
     >
       <Box
         sx={{
-          fontSize: isMobile ? "20px" : "30px",
+          fontSize: isMobile ? "18px" : "30px",
           fontWeight: "700",
         }}
       >

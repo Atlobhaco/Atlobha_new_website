@@ -37,7 +37,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
       ) : (
         <>
           <FootNavSection
-            icon={<Main />}
+            icon={<> </>}
             text={t.homePage}
             activeTab={router?.pathname === "/" ? true : false}
             onClick={() => router.push("/")}

@@ -58,7 +58,7 @@ function Packages() {
             : data?.data?.map((pack) => (
                 <Box
                   sx={{
-                    height: isMobile ? "200px" : "440px",
+                    height: isMobile ? "265px" : "500px",
                     cursor: "pointer",
                     my: 2,
                   }}
@@ -73,7 +73,7 @@ function Packages() {
                       backgroundImage: `url('${pack?.featured_image?.url}')`,
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
-                      backgroundSize: "contain",
+                      backgroundSize: "cover",
                       height: "100%",
                       width: "100%",
                       borderRadius: "10px",
