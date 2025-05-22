@@ -83,7 +83,7 @@ function ProdImages({ prod }) {
         >
           {returnTypeLocalized()}
         </Box>
-        <FavoriteBorderIcon />
+        {/* <FavoriteBorderIcon /> */}
       </Box>
 
       <Divider sx={{ background: "#EAECF0", my: 1 }} />

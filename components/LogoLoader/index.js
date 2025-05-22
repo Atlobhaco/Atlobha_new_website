@@ -7,7 +7,7 @@ function LogoLoader() {
     <>
       <span class="loader-logo">
         <Image
-          src={`/logo/road-atlobha-text.svg`}
+          src={`/logo/atlobha-ar-en.svg`}
           alt="loader-logo"
           width={80}
           height={80}
@@ -20,7 +20,7 @@ function LogoLoader() {
           fontWeight: "500",
         }}
       >
-        Atlobha-اطلبها
+        {/* Atlobha-اطلبها */}
       </Box>
     </>
   );

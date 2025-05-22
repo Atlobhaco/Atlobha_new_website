@@ -40,6 +40,10 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $deeplink_path: "MarketplaceSubcategory",
+  },
+  {
+    ...defaultProps,
     $deeplink_path: "ServiceCategory",
   },
   {
@@ -158,6 +162,14 @@ const useBranch = () => {
           redirectItemOrderDetails?.$deeplink_path === "MarketplaceCategory"
         ) {
           router.push(`/category/${branchData?.data_parsed?.id}`);
+        }
+        // redirect to marketplace category
+        if (
+          redirectItemOrderDetails?.$deeplink_path === "MarketplaceSubcategory"
+        ) {
+          router.push(
+            `/category/${branchData?.data_parsed?.custom_data?.category_id}`
+          );
         }
         // redirect to service category
         if (redirectItemOrderDetails?.$deeplink_path === "ServiceCategory") {

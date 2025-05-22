@@ -46,6 +46,19 @@ function Category() {
     select: (res) => res?.data?.data?.find((d) => d?.is_default),
   });
 
+  const returnUrlDependOnUserLogin = () => {
+    if (isAuth()) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+        isMobile ? 15 : 16
+      }&category_id=${selectedCategory}&subcategory_id=${subCatId}&years[]=${
+        defaultCar?.year
+      }&model_ids[]=${defaultCar?.model?.id || ""}`;
+    }
+    return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+      isMobile ? 15 : 16
+    }&category_id=${selectedCategory}&subcategory_id=${subCatId}`;
+  };
+
   const { isLoading: loadPRoducts, isFetching } = useCustomQuery({
     name: [
       "products-per-category",
@@ -55,11 +68,7 @@ function Category() {
       subCatId,
       isMobile,
     ],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-      isMobile ? 15 : 16
-    }&category_id=${selectedCategory}&subcategory_id=${subCatId}&years[]=${
-      defaultCar?.year
-    }&model_ids[]=${defaultCar?.model?.id || ""}`,
+    url: returnUrlDependOnUserLogin(),
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled:

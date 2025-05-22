@@ -107,8 +107,10 @@ function PackageOffers({ sectionInfo }) {
             }}
             sx={{
               width: isMobile ? "99% !important" : "95% !important",
-              height: isMobile ? "180px" : "440px",
+              height: isMobile ? "180px" : "500px",
               cursor: "pointer",
+              display: "flex !important",
+              margin: "auto",
               //   background:'yellow'
             }}
           >
@@ -117,13 +119,13 @@ function PackageOffers({ sectionInfo }) {
                 backgroundImage: `url('${featured?.featured_image?.url}')`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
-                backgroundSize: "contain",
+                backgroundSize: "cover",
                 height: "100%",
                 width: isMobile
                   ? "95%"
                   : +featuredProducts?.data?.length === 1
                   ? "280px"
-                  : "100%",
+                  : "99%",
                 borderRadius: "10px",
               }}
             ></Box>

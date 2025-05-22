@@ -323,9 +323,9 @@ function UserProfile({ recallUserData = false }) {
             <LogoutIcon /> {t.logout}
           </Box>
 
-          <div className="col-12 mb-3">
+          {/* <div className="col-12 mb-3">
             <AtlobhaPlusHint />
-          </div>
+          </div> */}
 
           <CommunicationSection />
         </div>

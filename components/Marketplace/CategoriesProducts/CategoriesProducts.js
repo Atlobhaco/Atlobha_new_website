@@ -22,15 +22,15 @@ function CategoriesProducts({ sectionInfo }) {
 
   const returnUrlDependOnCar = () => {
     if (selectedCar?.model?.id || defaultCar?.model?.id) {
-      return `${MARKETPLACE}${CATEGORY}/${
-        sectionInfo?.marketplace_category?.id
-      }${PRODUCTS}?page=${page}&per_page=${isMobile ? 3 : 10}&model_id=${
+      return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+        isMobile ? 3 : 10
+      }&category_id=${sectionInfo?.marketplace_category?.id}&model_id=${
         selectedCar?.model?.id || defaultCar?.model?.id
       }`;
     }
-    return `${MARKETPLACE}${CATEGORY}/${
-      sectionInfo?.marketplace_category?.id
-    }${PRODUCTS}?page=${page}&per_page=${isMobile ? 3 : 10}`;
+    return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+      isMobile ? 3 : 10
+    }&category_id=${sectionInfo?.marketplace_category?.id}`;
   };
 
   const { isLoading } = useCustomQuery({
@@ -62,8 +62,10 @@ function CategoriesProducts({ sectionInfo }) {
         showArrow={true}
         subtitle={t.showAll}
         title={sectionInfo?.title}
-		onClick={() => router.push(`/category/${sectionInfo?.marketplace_category?.id}`)}
-		/>
+        onClick={() =>
+          router.push(`/category/${sectionInfo?.marketplace_category?.id}`)
+        }
+      />
       <Box
         sx={{
           display: "flex",
