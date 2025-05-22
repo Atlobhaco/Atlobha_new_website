@@ -95,18 +95,16 @@ export default function Home() {
               </div>
             );
           case "ads":
-            if (selectedAddress?.lat || defaultAddress?.lat) {
-              return (
-                <div className="container" key={item?.id}>
-                  <div className="row">
-                    <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-                      <MainCarousel sectionInfo={item} />
-                    </div>
+            return (
+              <div className="container mb-2" key={item?.id}>
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                    <MainCarousel sectionInfo={item} />
                   </div>
                 </div>
-              );
-            }
-            return null;
+              </div>
+            );
+
           //   case "notifications":
           //     return (
           //       <div className="container" key={item?.id}>

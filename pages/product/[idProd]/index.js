@@ -15,8 +15,10 @@ import DetailsProd from "../../../components/ProductDetails/DetailsProd";
 import AnotherProducts from "../../../components/ProductDetails/AnotherProducts";
 import AddToBasketProdDetails from "../../../components/ProductDetails/AddToBasketProdDetails";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function ProductDetails() {
+  const { t } = useLocalization();
   const {
     query: { idProd },
   } = useRouter();

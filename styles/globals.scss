@@ -523,14 +523,14 @@ button[class^="slick-"] {
   width: 33px !important;
   height: 33px !important;
   @include mobile-screen-style {
-    width: 24px !important;
-    height: 24px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
   position: absolute !important;
   z-index: 1 !important;
   border: 1px solid #d1d5db !important;
   @include mobile-screen-style {
-    padding: 11px !important;
+    padding: 8px !important;
   }
   &::after {
     content: "" !important;
@@ -542,12 +542,10 @@ button[class^="slick-"] {
 
 .swiper-button-next {
   background-color: rgb(255, 255, 255) !important;
-
   background: url("/icons/arrow-left-sm.svg") center center no-repeat;
 }
 .swiper-button-prev {
   background-color: rgb(255, 255, 255) !important;
-
   background: url("/icons/arrow-right-sm.svg") center center no-repeat;
 }
 
