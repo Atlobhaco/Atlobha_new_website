@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import style from "../../../pages/spareParts/confirmation/confirmation.module.scss";
 import useLocalization from "@/config/hooks/useLocalization";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
@@ -19,6 +19,8 @@ import { ADDRESS, ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import { ORDERSENUM, STATUS } from "@/constants/enums";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import AddNewAddressFromNavbar from "@/components/shared/Navbar/DropdownAddress/AddNewAddressFromNavbar";
+import SharedBtn from "@/components/shared/SharedBtn";
 
 const header = {
   fontSize: "20px",
@@ -32,6 +34,7 @@ function OrderAddress({
   callSingleOrder = () => {},
   handleChangeAddress = false,
 }) {
+  const childRef = useRef(null);
   const router = useRouter();
   const { idOrder, type } = router.query;
   const { t, locale } = useLocalization();
@@ -42,6 +45,7 @@ function OrderAddress({
 
   const [openchangeAddress, setOpenChangeAddress] = useState(false);
   const [newAddressId, setNewAddressId] = useState(false);
+  const [openAddNewAddress, setOpenAddNewAddress] = useState(false);
 
   usersAddressesQuery({
     setAllAddresses,
@@ -89,6 +93,18 @@ function OrderAddress({
       handleChangeAddress(data);
     }
     setOpenChangeAddress(false);
+  };
+
+  //   to can add address from the pop up modal
+  const handleClick = () => {
+    if (childRef.current) {
+      childRef.current.triggerChildFunction();
+    }
+  };
+  const handleClose = () => {
+    if (childRef.current) {
+      childRef.current.triggerEmptyFields();
+    }
   };
 
   return (
@@ -266,7 +282,92 @@ function OrderAddress({
             ))}
           </Box>
         }
-        renderCustomBtns={false}
+        renderCustomBtns={
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <SharedBtn
+              customStyle={{
+                width: isMobile ? "100%" : "30%",
+              }}
+              onClick={() => {
+                setOpenAddNewAddress(true);
+              }}
+              className="btn-outline-green"
+              text="addNewAddress"
+              compBeforeText={
+                <Image
+                  alt="location"
+                  width={20}
+                  height={20}
+                  src="/icons/location-green.svg"
+                  style={{
+                    marginBottom: "4px",
+                  }}
+                />
+              }
+            />
+          </Box>
+        }
+      />
+
+      {/* form to add new  address */}
+      <DialogCentered
+        title={t.addNewAddress}
+        subtitle={false}
+        open={openAddNewAddress}
+        setOpen={setOpenAddNewAddress}
+        hasCloseIcon
+        actionsWhenClose={() => {
+          handleClose();
+        }}
+        content={
+          <AddNewAddressFromNavbar
+            ref={childRef}
+            setCanAddAddress={() => {}}
+            setOpenAddNewAddress={setOpenAddNewAddress}
+          />
+        }
+        renderCustomBtns={
+          <Box
+            sx={{
+              display: "flex",
+              gap: "10px",
+              borderTop: "1px solid rgba(24, 24, 27, 0.06)",
+              width: "100%",
+              justifyContent: "flex-end",
+              pt: 3,
+              pb: 1,
+            }}
+          >
+            <SharedBtn
+              type="submit"
+              text="addAddress"
+              className="big-main-btn"
+              customClass={`${isMobile ? "w-100" : ""}`}
+              //   disabled={canAddAddress}
+              onClick={() => {
+                handleClick();
+              }}
+            />
+
+            {!isMobile && (
+              <SharedBtn
+                text="common.cancel"
+                className="outline-btn"
+                onClick={() => {
+                  setOpenAddNewAddress(false);
+                  handleClose();
+                }}
+              />
+            )}
+          </Box>
+        }
       />
     </div>
   );

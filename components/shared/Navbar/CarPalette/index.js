@@ -110,7 +110,7 @@ function CarPalette() {
     color: "#232323",
     fontWeight: "500",
     textAlign: "center",
-    width: "35%",
+    width: "40%",
   };
 
   const clickTooltipOpenVinHint = () => {

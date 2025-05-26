@@ -38,9 +38,26 @@ const AddNewAddressFromNavbar = forwardRef(
       }
     };
 
+    // function can used from parent  to clear the inputs
+    const emptyFields = () => {
+      setLocationInfo(null);
+      setLngLatLocation(
+        location || {
+          lat: 24.7136, // Latitude of Riyadh
+          lng: 46.6753, // Longitude of Riyadh
+        }
+      );
+      setAddressNameOrCustom({
+        type: "Home",
+        cutomName: "",
+      });
+      setManualAddress("");
+    };
+
     // Expose the function to the parent using useImperativeHandle
     useImperativeHandle(ref, () => ({
       triggerChildFunction: childFunction,
+      triggerEmptyFields: emptyFields,
     }));
 
     const { user } = useAuth();
@@ -91,7 +108,7 @@ const AddNewAddressFromNavbar = forwardRef(
       callUserAddresses,
       redirect: () => {
         setOpenAddNewAddress(false);
-        document.getElementById("openAfterAddNewAddress")?.click();
+        document?.getElementById("openAfterAddNewAddress")?.click();
       },
       t,
       returnDefaultValues: () => {

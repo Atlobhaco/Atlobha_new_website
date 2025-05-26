@@ -60,9 +60,9 @@ function CarSelectionFromNavbarWeb({
     dispatch(setSelectedCar({ data: car }));
     handleClose();
     // setCar as default everty change happen
-    // setTimeout(() => {
-    //   callUserDefaultCar();
-    // }, 500);
+    setTimeout(() => {
+      callUserDefaultCar();
+    }, 500);
   };
 
   const { refetch: callUserVehicles } = usersVehiclesQuery({

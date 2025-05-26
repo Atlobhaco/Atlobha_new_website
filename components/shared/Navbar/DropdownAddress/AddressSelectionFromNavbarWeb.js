@@ -98,7 +98,7 @@ function AddressSelectionFromNavbarWeb({
         toast.error(error);
       }
     } else {
-    //   setAddressIdDefault(addressSelected?.id);
+      setAddressIdDefault(addressSelected?.id);
       dispatch(
         setSelectedAddress({
           data: { ...addressSelected },

@@ -443,5 +443,6 @@
   "discount": "discount",
   "marketData": "Marketplace data",
   "minPriceOrder": "Minimun order price",
-  "earnFreeDelivery": "🚚✨ Congrats you have free delivery 🎉"
+  "earnFreeDelivery": "🚚✨ Congrats you have free delivery 🎉",
+  "suggestedProducts": "Suggested products"
 }

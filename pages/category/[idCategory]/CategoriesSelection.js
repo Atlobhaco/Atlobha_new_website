@@ -2,6 +2,7 @@ import { CATEGORY, MARKETPLACE } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 
@@ -12,6 +13,9 @@ const CategoriesSelection = ({
   setSubCatId,
   setPage,
 }) => {
+  const router = useRouter();
+  const { idSub } = router.query;
+
   const { isMobile } = useScreenSize();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
@@ -32,7 +36,17 @@ const CategoriesSelection = ({
 
     const selected = categories.find((d) => +d.id === +selectedCategory);
     setSubCategories(selected?.subcategory || []);
-    setSubCatId(selected?.subcategory?.[0]?.id || null);
+    if (!idSub) {
+      setSubCatId(selected?.subcategory?.[0]?.id || null);
+      router.replace(
+        {
+          pathname: `/category/${selectedCategory}`,
+          query: { idSub: selected?.subcategory?.[0]?.id || null },
+        },
+        undefined,
+        { shallow: true } // ✅ prevents page data fetching & rerender
+      );
+    }
     setPage(1);
   }, [categories, selectedCategory]);
 
@@ -54,6 +68,15 @@ const CategoriesSelection = ({
               setSelectedCategory(+cat.id);
               setSubCatId(cat.subcategory?.[0]?.id);
               setPage(1);
+              setSubCatId(cat.subcategory?.[0]?.id || null);
+              router.replace(
+                {
+                  pathname: `/category/${cat.id}`,
+                  query: { idSub: cat.subcategory?.[0]?.id || null },
+                },
+                undefined,
+                { shallow: true } // ✅ prevents page data fetching & rerender
+              );
             }}
             sx={{
               minWidth: "fit-content",

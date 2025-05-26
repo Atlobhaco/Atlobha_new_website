@@ -1,5 +1,6 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import { useRouter } from "next/router";
 import React from "react";
 
 function SubCategorySelection({
@@ -7,8 +8,10 @@ function SubCategorySelection({
   subCatId,
   setSubCatId,
   setPage,
+  selectedCategory,
 }) {
   const { isMobile } = useScreenSize();
+  const router = useRouter();
 
   return (
     <Box
@@ -36,6 +39,14 @@ function SubCategorySelection({
           }}
           onClick={() => {
             setSubCatId(subCat?.id);
+            router.replace(
+              {
+                pathname: `/category/${selectedCategory}`,
+                query: { idSub: subCat?.id },
+              },
+              undefined,
+              { shallow: true } // ✅ prevents page data fetching & rerender
+            );
             setPage(1);
           }}
         >

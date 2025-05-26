@@ -73,7 +73,7 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
           })
         );
       } else {
-        // setAddressIdDefault(addressSelected?.id);
+        setAddressIdDefault(addressSelected?.id);
         dispatch(
           setSelectedAddress({
             data: { ...addressSelected },

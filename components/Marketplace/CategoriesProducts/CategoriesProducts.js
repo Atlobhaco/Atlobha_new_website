@@ -23,7 +23,7 @@ function CategoriesProducts({ sectionInfo }) {
   const returnUrlDependOnCar = () => {
     if (selectedCar?.model?.id || defaultCar?.model?.id) {
       return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-        isMobile ? 3 : 10
+        isMobile ? 10 : 10
       }&category_id=${sectionInfo?.marketplace_category?.id}&model_id=${
         selectedCar?.model?.id || defaultCar?.model?.id
       }`;
@@ -71,11 +71,14 @@ function CategoriesProducts({ sectionInfo }) {
           display: "flex",
           flexWrap: isMobile ? "no-wrap" : "wrap",
           gap: isMobile ? "5px" : "20px",
-          justifyContent: isMobile ? "center" : "start",
+          justifyContent: isMobile ? "start" : "start",
+          overflow: "auto hidden",
         }}
       >
         {allData?.data?.map((prod) => (
-          <ProductCard product={prod} hasNum={prod?.image} />
+          <Box>
+            <ProductCard product={prod} hasNum={prod?.image} />
+          </Box>
         ))}
       </Box>
       <Box

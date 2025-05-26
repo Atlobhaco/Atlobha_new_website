@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import FootNavSection from "./FootNavSection";
 import Search from "../../../public/icons/search-grey.svg";
 import Basket from "../../../public/icons/basket-sm.svg";
-import Main from "../../../public/icons/main.svg";
+import Main from "../../../public/logo/new-atlob-logo.svg";
 import More from "../../../public/icons/more.svg";
 import BlackMenu from "../../../public/icons/black-menu.svg";
 import CloseYellow from "../../../public/icons/close-yellow.svg";
@@ -37,7 +37,7 @@ function FootNavbar({ setOpenCategories, openCategories }) {
       ) : (
         <>
           <FootNavSection
-            icon={<> </>}
+            icon={<Main />}
             text={t.homePage}
             activeTab={router?.pathname === "/" ? true : false}
             onClick={() => router.push("/")}
