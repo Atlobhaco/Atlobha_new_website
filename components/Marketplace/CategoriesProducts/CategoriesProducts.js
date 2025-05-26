@@ -29,7 +29,7 @@ function CategoriesProducts({ sectionInfo }) {
       }`;
     }
     return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-      isMobile ? 3 : 10
+      isMobile ? 10 : 10
     }&category_id=${sectionInfo?.marketplace_category?.id}`;
   };
 
