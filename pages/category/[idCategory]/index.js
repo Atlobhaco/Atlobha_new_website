@@ -24,7 +24,7 @@ function Category() {
   const router = useRouter();
   const { user } = useAuth();
   const { t } = useLocalization();
-  const { idCategory } = router.query;
+  const { idCategory, idSub } = router.query;
   const [page, setPage] = useState(1);
   const { isMobile } = useScreenSize();
   const [prodInfo, setProdInfo] = useState(false);
@@ -36,7 +36,10 @@ function Category() {
     if (idCategory) {
       setSelectedCategory(+idCategory);
     }
-  }, [idCategory]);
+    if (idSub) {
+      setSubCatId(+idSub);
+    }
+  }, [idCategory, idSub]);
 
   const { data: defaultCar } = useCustomQuery({
     name: "carForProducts",
@@ -111,6 +114,7 @@ function Category() {
               subCatId={subCatId}
               setSubCatId={setSubCatId}
               setPage={setPage}
+              selectedCategory={selectedCategory}
             />
           </Box>
           {/* <Box className="col-12 mt-5">{loadPRoducts?}</Box> */}

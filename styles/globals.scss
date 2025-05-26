@@ -634,3 +634,12 @@ button[class^="slick-"] {
     transform: rotate(360deg);
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/*                          for  zoom in modal iphone                         */
+/* -------------------------------------------------------------------------- */
+input,
+select,
+textarea {
+  font-size: 16px !important;
+}

@@ -73,15 +73,15 @@ function ManufactureShell({ sectionInfo }) {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
-          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 4 : 1,
+          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 4 : 1,
         },
       },
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
-          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 4 : 1,
+          slidesToScroll: +manufactureProducts?.data?.length > 1 ? 4 : 1,
         },
       },
       {
@@ -122,7 +122,7 @@ function ManufactureShell({ sectionInfo }) {
         backgroundImage: `url(${
           sectionInfo?.manufacturer?.cover_image?.url || "/imgs/no-prod-img.svg"
         })`,
-        backgroundSize: isMobile ? "contain" : "cover",
+        backgroundSize: isMobile ? "cover" : "cover",
         backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
         width: "100%",
@@ -144,7 +144,12 @@ function ManufactureShell({ sectionInfo }) {
           position: "absolute",
         }}
       /> */}
-      <Box sx={{ width: isMobile ? "100%" : "98%" }}>
+      <Box
+        sx={{
+          width: isMobile ? "100%" : "98%",
+          padding: isMobile ? "0px 10px" : "",
+        }}
+      >
         <Slider {...settings}>
           {manufactureProducts?.data?.map((prod) => (
             <Box

@@ -48,9 +48,9 @@ function FootNavSection({
     >
       <Box
         sx={{
-          width: customWidth || "24px",
+          width: customWidth || "26px",
           position: "relative",
-          height: customHeight || "24px",
+          height: customHeight || "26px",
         }}
       >
         {hasNum > 0 && (

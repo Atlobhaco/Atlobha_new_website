@@ -96,7 +96,7 @@ export default function Home() {
             );
           case "ads":
             return (
-              <div className="container mb-2" key={item?.id}>
+              <div className="container mb-3">
                 <div className="row">
                   <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
                     <MainCarousel sectionInfo={item} />

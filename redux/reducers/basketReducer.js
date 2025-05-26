@@ -17,6 +17,7 @@ const requestHandler = async (method, endpoint, data = {}) => {
     headers: {
       Authorization: token ? `Bearer ${token}` : "",
       "x-api-key": API_KEY,
+      "Accept-Language": document.documentElement.lang || "ar",
     },
   });
 };
@@ -97,7 +98,7 @@ export const addItemAsync = createAsyncThunk(
       });
 
       dispatch(updateBasket(Object.values(currentBasket)));
-	  dispatch(fetchCartAsync());
+      dispatch(fetchCartAsync());
     }
   }
 );
@@ -146,7 +147,7 @@ export const updateItemQuantityAsync = createAsyncThunk(
       }
 
       dispatch(updateBasket(Object.values(currentBasket)));
-	  dispatch(fetchCartAsync());
+      dispatch(fetchCartAsync());
     }
   }
 );

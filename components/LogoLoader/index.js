@@ -7,10 +7,10 @@ function LogoLoader() {
     <>
       <span class="loader-logo">
         <Image
-          src={`/logo/road-atlobha-text.svg`}
+          src={`/logo/new-atlob-logo.svg`}
           alt="loader-logo"
-          width={80}
-          height={80}
+          width={120}
+          height={120}
         />
       </span>
       <Box

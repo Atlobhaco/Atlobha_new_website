@@ -27,7 +27,7 @@ function RecentlyViewed({ sectionInfo }) {
       page,
     ],
     url: `${MARKETPLACE_PRODUCTS}${RECENTLY_VIEWED}?page=${page}&per_page=${
-      isMobile ? 3 : 12
+      isMobile ? 10 : 12
     }`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
@@ -46,8 +46,8 @@ function RecentlyViewed({ sectionInfo }) {
       }}
     >
       <HeaderSection
-        showArrow={true}
-        subtitle={t.showAll}
+        // showArrow={true}
+        // subtitle={t.showAll}
         title={sectionInfo?.title}
       />
       <Box
@@ -55,11 +55,14 @@ function RecentlyViewed({ sectionInfo }) {
           display: "flex",
           flexWrap: isMobile ? "no-wrap" : "wrap",
           gap: isMobile ? "5px" : "20px",
-          justifyContent: isMobile ? "center" : "start",
+          justifyContent: isMobile ? "start" : "start",
+          overflow: "auto hidden",
         }}
       >
         {recentlyViewed?.data?.map((prod) => (
-          <ProductCard product={prod} hasNum={prod?.image} />
+          <Box>
+            <ProductCard product={prod} hasNum={prod?.image} />
+          </Box>
         ))}
       </Box>
       <Box

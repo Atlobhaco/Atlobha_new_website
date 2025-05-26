@@ -21,6 +21,7 @@ import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import { isAuth } from "@/config/hooks/isAuth";
 import { fetchCartAsync } from "@/redux/reducers/basketReducer";
 import ProgressBarMinFreeDeliery from "@/components/Basket/ProgressBarMinFreeDeliery";
+import RecentlyViewed from "@/components/Marketplace/RecentlyViewed";
 
 function Basket() {
   const { isMobile } = useScreenSize();
@@ -199,6 +200,16 @@ function Basket() {
                 <Box sx={{ mb: 3 }}>
                   <AvailablePaymentMethodsImgs />
                 </Box>
+              </div>
+              <div className="col-12 mb-3">
+                <RecentlyViewed
+                  sectionInfo={{
+                    id: "randomID",
+                    is_active: true,
+                    requires_authentication: true,
+                    title: t.suggestedProducts,
+                  }}
+                />
               </div>
             </div>
           )}

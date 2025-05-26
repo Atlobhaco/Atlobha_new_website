@@ -77,7 +77,7 @@ const AppContent = ({ Component, pageProps }) => {
         <Box
           sx={{
             background: "#F3F5F8",
-            position: "fixed",
+            position: "absolute",
             zIndex: "999",
             width: "100%",
             height: "100%",

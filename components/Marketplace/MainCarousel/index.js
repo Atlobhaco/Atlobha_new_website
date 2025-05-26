@@ -72,13 +72,7 @@ function MainCarousel({ sectionInfo }) {
   };
 
   return !sectionInfo?.is_active || !ads?.data?.length ? null : (
-    <Box
-      sx={
-        {
-          // borderRadius: "20px",
-        }
-      }
-    >
+    <Box>
       <Swiper
         spaceBetween={10}
         effect={"fade"}
@@ -95,9 +89,11 @@ function MainCarousel({ sectionInfo }) {
         }}
         modules={[EffectFade, Navigation, Pagination, Autoplay]}
         className="mySwiper"
+        observer={true}
+        observeParents={true}
       >
         {ads?.data?.map((img) => (
-          <SwiperSlide>
+          <SwiperSlide key={img?.id || img?.media || index}>
             <img
               style={{
                 borderRadius: "20px",

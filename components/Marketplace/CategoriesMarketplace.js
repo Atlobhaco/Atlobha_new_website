@@ -46,7 +46,7 @@ function CategoriesMarketplace({ sectionInfo }) {
           display: "flex",
           flexWrap: "wrap",
           gap: isMobile ? "12px" : "32px",
-          justifyContent: isMobile ? "flex-start" : "flex-start",
+          justifyContent: isMobile ? "space-around" : "flex-start",
         }}
       >
         {categories?.map((cat) => (

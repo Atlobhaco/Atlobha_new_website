@@ -26,7 +26,7 @@ function BoughtAgain({ sectionInfo }) {
       isMobile,
     ],
     url: `${MARKETPLACE_PRODUCTS}${RECENTLY_ORDERED}?page=${page}&per_page=${
-      isMobile ? 3 : 8
+      isMobile ? 10 : 8
     }`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
@@ -45,8 +45,8 @@ function BoughtAgain({ sectionInfo }) {
       }}
     >
       <HeaderSection
-        showArrow={true}
-        subtitle={t.showAll}
+        // showArrow={true}
+        // subtitle={t.showAll}
         title={sectionInfo?.title}
       />
       <Box
@@ -55,11 +55,14 @@ function BoughtAgain({ sectionInfo }) {
           flexWrap: isMobile ? "no-wrap" : "wrap",
           gap: isMobile ? "5px" : "20px",
           justifyContent: "start",
-          margin: isMobile ? "auto" : "",
+          margin: isMobile ? "" : "",
+          overflow: "auto hidden",
         }}
       >
         {allData?.data?.map((prod) => (
-          <ProductCard product={prod} hasNum={prod?.image} />
+          <Box>
+            <ProductCard product={prod} hasNum={prod?.image} />
+          </Box>
         ))}
       </Box>
       <Box
