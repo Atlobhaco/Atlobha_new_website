@@ -229,7 +229,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
   }, [document]);
 
   useEffect(() => {
-    if (payFortForm) {
+    if (payFortForm && +calculateReceiptResFromMainPage?.amount_to_pay > 0) {
       payFortForm.method = "POST";
       payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
 
