@@ -214,6 +214,10 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
     requestData,
     process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
   );
+  console.log(
+    "calculateReceiptResFromMainPage",
+    calculateReceiptResFromMainPage
+  );
 
   /* -------------------------------------------------------------------------- */
   /*                   to fix the reference error for document                  */
@@ -238,7 +242,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       });
       document.body.appendChild(payFortForm);
     }
-  }, [payFortForm]);
+  }, [payFortForm, calculateReceiptResFromMainPage?.amount_to_pay]);
 
   /* -------------------------------------------------------------------------- */
   /*                              apple pay payment                             */
