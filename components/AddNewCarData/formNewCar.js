@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import SharedDropDown from "../shared/SharedDropDown";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage, Field } from "formik";
 import useLocalization from "@/config/hooks/useLocalization";
 import SharedTextArea from "../shared/SharedTextArea";
 import SharedTextField from "../shared/SharedTextField";
@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useModelsQuery } from "@/config/network/Shared/lookupsDataHelper";
 import { setModels } from "@/redux/reducers/LookupsReducer";
 import SharedAutoComplete from "../SharedAutoComplete";
+import Image from "next/image";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { Box } from "@mui/material";
 
 function FormNewCar({
   initialValues,
@@ -19,10 +22,11 @@ function FormNewCar({
   editableCar = null,
   customIDs = {},
 }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const dispatch = useDispatch();
   const { brands, models, years } = useSelector((state) => state.lookups);
   const [brandId, setBrandId] = useState(null);
+  const { isMobile } = useScreenSize();
 
   const { refetch: callModels } = useModelsQuery({
     setModels,
@@ -30,6 +34,36 @@ function FormNewCar({
     brandId,
   });
 
+  const mainComponent = {
+    background: "white",
+    borderRadius: "9px",
+    border: "1.5px solid #B3B3B3",
+    width: isMobile ? "245px" : "320px",
+    height: isMobile ? "70px" : "90px",
+    display: "flex",
+    alignItems: "center",
+  };
+
+  const paletteImg = {
+    width: "35px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
+    ...(locale === "ar"
+      ? { borderLeft: "1px solid #D1D5DB" }
+      : { borderRight: "1px solid #D1D5DB" }),
+  };
+
+  const fieldsStyle = {
+    width: "99%",
+    border: "unset",
+    outline: "none",
+    borderRadius: "8px",
+    textAlign: "center",
+    fontWeight: "500",
+    color: "#6B7280",
+  };
   return (
     <div>
       <Formik
@@ -132,6 +166,113 @@ function FormNewCar({
                     handleBlur={handleBlur}
                     error={errors["default_car"]}
                     name="default_car"
+                  />
+                </div>
+
+                <div className="col-12">
+                  <Box sx={mainComponent}>
+                    <Box sx={paletteImg}>
+                      <Image
+                        alt="logo"
+                        width={130}
+                        height={isMobile ? 37 : 63}
+                        style={{
+                          height: "70%",
+                        }}
+                        src="/icons/saudi-palette.svg"
+                      />
+                    </Box>
+
+                    <Box
+                      sx={{
+                        p: 1,
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          width: "40%",
+                          gap: "4px",
+                        }}
+                      >
+                        <Field
+                          placeholder={t.plateLetterAr}
+                          type="text"
+                          id={customIDs?.registration_plate_letters_ar}
+                          name="registration_plate_letters_ar"
+                          style={fieldsStyle}
+                        />
+                        <Field
+                          placeholder={t.plateLetterEn}
+                          type="text"
+                          id={customIDs?.registration_plate_letters_en}
+                          name="registration_plate_letters_en"
+                          onChange={handleChange}
+                          style={fieldsStyle}
+                        />
+                      </Box>
+                      <Box>
+                        <Image
+                          alt="logo-sword"
+                          width={40}
+                          height={isMobile ? 37 : 63}
+                          style={{
+                            height: "100%",
+                          }}
+                          src="/icons/sword-palette.svg"
+                        />
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          justifyContent: "center",
+                          width: "40%",
+                          gap: "4px",
+                        }}
+                      >
+                        <Field
+                          placeholder={t.plateNumAr}
+                          type="text"
+                          id={customIDs?.registration_plate_numbers_ar}
+                          name="registration_plate_numbers_ar"
+                          onChange={handleChange}
+                          style={fieldsStyle}
+                        />
+                        <Field
+                          placeholder={t.plateNumEn}
+                          type="text"
+                          id={customIDs?.registration_plate_numbers_en}
+                          name="registration_plate_numbers_en"
+                          onChange={handleChange}
+                          style={fieldsStyle}
+                        />
+                      </Box>
+                    </Box>
+                  </Box>
+                </div>
+
+                <div className="col-12 mt-4">
+                  <SharedTextField
+                    id={customIDs?.color}
+                    placeholder={t.carColor}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    error={touched["color"] && errors["color"]}
+                    name="color"
+                    value={values?.color || ""}
+                    setFieldValue={setFieldValue}
+                    label={t.carColor}
+                    imgIcon={false}
+                    besideLabel={t.optional}
                   />
                 </div>
               </div>

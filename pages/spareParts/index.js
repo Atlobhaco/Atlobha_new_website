@@ -35,6 +35,8 @@ import {
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
+import LimitedSupportCar from "@/components/LimitedSupportCar/LimitedSupportCar";
+import LimitedCarDontShowAgain from "@/components/LimitedSupportCar/LimitedCarDontShowAgain";
 
 const style = {
   marginTop: "32px",
@@ -65,6 +67,8 @@ function SpareParts() {
   const [finalPartsAfterImgUpload, setFinalPartsAfterImageUpload] = useState(
     []
   );
+  const [openLimitSupport, setOpenLimitSupport] = useState(false);
+  const [openLimitDontShow, setOpenLimitDontShow] = useState(false);
   const formDataImagesUploader = new FormData();
   const defaultValue = {
     quantity: 1,
@@ -86,6 +90,40 @@ function SpareParts() {
       });
     });
   }, []);
+
+  useEffect(() => {
+    let car = selectedCar?.id ? selectedCar : defaultCar;
+    if (!car?.brand?.enabled_for_spare_parts && isAuth()) {
+      const stored = localStorage.getItem("carLimitSupport");
+
+      if (!stored) {
+        // Show popup for the first time
+        setTimeout(() => {
+          setOpenLimitDontShow(true);
+        }, 1500);
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(stored);
+
+        const isSameCar = parsed.openedWithChaseNum === car?.chassis_no;
+        const dontShowAgain = parsed.dontShowAgain === "true";
+
+        // never open if dont show again is selected
+        if (dontShowAgain) {
+          return setOpenLimitDontShow(false);
+        }
+        if (!isSameCar) {
+          // Show popup if it's a new car or user hasn’t opted out
+          setOpenLimitDontShow(true);
+        }
+      } catch (e) {
+        console.error("Invalid carLimitSupport data", e);
+        setOpenLimitDontShow(true); // fallback to showing
+      }
+    }
+  }, [selectedCar, defaultCar]);
 
   const {
     data,
@@ -179,6 +217,14 @@ function SpareParts() {
   const handleRequestSparePart = () => {
     if (!isAuth()) {
       return setOpenLogin(true); // Open login modal if no user is authenticated
+    }
+
+    if (
+      isAuth() &&
+      ((selectedCar?.id && !selectedCar?.brand?.enabled_for_spare_parts) ||
+        (defaultCar?.id && !defaultCar?.brand?.enabled_for_spare_parts))
+    ) {
+      return setOpenLimitSupport(true); // Open login modal if no user is authenticated
     }
 
     const triggers = [
@@ -374,6 +420,16 @@ function SpareParts() {
         id="fiveLogin"
         customIDOtpField="fiveOtpField"
         customIDLogin="fiveBtnLogin"
+      />
+
+      <LimitedSupportCar
+        openLimitSupport={openLimitSupport}
+        setOpenLimitSupport={setOpenLimitSupport}
+      />
+
+      <LimitedCarDontShowAgain
+        openLimitDontShow={openLimitDontShow}
+        setOpenLimitDontShow={setOpenLimitDontShow}
       />
     </Box>
   );

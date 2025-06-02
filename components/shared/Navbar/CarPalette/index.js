@@ -258,6 +258,7 @@ function CarPalette() {
         open={openAddNewCar}
         setOpen={setOpenAddNewCar}
         hasCloseIcon
+        actionsWhenClose={() => formikRef.current.resetForm()}
         // customClass={!isMobile ? "sm-popup-width" : ""}
         content={
           <AddNewCarData
@@ -269,6 +270,15 @@ function CarPalette() {
               yearId: "firstYearID",
               vinId: "firstVinID",
               toggleId: "firstToggleID",
+              color: "firstColor",
+              registration_plate_letters_ar:
+                "firstRegistration_plate_letters_ar",
+              registration_plate_letters_en:
+                "firstRegistration_plate_letters_en",
+              registration_plate_numbers_ar:
+                "firstRegistration_plate_numbers_ar",
+              registration_plate_numbers_en:
+                "firstRegistration_plate_numbers_en",
             }}
           />
         }

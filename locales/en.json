@@ -444,5 +444,18 @@
   "marketData": "Marketplace data",
   "minPriceOrder": "Minimun order price",
   "earnFreeDelivery": "🚚✨ Congrats you have free delivery 🎉",
-  "suggestedProducts": "Suggested products"
+  "suggestedProducts": "Suggested products",
+  "limitSupport": "limited support",
+  "okFine": "Ok",
+  "carColor": "Car color",
+  "optional": "(optional)",
+  "plateNumAr": "Ar numbers",
+  "plateNumEn": "En numbers",
+  "plateLetterAr": "Ar letters",
+  "plateLetterEn": "En letters",
+  "colorError": "It must be a valid hexadecimal (Hex) color",
+  "noticeAboutCar": "Notice About Your Car!",
+  "carNotSupported": "Your car is currently not supported in the Spare Parts section.",
+  "supportedInOthers": "However, it is fully supported in the Services, Oil, and Accessories sections.",
+  "dontShowAgain": "Do not show this message again"
 }

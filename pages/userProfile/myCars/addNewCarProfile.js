@@ -42,6 +42,15 @@ function AddNewCar() {
                   yearId: "secondYearID",
                   vinId: "secondVinID",
                   toggleId: "secondToggleID",
+                  color: "secondColor",
+                  registration_plate_letters_ar:
+                    "secondRegistration_plate_letters_ar",
+                  registration_plate_letters_en:
+                    "secondRegistration_plate_letters_en",
+                  registration_plate_numbers_ar:
+                    "secondRegistration_plate_numbers_ar",
+                  registration_plate_numbers_en:
+                    "secondRegistration_plate_numbers_en",
                 }}
               />
             </div>

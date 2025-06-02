@@ -37,6 +37,7 @@ export const authSlice = createSlice({
       state.token = null;
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
+      localStorage.removeItem("carLimitSupport");
       window.location.reload();
       webengage.user.logout();
     },

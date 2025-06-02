@@ -64,7 +64,6 @@
   &:hover,
   &:focus,
   &:active,
-  &:disabled,
   &:visited,
   &:active {
     background: $yellow-ter !important;
@@ -72,6 +71,9 @@
     background-color: $yellow-ter !important;
     border: unset !important;
     outline: unset !important;
+  }
+  &:disabled {
+    background: #ffd500a2 !important;
   }
   &:disabled {
     opacity: 1 !important;
