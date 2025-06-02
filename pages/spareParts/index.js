@@ -100,7 +100,7 @@ function SpareParts() {
         // Show popup for the first time
         setTimeout(() => {
           setOpenLimitDontShow(true);
-        }, 1500);
+        }, 2000);
         return;
       }
 

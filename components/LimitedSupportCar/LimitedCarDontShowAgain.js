@@ -29,7 +29,7 @@ function LimitedCarDontShowAgain({ openLimitDontShow, setOpenLimitDontShow }) {
             dontShowAgain: "false",
           })
         );
-      }, 500);
+      }, 1000);
     } else {
       const parsed = JSON.parse(stored);
       setDontShowLocalStorage(parsed.dontShowAgain === "true");

@@ -63,6 +63,8 @@ function FormNewCar({
     textAlign: "center",
     fontWeight: "500",
     color: "#6B7280",
+    background: "unset !important",
+	backgroundColor:'unset !important'
   };
   return (
     <div>
@@ -170,6 +172,34 @@ function FormNewCar({
                 </div>
 
                 <div className="col-12">
+                  <Box
+                    sx={{
+                      color: "#1C1C28",
+                      fontSize: isMobile ? "15px" : "20px",
+                      fontWeight: "500",
+                      mb: 2,
+                    }}
+                  >
+                    {t.extraData}
+                  </Box>
+                  <Box
+                    sx={{
+                      color: "#1C1C28",
+                      fontSize: "12px",
+                      fontWeight: "500",
+                      mb: 1,
+                    }}
+                  >
+                    {t.paletteInfo}{" "}
+                    <Box
+                      component="span"
+                      sx={{
+                        color: "#B0B0B0",
+                      }}
+                    >
+                      {t.optional}
+                    </Box>
+                  </Box>
                   <Box sx={mainComponent}>
                     <Box sx={paletteImg}>
                       <Image

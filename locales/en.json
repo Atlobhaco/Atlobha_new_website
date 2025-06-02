@@ -457,5 +457,7 @@
   "noticeAboutCar": "Notice About Your Car!",
   "carNotSupported": "Your car is currently not supported in the Spare Parts section.",
   "supportedInOthers": "However, it is fully supported in the Services, Oil, and Accessories sections.",
-  "dontShowAgain": "Do not show this message again"
+  "dontShowAgain": "Do not show this message again",
+  "paletteInfo": "palette data",
+  "extraData": "additional data"
 }
