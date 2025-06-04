@@ -1,5 +1,6 @@
 import { CART } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
+import { latestUpdatedCart } from "@/constants/helpers";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -28,6 +29,7 @@ export const fetchCartAsync = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     if (isAuth()) {
       try {
+        latestUpdatedCart((await requestHandler("get", "")).data?.data);
         return (await requestHandler("get", "")).data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
@@ -79,8 +81,15 @@ export const addItemAsync = createAsyncThunk(
         ];
 
         await requestHandler("post", "", { products });
-
         dispatch(fetchCartAsync());
+
+        addRemoveFromCartEngage({
+          prod: payload?.product,
+          action: "increment",
+          productInsideBasket: {
+            quantity: payload?.quantity - 1,
+          },
+        });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to add items");
       }
@@ -112,6 +121,16 @@ export const updateItemQuantityAsync = createAsyncThunk(
   ) => {
     if (isAuth()) {
       try {
+        const state = getState();
+        const allProdDetailsBeforeUpdate = state.basket?.basket?.find(
+          (d) => d?.product_id === product_id
+        );
+        addRemoveFromCartEngage({
+          prod: allProdDetailsBeforeUpdate?.product,
+          action: actionType,
+          productInsideBasket: allProdDetailsBeforeUpdate,
+        });
+
         await requestHandler("put", `/${actionType}`, { product_id });
         dispatch(fetchCartAsync());
       } catch (error) {
@@ -158,8 +177,19 @@ export const deleteItemAsync = createAsyncThunk(
   async ({ product_id }, { dispatch, getState, rejectWithValue }) => {
     if (isAuth()) {
       try {
+        const state = getState();
         await requestHandler("delete", "/delete", { product_id });
         dispatch(fetchCartAsync());
+
+        const allProdDetailsBeforeUpdate = state.basket?.basket?.find(
+          (d) => d?.product_id === product_id
+        );
+
+        addRemoveFromCartEngage({
+          prod: allProdDetailsBeforeUpdate?.product,
+          action: "delete",
+          productInsideBasket: allProdDetailsBeforeUpdate,
+        });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to delete item");
       }

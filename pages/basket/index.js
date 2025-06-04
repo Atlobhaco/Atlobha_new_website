@@ -77,6 +77,30 @@ function Basket() {
 
   useEffect(() => {
     dispatch(fetchCartAsync());
+
+    const totalPriceBasket = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+      ?.toFixed(2);
+
+    const itemsMaping = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.map((bas) => ({
+        Id: bas?.product?.id || "",
+        Title: bas?.product?.name || "",
+        Price: bas?.product?.price || "",
+        Quantity: bas?.quantity || "",
+        Image: bas?.product?.image || "",
+      }));
+
+    window.webengage.onReady(() => {
+      webengage.track("CART_VIEWED", {
+        total: totalPriceBasket || 0,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
+    });
   }, []);
 
   return (

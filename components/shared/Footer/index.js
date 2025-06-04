@@ -130,7 +130,14 @@ function Footer() {
         <div className={`${style["footer-links"]} col-12 col-md-3`}>
           <div className={`${style["footer-help"]}`}>{t.helpCenter}</div>
           <div
-            onClick={() => router.push("mailto:info@atlobha.com")}
+            onClick={() => {
+              window.webengage.onReady(() => {
+                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              });
+              router.push("mailto:info@atlobha.com");
+            }}
             className={`${style["footer-help_info"]}`}
           >
             <Image

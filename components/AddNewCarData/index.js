@@ -56,10 +56,7 @@ function AddNewCarData({
       .min(14, t.vinNumLengthValidate)
       .max(17, t.vinNumLengthValidate)
       .required(t.required),
-    color: Yup.string()
-      .nullable()
-      .optional()
-      .matches(/^#(?:[0-9a-fA-F]{3}){1,2}$/, t.colorError),
+    color: Yup.string().nullable().optional(),
     registration_plate_letters_ar: Yup.string().optional(),
     registration_plate_letters_en: Yup.string().optional(),
     registration_plate_numbers_ar: Yup.string().optional(),

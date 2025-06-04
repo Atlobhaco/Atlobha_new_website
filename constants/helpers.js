@@ -220,7 +220,7 @@ export const availablePaymentMethodImages = (
           height={isMobile ? 26 : 40}
         />
       );
-	  case PAYMENT_METHODS?.tamara:
+    case PAYMENT_METHODS?.tamara:
       return (
         <Image
           src="/icons/payments/tamara-pay.svg"
@@ -309,7 +309,7 @@ export const availablePaymentMethodText = (
           {t.payMethods[`CASH`]}
         </Box>
       );
-	  case PAYMENT_METHODS?.tamara:
+    case PAYMENT_METHODS?.tamara:
       return (
         <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
           {t.payMethods[`tamara`]}
@@ -433,4 +433,78 @@ export const prodTypeArray = () => {
     id: value,
     name: t.types[`${value}`],
   }));
+};
+/* -------------------------------------------------------------------------- */
+/*                       webengage add remove from cart                       */
+/* -------------------------------------------------------------------------- */
+export const addRemoveFromCartEngage = ({
+  prod,
+  action,
+  productInsideBasket,
+}) => {
+  const qty = () => {
+    if (action === "increment") {
+      return (productInsideBasket?.quantity || 0) + 1;
+    }
+    if (action === "decrement") {
+      return productInsideBasket?.quantity - 1;
+    }
+    if (action === "delete") {
+      return 0;
+    }
+  };
+
+  const actions = () => {
+    if (action === "decrement" || action === "delete") {
+      return "REMOVE_FROM_CART";
+    } else {
+      return "ADD_TO_CART";
+    }
+  };
+
+  window.webengage.onReady(() => {
+    webengage.track(actions(), {
+      product_name: prod?.name || "",
+      product_image: prod?.image || "",
+      product_id: prod?.id || "",
+      price: prod?.price || "",
+      car_brand: prod?.brand?.name || "",
+      car_model: prod?.model?.name || "",
+      car_year: prod?.year || "",
+      reference_number: prod?.ref_num || "",
+      category: prod?.marketplace_category?.name || "",
+      quantity: qty() || 0,
+      product_url: `/product/${prod?.id}` || "",
+    });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                        latest updated cart webengage                       */
+/* -------------------------------------------------------------------------- */
+
+export const latestUpdatedCart = (basket) => {
+  const totalOfBasket = basket
+    ?.filter((item) => item?.product?.is_active)
+    ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+    ?.toFixed(2);
+
+  const itemsMaping = basket
+    ?.filter((item) => item?.product?.is_active)
+    ?.map((bas) => ({
+      Id: bas?.product?.id || "",
+      Title: bas?.product?.name || "",
+      Price: bas?.product?.price || "",
+      Quantity: bas?.quantity || "",
+      Image: bas?.product?.image || "",
+    }));
+
+  window.webengage.onReady(() => {
+    webengage.track(CART_UPDATED, {
+      total: totalOfBasket || 0,
+      number_of_products:
+        basket?.filter((item) => item?.product?.is_active)?.length || 0,
+      line_items: itemsMaping || [],
+    });
+  });
 };

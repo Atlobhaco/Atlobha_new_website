@@ -214,10 +214,6 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
     requestData,
     process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
   );
-  console.log(
-    "calculateReceiptResFromMainPage",
-    calculateReceiptResFromMainPage
-  );
 
   /* -------------------------------------------------------------------------- */
   /*                   to fix the reference error for document                  */
@@ -352,6 +348,35 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
     session.begin();
   };
 
+  const handleWebengageCheckoutClicked = () => {
+    const total =
+      basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.map((d) => ({
+          total_price: d?.quantity * d?.product?.price,
+        }))
+        ?.reduce((accumulator, current) => accumulator + current.total_price, 0)
+        ?.toFixed(2) || 0;
+
+    const itemsMaping = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.map((bas) => ({
+        Id: bas?.product?.id || "",
+        Title: bas?.product?.name || "",
+        Price: bas?.product?.price || "",
+        Quantity: bas?.quantity || "",
+        Image: bas?.product?.image || "",
+      }));
+    window.webengage.onReady(() => {
+      webengage.track("CART_CHECKOUT_CLICKED", {
+        total_price: total,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
+    });
+  };
+
   return (
     <Box sx={{ pt: 1 }}>
       <Box sx={header}>{t.orderSummary}</Box>
@@ -470,6 +495,9 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
           ) : null
         }
         onClick={() => {
+          // web engage action
+          handleWebengageCheckoutClicked();
+
           if (+calculateReceiptResFromMainPage?.amount_to_pay === 0) {
             callConfirmPricing();
             return;
