@@ -128,7 +128,10 @@ function AddNewCarData({
       setAddPayload(false);
       if (!res?.brand?.enabled_for_spare_parts) {
         setTimeout(() => {
-          setOpenLimitSupport(true);
+          // prevent open in sparePart route bec another pop up is appear
+          if (!router?.pathname?.includes("spareParts")) {
+            setOpenLimitSupport(true);
+          }
         }, 500);
       }
     },

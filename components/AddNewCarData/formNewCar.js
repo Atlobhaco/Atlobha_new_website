@@ -64,7 +64,10 @@ function FormNewCar({
     fontWeight: "500",
     color: "#6B7280",
     background: "unset !important",
-	backgroundColor:'unset !important'
+    backgroundColor: "transparent !important",
+    WebkitAppearance: "none !important",
+    appearance: "none !important",
+    boxShadow: "none !important",
   };
   return (
     <div>
