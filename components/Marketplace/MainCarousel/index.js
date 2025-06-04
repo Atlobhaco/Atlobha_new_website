@@ -105,12 +105,6 @@ function MainCarousel({ sectionInfo }) {
               onClick={() => {
                 if (img?.link) {
                   window.open(img?.link);
-                  window.webengage.onReady(() => {
-                    webengage.track("ANOUNNCMENT_VIEWED", {
-                      announcement_id: img?.id || "",
-                      announcement_name: img?.name || "",
-                    });
-                  });
                 }
               }}
             />
