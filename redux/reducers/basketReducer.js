@@ -29,7 +29,7 @@ export const fetchCartAsync = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     if (isAuth()) {
       try {
-        latestUpdatedCart((await requestHandler("get", "")).data?.data);
+        // latestUpdatedCart((await requestHandler("get", "")).data?.data);
         return (await requestHandler("get", "")).data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
@@ -83,13 +83,13 @@ export const addItemAsync = createAsyncThunk(
         await requestHandler("post", "", { products });
         dispatch(fetchCartAsync());
 
-        addRemoveFromCartEngage({
-          prod: payload?.product,
-          action: "increment",
-          productInsideBasket: {
-            quantity: payload?.quantity - 1,
-          },
-        });
+        // addRemoveFromCartEngage({
+        //   prod: payload?.product,
+        //   action: "increment",
+        //   productInsideBasket: {
+        //     quantity: payload?.quantity - 1,
+        //   },
+        // });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to add items");
       }
@@ -125,11 +125,11 @@ export const updateItemQuantityAsync = createAsyncThunk(
         const allProdDetailsBeforeUpdate = state.basket?.basket?.find(
           (d) => d?.product_id === product_id
         );
-        addRemoveFromCartEngage({
-          prod: allProdDetailsBeforeUpdate?.product,
-          action: actionType,
-          productInsideBasket: allProdDetailsBeforeUpdate,
-        });
+        // addRemoveFromCartEngage({
+        //   prod: allProdDetailsBeforeUpdate?.product,
+        //   action: actionType,
+        //   productInsideBasket: allProdDetailsBeforeUpdate,
+        // });
 
         await requestHandler("put", `/${actionType}`, { product_id });
         dispatch(fetchCartAsync());
@@ -185,11 +185,11 @@ export const deleteItemAsync = createAsyncThunk(
           (d) => d?.product_id === product_id
         );
 
-        addRemoveFromCartEngage({
-          prod: allProdDetailsBeforeUpdate?.product,
-          action: "delete",
-          productInsideBasket: allProdDetailsBeforeUpdate,
-        });
+        // addRemoveFromCartEngage({
+        //   prod: allProdDetailsBeforeUpdate?.product,
+        //   action: "delete",
+        //   productInsideBasket: allProdDetailsBeforeUpdate,
+        // });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to delete item");
       }
