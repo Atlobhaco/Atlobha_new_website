@@ -500,7 +500,7 @@ export const latestUpdatedCart = (basket = []) => {
   if (typeof window.webengage === "undefined") return;
 
   window.webengage?.onReady(() => {
-    webengage.track(CART_UPDATED, {
+    webengage.track("CART_UPDATED", {
       total: totalOfBasket,
       number_of_products: activeItems.length,
       line_items: itemsMapping,
