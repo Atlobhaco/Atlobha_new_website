@@ -232,6 +232,7 @@ const basketSlice = createSlice({
         state.loadingCart = true;
       })
       .addCase(fetchCartAsync.fulfilled, (state, action) => {
+		console.log('action.payload?.data',action.payload?.data);
         state.loadingCart = false;
         state.basket =
           action.payload?.data?.map((prod) => ({
