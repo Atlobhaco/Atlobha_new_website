@@ -484,11 +484,14 @@ export const addRemoveFromCartEngage = ({
 /* -------------------------------------------------------------------------- */
 
 export const latestUpdatedCart = (basket = []) => {
+  console.log("basket", basket);
   const activeItems = basket.filter((item) => item?.product?.is_active);
-
+  console.log("activeItems", activeItems);
   const totalOfBasket = activeItems
     .reduce((sum, item) => sum + item.quantity * item.product.price, 0)
     .toFixed(2);
+
+  console.log("totalOfBasket", totalOfBasket);
 
   const itemsMapping = activeItems.map((item) => ({
     Id: item?.product?.id || "",
@@ -497,7 +500,7 @@ export const latestUpdatedCart = (basket = []) => {
     Quantity: item?.quantity || "",
     Image: item?.product?.image || "",
   }));
-
+  console.log("itemsMapping", itemsMapping);
   if (typeof window.webengage === "undefined") return;
 
   window.webengage?.onReady(() => {
