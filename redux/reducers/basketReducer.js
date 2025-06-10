@@ -31,7 +31,7 @@ export const fetchCartAsync = createAsyncThunk(
       try {
         const response = await requestHandler("get", "");
         const data = response.data;
-        latestUpdatedCart(data?.data);
+        // latestUpdatedCart(data?.data);
         return data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
