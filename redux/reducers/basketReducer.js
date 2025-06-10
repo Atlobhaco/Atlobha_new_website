@@ -1,9 +1,8 @@
 import { CART } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
-import { latestUpdatedCart } from "@/constants/helpers";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { addRemoveFromCartEngage } from "../../constants/helpers";
+import { addRemoveFromCartEngage, latestUpdatedCart } from "../../constants/helpers";
 
 const BASE_URL = CART;
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}${BASE_URL}`;
@@ -31,7 +30,7 @@ export const fetchCartAsync = createAsyncThunk(
       try {
         const response = await requestHandler("get", "");
         const data = response.data;
-        // latestUpdatedCart(data?.data);
+        latestUpdatedCart(data?.data);
         return data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");

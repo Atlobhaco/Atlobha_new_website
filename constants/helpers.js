@@ -483,28 +483,28 @@ export const addRemoveFromCartEngage = ({
 /*                        latest updated cart webengage                       */
 /* -------------------------------------------------------------------------- */
 
-export const latestUpdatedCart = (basket) => {
-  const totalOfBasket = basket
-    ?.filter((item) => item?.product?.is_active)
-    ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
-    ?.toFixed(2);
+export const latestUpdatedCart = (basket = []) => {
+  const activeItems = basket.filter((item) => item?.product?.is_active);
 
-  const itemsMaping = basket
-    ?.filter((item) => item?.product?.is_active)
-    ?.map((bas) => ({
-      Id: bas?.product?.id || "",
-      Title: bas?.product?.name || "",
-      Price: bas?.product?.price || "",
-      Quantity: bas?.quantity || "",
-      Image: bas?.product?.image || "",
-    }));
+  const totalOfBasket = activeItems
+    .reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+    .toFixed(2);
 
-  window.webengage.onReady(() => {
+  const itemsMapping = activeItems.map((item) => ({
+    Id: item?.product?.id || "",
+    Title: item?.product?.name || "",
+    Price: item?.product?.price || "",
+    Quantity: item?.quantity || "",
+    Image: item?.product?.image || "",
+  }));
+
+  if (typeof window.webengage === "undefined") return;
+
+  window.webengage?.onReady(() => {
     webengage.track(CART_UPDATED, {
-      total: totalOfBasket || 0,
-      number_of_products:
-        basket?.filter((item) => item?.product?.is_active)?.length || 0,
-      line_items: itemsMaping || [],
+      total: totalOfBasket,
+      number_of_products: activeItems.length,
+      line_items: itemsMapping,
     });
   });
 };
