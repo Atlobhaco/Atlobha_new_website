@@ -24,19 +24,20 @@ const requestHandler = async (method, endpoint, data = {}) => {
   });
 };
 
-// ➤ Fetch Cart
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
   async (_, { rejectWithValue }) => {
     if (isAuth()) {
       try {
-        latestUpdatedCart((await requestHandler("get", "")).data?.data);
-        return (await requestHandler("get", "")).data;
+        const response = await requestHandler("get", "");
+        const data = response.data;
+        latestUpdatedCart(data?.data);
+        return data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
       }
     } else {
-      return rejectWithValue(error.response?.data || "no logged in user");
+      return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
     }
   }
 );
