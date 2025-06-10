@@ -8,7 +8,7 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import ProductCardSkeleton from "@/components/cardSkeleton";
-import { riyalImgBlack, riyalImgGrey } from "@/constants/helpers";
+import { latestUpdatedCart, riyalImgBlack, riyalImgGrey } from "@/constants/helpers";
 import { Box } from "@mui/material";
 import BasketDataReused from "../../components/Basket/BasketDataReused";
 import { styled } from "@mui/material/styles";
@@ -101,6 +101,8 @@ function Basket() {
         line_items: itemsMaping || [],
       });
     });
+
+    latestUpdatedCart(basket);
   }, []);
 
   return (
