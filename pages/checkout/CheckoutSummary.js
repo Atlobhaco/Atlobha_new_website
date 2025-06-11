@@ -428,6 +428,20 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
           {riyalImgBlack()}
         </Box>
       </Box>
+      {/* offers discount */}
+      {calculateReceiptResFromMainPage?.offers_discount > 0 && (
+        <Box className="d-flex justify-content-between mb-2">
+          <Box sx={{ ...text, color: "#EB3C24" }}>{t.offerDiscount}</Box>
+          <Box sx={{ ...text, color: "#EB3C24" }}>
+            {(calculateReceiptResFromMainPage?.offers_discount ??
+              receipt?.offers_discount) === receipt?.offers_discount
+              ? receipt?.offers_discount
+              : calculateReceiptResFromMainPage?.offers_discount}{" "}
+            {riyalImgRed()}
+          </Box>
+        </Box>
+      )}
+
       {/* total pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.totalSum}</Box>

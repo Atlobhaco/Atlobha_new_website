@@ -75,7 +75,7 @@ function AdvertiseHint() {
           height: isMobile ? "25px" : "30px",
           padding: isMobile ? "3px 4px" : "6px 10px",
           alignItems: "center",
-          maxWidth: isMobile ? "200px" : "360px",
+          maxWidth: isMobile ? "200px" : "369px",
           gap: "10px",
           borderRadius: "4px",
           fontWeight: "500",

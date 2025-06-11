@@ -11,13 +11,17 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import moment from "moment";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const [cityInfo, setCityInfo] = useState(false);
-
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
+  //   set address for user
   const {
     data: citiesRes,
     refetch: callCities,
@@ -33,7 +37,21 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
         name: info?.name,
       })),
     onSuccess: (res) => {
-      setCityInfo(res?.find((d) => d?.id === cityDelivery));
+      const checkCityFound = res?.find(
+        (d) =>
+          +d?.latitude ===
+            (+selectedAddress?.city?.latitude ||
+              +defaultAddress?.city?.latitude) &&
+          +d?.longitude ===
+            (+selectedAddress?.city?.longitude ||
+              +defaultAddress?.city?.longitude)
+      );
+      if (checkCityFound?.id) {
+        setCityInfo(checkCityFound);
+        setCityDelivery(checkCityFound?.id);
+      } else {
+        setCityInfo(res?.find((d) => d?.id === cityDelivery));
+      }
     },
     onError: (err) => {
       toast.error(
