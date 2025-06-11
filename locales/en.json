@@ -459,5 +459,6 @@
   "supportedInOthers": "However, it is fully supported in the Services, Oil, and Accessories sections.",
   "dontShowAgain": "Do not show this message again",
   "paletteInfo": "palette data",
-  "extraData": "additional data"
+  "extraData": "additional data",
+  "loginSuccess": "Login successfully"
 }

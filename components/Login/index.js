@@ -170,6 +170,33 @@ function Login({
   const containerStyle = {
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
+
+  const handleGoogleLogin = () => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    const redirectUri = `${window.location.origin}/auth/callback`;
+    const scope = "openid profile email";
+    const responseType = "id_token";
+
+    function generateNonce(length) {
+      let text = "";
+      let possible =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for (let i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      }
+      return text;
+    }
+
+    const nonce = generateNonce(20);
+    sessionStorage.setItem("nonce", nonce);
+
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${encodeURIComponent(
+      scope
+    )}&nonce=${nonce}`;
+
+    window.location.href = googleAuthUrl;
+  };
+
   return (
     <DialogCentered
       actionsWhenClose={() => {
@@ -222,8 +249,8 @@ function Login({
                       <Image
                         src="/icons/apple-sm.svg"
                         alt="logo"
-                        width={20}
-                        height={20}
+                        width={isMobile ? 17 : 20}
+                        height={isMobile ? 17 : 20}
                         style={{ marginBottom: "5px" }}
                       />
                     }
@@ -235,12 +262,13 @@ function Login({
                   text="googleLogin"
                   className="grey-btn"
                   customClass="w-100"
+                  onClick={handleGoogleLogin}
                   compBeforeText={
                     <Image
                       src="/icons/google-sm.svg"
                       alt="logo"
-                      width={20}
-                      height={20}
+                      width={isMobile ? 17 : 20}
+                      height={isMobile ? 17 : 20}
                       style={{ marginBottom: "4px" }}
                     />
                   }

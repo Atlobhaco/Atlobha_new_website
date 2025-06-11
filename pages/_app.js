@@ -29,14 +29,19 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import LogoLoader from "@/components/LogoLoader";
+import { toast } from "react-toastify";
+import useLocalization from "@/config/hooks/useLocalization";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
 
 const AppContent = ({ Component, pageProps }) => {
+  const { t } = useLocalization();
   const { locale } = useRouter();
   const { user } = useAuth();
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { socialLogin } = router.query;
 
   useEffect(() => {
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
@@ -65,11 +70,23 @@ const AppContent = ({ Component, pageProps }) => {
   useEffect(() => {
     if (document) {
       const loadingScreen = document?.getElementById("loading-screen");
-      setTimeout(() => {
-        loadingScreen.style.display = "none";
-      }, 2500);
+      if (!router?.pathname?.includes("callback")) {
+        setTimeout(() => {
+          loadingScreen.style.display = "none";
+        }, 2500);
+      }
     }
   }, []);
+
+  /* -------------------------------------------------------------------------- */
+  /*                   show success message after social login                  */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    if (socialLogin === "true") {
+      toast.success(t.loginSuccess);
+      router.push("/");
+    }
+  }, [router]);
 
   return (
     <Provider store={store}>
