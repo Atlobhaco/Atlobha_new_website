@@ -35,13 +35,18 @@ function SocialLogins() {
 
   const handleAppleLogin = () => {
     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-    const redirectUri = `${window.location.origin}/auth/appleCallback`;
+    const redirectUri = `${window.location.origin}/api/appleCallback`; // ✅ API route now
+    // const redirectUri = `${window.location.origin}/auth/appleCallback`; // ✅ API route now
+
     const scope = "name email";
-    const responseType = "id_token code"; // Apple requires both
-    const responseMode = "form_post"; // ✅ form_post is required when requesting name/email
+    const responseType = "id_token code";
+    const responseMode = "form_post";
 
     const nonce = generateNonce(20);
     sessionStorage.setItem("apple_nonce", nonce);
+
+    // Save current page to cookies so API can access it
+    document.cookie = `urlRedirectAfterSuccess=${window.location.href}; path=/;`;
 
     const authUrl = `https://appleid.apple.com/auth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
       redirectUri
@@ -51,7 +56,6 @@ function SocialLogins() {
       scope
     )}&nonce=${nonce}`;
 
-    localStorage.setItem("urlRedirectAfterSuccess", window.location?.href);
     window.location.href = authUrl;
   };
 
