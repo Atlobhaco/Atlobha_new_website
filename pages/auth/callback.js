@@ -26,9 +26,9 @@ const GoogleCallback = () => {
   useEffect(() => {
     if (router?.pathname?.includes("callback")) {
       const hashParams = new URLSearchParams(window.location.hash.slice(1));
-      const accessToken = hashParams.get("id_token");
+      const id_token = hashParams.get("id_token");
 
-      if (accessToken) {
+      if (id_token) {
         fetch(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/google`, // Your backend endpoint
           {
@@ -37,18 +37,24 @@ const GoogleCallback = () => {
               "Content-Type": "application/json",
               "x-api-key": "w123",
             },
-            body: JSON.stringify({ id_token: accessToken }),
+            body: JSON.stringify({ id_token: id_token }),
           }
         )
           .then((res) => res.json())
           .then((data) => {
             if (data?.data?.user?.id || data?.data?.user?.name) {
               dispatch(loginSuccess(data));
-              router.push("/?socialLogin=true");
+              const url = localStorage.getItem("urlRedirectAfterSuccess");
+              router.push(
+                `${url ? `${url}?socialLogin=true` : "/?socialLogin=true"}`
+              );
               setTimeout(() => {
                 // showUniqueToast(t.loginSuccess); // Use the unique toast function
                 window.location.reload();
               }, 1000);
+              setTimeout(() => {
+                localStorage.removeItem("urlRedirectAfterSuccess");
+              }, 3000);
             }
           });
       } else {

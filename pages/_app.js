@@ -70,7 +70,10 @@ const AppContent = ({ Component, pageProps }) => {
   useEffect(() => {
     if (document) {
       const loadingScreen = document?.getElementById("loading-screen");
-      if (!router?.pathname?.includes("callback")) {
+      if (
+        !router?.pathname?.includes("callback") &&
+        !router?.pathname?.includes("appleCallback")
+      ) {
         setTimeout(() => {
           loadingScreen.style.display = "none";
         }, 2500);
@@ -84,7 +87,7 @@ const AppContent = ({ Component, pageProps }) => {
   useEffect(() => {
     if (socialLogin === "true") {
       toast.success(t.loginSuccess);
-      router.push("/");
+      router.push(router.pathname);
     }
   }, [router]);
 
