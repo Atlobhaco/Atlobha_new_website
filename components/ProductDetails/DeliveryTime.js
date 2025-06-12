@@ -1,9 +1,5 @@
 import SharedDropDown from "@/components/shared/SharedDropDown";
-import {
-  CITIES,
-  ESTIMATED_DELIVERY,
-  SETTINGS,
-} from "@/config/endPoints/endPoints";
+import { CITIES, CITY_SETTINGS, LAT_LNG } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
@@ -70,7 +66,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
       cityInfo?.longitude,
       isAuth(),
     ],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}`,
     refetchOnWindowFocus: false,
     enabled: cityInfo?.latitude && cityInfo?.longitude ? true : false,
     select: (res) => res?.data?.data,
