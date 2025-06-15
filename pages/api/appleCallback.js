@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     res.setHeader("Set-Cookie", `id_token=${id_token}; Path=/; HttpOnly`);
     return res.redirect(
       302,
-      `/auth/apple-callback-client/id_token=${id_token}`
+      `/auth/apple-callback-client/?id_token=${id_token}`
     ); // frontend page
   });
 }
