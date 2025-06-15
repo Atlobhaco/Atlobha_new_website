@@ -72,7 +72,9 @@ function SocialLogins() {
 	  `&response_mode=form_post` +
 	  `&scope=${encodeURIComponent(scope)}` +
 	  `&state=${encodeURIComponent(state)}`;
-  
+	  
+      localStorage.setItem("urlRedirectAfterSuccess", window.location?.href);
+
 	window.location.href = authUrl;
   };
   return (

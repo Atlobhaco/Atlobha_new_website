@@ -1,7 +1,6 @@
 // pages/auth/apple-callback-client.js
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import Cookies from "js-cookie"; // install with `npm install js-cookie`
 import { useRouter } from "next/router";
 import { loginSuccess } from "@/redux/reducers/authReducer";
 
@@ -10,14 +9,13 @@ const AppleCallbackClient = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const id_token = Cookies.get("id_token");
+    const { id_token } = router.query;
 
     if (!id_token) {
-      console.error("No ID token found");
+      // router.query may be undefined on first render, so wait
       return;
     }
 
-    // Now send id_token to your backend
     const loginWithBackend = async () => {
       try {
         const res = await fetch(
@@ -35,9 +33,19 @@ const AppleCallbackClient = () => {
         const data = await res.json();
 
         if (res.ok) {
+          const url = localStorage.getItem("urlRedirectAfterSuccess");
           dispatch(loginSuccess(data));
-          Cookies.remove("id_token"); // clean up
-          router.push("/"); // redirect to homepage or dashboard
+          router.push(
+            `${url ? `${url}?socialLogin=true` : "/?socialLogin=true"}`
+          );
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000);
+
+          setTimeout(() => {
+            localStorage.removeItem("urlRedirectAfterSuccess");
+          }, 3000);
         } else {
           console.error("Backend login failed:", data);
         }
@@ -47,7 +55,7 @@ const AppleCallbackClient = () => {
     };
 
     loginWithBackend();
-  }, [dispatch, router]);
+  }, [router.query, dispatch, router]);
 
   return <p>Logging you in with Apple...</p>;
 };
