@@ -35,6 +35,6 @@ export default async function handler(req, res) {
       `user=${encodeURIComponent(JSON.stringify(user))}; Path=/; HttpOnly`
     );
 
-    return res.redirect(302, "/");
+    // return res.redirect(302, "/");
   });
 }
