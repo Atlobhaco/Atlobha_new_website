@@ -154,7 +154,6 @@ import { useDispatch } from "react-redux";
 const AppleCallback = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  alert("rendered");
 
   useEffect(() => {
     const form = document.forms?.[0]; // Apple posts the form
