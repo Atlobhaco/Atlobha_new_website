@@ -145,55 +145,58 @@
 // export default AppleCallback;
 
 // // ------------------------------
-
+// pages/auth/appleCallback.js
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { loginSuccess } from "@/redux/reducers/authReducer";
 import { useDispatch } from "react-redux";
+import { loginSuccess } from "@/redux/reducers/authReducer";
 
 const AppleCallback = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const form = document.forms?.[0]; // Apple posts the form
+    const form = document.getElementById("appleForm");
+    if (!form) return;
 
-    if (form) {
-      const formData = new FormData(form);
-      const id_token = formData.get("id_token");
-      alert("id_token", id_token);
-      if (id_token) {
-        fetch("/api/auth/apple", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": "w123",
-          },
-          body: JSON.stringify({ id_token }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data?.data?.user?.id) {
-              dispatch(loginSuccess(data));
-              const redirect = localStorage.getItem("urlRedirectAfterSuccess");
-              router.replace(redirect || "/");
-              localStorage.removeItem("urlRedirectAfterSuccess");
-            } else {
-              router.replace("/auth/login?error=apple_login_failed");
-            }
-          })
-          .catch((e) => {
-            console.error("Apple login error:", e);
-            router.replace("/auth/login?error=apple_internal");
-          });
-      }
+    const formData = new FormData(form);
+    const id_token = formData.get("id_token");
+
+    if (!id_token) {
+      router?.replace("/auth/login?error=missing_token");
+      return;
     }
+
+    const redirectTo = localStorage?.getItem("urlRedirectAfterSuccess") || "/";
+
+    fetch("/api/AppleRedirect", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "w123",
+      },
+      body: JSON.stringify({ id_token }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.data?.user?.id) {
+          dispatch(loginSuccess(data));
+          router.replace(redirectTo);
+        } else {
+          router.replace("/auth/login?error=apple_login_failed");
+        }
+      })
+      .catch((err) => {
+        console.error("Apple login error:", err);
+        router.replace("/auth/login?error=server_error");
+      });
   }, []);
 
   return (
     <div>
-      <p>Processing your Apple sign in...</p>
-      <form method="post">
+      <h3>Signing in with Apple...</h3>
+      {/* Apple sends form data in this auto-submitted POST */}
+      <form id="appleForm" method="post">
         <input type="hidden" name="id_token" />
         <input type="hidden" name="code" />
         <input type="hidden" name="state" />

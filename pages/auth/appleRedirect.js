@@ -1,75 +1,45 @@
-// pages/auth/appleRedirect.js
-import { useEffect } from "react";
-import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/redux/reducers/authReducer";
+// pages/api/auth/appleRedirect.js
 
-const AppleRedirect = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-  useEffect(() => {
-    try {
-      const cookieMatch = document.cookie
-        .split("; ")
-        .find((row) => row.startsWith("apple_user="));
+  try {
+    const { id_token } = req.body;
 
-      if (!cookieMatch) {
-        console.warn("No user cookie found after Apple login.");
-        router.push("/auth/login?error=missing_user");
-        return;
-      }
-
-      const userJson = decodeURIComponent(cookieMatch.split("=")[1]);
-      const userData = JSON.parse(userJson);
-
-      dispatch(loginSuccess(userData));
-
-      // Clear cookie after use
-      document.cookie = "apple_user=; Max-Age=0; path=/";
-
-      // Redirect to original page or home
-      const redirectUrl = router.query.redirect || "/";
-      router.replace(`${redirectUrl}?socialLogin=true`);
-      setTimeout(() => window.location.reload(), 1000);
-    } catch (err) {
-      console.error("Apple redirect error:", err);
-      router.push("/auth/login?error=redirect_failed");
+    if (!id_token) {
+      return res.status(400).json({ error: "Missing id_token" });
     }
-  }, [dispatch, router]);
 
-  return <p>Finalizing login...</p>;
-};
+    // Optional: verify the id_token with Apple (skipped here, assumed Laravel will handle it)
+    // You can add Apple token verification here if you want
 
-export default AppleRedirect;
+    // Send the token to your real backend (Laravel or other API)
+    const backendRes = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/apple`, // e.g. https://api.yoursite.com/auth/apple
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": "w123", // optional custom API key header
+        },
+        body: JSON.stringify({ id_token }),
+      }
+    );
 
-// export default async function handler(req, res) {
-//   if (req.method !== "POST") {
-//     return res.status(405).end("Method Not Allowed");
-//   }
+    const data = await backendRes.json();
 
-//   const { id_token } = req.body;
-//   if (!id_token) {
-//     return res.status(400).json({ error: "Missing id_token" });
-//   }
+    if (!backendRes.ok) {
+      return res
+        .status(backendRes.status)
+        .json({ error: data?.error || "Apple login failed" });
+    }
 
-//   try {
-//     const backendRes = await fetch(
-//       `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/apple`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           "x-api-key": "w123",
-//         },
-//         body: JSON.stringify({ id_token }),
-//       }
-//     );
-
-//     const data = await backendRes.json();
-//     return res?.status(200).json(data);
-//   } catch (err) {
-//     console.error("Error verifying Apple login:", err);
-//     return res?.status(500).json({ error: "Internal Server Error" });
-//   }
-// }
+    // Forward user data to frontend
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error("Error in /api/auth/apple:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+}
