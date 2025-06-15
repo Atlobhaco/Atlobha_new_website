@@ -33,32 +33,48 @@ function SocialLogins() {
     window.location.href = googleAuthUrl;
   };
 
+//   const handleAppleLogin = () => {
+//     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
+//     // const redirectUri = `${window.location.origin}/api/appleCallback`; // ✅ API route now
+//     const redirectUri = `${window.location.origin}/auth/appleCallback`; // ✅ API route now
+
+//     const scope = "name email";
+//     const responseType = "id_token code";
+//     const responseMode = "form_post";
+
+//     const nonce = generateNonce(20);
+//     sessionStorage.setItem("apple_nonce", nonce);
+
+//     // Save current page to cookies so API can access it
+//     document.cookie = `urlRedirectAfterSuccess=${window.location.href}; path=/;`;
+
+//     const authUrl = `https://appleid.apple.com/auth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+//       redirectUri
+//     )}&response_type=${encodeURIComponent(
+//       responseType
+//     )}&response_mode=${responseMode}&scope=${encodeURIComponent(
+//       scope
+//     )}&nonce=${nonce}`;
+
+//     window.location.href = authUrl;
+//   };
+
   const handleAppleLogin = () => {
-    const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-    // const redirectUri = `${window.location.origin}/api/appleCallback`; // ✅ API route now
-    const redirectUri = `${window.location.origin}/auth/appleCallback`; // ✅ API route now
-
-    const scope = "name email";
-    const responseType = "id_token code";
-    const responseMode = "form_post";
-
-    const nonce = generateNonce(20);
-    sessionStorage.setItem("apple_nonce", nonce);
-
-    // Save current page to cookies so API can access it
-    document.cookie = `urlRedirectAfterSuccess=${window.location.href}; path=/;`;
-
-    const authUrl = `https://appleid.apple.com/auth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(
-      redirectUri
-    )}&response_type=${encodeURIComponent(
-      responseType
-    )}&response_mode=${responseMode}&scope=${encodeURIComponent(
-      scope
-    )}&nonce=${nonce}`;
-
-    window.location.href = authUrl;
+	const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
+	const redirectURI = `${window.location.origin}/auth/appleCallback`;
+	const scope = "name email";
+	const state = "csrf-token"; // You can make this dynamic for CSRF protection
+  
+	const authUrl = `https://appleid.apple.com/auth/authorize?` +
+	  `client_id=${encodeURIComponent(clientId)}` +
+	  `&redirect_uri=${encodeURIComponent(redirectURI)}` +
+	  `&response_type=${encodeURIComponent("id_token code")}` +
+	  `&response_mode=form_post` +
+	  `&scope=${encodeURIComponent(scope)}` +
+	  `&state=${encodeURIComponent(state)}`;
+  
+	window.location.href = authUrl;
   };
-
   return (
     <>
       <Box sx={{ mb: 2 }}>

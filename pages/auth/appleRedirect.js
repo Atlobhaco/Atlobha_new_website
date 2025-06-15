@@ -1,4 +1,4 @@
-// pages/api/auth/appleRedirect.js
+// pages/api/auth/apple.js
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -31,9 +31,7 @@ export default async function handler(req, res) {
     const data = await backendRes.json();
 
     if (!backendRes.ok) {
-      return res
-        .status(backendRes.status)
-        .json({ error: data?.error || "Apple login failed" });
+      return res.status(backendRes.status).json({ error: data?.error || "Apple login failed" });
     }
 
     // Forward user data to frontend
@@ -43,3 +41,4 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 }
+zz
