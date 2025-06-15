@@ -61,7 +61,7 @@ function SocialLogins() {
 
   const handleAppleLogin = () => {
 	const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-	const redirectURI = `${window.location.origin}/auth/appleCallback`;
+	const redirectURI = `${window.location.origin}/api/appleCallback`;
 	const scope = "name email";
 	const state = "csrf-token"; // You can make this dynamic for CSRF protection
   
