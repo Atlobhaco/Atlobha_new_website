@@ -1,9 +1,9 @@
 // pages/auth/apple-callback-client.js
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess } from "@/store/actions";
 import Cookies from "js-cookie"; // install with `npm install js-cookie`
 import { useRouter } from "next/router";
+import { loginSuccess } from "@/redux/reducers/authReducer";
 
 const AppleCallbackClient = () => {
   const dispatch = useDispatch();
