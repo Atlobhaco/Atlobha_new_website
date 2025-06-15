@@ -35,8 +35,8 @@ function SocialLogins() {
 
   const handleAppleLogin = () => {
     const clientId = process.env.NEXT_PUBLIC_APPLE_CLIENT_ID;
-    const redirectUri = `${window.location.origin}/api/appleCallback`; // ✅ API route now
-    // const redirectUri = `${window.location.origin}/auth/appleCallback`; // ✅ API route now
+    // const redirectUri = `${window.location.origin}/api/appleCallback`; // ✅ API route now
+    const redirectUri = `${window.location.origin}/auth/appleCallback`; // ✅ API route now
 
     const scope = "name email";
     const responseType = "id_token code";

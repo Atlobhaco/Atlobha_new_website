@@ -5,6 +5,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import { PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
+  generateSignatureApplePay,
   riyalImgBlack,
   riyalImgRed,
   useArrayChangeDetector,
