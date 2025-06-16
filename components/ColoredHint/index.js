@@ -28,6 +28,7 @@ function ColoredHint({
             width={isMobile ? 32 : 57}
             height={isMobile ? 32 : 57}
             priority={false}
+            loading="lazy"
           />
         </Box>
         <Box>
@@ -44,6 +45,7 @@ function ColoredHint({
           width={isMobile ? 18 : 28}
           height={isMobile ? 18 : 28}
           priority={false}
+          loading="lazy"
         />
       </Box>
     </Box>

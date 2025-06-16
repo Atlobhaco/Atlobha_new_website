@@ -97,6 +97,7 @@ function SharedTextField({
                 <Tooltip title={toolTipTitle}>
                   {/* <SearchIcon style={{ cursor: "pointer" }} /> */}
                   <Image
+                    loading="lazy"
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={imgIcon}
@@ -118,6 +119,7 @@ function SharedTextField({
               {rightIcon && (
                 <Tooltip title={toolTipTitle}>
                   <Image
+                    loading="lazy"
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={+value <= 1 ? "/icons/trash-icon.svg" : rightIcon}

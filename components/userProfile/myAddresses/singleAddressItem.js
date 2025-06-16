@@ -108,6 +108,7 @@ function SingleAddressItem({
             }}
           >
             <Image
+              loading="lazy"
               alt="home-address"
               src={"/icons/home-address.svg"} // address logo
               width={isMobile ? 25 : 48}
@@ -221,6 +222,7 @@ function SingleAddressItem({
                   <CircularProgress color="inherit" size={10} />
                 ) : (
                   <Image
+                    loading="lazy"
                     alt="info"
                     src={"/icons/basket-red.svg"}
                     width={isMobile ? 15 : 24}

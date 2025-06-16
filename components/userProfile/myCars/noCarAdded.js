@@ -22,7 +22,13 @@ function NoCarAdded({ hideBtn = false }) {
         gap: "15px",
       }}
     >
-      <Image src="/imgs/empty-car.svg" alt="empty" width={130} height={118} />
+      <Image
+        loading="lazy"
+        src="/imgs/empty-car.svg"
+        alt="empty"
+        width={130}
+        height={118}
+      />
       <Box
         sx={{
           color: "#1C1C28",

@@ -25,6 +25,7 @@ const LanguageSwitcher = () => {
             alt="ar"
             width={isMobile ? 23 : 40}
             height={isMobile ? 23 : 40}
+            loading="lazy"
           />
         </button>
       ) : (
@@ -34,6 +35,7 @@ const LanguageSwitcher = () => {
             alt="ar"
             width={isMobile ? 23 : 40}
             height={isMobile ? 23 : 40}
+            loading="lazy"
           />
         </button>
       )}

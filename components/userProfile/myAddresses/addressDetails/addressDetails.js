@@ -115,7 +115,13 @@ function AddressDetails({
             >
               {add?.name}{" "}
               {add?.icon && (
-                <Image src={add?.icon} alt="pen" width={18} height={18} />
+                <Image
+                  loading="lazy"
+                  src={add?.icon}
+                  alt="pen"
+                  width={18}
+                  height={18}
+                />
               )}
             </Box>
           )

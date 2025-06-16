@@ -25,6 +25,7 @@ function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
     >
       {!isMobile && !alwaysHorizontalDesgin && (
         <Image
+          loading="lazy"
           src="/imgs/logo-brand.png"
           alt="logo"
           width={isMobile || alwaysHorizontalDesgin ? 38 : 424}
@@ -48,6 +49,7 @@ function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
         }}
       >
         <Image
+          loading="lazy"
           src="/logo/atlobha-logo-brand.svg"
           alt="logo"
           width={isMobile ? 30 : 55}

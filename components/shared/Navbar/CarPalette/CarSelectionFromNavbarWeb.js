@@ -141,6 +141,7 @@ function CarSelectionFromNavbarWeb({
                   onClick={() => handleCheckboxChange(car)}
                 >
                   <Image
+                    loading="lazy"
                     alt={car?.brand?.name}
                     src={car?.brand?.image} // Car logo
                     width={isMobile ? 30 : 48}
@@ -247,6 +248,7 @@ function CarSelectionFromNavbarWeb({
           text="addNewCar"
           compBeforeText={
             <Image
+              loading="lazy"
               alt="location"
               width={20}
               height={20}

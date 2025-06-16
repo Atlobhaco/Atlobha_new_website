@@ -213,6 +213,7 @@ function FormNewCar({
                           height: "70%",
                         }}
                         src="/icons/saudi-palette.svg"
+                        loading="lazy"
                       />
                     </Box>
 
@@ -260,6 +261,7 @@ function FormNewCar({
                             height: "100%",
                           }}
                           src="/icons/sword-palette.svg"
+                          loading="lazy"
                         />
                       </Box>
                       <Box

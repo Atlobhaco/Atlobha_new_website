@@ -172,6 +172,7 @@ function AddressSelectionFromNavbarWeb({
               }}
             >
               <Image
+                loading="lazy"
                 alt={address?.name}
                 src={"/icons/home-address.svg"}
                 width={isMobile ? 30 : 48}
@@ -265,6 +266,7 @@ function AddressSelectionFromNavbarWeb({
             }}
           >
             <Image
+              loading="lazy"
               alt={"GPS"}
               src={"/icons/gps-detector.svg"}
               width={isMobile ? 30 : 48}
@@ -333,6 +335,7 @@ function AddressSelectionFromNavbarWeb({
           text="addNewAddress"
           compBeforeText={
             <Image
+              loading="lazy"
               alt="location"
               width={20}
               height={20}

@@ -44,6 +44,7 @@ function ProfileSetting({ data }) {
         {data?.hint && <span className={`${style["hint"]}`}>{data?.hint}</span>}
         {!data?.hideArrow && (
           <Image
+            loading="lazy"
             src="/icons/arrow-left-sm.svg"
             alt="icon"
             width={12}

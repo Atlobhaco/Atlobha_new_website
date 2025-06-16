@@ -104,6 +104,7 @@ function MergeStep({
       {isMobile ? (
         <Box sx={closeHolder}>
           <Image
+            loading="lazy"
             onClick={() => {
               handleCloseStep();
             }}
@@ -125,6 +126,7 @@ function MergeStep({
         } flex-column`}
       >
         <Image
+          loading="lazy"
           src="/imgs/migration.svg"
           width={122}
           height={isMobile ? 158 : 270}

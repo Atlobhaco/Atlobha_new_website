@@ -151,6 +151,7 @@ function CarPalette() {
       >
         <Box sx={paletteImg}>
           <Image
+            loading="lazy"
             alt="logo"
             width={130}
             height={isMobile ? 37 : 55}
@@ -172,6 +173,7 @@ function CarPalette() {
             </Box>
             <Box>
               <Image
+                loading="lazy"
                 alt={selectedCar?.brand?.name || defaultCar?.brand?.name}
                 width={isMobile ? 30 : 40}
                 height={isMobile ? 30 : 40}
@@ -197,7 +199,13 @@ function CarPalette() {
             sx={noSelectedCarBox}
             onClick={handleOpen} // Trigger dropdown
           >
-            <Image alt="add" width={22} height={22} src="/icons/add.svg" />
+            <Image
+              alt="add"
+              width={22}
+              height={22}
+              src="/icons/add.svg"
+              loading="lazy"
+            />
             <Box className="mt-1" component="span">
               {t.addVehicle}
             </Box>
@@ -238,6 +246,7 @@ function CarPalette() {
               text="addNewCar"
               compBeforeText={
                 <Image
+                  loading="lazy"
                   alt="location"
                   width={20}
                   height={20}

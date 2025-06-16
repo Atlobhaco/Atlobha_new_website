@@ -87,6 +87,7 @@ function CommunicationSection() {
         >
           {socialMedia?.map((social) => (
             <Image
+              loading="lazy"
               onClick={social?.onclick}
               key={social?.src}
               alt={social?.src}

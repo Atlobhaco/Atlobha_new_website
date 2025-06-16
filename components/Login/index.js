@@ -200,6 +200,7 @@ function Login({
                   alt="logo"
                   width={103}
                   height={103}
+                  loading="lazy"
                 />
               </Box>
               <Box

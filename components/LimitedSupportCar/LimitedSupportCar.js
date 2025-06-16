@@ -27,6 +27,7 @@ function LimitedSupportCar({ openLimitSupport, setOpenLimitSupport }) {
             alt="limit-car"
             width={135}
             height={120}
+            loading="lazy"
           />
           <Box
             sx={{

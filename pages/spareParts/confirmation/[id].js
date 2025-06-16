@@ -134,6 +134,7 @@ function Confirmation() {
       <div className={`${style["deliverySec"]}`}>
         <div>
           <Image
+            loading="lazy"
             src="/icons/location-yellow.svg"
             alt="alert"
             width={24}
@@ -152,6 +153,7 @@ function Confirmation() {
       <div className={`${style["timeSec"]}`}>
         <div>
           <Image
+            loading="lazy"
             src="/icons/yellow-calendar.svg"
             alt="alert"
             width={24}
@@ -164,6 +166,7 @@ function Confirmation() {
           </div>
           <div className={`${style["timeSec_appoin-date"]}`}>
             <Image
+              loading="lazy"
               src="/icons/alert-blue.svg"
               alt="alert"
               width={isMobile ? 14 : 20}
@@ -183,6 +186,7 @@ function Confirmation() {
         <div className={`${style["deliverySec"]}`}>
           <div>
             <Image
+              loading="lazy"
               src="/icons/wallet-yellow.svg"
               width={24}
               height={24}
@@ -206,6 +210,7 @@ function Confirmation() {
       <div className={`${style["details"]}`}>
         <div className={`${style["details-header"]}`}>
           <Image
+            loading="lazy"
             src="/icons/brakes-black.svg"
             alt="alert"
             width={24}
@@ -217,6 +222,7 @@ function Confirmation() {
           <div className={`${style["details-parts"]}`} key={part?.id}>
             <div className={`${style["details-parts_imgHolder"]}`}>
               <Image
+                loading="lazy"
                 src={part?.image || "/imgs/no-img-holder.svg"}
                 width={isMobile ? 50 : 70}
                 height={isMobile ? 50 : 70}

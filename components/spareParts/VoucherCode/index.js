@@ -97,7 +97,7 @@ function VoucherCode({
           variant="outlined"
           placeholder={t.addGiftVoucher}
           fullWidth
-          disabled={canAddVoucher||voucherCode ? true : false}
+          disabled={canAddVoucher || voucherCode ? true : false}
           onChange={(e) => {
             setError(false);
             setInputValVoucher(e?.target?.value);
@@ -107,6 +107,7 @@ function VoucherCode({
             startAdornment: (
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
+                  loading="lazy"
                   alt="img-voucher"
                   src={`/icons/${
                     canAddVoucher || voucherCode

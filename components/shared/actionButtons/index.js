@@ -40,6 +40,7 @@ function ActionButtons({
                 src={"/icons/pen-blue.svg"}
                 width={isMobile ? 15 : 24}
                 height={isMobile ? 15 : 24}
+                loading="lazy"
               />
             </Box>
           </Tooltip>
@@ -62,6 +63,7 @@ function ActionButtons({
                   src={"/icons/basket-red.svg"}
                   width={isMobile ? 15 : 24}
                   height={isMobile ? 15 : 24}
+                  loading="lazy"
                 />
               )}
             </Box>
@@ -82,6 +84,7 @@ function ActionButtons({
                 src={"/icons/exclamation-green.svg"}
                 width={isMobile ? 15 : 24}
                 height={isMobile ? 15 : 24}
+                loading="lazy"
               />
             </Box>
           </Tooltip>

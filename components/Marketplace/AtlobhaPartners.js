@@ -166,6 +166,7 @@ function AtlobhaPartners({ sectionInfo }) {
                   maxHeight: "100%",
                   //   cursor: "pointer",
                 }}
+                loading="lazy"
               />
             </Box>
           ))}

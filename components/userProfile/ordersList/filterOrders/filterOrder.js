@@ -51,6 +51,7 @@ function FilterOrder({
         onClick={handleClick}
       >
         <Image
+          loading="lazy"
           src="/icons/filter.svg"
           width={isMobile ? 24 : 30}
           height={isMobile ? 24 : 30}

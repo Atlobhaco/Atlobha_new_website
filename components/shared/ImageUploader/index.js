@@ -149,6 +149,7 @@ const ImageUploader = ({
             width={20}
             height={20}
             alt="trash"
+			loading="lazy"
           />
         </Box>
       )}

@@ -123,6 +123,7 @@ function MyCars() {
                         width={20}
                         height={20}
                         src="/icons/addInsideCircle.svg"
+                        loading="lazy"
                       />
                     }
                   />

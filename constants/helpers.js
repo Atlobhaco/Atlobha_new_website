@@ -150,6 +150,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.credit:
       return (
         <Image
+          loading="lazy"
           //   src="/icons/payments/master-card.svg"
           src="/icons/payments/credit-cards.svg"
           alt="credit-card"
@@ -160,6 +161,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.applePay:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/apple-pay.svg"
           alt="apple-pay"
           width={isMobile ? 65 : 100}
@@ -169,6 +171,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.stcPay:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/stc-pay.svg"
           alt="stc-pay"
           width={isMobile ? 65 : 100}
@@ -178,6 +181,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.installment:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/sadad-pay.svg"
           alt="sadad-pay"
           width={isMobile ? 65 : 100}
@@ -187,6 +191,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.banktransfer:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/visa-pay.svg"
           alt="visa-pay"
           width={isMobile ? 65 : 100}
@@ -196,6 +201,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.tabby:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/tabby-pay.svg"
           alt="tabbby"
           width={isMobile ? 65 : 100}
@@ -205,6 +211,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.wallet:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/wallet.svg"
           alt="wallet-pay"
           width={isMobile ? 65 : 100}
@@ -214,6 +221,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.cash:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/cash-pay.svg"
           alt="cash-pay"
           width={isMobile ? 65 : 100}
@@ -223,6 +231,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.tamara:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/tamara-pay.svg"
           alt="cash-pay"
           width={isMobile ? 65 : 100}
@@ -381,17 +390,30 @@ export const generateSignatureApplePay = (params) => {
 /* -------------------------------------------------------------------------- */
 export const riyalImgBlack = () => {
   return (
-    <Image src="/icons/riyal-black.svg" width={20} height={20} alt="riyal" />
+    <Image
+      loading="lazy"
+      src="/icons/riyal-black.svg"
+      width={20}
+      height={20}
+      alt="riyal"
+    />
   );
 };
 export const riyalImgRed = () => {
   return (
-    <Image src="/icons/riyal-red.svg" width={20} height={20} alt="riyal-red" />
+    <Image
+      loading="lazy"
+      src="/icons/riyal-red.svg"
+      width={20}
+      height={20}
+      alt="riyal-red"
+    />
   );
 };
 export const riyalImgOrange = () => {
   return (
     <Image
+      loading="lazy"
       src="/icons/riyal-orange.svg"
       width={20}
       height={20}
@@ -402,6 +424,7 @@ export const riyalImgOrange = () => {
 export const riyalImgGrey = (width, height) => {
   return (
     <Image
+      loading="lazy"
       src="/icons/riyal-grey.svg"
       width={width || 20}
       height={height || 20}

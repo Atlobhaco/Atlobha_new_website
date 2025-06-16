@@ -500,6 +500,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
             <CircularProgress color="inherit" size={15} />
           ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
             <Image
+              loading="lazy"
               src="/icons/payments/apple-pay-white.svg"
               width={61}
               height={25}

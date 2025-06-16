@@ -108,6 +108,7 @@ function Basket() {
           {!basket?.length ? (
             <div className="text-center p-5 mb-5">
               <Image
+                loading="lazy"
                 src="/icons/empty-basket.svg"
                 width={117}
                 height={106}
@@ -136,6 +137,7 @@ function Basket() {
                   }}
                 >
                   <Image
+                    loading="lazy"
                     src="/icons/part-img.svg"
                     alt="part-img"
                     width={isMobile ? 27 : 54}

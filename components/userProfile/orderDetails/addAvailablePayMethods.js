@@ -72,7 +72,13 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
           gap: "10px",
         }}
       >
-        <Image src="/icons/yellow-card.svg" alt="card" width={20} height={20} />
+        <Image
+          loading="lazy"
+          src="/icons/yellow-card.svg"
+          alt="card"
+          width={20}
+          height={20}
+        />
         <Box
           sx={{
             color: "#232323",

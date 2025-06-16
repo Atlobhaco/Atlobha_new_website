@@ -57,6 +57,7 @@ function SingleCarItem({ car, setDeleteCarId, isLoading, deleteCarId }) {
             }}
           >
             <Image
+              loading="lazy"
               alt={car?.brand?.name}
               src={car?.brand?.image} // Car logo
               width={isMobile ? 25 : 48}
@@ -176,6 +177,7 @@ function SingleCarItem({ car, setDeleteCarId, isLoading, deleteCarId }) {
           }}
         >
           <Image
+            loading="lazy"
             alt="info"
             src={"/icons/pen-blue.svg"}
             width={isMobile ? 15 : 24}
@@ -195,6 +197,7 @@ function SingleCarItem({ car, setDeleteCarId, isLoading, deleteCarId }) {
             <CircularProgress color="inherit" size={10} />
           ) : (
             <Image
+              loading="lazy"
               alt="info"
               src={"/icons/basket-red.svg"}
               width={isMobile ? 15 : 24}

@@ -39,6 +39,7 @@ function SparePartItem({ data, showPrice = false }) {
     >
       <Box sx={imgHolderStyle}>
         <Image
+          loading="lazy"
           src={
             data?.image ||
             data?.imgBase64 ||

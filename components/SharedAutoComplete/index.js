@@ -34,7 +34,6 @@ function SharedAutoComplete({
     handleChange(event);
   };
 
-
   return (
     <Box sx={{ direction: locale === "ar" ? "rtl" : "ltr" }}>
       <Box
@@ -104,6 +103,7 @@ function SharedAutoComplete({
           >
             {option?.image && (
               <Image
+                loading="lazy"
                 src={option?.image}
                 alt={option.name}
                 width={isMobile ? 24 : 50}

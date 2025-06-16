@@ -32,26 +32,47 @@ function AvailablePaymentMethodsImgs() {
         }}
       >
         <Image
+          loading="lazy"
           src={"/imgs/stc.svg"}
           alt="stc"
           width={isMobile ? 35 : 63}
           height={20}
         />
         <Image
+          loading="lazy"
           src={"/imgs/tabby.svg"}
           alt="tabby"
           width={isMobile ? 35 : 57}
           height={20}
         />
         <Image
+          loading="lazy"
           src={"/imgs/apple-pay.svg"}
           alt="apple-pay"
           width={isMobile ? 35 : 58}
           height={20}
         />
-        <Image src={"/imgs/mada.svg"} alt="mada" width={isMobile ? 35 : 59} height={20} />
-        <Image src={"/imgs/visa.svg"} alt="visa" width={isMobile ? 35 : 58} height={20} />
-        <Image src={"/imgs/master.svg"} alt="master" width={isMobile ? 35 : 39} height={20} />
+        <Image
+          loading="lazy"
+          src={"/imgs/mada.svg"}
+          alt="mada"
+          width={isMobile ? 35 : 59}
+          height={20}
+        />
+        <Image
+          loading="lazy"
+          src={"/imgs/visa.svg"}
+          alt="visa"
+          width={isMobile ? 35 : 58}
+          height={20}
+        />
+        <Image
+          loading="lazy"
+          src={"/imgs/master.svg"}
+          alt="master"
+          width={isMobile ? 35 : 39}
+          height={20}
+        />
       </Box>
     </Box>
   );

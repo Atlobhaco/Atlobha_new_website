@@ -235,6 +235,7 @@ function CategoriesPopupcontent({
                       width={160}
                     /> */}
                     <Image
+                      loading="lazy"
                       alt="img"
                       src={sec?.image || "/icons/menu-1.svg"}
                       height={100}

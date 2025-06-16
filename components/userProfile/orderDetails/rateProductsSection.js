@@ -27,7 +27,13 @@ function RateProductsSection({ orderDetails = {} }) {
           alignItems: "center",
         }}
       >
-        <Image src="/icons/star-rate.svg" alt="rate" width={30} height={30} />
+        <Image
+          loading="lazy"
+          src="/icons/star-rate.svg"
+          alt="rate"
+          width={30}
+          height={30}
+        />
         <Box>
           <Box
             sx={{
@@ -62,7 +68,7 @@ function RateProductsSection({ orderDetails = {} }) {
           }}
           className="big-main-btn"
           text="rateProductsNow"
-        //   onClick={() => setOpenRating(true)}
+          //   onClick={() => setOpenRating(true)}
         />
       </Box>
       {/* rating poup */}

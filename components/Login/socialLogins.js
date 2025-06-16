@@ -68,6 +68,7 @@ function SocialLogins() {
                 width={isMobile ? 17 : 20}
                 height={isMobile ? 17 : 20}
                 style={{ marginBottom: "5px" }}
+                loading="lazy"
               />
             }
           />
@@ -86,6 +87,7 @@ function SocialLogins() {
               width={isMobile ? 17 : 20}
               height={isMobile ? 17 : 20}
               style={{ marginBottom: "4px" }}
+              loading="lazy"
             />
           }
         />

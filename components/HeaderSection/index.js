@@ -61,6 +61,7 @@ function HeaderSection({
                 cursor: "pointer",
                 marginBottom: isMobile || locale === "ar" ? "0px" : "-8px",
               }}
+              loading="lazy"
             />
           </Box>
         )}

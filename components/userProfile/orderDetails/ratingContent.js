@@ -44,6 +44,7 @@ function RatingContent({
           size="large"
           icon={
             <Image
+              loading="lazy"
               src={"/icons/yellow-star.svg"}
               alt="arrow"
               width={42}
@@ -53,6 +54,7 @@ function RatingContent({
           }
           emptyIcon={
             <Image
+              loading="lazy"
               src={"/icons/grey-star.svg"}
               alt="arrow"
               width={42}

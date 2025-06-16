@@ -146,6 +146,7 @@ function OrderAddress({
             onClick={() => setOpenChangeAddress(true)}
           >
             <Image
+              loading="lazy"
               src="/icons/arrow-left-sm.svg"
               width={isMobile ? 9 : 20}
               height={15}
@@ -199,6 +200,7 @@ function OrderAddress({
                   }}
                 >
                   <Image
+                    loading="lazy"
                     alt={address?.name}
                     src={"/icons/home-address.svg"}
                     width={isMobile ? 30 : 48}
@@ -302,6 +304,7 @@ function OrderAddress({
               text="addNewAddress"
               compBeforeText={
                 <Image
+                  loading="lazy"
                   alt="location"
                   width={20}
                   height={20}

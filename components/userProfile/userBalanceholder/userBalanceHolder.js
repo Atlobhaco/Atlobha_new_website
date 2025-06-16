@@ -24,6 +24,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
       >
         <div className={`${style["info"]}`}>
           <Image
+            loading="lazy"
             src="/imgs/user-profile.svg"
             width={isMobile ? 35 : 56}
             height={isMobile ? 35 : 56}
@@ -52,6 +53,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
       >
         <div className={`${style["text"]}`}>
           <Image
+            loading="lazy"
             src="/imgs/wallet-sm.svg"
             width={isMobile ? 20 : 30}
             height={isMobile ? 20 : 30}
@@ -66,6 +68,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
           </span>
         </div>
         <Image
+          loading="lazy"
           src="/icons/arrow-left-sm.svg"
           width={isMobile ? 9 : 12}
           height={12}

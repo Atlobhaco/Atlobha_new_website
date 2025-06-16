@@ -145,6 +145,7 @@ function Footer() {
               alt="at-email"
               width={20}
               height={20}
+              loading="lazy"
             />
             <span>info@atlobha.com</span>
           </div>
@@ -182,6 +183,7 @@ function Footer() {
                   width: "auto",
                   height: "auto",
                 }}
+                loading="lazy"
               />
             </Box>{" "}
             <span>
@@ -202,6 +204,7 @@ function Footer() {
                 src="/icons/social/twitter-yellow.svg"
                 width={26}
                 height={26}
+                loading="lazy"
               />
             </Link>
 
@@ -211,6 +214,7 @@ function Footer() {
                 src="/icons/social/instgram-yellow.svg"
                 width={26}
                 height={26}
+                loading="lazy"
               />
             </Link>
 
@@ -220,6 +224,7 @@ function Footer() {
                 src="/icons/social/tiktok-yellow.svg"
                 width={26}
                 height={26}
+                loading="lazy"
               />
             </Link>
 
@@ -233,6 +238,7 @@ function Footer() {
                 width={26}
                 height={26}
                 className="cursor-pointer"
+                loading="lazy"
               />
             </Link>
 
@@ -253,6 +259,7 @@ function Footer() {
                 width={26}
                 height={26}
                 className="cursor-pointer"
+                loading="lazy"
               />
             </Link>
           </Box>
@@ -268,6 +275,7 @@ function Footer() {
               width={isMobile ? 130 : 147}
               height={isMobile ? 40 : 57}
               onClick={() => router.push("/")}
+              loading="lazy"
             />
           </Box>
 
@@ -286,6 +294,7 @@ function Footer() {
                 alt="google-play"
                 width={108}
                 height={30}
+                loading="lazy"
               />
             </Link>
 
@@ -298,6 +307,7 @@ function Footer() {
                 alt="apple-store"
                 width={108}
                 height={30}
+                loading="lazy"
               />
             </Link>
           </Box>
@@ -354,6 +364,7 @@ function Footer() {
             Copyright © ATLOBHA. All rights reserved.
           </Box>
           <Image
+            loading="lazy"
             src="/icons/full-pay-images.svg"
             alt="pay"
             width={20}

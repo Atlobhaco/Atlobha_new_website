@@ -43,6 +43,7 @@ function Checkout() {
           <div className="col-12 mt-3">
             <div className="text-center p-5 mb-5">
               <Image
+                loading="lazy"
                 src="/icons/empty-basket.svg"
                 width={117}
                 height={106}

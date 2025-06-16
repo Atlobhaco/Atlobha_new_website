@@ -12,10 +12,9 @@ import Slider from "react-slick";
 
 function PartsImages() {
   const { isMobile } = useScreenSize();
-  const { t,locale } = useLocalization();
+  const { t, locale } = useLocalization();
   const [data, setData] = useState([]);
   const [isDragging, setIsDragging] = useState(false);
-
 
   useCustomQuery({
     name: "partenres-atlobha",
@@ -94,7 +93,7 @@ function PartsImages() {
       </Box>
 
       <Box sx={{ mt: 3, mb: 1 }}>
-	  <Slider {...settings}>
+        <Slider {...settings}>
           {data?.map((part, index) => (
             <Box
               key={part?.logo?.url + index}
@@ -105,6 +104,7 @@ function PartsImages() {
               }}
             >
               <Image
+                loading="lazy"
                 // onClick={() => {
                 //   if (!isDragging) {
                 //     router.push(`/manufacture/${part?.id}`);

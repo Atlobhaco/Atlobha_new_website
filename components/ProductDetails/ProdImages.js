@@ -42,6 +42,7 @@ function ProdImages({ prod }) {
         {imgArray?.map((img, index) => (
           <SwiperSlide key={img?.url}>
             <Image
+              loading="lazy"
               width={280}
               height={226}
               alt="prod-img"
@@ -113,6 +114,7 @@ function ProdImages({ prod }) {
               }}
             >
               <Image
+                loading="lazy"
                 onClick={() => swiperRef.current?.slideToLoop(index)}
                 width={90}
                 height={80}

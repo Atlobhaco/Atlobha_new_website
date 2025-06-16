@@ -98,6 +98,7 @@ function CarSelectionFromNavMobile({ setSelectCarPopUpModal = () => {} }) {
                   onClick={() => handleCheckboxChange(car)}
                 >
                   <Image
+                    loading="lazy"
                     alt={car?.brand?.name}
                     src={car?.brand?.image} // Car logo
                     width={isMobile ? 30 : 48}
