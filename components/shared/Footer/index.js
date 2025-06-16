@@ -153,7 +153,8 @@ function Footer() {
             onClick={() => {
               window.open(
                 `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
-                "_blank"
+                "_blank",
+                "noopener,noreferrer"
               );
               window.webengage.onReady(() => {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
