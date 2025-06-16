@@ -72,7 +72,8 @@ const AppContent = ({ Component, pageProps }) => {
       const loadingScreen = document?.getElementById("loading-screen");
       if (
         !router?.pathname?.includes("callback") &&
-        !router?.pathname?.includes("appleCallback")
+        !router?.pathname?.includes("appleCallback") &&
+        !router?.pathname?.includes("apple")
       ) {
         setTimeout(() => {
           loadingScreen.style.display = "none";

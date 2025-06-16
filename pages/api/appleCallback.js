@@ -17,8 +17,7 @@ export default async function handler(req, res) {
 
     if (!id_token) return res.status(400).end("Missing id_token");
 
-    // Redirect to client-side route and pass token via query or cookie
-    res.setHeader("Set-Cookie", `id_token=${id_token}; Path=/; HttpOnly`);
+    // Redirect to client-side route and pass token via query
     return res.redirect(
       302,
       `/auth/apple-callback-client/?id_token=${id_token}`
