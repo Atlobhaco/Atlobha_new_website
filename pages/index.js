@@ -23,17 +23,6 @@ import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
 import PartsImages from "@/components/spareParts/PartsImages";
 import { isAuth } from "@/config/hooks/isAuth";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
 export default function Home() {
   useBranch();
   const { isMobile } = useScreenSize();
