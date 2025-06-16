@@ -6,8 +6,6 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import Slider from "react-slick";
 
 function PartsImages() {
@@ -126,43 +124,6 @@ function PartsImages() {
             </Box>
           ))}
         </Slider>
-        {/* <Carousel
-          responsive={responsive}
-          infinite={true}
-          autoPlay
-          autoPlaySpeed={2000}
-          keyBoardControl
-          showDots={false}
-          arrows={false}
-          customTransition="all 2s linear"
-          minimumTouchDrag={80}
-          draggable={false}
-        >
-          {data?.map((part, index) => (
-            <Box
-              key={part?.logo?.url + index}
-              sx={{
-                display: "flex",
-                alignItems: "end",
-                justifyContent: "end",
-              }}
-            >
-              <Image
-                src={part?.logo?.url}
-                alt={part?.logo?.url}
-                width={isMobile ? 50 : 113}
-                height={isMobile ? 47 : 106}
-                style={{
-                  width: "auto",
-                  height: "auto",
-                  margin: "auto",
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                }}
-              />
-            </Box>
-          ))}
-        </Carousel> */}
       </Box>
     </Box>
   );
