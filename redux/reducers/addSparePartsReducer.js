@@ -83,9 +83,14 @@ export const addSparePartsReducer = createSlice({
           state.selectedParts.push(incomingPart);
         }
       });
+      localStorage.setItem(
+        "sparePartsProducts",
+        JSON.stringify(state.selectedParts)
+      );
     },
     clearSpareParts: (state, action) => {
       state.selectedParts = [];
+      localStorage.removeItem("sparePartsProducts");
     },
   },
   extraReducers: (builder) => {
@@ -107,6 +112,10 @@ export const addSparePartsReducer = createSlice({
         }
 
         state.isLoading = false;
+        localStorage.setItem(
+          "sparePartsProducts",
+          JSON.stringify(state.selectedParts)
+        );
       })
       .addCase(fetchPartDetails.rejected, (state, action) => {
         state.isLoading = false;

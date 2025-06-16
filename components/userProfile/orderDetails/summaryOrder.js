@@ -327,7 +327,7 @@ function SummaryOrder({
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.productsPrice}</Box>
+        <Box sx={text}>{t.priceWithoutVat}</Box>
         <Box sx={text}>
           {orderDetails?.parts?.length
             ? orderDetails?.parts

@@ -461,5 +461,6 @@
   "dontShowAgain": "Do not show this message again",
   "paletteInfo": "palette data",
   "extraData": "additional data",
-  "loginSuccess": "Login successfully"
+  "loginSuccess": "Login successfully",
+  "priceWithoutVat": "Price (Exculding VAT)"
 }

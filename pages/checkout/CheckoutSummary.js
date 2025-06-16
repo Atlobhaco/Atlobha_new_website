@@ -383,17 +383,9 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.productsPrice}</Box>
+        <Box sx={text}>{t.priceWithoutVat}</Box>
         <Box sx={text}>
-          {basket
-            ?.filter((item) => item?.product?.is_active)
-            ?.map((d) => ({ total_price: d?.quantity * d?.product?.price }))
-            ?.reduce(
-              (accumulator, current) => accumulator + current.total_price,
-              0
-            )
-            ?.toFixed(2)}{" "}
-          {riyalImgBlack()}
+          {calculateReceiptResFromMainPage?.subtotal} {riyalImgBlack()}
         </Box>
       </Box>
       {/* discount */}
@@ -447,8 +439,14 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.totalSum}</Box>
         <Box sx={text}>
-          {(calculateReceiptResFromMainPage?.total_price ??
-            receipt?.total_price) === receipt?.total_price
+          {+calculateReceiptResFromMainPage?.discount > 0
+            ? (
+                +calculateReceiptResFromMainPage?.tax +
+                +calculateReceiptResFromMainPage?.subtotal +
+                +calculateReceiptResFromMainPage?.delivery_fees
+              )?.toFixed(2)
+            : (calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
             ? receipt?.total_price
             : calculateReceiptResFromMainPage?.total_price}{" "}
           {riyalImgBlack()}

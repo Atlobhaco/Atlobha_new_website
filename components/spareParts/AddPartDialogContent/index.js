@@ -46,31 +46,39 @@ function AddPartDialogContent({
   const handleImageUpload = (event) => {
     const file = event.currentTarget.files[0];
 
-    if (file) {
-      // Validate file type
-      const validTypes = ["image/jpeg", "image/jpg", "image/png"];
-      if (!validTypes.includes(file?.type)) {
-        toast.error(t.fileNotSupported);
-        return;
-      }
+    if (!file) return;
+
+    // Validate file type
+    const validTypes = ["image/jpeg", "image/jpg", "image/png"];
+    if (!validTypes.includes(file.type)) {
+      toast.error(t.fileNotSupported);
+      return;
     }
 
-    const maxSize = 2 * 1024 * 1024; // 2MB in bytes
-    if (file?.size > maxSize) {
+    // Validate file size (max 2MB)
+    const maxSize = 2 * 1024 * 1024;
+    if (file.size > maxSize) {
       toast.error(t.fileSizeLarge);
       return;
     }
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      //   setUploadedImage(imageUrl);
+    const imageUrl = URL.createObjectURL(file);
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64Image = reader.result;
+
       setAddedPart({
         ...addedPart,
         imgSrc: imageUrl,
-        imgName: file?.name,
+        imgName: file.name,
         imgFile: file,
+        imgBase64: base64Image, // ✅ this is your base64
       });
-    }
+    };
+
+    reader.readAsDataURL(file); // ✅ trigger base64 conversion
   };
 
   const handleClearImage = () => {

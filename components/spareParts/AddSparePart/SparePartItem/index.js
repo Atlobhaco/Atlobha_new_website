@@ -41,7 +41,8 @@ function SparePartItem({ data, showPrice = false }) {
         <Image
           src={
             data?.image ||
-            (data?.imgSrc ? data?.imgSrc : "/imgs/no-img-holder.svg")
+            data?.imgBase64 ||
+            (data?.imgBase64 ? data?.imgBase64 : "/imgs/no-img-holder.svg")
           }
           width={isMobile ? 50 : 100}
           height={isMobile ? 50 : 100}

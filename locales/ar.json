@@ -254,7 +254,7 @@
   "additionaldiscount": "خصم اضافي",
   "deliveryFees": "رسوم التوصيل",
   "payFromBlanace": "المدفوع من الرصيد",
-  "totalSum": "المجموع الكلي",
+  "totalSum": "السعر الكلي",
   "offerDiscount": "خصم العروض",
   "include": "يشمل",
   "vatPercentage": "ضريبة القيمة المضافة",
@@ -459,5 +459,6 @@
   "dontShowAgain": "عدم اظهار الرسالة مرة اخري",
   "paletteInfo": "بيانات اللوحة",
   "extraData": "بيانات إضافية",
-  "loginSuccess": "تم التسجيل بنجاح"
+  "loginSuccess": "تم التسجيل بنجاح",
+  "priceWithoutVat":"السعر (غير شامل الضريبة)"
 }

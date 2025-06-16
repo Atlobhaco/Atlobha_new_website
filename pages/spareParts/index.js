@@ -78,12 +78,19 @@ function SpareParts() {
     name: "",
   };
   const [addedPart, setAddedPart] = useState(defaultValue);
-
   //  clear the part that may be selected from order details
   useEffect(() => {
     if (selectedParts?.some((obj) => obj.showPrice === true)) {
       dispatch(clearSpareParts());
     }
+	// check if sparePartsProducts saved in localStorage for reload happen in (social login)
+    const sparePartProducts = JSON.parse(
+      localStorage.getItem("sparePartsProducts")
+    );
+    if (sparePartProducts && sparePartProducts?.length) {
+      dispatch(addOrUpdateSparePart(sparePartProducts));
+    }
+
     window.webengage.onReady(() => {
       webengage.track("SPAREPARTS_VIEWED", {
         event_status: true,
@@ -162,6 +169,7 @@ function SpareParts() {
         dispatch(addOrUpdateSparePart({ ...singlePart, delete: true }))
       );
       dispatch(setPromoCodeForSpareParts({ data: null }));
+      dispatch(clearSpareParts());
     },
     onError: (err) => {
       if (err?.response?.data?.error?.includes("phone")) {
