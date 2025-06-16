@@ -55,7 +55,7 @@ function SocialLogins() {
   return (
     <>
       <Box sx={{ mb: 2 }}>
-        {(checkApplePayAvailability() || true) && (
+        {checkApplePayAvailability() && (
           <SharedBtn
             text="appleLogin"
             className="grey-btn"
