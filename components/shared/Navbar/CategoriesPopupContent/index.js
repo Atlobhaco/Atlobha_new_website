@@ -1,5 +1,5 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -11,6 +11,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { useDispatch } from "react-redux";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
+import ProductCardSkeleton from "@/components/cardSkeleton";
 
 const active = {
   border: "1px solid #F9DD4B",
@@ -44,6 +45,7 @@ function CategoriesPopupcontent({
   const { isMobile } = useScreenSize();
   const [appGroups, setAppGroups] = useState([]);
   const [mainGroups, setMainGroups] = useState([]);
+  const [fakeLoaderAppear, setFakeLoaderAppear] = useState(true);
 
   const sectionService = {
     display: "flex",
@@ -132,6 +134,9 @@ function CategoriesPopupcontent({
           setOpenCategories(true);
         }
       }, 500);
+      setTimeout(() => {
+        setFakeLoaderAppear(false);
+      }, 1500);
       dispatch(setAllGroups(res));
     },
     onError: () => {
@@ -250,29 +255,37 @@ function CategoriesPopupcontent({
               </Grid>
             ) : (
               <Grid item key={`${sec?.id}-${index}`} size={{ xs: 4, md: 2 }}>
-                <Box
-                  onClick={() => {
-                    router.push(
-                      `/sections?secTitle=${sec?.title}&&secType=${sec?.type}`
-                    );
-                    setTimeout(() => {
-                      setOpenCategories(false);
-                    }, 150);
-                  }}
-                  sx={{
-                    ...sectionService,
-                    background: `url(${
-                      returnImgDependOnId(sec?.id) || "/imgs/remote-car.svg"
-                    })`,
-                    backgroundSize: "cover",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundColor:
-                      sec?.background_color || returnBgColorDependOnId(sec?.id),
-                  }}
-                >
-                  <Box sx={sectionServiceTitle}>{sec?.title}</Box>
-                </Box>
+                {fakeLoaderAppear ? (
+                  <ProductCardSkeleton
+                    height={"200px"}
+                    customMarginBottom="0px"
+                  />
+                ) : (
+                  <Box
+                    onClick={() => {
+                      router.push(
+                        `/sections?secTitle=${sec?.title}&&secType=${sec?.type}`
+                      );
+                      setTimeout(() => {
+                        setOpenCategories(false);
+                      }, 150);
+                    }}
+                    sx={{
+                      ...sectionService,
+                      background: `url(${
+                        returnImgDependOnId(sec?.id) || "/imgs/remote-car.svg"
+                      })`,
+                      backgroundSize: "cover",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "center",
+                      backgroundColor:
+                        sec?.background_color ||
+                        returnBgColorDependOnId(sec?.id),
+                    }}
+                  >
+                    <Box sx={sectionServiceTitle}>{sec?.title}</Box>
+                  </Box>
+                )}
               </Grid>
             );
           })}
