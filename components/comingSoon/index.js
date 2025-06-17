@@ -23,7 +23,6 @@ function ComingSoon() {
             src="/logo/ar-en-road-atlobha.svg"
             width={isMobile ? 180 : 276}
             height={isMobile ? 30 : 40}
-            priority={false}
             loading="lazy"
           />
         </Box>
@@ -33,7 +32,6 @@ function ComingSoon() {
             src="/imgs/maintance-man.svg"
             width={isMobile ? 220 : 346}
             height={isMobile ? 160 : 231}
-            priority={true}
             loading="lazy"
             style={{
               zIndex: 1,
@@ -49,7 +47,6 @@ function ComingSoon() {
             src="/icons/pattern.png"
             width={isMobile ? 220 : 346}
             height={isMobile ? 142 : 189}
-            priority={false}
             loading="lazy"
             style={{
               position: "absolute",
@@ -120,7 +117,6 @@ function ComingSoon() {
             src="/icons/social/twitter.svg"
             width={28}
             height={28}
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -131,7 +127,6 @@ function ComingSoon() {
             src="/icons/social/insta.svg"
             width={28}
             height={28}
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -142,7 +137,6 @@ function ComingSoon() {
             src="/icons/social/tiktok.svg"
             width={28}
             height={28}
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -154,7 +148,6 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -176,7 +169,6 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -201,7 +193,6 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
-            priority={false}
             loading="lazy"
           />
         </Link>
@@ -219,7 +210,6 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
-            priority={false}
             loading="lazy"
           />
         </Link>
