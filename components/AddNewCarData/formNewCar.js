@@ -38,7 +38,7 @@ function FormNewCar({
     background: "white",
     borderRadius: "9px",
     border: "1.5px solid #B3B3B3",
-    width: isMobile ? "245px" : "320px",
+    width: isMobile ? "100%" : "325px",
     height: isMobile ? "70px" : "90px",
     display: "flex",
     alignItems: "center",

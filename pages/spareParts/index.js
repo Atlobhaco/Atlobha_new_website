@@ -60,7 +60,9 @@ function SpareParts() {
   const [migrationStep, setMigrationStep] = useState(1);
   const [otpCode, setOtpCode] = useState("");
   const [phoneNum, setPhoneNum] = useState(false);
-  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+  const { selectedCar, defaultCar, allCars } = useSelector(
+    (state) => state.selectedCar
+  );
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -83,7 +85,7 @@ function SpareParts() {
     if (selectedParts?.some((obj) => obj.showPrice === true)) {
       dispatch(clearSpareParts());
     }
-	// check if sparePartsProducts saved in localStorage for reload happen in (social login)
+    // check if sparePartsProducts saved in localStorage for reload happen in (social login)
     const sparePartProducts = JSON.parse(
       localStorage.getItem("sparePartsProducts")
     );
@@ -99,35 +101,37 @@ function SpareParts() {
   }, []);
 
   useEffect(() => {
-    let car = selectedCar?.id ? selectedCar : defaultCar;
-    if (!car?.brand?.enabled_for_spare_parts && isAuth()) {
-      const stored = localStorage.getItem("carLimitSupport");
+    if (allCars?.length) {
+      let car = selectedCar?.id ? selectedCar : defaultCar;
+      if (!car?.brand?.enabled_for_spare_parts && isAuth()) {
+        const stored = localStorage.getItem("carLimitSupport");
 
-      if (!stored) {
-        // Show popup for the first time
-        setTimeout(() => {
-          setOpenLimitDontShow(true);
-        }, 2000);
-        return;
-      }
-
-      try {
-        const parsed = JSON.parse(stored);
-
-        const isSameCar = parsed.openedWithChaseNum === car?.chassis_no;
-        const dontShowAgain = parsed.dontShowAgain === "true";
-
-        // never open if dont show again is selected
-        if (dontShowAgain) {
-          return setOpenLimitDontShow(false);
+        if (!stored) {
+          // Show popup for the first time
+          setTimeout(() => {
+            setOpenLimitDontShow(true);
+          }, 2000);
+          return;
         }
-        if (!isSameCar) {
-          // Show popup if it's a new car or user hasn’t opted out
-          setOpenLimitDontShow(true);
+
+        try {
+          const parsed = JSON.parse(stored);
+
+          const isSameCar = parsed.openedWithChaseNum === car?.chassis_no;
+          const dontShowAgain = parsed.dontShowAgain === "true";
+
+          // never open if dont show again is selected
+          if (dontShowAgain) {
+            return setOpenLimitDontShow(false);
+          }
+          if (!isSameCar) {
+            // Show popup if it's a new car or user hasn’t opted out
+            setOpenLimitDontShow(true);
+          }
+        } catch (e) {
+          console.error("Invalid carLimitSupport data", e);
+          setOpenLimitDontShow(true); // fallback to showing
         }
-      } catch (e) {
-        console.error("Invalid carLimitSupport data", e);
-        setOpenLimitDontShow(true); // fallback to showing
       }
     }
   }, [selectedCar, defaultCar]);

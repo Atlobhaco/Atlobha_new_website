@@ -126,7 +126,6 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       }, 1000);
     },
     onError: (err) => {
-      console.log(err);
       setRedirectToPayfort(false);
       if (err?.response?.data?.error?.includes("phone")) {
         setOpenAddMobile(true);
