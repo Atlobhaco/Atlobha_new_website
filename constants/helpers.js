@@ -150,6 +150,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.credit:
       return (
         <Image
+          loading="lazy"
           //   src="/icons/payments/master-card.svg"
           src="/icons/payments/credit-cards.svg"
           alt="credit-card"
@@ -160,6 +161,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.applePay:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/apple-pay.svg"
           alt="apple-pay"
           width={isMobile ? 65 : 100}
@@ -169,6 +171,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.stcPay:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/stc-pay.svg"
           alt="stc-pay"
           width={isMobile ? 65 : 100}
@@ -178,6 +181,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.installment:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/sadad-pay.svg"
           alt="sadad-pay"
           width={isMobile ? 65 : 100}
@@ -187,6 +191,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.banktransfer:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/visa-pay.svg"
           alt="visa-pay"
           width={isMobile ? 65 : 100}
@@ -196,6 +201,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.tabby:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/tabby-pay.svg"
           alt="tabbby"
           width={isMobile ? 65 : 100}
@@ -205,6 +211,7 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.wallet:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/wallet.svg"
           alt="wallet-pay"
           width={isMobile ? 65 : 100}
@@ -214,15 +221,17 @@ export const availablePaymentMethodImages = (
     case PAYMENT_METHODS?.cash:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/cash-pay.svg"
           alt="cash-pay"
           width={isMobile ? 65 : 100}
           height={isMobile ? 26 : 40}
         />
       );
-	  case PAYMENT_METHODS?.tamara:
+    case PAYMENT_METHODS?.tamara:
       return (
         <Image
+          loading="lazy"
           src="/icons/payments/tamara-pay.svg"
           alt="cash-pay"
           width={isMobile ? 65 : 100}
@@ -309,7 +318,7 @@ export const availablePaymentMethodText = (
           {t.payMethods[`CASH`]}
         </Box>
       );
-	  case PAYMENT_METHODS?.tamara:
+    case PAYMENT_METHODS?.tamara:
       return (
         <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
           {t.payMethods[`tamara`]}
@@ -381,17 +390,30 @@ export const generateSignatureApplePay = (params) => {
 /* -------------------------------------------------------------------------- */
 export const riyalImgBlack = () => {
   return (
-    <Image src="/icons/riyal-black.svg" width={20} height={20} alt="riyal" />
+    <Image
+      loading="lazy"
+      src="/icons/riyal-black.svg"
+      width={20}
+      height={20}
+      alt="riyal"
+    />
   );
 };
 export const riyalImgRed = () => {
   return (
-    <Image src="/icons/riyal-red.svg" width={20} height={20} alt="riyal-red" />
+    <Image
+      loading="lazy"
+      src="/icons/riyal-red.svg"
+      width={20}
+      height={20}
+      alt="riyal-red"
+    />
   );
 };
 export const riyalImgOrange = () => {
   return (
     <Image
+      loading="lazy"
       src="/icons/riyal-orange.svg"
       width={20}
       height={20}
@@ -402,6 +424,7 @@ export const riyalImgOrange = () => {
 export const riyalImgGrey = (width, height) => {
   return (
     <Image
+      loading="lazy"
       src="/icons/riyal-grey.svg"
       width={width || 20}
       height={height || 20}
@@ -433,4 +456,77 @@ export const prodTypeArray = () => {
     id: value,
     name: t.types[`${value}`],
   }));
+};
+/* -------------------------------------------------------------------------- */
+/*                       webengage add remove from cart                       */
+/* -------------------------------------------------------------------------- */
+export const addRemoveFromCartEngage = ({
+  prod,
+  action,
+  productInsideBasket,
+}) => {
+  const qty = () => {
+    if (action === "increment") {
+      return (productInsideBasket?.quantity || 0) + 1;
+    }
+    if (action === "decrement") {
+      return productInsideBasket?.quantity - 1;
+    }
+    if (action === "delete") {
+      return 0;
+    }
+  };
+
+  const actions = () => {
+    if (action === "decrement" || action === "delete") {
+      return "REMOVE_FROM_CART";
+    } else {
+      return "ADD_TO_CART";
+    }
+  };
+
+  window.webengage.onReady(() => {
+    webengage.track(actions(), {
+      product_name: prod?.name || "",
+      product_image: prod?.image || "",
+      product_id: prod?.id || "",
+      price: prod?.price || "",
+      car_brand: prod?.brand?.name || "",
+      car_model: prod?.model?.name || "",
+      car_year: prod?.year || "",
+      reference_number: prod?.ref_num || "",
+      category: prod?.marketplace_category?.name || "",
+      quantity: qty() || 0,
+      product_url: `/product/${prod?.id}` || "",
+    });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                        latest updated cart webengage                       */
+/* -------------------------------------------------------------------------- */
+
+export const latestUpdatedCart = (basket = []) => {
+  const activeItems = basket.filter((item) => item?.product?.is_active);
+  const totalOfBasket = activeItems
+    .reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+    .toFixed(2);
+
+  const itemsMapping = activeItems.map((item) => ({
+    Id: item?.product?.id || "",
+    Title: item?.product?.name || "",
+    Price: item?.product?.price || "",
+    Quantity: item?.quantity || "",
+    Image: item?.product?.image || "",
+  }));
+
+  if (typeof window.webengage === "undefined") return;
+
+  window.webengage?.onReady(() => {
+    webengage.track("CART_UPDATED", {
+      total: totalOfBasket,
+      number_of_products: activeItems.length,
+      line_items: itemsMapping,
+    });
+  });
 };

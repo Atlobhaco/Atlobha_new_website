@@ -128,6 +128,7 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
             }}
           >
             <Image
+              loading="lazy"
               alt={address?.name}
               src={"/icons/home-address.svg"}
               width={isMobile ? 30 : 48}
@@ -224,6 +225,7 @@ function ShowAddressesFromNavbarMobile({ setSelectCarPopUpModal = () => {} }) {
           }}
         >
           <Image
+            loading="lazy"
             alt={"GPS"}
             src={"/icons/gps-detector.svg"}
             width={isMobile ? 30 : 48}

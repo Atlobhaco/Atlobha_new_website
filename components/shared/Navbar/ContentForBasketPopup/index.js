@@ -19,6 +19,7 @@ function ContentForBasket({ handleCloseBasket = () => {} }) {
       {!basket?.length ? (
         <div className="text-center">
           <Image
+            loading="lazy"
             src="/icons/empty-basket.svg"
             width={117}
             height={106}

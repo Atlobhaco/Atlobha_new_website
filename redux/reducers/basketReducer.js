@@ -2,6 +2,7 @@ import { CART } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { addRemoveFromCartEngage, latestUpdatedCart } from "../../constants/helpers";
 
 const BASE_URL = CART;
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}${BASE_URL}`;
@@ -22,18 +23,20 @@ const requestHandler = async (method, endpoint, data = {}) => {
   });
 };
 
-// ➤ Fetch Cart
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
   async (_, { rejectWithValue }) => {
     if (isAuth()) {
       try {
-        return (await requestHandler("get", "")).data;
+        const response = await requestHandler("get", "");
+        const data = response.data;
+        latestUpdatedCart(data?.data);
+        return data;
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
       }
     } else {
-      return rejectWithValue(error.response?.data || "no logged in user");
+      return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
     }
   }
 );
@@ -79,8 +82,15 @@ export const addItemAsync = createAsyncThunk(
         ];
 
         await requestHandler("post", "", { products });
-
         dispatch(fetchCartAsync());
+
+        addRemoveFromCartEngage({
+          prod: payload?.product,
+          action: "increment",
+          productInsideBasket: {
+            quantity: payload?.quantity - 1,
+          },
+        });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to add items");
       }
@@ -112,6 +122,16 @@ export const updateItemQuantityAsync = createAsyncThunk(
   ) => {
     if (isAuth()) {
       try {
+        const state = getState();
+        const allProdDetailsBeforeUpdate = state.basket?.basket?.find(
+          (d) => d?.product_id === product_id
+        );
+        addRemoveFromCartEngage({
+          prod: allProdDetailsBeforeUpdate?.product,
+          action: actionType,
+          productInsideBasket: allProdDetailsBeforeUpdate,
+        });
+
         await requestHandler("put", `/${actionType}`, { product_id });
         dispatch(fetchCartAsync());
       } catch (error) {
@@ -158,8 +178,19 @@ export const deleteItemAsync = createAsyncThunk(
   async ({ product_id }, { dispatch, getState, rejectWithValue }) => {
     if (isAuth()) {
       try {
+        const state = getState();
         await requestHandler("delete", "/delete", { product_id });
         dispatch(fetchCartAsync());
+
+        const allProdDetailsBeforeUpdate = state.basket?.basket?.find(
+          (d) => d?.product_id === product_id
+        );
+
+        addRemoveFromCartEngage({
+          prod: allProdDetailsBeforeUpdate?.product,
+          action: "delete",
+          productInsideBasket: allProdDetailsBeforeUpdate,
+        });
       } catch (error) {
         return rejectWithValue(error.response?.data || "Failed to delete item");
       }

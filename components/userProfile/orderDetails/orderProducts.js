@@ -195,6 +195,7 @@ function OrderProducts({
                     className={`${style["details-parts_imgHolder"]}`}
                   >
                     <Image
+                      loading="lazy"
                       onError={(e) =>
                         (e.target.srcset = "/imgs/no-img-holder.svg")
                       }
@@ -244,6 +245,7 @@ function OrderProducts({
         }}
       >
         <Image
+          loading="lazy"
           src={largeImage}
           width={500}
           height={500}

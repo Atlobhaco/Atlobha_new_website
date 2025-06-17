@@ -93,6 +93,7 @@ function OtpView({
         }}
       >
         <Image
+          loading="lazy"
           alt="back"
           src={"/icons/arrow_right.svg"}
           width={26}

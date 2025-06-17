@@ -65,49 +65,50 @@ function AdvertiseHint() {
   }, [informativeMsg]);
 
   return informativeMsg?.is_active ? (
-    <Box
-      ref={containerRef}
-      sx={{
-        background: bgColor(informativeMsg?.type),
-        color: "white",
-        display: "flex",
-        height: isMobile ? "25px" : "30px",
-        padding: isMobile ? "3px 4px" : "6px 10px",
-        alignItems: "center",
-        maxWidth: isMobile ? "200px" : "300px",
-        gap: "10px",
-        borderRadius: "4px",
-        fontWeight: "500",
-        fontSize: isMobile ? "10px" : "14px",
-        overflow: "hidden",
-        position: "relative",
-        "&:hover span": {
-          animationPlayState: "paused",
-        },
-      }}
-    >
+    <>
       <Box
-        ref={textRef}
-        component="span"
+        ref={containerRef}
         sx={{
-          textAlign: "center",
-          width: "fit-content",
-          minWidth: "90%",
-          display: "inline-block",
-          whiteSpace: "nowrap",
-          ...(isScrollingNeeded && {
-            animation: "slide 10s linear infinite",
-            animationPlayState: "running",
-          }),
+          background: bgColor(informativeMsg?.type),
+          color: "white",
+          display: "flex",
+          height: isMobile ? "25px" : "30px",
+          padding: isMobile ? "3px 4px" : "6px 10px",
+          alignItems: "center",
+          maxWidth: isMobile ? "200px" : "369px",
+          gap: "10px",
+          borderRadius: "4px",
+          fontWeight: "500",
+          fontSize: isMobile ? "10px" : "14px",
+          overflow: "hidden",
+          position: "relative",
+          "&:hover span": {
+            animationPlayState: "paused",
+          },
         }}
       >
-        {informativeMsg?.body}
-      </Box>
+        <Box
+          ref={textRef}
+          component="span"
+          sx={{
+            textAlign: "center",
+            width: "fit-content",
+            width: "unset",
+            display: "inline-block",
+            whiteSpace: "nowrap",
+            ...(isScrollingNeeded && {
+              animation: "slide 20s linear infinite",
+              animationPlayState: "running",
+            }),
+          }}
+        >
+          {informativeMsg?.body}
+        </Box>
 
-      {/* Define the keyframes for animation */}
-      {isScrollingNeeded && (
-        <style>
-          {`
+        {/* Define the keyframes for animation */}
+        {isScrollingNeeded && (
+          <style>
+            {`
             @keyframes slide {
               0% {
                 transform: translateX(${locale === "en" ? "100%" : "-100%"});
@@ -117,9 +118,10 @@ function AdvertiseHint() {
               }
             }
           `}
-        </style>
-      )}
-    </Box>
+          </style>
+        )}
+      </Box>
+    </>
   ) : null;
 }
 

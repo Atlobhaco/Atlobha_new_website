@@ -124,7 +124,10 @@ function CategoriesPopupcontent({
         if (
           !route?.includes("myOrders") &&
           !route?.includes("confirmation") &&
-          !mobileScreen
+          !mobileScreen &&
+          !route?.includes("callback") &&
+          !route?.includes("appleCallback") &&
+          !route?.includes("apple")
         ) {
           setOpenCategories(true);
         }
@@ -232,6 +235,7 @@ function CategoriesPopupcontent({
                       width={160}
                     /> */}
                     <Image
+                      loading="lazy"
                       alt="img"
                       src={sec?.image || "/icons/menu-1.svg"}
                       height={100}
@@ -257,7 +261,12 @@ function CategoriesPopupcontent({
                   }}
                   sx={{
                     ...sectionService,
-                    background: `url(${returnImgDependOnId(sec?.id)})`,
+                    background: `url(${
+                      returnImgDependOnId(sec?.id) || "/imgs/remote-car.svg"
+                    })`,
+                    backgroundSize: "cover",
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "center",
                     backgroundColor:
                       sec?.background_color || returnBgColorDependOnId(sec?.id),
                   }}

@@ -4,7 +4,7 @@ import MetaTags from "@/components/shared/MetaTags";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import ProdImages from "../../../components/ProductDetails/ProdImages";
 import ManufactureData from "../../../components/ProductDetails/ManufactureData";
@@ -38,6 +38,27 @@ function ProductDetails() {
       toast.error(t.someThingWrong);
     },
   });
+
+  useEffect(() => {
+    if (idProd && data?.name) {
+      window.webengage.onReady(() => {
+        webengage.track("PRODUCT_VIEWED", {
+          product_id: data?.id || "",
+          product_name: data?.name || "",
+          product_image: data?.image || "",
+          price: data?.price || "",
+          car_brand: data?.brand?.name || "",
+          car_model: data?.model?.name || "",
+          car_year: data?.year_from || "",
+          reference_number: data?.ref_num || "",
+          product_details: data?.desc || "",
+          installation_available: false || "",
+          category: data?.marketplace_category?.name || "",
+          product_url: `/product/${idProd}` || "",
+        });
+      });
+    }
+  }, [idProd, data]);
 
   return (
     <Box>

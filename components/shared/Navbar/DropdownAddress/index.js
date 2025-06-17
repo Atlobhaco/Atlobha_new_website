@@ -182,6 +182,7 @@ function DropDownAddress() {
               text="addNewAddress"
               compBeforeText={
                 <Image
+                  loading="lazy"
                   alt="location"
                   width={20}
                   height={20}

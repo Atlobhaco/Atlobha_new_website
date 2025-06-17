@@ -24,6 +24,7 @@ function VinNumIInfo() {
     <>
       <Box>
         <Image
+          loading="lazy"
           src="/imgs/vin-instruction.svg"
           alt="chase-vin"
           width={335}

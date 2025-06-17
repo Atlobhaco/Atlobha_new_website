@@ -59,6 +59,7 @@ function EnterPhoneStep({ setPhoneNum, canUseLoad, setOpenAddMobile }) {
       {isMobile ? (
         <Box sx={closeHolder}>
           <Image
+            loading="lazy"
             onClick={() => {
               setOpenAddMobile(false);
               setPhoneNum(false);
@@ -82,6 +83,7 @@ function EnterPhoneStep({ setPhoneNum, canUseLoad, setOpenAddMobile }) {
       >
         {!isMobile && (
           <Image
+            loading="lazy"
             src="/imgs/add-phone.svg"
             width={122}
             height={102}

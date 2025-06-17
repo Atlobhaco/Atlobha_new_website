@@ -32,6 +32,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
         }
       >
         <Image
+          loading="lazy"
           src={product?.image || "/imgs/no-prod-img.svg"}
           alt="Product"
           width={200}
@@ -66,9 +67,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           {product?.price_before_discount
             ? product?.offer_price?.toFixed(2)
             : product?.price?.toFixed(2)}
-          {product?.price_before_discount?.toFixed(2)
-            ? riyalImgRed()
-            : riyalImgOrange()}
+          {product?.price_before_discount ? riyalImgRed() : riyalImgOrange()}
         </Box>
 
         {!!product?.price_before_discount && (

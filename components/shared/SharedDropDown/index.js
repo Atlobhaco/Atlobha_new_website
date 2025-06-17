@@ -194,6 +194,7 @@ function SharedDropDown({
               >
                 {item?.image && (
                   <Image
+                    loading="lazy"
                     src={item?.image}
                     alt={item.name}
                     width={isMobile ? 24 : 30}

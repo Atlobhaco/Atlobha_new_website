@@ -169,6 +169,7 @@ function SharedDatePicker({
           }}
         />
         <Image
+          loading="lazy"
           src="/icons/date-picker-icon.svg"
           alt="icon"
           width={22}

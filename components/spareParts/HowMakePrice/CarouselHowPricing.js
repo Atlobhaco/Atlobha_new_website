@@ -44,7 +44,7 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
       setCarouselInterval(3000);
     }, 5000);
   };
-  
+
   return (
     <Box>
       <Carousel
@@ -114,6 +114,7 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
             onMouseLeave={() => setHovered(false)} // Resume when hover ends
           >
             <Image
+              loading="lazy"
               width={335}
               height={200}
               className="d-block w-100"

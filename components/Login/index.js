@@ -20,6 +20,7 @@ import { AUTH, REGISTER } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { saveUser } from "@/redux/reducers/authReducer";
+import SocialLogins from "./socialLogins";
 
 const Root = styled("div")(({ theme }) => ({
   width: "90%",
@@ -170,6 +171,7 @@ function Login({
   const containerStyle = {
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
+
   return (
     <DialogCentered
       actionsWhenClose={() => {
@@ -198,6 +200,7 @@ function Login({
                   alt="logo"
                   width={103}
                   height={103}
+                  loading="lazy"
                 />
               </Box>
               <Box
@@ -212,40 +215,8 @@ function Login({
               >
                 {t.loginNow}
               </Box>
-              <Box sx={{ mb: 2 }}>
-                {checkApplePayAvailability() && (
-                  <SharedBtn
-                    text="appleLogin"
-                    className="grey-btn"
-                    customClass="w-100"
-                    compBeforeText={
-                      <Image
-                        src="/icons/apple-sm.svg"
-                        alt="logo"
-                        width={20}
-                        height={20}
-                        style={{ marginBottom: "5px" }}
-                      />
-                    }
-                  />
-                )}
-              </Box>
-              <Box sx={{ mb: 3 }}>
-                <SharedBtn
-                  text="googleLogin"
-                  className="grey-btn"
-                  customClass="w-100"
-                  compBeforeText={
-                    <Image
-                      src="/icons/google-sm.svg"
-                      alt="logo"
-                      width={20}
-                      height={20}
-                      style={{ marginBottom: "4px" }}
-                    />
-                  }
-                />
-              </Box>
+              {/* buttons for social login */}
+              <SocialLogins />
             </Box>
             <Root>
               <Divider>{t.or}</Divider>

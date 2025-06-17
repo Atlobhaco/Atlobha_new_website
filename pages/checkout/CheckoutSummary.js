@@ -126,7 +126,6 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
       }, 1000);
     },
     onError: (err) => {
-      console.log(err);
       setRedirectToPayfort(false);
       if (err?.response?.data?.error?.includes("phone")) {
         setOpenAddMobile(true);
@@ -214,10 +213,6 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
   requestData.signature = generateSignature(
     requestData,
     process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
-  );
-  console.log(
-    "calculateReceiptResFromMainPage",
-    calculateReceiptResFromMainPage
   );
 
   /* -------------------------------------------------------------------------- */
@@ -353,22 +348,43 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
     session.begin();
   };
 
+  const handleWebengageCheckoutClicked = () => {
+    const total =
+      basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.map((d) => ({
+          total_price: d?.quantity * d?.product?.price,
+        }))
+        ?.reduce((accumulator, current) => accumulator + current.total_price, 0)
+        ?.toFixed(2) || 0;
+
+    const itemsMaping = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.map((bas) => ({
+        Id: bas?.product?.id || "",
+        Title: bas?.product?.name || "",
+        Price: bas?.product?.price || "",
+        Quantity: bas?.quantity || "",
+        Image: bas?.product?.image || "",
+      }));
+    window.webengage.onReady(() => {
+      webengage.track("CART_CHECKOUT_CLICKED", {
+        total_price: total,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
+    });
+  };
+
   return (
     <Box sx={{ pt: 1 }}>
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.productsPrice}</Box>
+        <Box sx={text}>{t.priceWithoutVat}</Box>
         <Box sx={text}>
-          {basket
-            ?.filter((item) => item?.product?.is_active)
-            ?.map((d) => ({ total_price: d?.quantity * d?.product?.price }))
-            ?.reduce(
-              (accumulator, current) => accumulator + current.total_price,
-              0
-            )
-            ?.toFixed(2)}{" "}
-          {riyalImgBlack()}
+          {calculateReceiptResFromMainPage?.subtotal} {riyalImgBlack()}
         </Box>
       </Box>
       {/* discount */}
@@ -404,12 +420,32 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
           {riyalImgBlack()}
         </Box>
       </Box>
+      {/* offers discount */}
+      {calculateReceiptResFromMainPage?.offers_discount > 0 && (
+        <Box className="d-flex justify-content-between mb-2">
+          <Box sx={{ ...text, color: "#EB3C24" }}>{t.offerDiscount}</Box>
+          <Box sx={{ ...text, color: "#EB3C24" }}>
+            {(calculateReceiptResFromMainPage?.offers_discount ??
+              receipt?.offers_discount) === receipt?.offers_discount
+              ? receipt?.offers_discount
+              : calculateReceiptResFromMainPage?.offers_discount}{" "}
+            {riyalImgRed()}
+          </Box>
+        </Box>
+      )}
+
       {/* total pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.totalSum}</Box>
         <Box sx={text}>
-          {(calculateReceiptResFromMainPage?.total_price ??
-            receipt?.total_price) === receipt?.total_price
+          {+calculateReceiptResFromMainPage?.discount > 0
+            ? (
+                +calculateReceiptResFromMainPage?.tax +
+                +calculateReceiptResFromMainPage?.subtotal +
+                +calculateReceiptResFromMainPage?.delivery_fees
+              )?.toFixed(2)
+            : (calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
             ? receipt?.total_price
             : calculateReceiptResFromMainPage?.total_price}{" "}
           {riyalImgBlack()}
@@ -463,6 +499,7 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
             <CircularProgress color="inherit" size={15} />
           ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
             <Image
+              loading="lazy"
               src="/icons/payments/apple-pay-white.svg"
               width={61}
               height={25}
@@ -471,6 +508,9 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
           ) : null
         }
         onClick={() => {
+          // web engage action
+          handleWebengageCheckoutClicked();
+
           if (+calculateReceiptResFromMainPage?.amount_to_pay === 0) {
             callConfirmPricing();
             return;

@@ -11,6 +11,7 @@ function LogoLoader() {
           alt="loader-logo"
           width={120}
           height={120}
+          loading="lazy"
         />
       </span>
       <Box

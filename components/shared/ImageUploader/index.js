@@ -102,13 +102,16 @@ const ImageUploader = ({
       <Box sx={imgHolderStyle} component="label">
         {uploadedImage ? (
           // Display the uploaded image
-          <img
+          <Image
             src={uploadedImage}
             alt="Uploaded"
+            width={330} // approximate width in pixels
+            height={150} // approximate height in pixels
             style={{
               maxWidth: "100%",
               maxHeight: "150px",
               borderRadius: "4px",
+              objectFit: "contain",
             }}
           />
         ) : (
@@ -149,6 +152,7 @@ const ImageUploader = ({
             width={20}
             height={20}
             alt="trash"
+            loading="lazy"
           />
         </Box>
       )}

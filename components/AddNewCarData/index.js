@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import SharedBtn from "../shared/SharedBtn";
 import { useRouter } from "next/router";
 import { userDefaultCar } from "@/config/network/Shared/SetDataHelper";
+import LimitedSupportCar from "../LimitedSupportCar/LimitedSupportCar";
 
 function AddNewCarData({
   formikRef,
@@ -23,6 +24,8 @@ function AddNewCarData({
   editableCar = null,
   customIDs = {},
 }) {
+  const [openLimitSupport, setOpenLimitSupport] = useState(false);
+
   const { user } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
@@ -38,6 +41,11 @@ function AddNewCarData({
     year: "",
     vin_number: "",
     default_car: false,
+    color: "",
+    registration_plate_letters_ar: "",
+    registration_plate_letters_en: "",
+    registration_plate_numbers_ar: "",
+    registration_plate_numbers_en: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -48,6 +56,11 @@ function AddNewCarData({
       .min(14, t.vinNumLengthValidate)
       .max(17, t.vinNumLengthValidate)
       .required(t.required),
+    color: Yup.string().nullable().optional(),
+    registration_plate_letters_ar: Yup.string().optional(),
+    registration_plate_letters_en: Yup.string().optional(),
+    registration_plate_numbers_ar: Yup.string().optional(),
+    registration_plate_numbers_en: Yup.string().optional(),
   });
 
   const handleSubmit = (values) => {
@@ -56,6 +69,15 @@ function AddNewCarData({
       year: values?.year,
       chassis_no: values?.vin_number,
       is_default: values?.default_car,
+      color: values?.color || null,
+      registration_plate_letters_ar:
+        values?.registration_plate_letters_ar || null,
+      registration_plate_letters_en:
+        values?.registration_plate_letters_en || null,
+      registration_plate_numbers_ar:
+        values?.registration_plate_numbers_ar || null,
+      registration_plate_numbers_en:
+        values?.registration_plate_numbers_en || null,
     });
   };
 
@@ -104,9 +126,20 @@ function AddNewCarData({
       callUserVehicles();
       formikRef?.current?.resetForm();
       setAddPayload(false);
+      if (!res?.brand?.enabled_for_spare_parts) {
+        setTimeout(() => {
+          // prevent open in sparePart route bec another pop up is appear
+          if (!router?.pathname?.includes("spareParts")) {
+            setOpenLimitSupport(true);
+          }
+        }, 500);
+      }
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
+      setTimeout(() => {
+        setAddPayload(false);
+      }, 500);
     },
   });
 
@@ -118,7 +151,14 @@ function AddNewCarData({
   });
 
   return (
-    <div className="row">
+    <div
+      className="row"
+      style={{
+        maxHeight: "73vh",
+        minHeight: "73vh",
+        overflow: "auto",
+      }}
+    >
       {hideDividerAndShowBtn && (
         <div className="col-12">
           <Divider sx={{ background: "#EAECF0", mb: 3 }} />
@@ -126,7 +166,7 @@ function AddNewCarData({
       )}
       <div className="col-md-6">
         <div className="row">
-          <div className="col-12">
+          <div className="col-12 ">
             {!hideDividerAndShowBtn && (
               <Box sx={{ mb: 2, fontSize: "20px", fontWeight: "500" }}>
                 {editableCar?.id ? t.editCar : t.addNewCarProfile}
@@ -168,6 +208,10 @@ function AddNewCarData({
           </Box>
         )}
       </div>
+      <LimitedSupportCar
+        openLimitSupport={openLimitSupport}
+        setOpenLimitSupport={setOpenLimitSupport}
+      />
     </div>
   );
 }

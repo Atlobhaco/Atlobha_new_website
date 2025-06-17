@@ -7,14 +7,9 @@ import style from "../../components/shared/Navbar/ContentForBasketPopup/ContentF
 import SharedBtn from "@/components/shared/SharedBtn";
 import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import ProductCardSkeleton from "@/components/cardSkeleton";
-import { riyalImgBlack, riyalImgGrey } from "@/constants/helpers";
+import { latestUpdatedCart } from "@/constants/helpers";
 import { Box } from "@mui/material";
 import BasketDataReused from "../../components/Basket/BasketDataReused";
-import { styled } from "@mui/material/styles";
-import LinearProgress, {
-  linearProgressClasses,
-} from "@mui/material/LinearProgress";
 import AvailablePaymentMethodsImgs from "@/components/spareParts/AvailablePaymentMethodsImgs";
 import Login from "@/components/Login";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
@@ -59,24 +54,51 @@ function Basket() {
     e?.preventDefault();
   };
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (
-        typeof document !== "undefined" &&
-        !selectedAddress?.id &&
-        (!defaultAddress?.id || defaultAddress?.id === "currentLocation") &&
-        isAuth() &&
-        endpointCalledAddress
-      ) {
-        document.getElementById("openAddAddressModalProgramatically")?.click();
-      }
-    }, 1000); // Wait 1 second after DOM is ready
+  //   remove auto open the address form
+  //   useEffect(() => {
+  //     const timeout = setTimeout(() => {
+  //       if (
+  //         typeof document !== "undefined" &&
+  //         !selectedAddress?.id &&
+  //         (!defaultAddress?.id || defaultAddress?.id === "currentLocation") &&
+  //         isAuth() &&
+  //         endpointCalledAddress
+  //       ) {
+  //         document.getElementById("openAddAddressModalProgramatically")?.click();
+  //       }
+  //     }, 1000); // Wait 1 second after DOM is ready
 
-    return () => clearTimeout(timeout); // Clean up
-  }, [endpointCalledAddress]);
+  //     return () => clearTimeout(timeout); // Clean up
+  //   }, [endpointCalledAddress]);
 
   useEffect(() => {
     dispatch(fetchCartAsync());
+
+    const totalPriceBasket = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+      ?.toFixed(2);
+
+    const itemsMaping = basket
+      ?.filter((item) => item?.product?.is_active)
+      ?.map((bas) => ({
+        Id: bas?.product?.id || "",
+        Title: bas?.product?.name || "",
+        Price: bas?.product?.price || "",
+        Quantity: bas?.quantity || "",
+        Image: bas?.product?.image || "",
+      }));
+
+    window.webengage.onReady(() => {
+      webengage.track("CART_VIEWED", {
+        total: totalPriceBasket || 0,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
+    });
+
+    latestUpdatedCart(basket);
   }, []);
 
   return (
@@ -86,6 +108,7 @@ function Basket() {
           {!basket?.length ? (
             <div className="text-center p-5 mb-5">
               <Image
+                loading="lazy"
                 src="/icons/empty-basket.svg"
                 width={117}
                 height={106}
@@ -114,6 +137,7 @@ function Basket() {
                   }}
                 >
                   <Image
+                    loading="lazy"
                     src="/icons/part-img.svg"
                     alt="part-img"
                     width={isMobile ? 27 : 54}

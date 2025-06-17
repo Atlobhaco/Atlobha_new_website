@@ -12,6 +12,7 @@ const CategoriesSelection = ({
   setSubCategories,
   setSubCatId,
   setPage,
+  setAllCategories,
 }) => {
   const router = useRouter();
   const { idSub } = router.query;
@@ -29,6 +30,7 @@ const CategoriesSelection = ({
     enabled: !!lng,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => setAllCategories(res),
   });
 
   useEffect(() => {

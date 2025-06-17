@@ -14,25 +14,34 @@ function CommunicationSection() {
     {
       src: "/icons/twitter-round.svg",
       onclick: () => {
-        window.open("https://twitter.com/Atlobha_ksa");
+        window.open("https://twitter.com/Atlobha_ksa", "noopener,noreferrer");
       },
     },
     {
       src: "/icons/TikTok.svg",
       onclick: () => {
-        window.open("http://www.tiktok.com/@atlobha_ksa");
+        window.open(
+          "http://www.tiktok.com/@atlobha_ksa",
+          "noopener,noreferrer"
+        );
       },
     },
     {
       src: "/icons/insta.svg",
       onclick: () => {
-        window.open("https://www.instagram.com/Atlobha_ksa");
+        window.open(
+          "https://www.instagram.com/Atlobha_ksa",
+          "noopener,noreferrer"
+        );
       },
     },
     {
       src: "/icons/social/Snapchat-lg.svg",
       onclick: () => {
-        window.open("https://www.snapchat.com/add/Atlobha_ksa");
+        window.open(
+          "https://www.snapchat.com/add/Atlobha_ksa",
+          "noopener,noreferrer"
+        );
       },
     },
   ];
@@ -87,6 +96,7 @@ function CommunicationSection() {
         >
           {socialMedia?.map((social) => (
             <Image
+              loading="lazy"
               onClick={social?.onclick}
               key={social?.src}
               alt={social?.src}

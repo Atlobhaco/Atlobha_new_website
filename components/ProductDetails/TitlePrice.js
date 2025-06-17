@@ -155,6 +155,7 @@ function TitlePrice({ prod }) {
           }}
         >
           <Image
+            loading="lazy"
             src="/imgs/tamara.svg"
             width={52}
             height={22}
@@ -165,6 +166,7 @@ function TitlePrice({ prod }) {
             }}
           />
           <Image
+            loading="lazy"
             src="/imgs/tabby-prod.svg"
             width={52}
             height={18}

@@ -8,6 +8,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
+import Image from "next/image";
 
 function MainCarousel({ sectionInfo }) {
   const { isMobile } = useScreenSize();
@@ -94,7 +95,7 @@ function MainCarousel({ sectionInfo }) {
       >
         {ads?.data?.map((img) => (
           <SwiperSlide key={img?.id || img?.media || index}>
-            <img
+            {/* <img
               style={{
                 borderRadius: "20px",
                 maxWidth: "100%",
@@ -105,6 +106,26 @@ function MainCarousel({ sectionInfo }) {
               onClick={() => {
                 if (img?.link) {
                   window.open(img?.link);
+                }
+              }}
+            /> */}
+            <Image
+              src={img?.media || "/imgs/no-img-holder.svg"} // fallback in case media is undefined
+              alt="banner-image"
+              width={800} // adjust based on your design
+              height={400} // adjust based on your design
+              style={{
+                borderRadius: "20px",
+                width: "100%",
+                maxWidth: "100%",
+                height: "auto",
+                display: "block",
+                margin: "auto",
+                cursor: img?.link ? "pointer" : "default",
+              }}
+              onClick={() => {
+                if (img?.link) {
+                  window.open(img.link, "_blank");
                 }
               }}
             />

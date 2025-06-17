@@ -67,6 +67,15 @@ function EditCarProfile() {
         year: carToEdit?.year,
         vin_number: carToEdit?.chassis_no,
         default_car: +carToEdit?.is_default === 1 ? true : false,
+        registration_plate_letters_ar:
+          carToEdit?.registration_plate_letters_ar || "",
+        registration_plate_letters_en:
+          carToEdit?.registration_plate_letters_en || "",
+        registration_plate_numbers_ar:
+          carToEdit?.registration_plate_numbers_ar || "",
+        registration_plate_numbers_en:
+          carToEdit?.registration_plate_numbers_en || "",
+        color: carToEdit?.color || "",
       });
     }
   }, [id]);
@@ -96,6 +105,15 @@ function EditCarProfile() {
                   yearId: "thirdYearID",
                   vinId: "thirdVinID",
                   toggleId: "thirdToggleID",
+                  color: "thirdColor",
+                  registration_plate_letters_ar:
+                    "thirdRegistration_plate_letters_ar",
+                  registration_plate_letters_en:
+                    "thirdRegistration_plate_letters_en",
+                  registration_plate_numbers_ar:
+                    "thirdRegistration_plate_numbers_ar",
+                  registration_plate_numbers_en:
+                    "thirdRegistration_plate_numbers_en",
                 }}
               />
             </div>

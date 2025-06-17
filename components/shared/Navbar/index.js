@@ -223,6 +223,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
         <div style={firstPartStyle}>
           {!hideComponent && !hideIfTrue && !hideAddress && <DropDownAddress />}
           <Image
+            loading="lazy"
             alt="logo"
             width={isMobile ? 80 : 130}
             height={isMobile ? 25 : 49}
@@ -397,6 +398,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 >
                   {singleData?.src && (
                     <Image
+                      loading="lazy"
                       style={{
                         margin: "0px 10px",
                       }}

@@ -7,8 +7,6 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
 import Slider from "react-slick";
 
 function AtlobhaPartners({ sectionInfo }) {
@@ -100,44 +98,6 @@ function AtlobhaPartners({ sectionInfo }) {
       </Box>
 
       <Box sx={{ mt: 3, mb: 1 }}>
-        {/* <Carousel
-          responsive={responsive}
-          infinite
-          autoPlay
-          autoPlaySpeed={3000}
-          showDots={false}
-          arrows={false}
-          transitionDuration={900}
-          slidesToSlide={2}
-          rtl={locale === "ar"}
-        >
-          {data?.map((part, index) => (
-            <Box
-              key={part?.logo?.url + index}
-              sx={{
-                display: "flex",
-                alignItems: "end",
-                justifyContent: "end",
-              }}
-            >
-              <Image
-                onClick={() => router.push(`/manufacture/${part?.id}`)}
-                src={part?.logo?.url}
-                alt={part?.logo?.url}
-                width={isMobile ? 53 : 113}
-                height={isMobile ? 50 : 106}
-                style={{
-                  width: "auto",
-                  height: "auto",
-                  margin: "auto",
-                  maxWidth: "100%",
-                  maxHeight: "100%",
-                  cursor: "pointer",
-                }}
-              />
-            </Box>
-          ))}
-        </Carousel> */}
         <Slider {...settings}>
           {data?.map((part, index) => (
             <Box
@@ -166,6 +126,7 @@ function AtlobhaPartners({ sectionInfo }) {
                   maxHeight: "100%",
                   //   cursor: "pointer",
                 }}
+                loading="lazy"
               />
             </Box>
           ))}

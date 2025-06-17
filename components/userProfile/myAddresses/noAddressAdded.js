@@ -23,6 +23,7 @@ function NoAddressAdded() {
       }}
     >
       <Image
+        loading="lazy"
         src="/imgs/empty-address.svg"
         alt="empty"
         width={130}

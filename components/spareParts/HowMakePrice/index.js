@@ -47,6 +47,7 @@ function HowMakePrice({ setOpenhowPricing }) {
     <Box>
       <Box sx={closeHolder}>
         <Image
+          loading="lazy"
           onClick={() => setOpenhowPricing(false)}
           style={{
             cursor: "pointer",
@@ -59,6 +60,7 @@ function HowMakePrice({ setOpenhowPricing }) {
       </Box>
       <Box sx={header}>
         <Image
+          loading="lazy"
           style={{
             cursor: "pointer",
           }}
@@ -73,6 +75,7 @@ function HowMakePrice({ setOpenhowPricing }) {
         sx={{ ...contentData, fontWeight: activeIndex === 0 ? "700" : "500" }}
       >
         <Image
+          loading="lazy"
           src={`/icons/${
             activeIndex === 0 ? "yellow-circle" : "white-circle"
           }-check.svg`}
@@ -86,6 +89,7 @@ function HowMakePrice({ setOpenhowPricing }) {
         sx={{ ...contentData, fontWeight: activeIndex === 1 ? "700" : "500" }}
       >
         <Image
+          loading="lazy"
           src={`/icons/${
             activeIndex === 1 ? "yellow-circle" : "white-circle"
           }-check.svg`}
@@ -99,6 +103,7 @@ function HowMakePrice({ setOpenhowPricing }) {
         sx={{ ...contentData, fontWeight: activeIndex === 2 ? "700" : "500" }}
       >
         <Image
+          loading="lazy"
           src={`/icons/${
             activeIndex === 2 ? "yellow-circle" : "white-circle"
           }-check.svg`}
@@ -112,6 +117,7 @@ function HowMakePrice({ setOpenhowPricing }) {
         sx={{ ...contentData, fontWeight: activeIndex === 3 ? "700" : "500" }}
       >
         <Image
+          loading="lazy"
           src={`/icons/${
             activeIndex === 3 ? "yellow-circle" : "white-circle"
           }-check.svg`}

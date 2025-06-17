@@ -1,9 +1,5 @@
 import SharedDropDown from "@/components/shared/SharedDropDown";
-import {
-  CITIES,
-  ESTIMATED_DELIVERY,
-  SETTINGS,
-} from "@/config/endPoints/endPoints";
+import { CITIES, CITY_SETTINGS, LAT_LNG } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
@@ -11,13 +7,17 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import moment from "moment";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const [cityInfo, setCityInfo] = useState(false);
-
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
+  //   set address for user
   const {
     data: citiesRes,
     refetch: callCities,
@@ -33,7 +33,21 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
         name: info?.name,
       })),
     onSuccess: (res) => {
-      setCityInfo(res?.find((d) => d?.id === cityDelivery));
+      const checkCityFound = res?.find(
+        (d) =>
+          +d?.latitude ===
+            (+selectedAddress?.city?.latitude ||
+              +defaultAddress?.city?.latitude) &&
+          +d?.longitude ===
+            (+selectedAddress?.city?.longitude ||
+              +defaultAddress?.city?.longitude)
+      );
+      if (checkCityFound?.id) {
+        setCityInfo(checkCityFound);
+        setCityDelivery(checkCityFound?.id);
+      } else {
+        setCityInfo(res?.find((d) => d?.id === cityDelivery));
+      }
     },
     onError: (err) => {
       toast.error(
@@ -52,7 +66,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
       cityInfo?.longitude,
       isAuth(),
     ],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}`,
     refetchOnWindowFocus: false,
     enabled: cityInfo?.latitude && cityInfo?.longitude ? true : false,
     select: (res) => res?.data?.data,

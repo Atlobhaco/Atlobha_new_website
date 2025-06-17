@@ -7,6 +7,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 
 function SharedTextField({
   label = "label-here",
+  besideLabel = false,
   value = "",
   setValue = () => {},
   ArrayData = [{}],
@@ -37,7 +38,7 @@ function SharedTextField({
     <Box
       sx={{
         position: "relative",
-        marginBottom: hasMargin ? "16px" : "0px",
+        marginBottom: hasMargin ? "18px" : "0px",
       }}
     >
       <Box
@@ -56,6 +57,19 @@ function SharedTextField({
             }}
           >
             *
+          </Box>
+        )}
+        {besideLabel && (
+          <Box
+            component="span"
+            sx={{
+              color: "#B0B0B0",
+              fontWeight: "500",
+              fontSize: "12px",
+              mx: 1,
+            }}
+          >
+            {besideLabel}
           </Box>
         )}
       </Box>
@@ -83,6 +97,7 @@ function SharedTextField({
                 <Tooltip title={toolTipTitle}>
                   {/* <SearchIcon style={{ cursor: "pointer" }} /> */}
                   <Image
+                    loading="lazy"
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={imgIcon}
@@ -104,6 +119,7 @@ function SharedTextField({
               {rightIcon && (
                 <Tooltip title={toolTipTitle}>
                   <Image
+                    loading="lazy"
                     style={{ cursor: "pointer" }}
                     alt="img"
                     src={+value <= 1 ? "/icons/trash-icon.svg" : rightIcon}

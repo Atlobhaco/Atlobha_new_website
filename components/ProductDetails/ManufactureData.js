@@ -15,6 +15,7 @@ function ManufactureData({ prod }) {
       >
         <Box>
           <Image
+            loading="lazy"
             width={20}
             height={20}
             alt="manufacture-img"

@@ -80,6 +80,7 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                       margin: "auto",
                       objectFit: "contain",
                     }}
+                    loading="lazy"
                   />{" "}
                 </div>
                 <div className={style["products-contain_name"]}>

@@ -58,6 +58,7 @@ const SharedInput = ({
           }}
         >
           <Image
+            loading="lazy"
             src="/icons/search-yellow.svg"
             width={35}
             height={35}

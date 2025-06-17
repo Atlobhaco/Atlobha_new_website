@@ -79,6 +79,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
     >
       <Box>
         <Image
+          loading="lazy"
           src="/icons/yellow-calendar.svg"
           width={20}
           height={20}

@@ -263,6 +263,7 @@ const GoogleMapComponent = React.memo(
                     : { right: isMobile ? "7%" : "5.5%" }),
                   top: `${isMobile ? "10px" : "8px"}`,
                 }}
+                loading="lazy"
               />
             </div>
           </Autocomplete>

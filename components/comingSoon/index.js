@@ -24,6 +24,7 @@ function ComingSoon() {
             width={isMobile ? 180 : 276}
             height={isMobile ? 30 : 40}
             priority={false}
+            loading="lazy"
           />
         </Box>
         <Box className="d-flex mt-4 justify-content-center">
@@ -33,6 +34,7 @@ function ComingSoon() {
             width={isMobile ? 220 : 346}
             height={isMobile ? 160 : 231}
             priority={true}
+            loading="lazy"
             style={{
               zIndex: 1,
             }}
@@ -47,7 +49,8 @@ function ComingSoon() {
             src="/icons/pattern.png"
             width={isMobile ? 220 : 346}
             height={isMobile ? 142 : 189}
-			priority={false}
+            priority={false}
+            loading="lazy"
             style={{
               position: "absolute",
               width: "100%",
@@ -72,12 +75,14 @@ function ComingSoon() {
               if (checkApplePayAvailability()) {
                 window.open(
                   "https://apps.apple.com/sa/app/%D8%A7%D8%B7%D9%84%D8%A8%D9%87%D8%A7-%D9%82%D8%B7%D8%B9-%D8%BA%D9%8A%D8%A7%D8%B1-%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B1%D8%A7%D8%AA/id1415692116?l=ar",
-                  "_blank"
+                  "_blank",
+                  "noopener,noreferrer"
                 );
               } else {
                 window.open(
                   `https://play.google.com/store/apps/details?id=com.atlobha.atlobha&referrer=utm_source%3Dtelegram%2520group%26utm_medium%3Dcs95%26anid%3Dadmob`,
-                  "_blank"
+                  "_blank",
+                  "noopener,noreferrer"
                 );
               }
             }}
@@ -95,7 +100,8 @@ function ComingSoon() {
             onClick={() => {
               window.open(
                 `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
-                "_blank"
+                "_blank",
+                "noopener,noreferrer"
               );
               window.webengage.onReady(() => {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
@@ -114,7 +120,8 @@ function ComingSoon() {
             src="/icons/social/twitter.svg"
             width={28}
             height={28}
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
 
@@ -124,7 +131,8 @@ function ComingSoon() {
             src="/icons/social/insta.svg"
             width={28}
             height={28}
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
 
@@ -134,7 +142,8 @@ function ComingSoon() {
             src="/icons/social/tiktok.svg"
             width={28}
             height={28}
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
 
@@ -145,7 +154,8 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
 
@@ -166,7 +176,8 @@ function ComingSoon() {
             width={28}
             height={28}
             className="cursor-pointer"
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
       </Box>
@@ -190,7 +201,8 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
 
@@ -207,7 +219,8 @@ function ComingSoon() {
               height: "auto",
               width: "auto",
             }}
-			priority={false}
+            priority={false}
+            loading="lazy"
           />
         </Link>
       </Box>

@@ -30,6 +30,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["shipping"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/shipping.svg"
               width={24}
               height={12}
@@ -43,6 +44,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["ready-to-ship"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/readyShip.svg"
               width={24}
               height={12}
@@ -65,6 +67,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["pay-pending"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/wait-confirm.svg"
               width={24}
               height={12}
@@ -78,6 +81,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["returnbale"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/returnable.svg"
               width={24}
               height={12}
@@ -91,6 +95,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["incomplete"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/incomplete.svg"
               width={24}
               height={12}
@@ -104,6 +109,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["confirmed"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/confirmed-tick.svg"
               width={24}
               height={12}
@@ -117,6 +123,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["priced"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/priced-status.svg"
               width={24}
               height={12}
@@ -130,6 +137,7 @@ function OrderStatus({ status }) {
         return (
           <div className={`${style["priceUnavailable"]} ${style["status"]}`}>
             <Image
+              loading="lazy"
               src="/icons/price-unavailable-status.svg"
               width={24}
               height={12}

@@ -133,6 +133,7 @@ function HintPricedParts({ sectionInfo }) {
                   alt="prod-image"
                   width={35}
                   height={35}
+                  loading="lazy"
                 />{" "}
                 <Box className={`${style["prod-review_data-img_text"]}`}>
                   المصد الأمامي لسيارة كامري
@@ -189,6 +190,7 @@ function HintPricedParts({ sectionInfo }) {
                   width={60}
                   height={60}
                   alt="logo-pricing"
+                  loading="lazy"
                 />
                 <Box>
                   <h5>
@@ -223,6 +225,7 @@ function HintPricedParts({ sectionInfo }) {
                   width={55}
                   height={33}
                   alt="logo"
+                  loading="lazy"
                 />
                 <Box>
                   <h5>
@@ -248,6 +251,7 @@ function HintPricedParts({ sectionInfo }) {
                   width={60}
                   height={60}
                   alt="logo-delivered"
+                  loading="lazy"
                 />
                 <Box>
                   <h5>
@@ -276,6 +280,7 @@ function HintPricedParts({ sectionInfo }) {
               width={30}
               height={30}
               alt="logo-correct"
+              loading="lazy"
             />
             <h5>{t.thisEveryThing}</h5>
           </Box>

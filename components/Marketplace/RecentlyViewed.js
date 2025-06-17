@@ -60,7 +60,17 @@ function RecentlyViewed({ sectionInfo }) {
         }}
       >
         {recentlyViewed?.data?.map((prod) => (
-          <Box>
+          <Box
+            onClick={() => {
+              window.webengage.onReady(() => {
+                webengage.track("FEATURED_PRODUCT_VIEWED", {
+                  product_name: prod?.name || "",
+                  product_id: prod?.id || "",
+                  product_url: `/product/${prod?.id}` || "",
+                });
+              });
+            }}
+          >
             <ProductCard product={prod} hasNum={prod?.image} />
           </Box>
         ))}

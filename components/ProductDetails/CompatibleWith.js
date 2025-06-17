@@ -44,6 +44,7 @@ function CompatibleWith({ prod }) {
             maxHeight: "80px",
             borderRadius: "10px",
           }}
+          loading="lazy"
         />
         <Box
           sx={{

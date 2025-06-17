@@ -31,7 +31,7 @@ function Category() {
   const [subCatId, setSubCatId] = useState(false);
   const [subCategories, setSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(false);
-
+  const [allCategories, setAllCategories] = useState([]);
   useEffect(() => {
     if (idCategory) {
       setSelectedCategory(+idCategory);
@@ -87,6 +87,19 @@ function Category() {
     },
   });
 
+  useEffect(() => {
+    if (allCategories?.length) {
+      const selected = allCategories.find((d) => +d.id === +idCategory);
+      window.webengage.onReady(() => {
+        webengage.track("FEATURED_PRODUCT_VIEWED", {
+          category_name: selected?.name || "",
+          category_id: selected?.id || "",
+          category_url: router?.asPath || "",
+        });
+      });
+    }
+  }, [allCategories]);
+
   return (
     <Box>
       <MetaTags title={t.selectedProducts} content={t.selectedProducts} />
@@ -106,6 +119,7 @@ function Category() {
               setSubCatId={setSubCatId}
               setSubCategories={setSubCategories}
               setPage={setPage}
+              setAllCategories={setAllCategories}
             />
           </Box>
           <Box className="col-12 mt-3">

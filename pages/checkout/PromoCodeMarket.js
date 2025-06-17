@@ -42,6 +42,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
         }}
       >
         <Image
+          loading="lazy"
           alt="yellow-promo"
           src={`/icons/promo-yellow.svg`}
           width={isMobile ? 25 : 30}

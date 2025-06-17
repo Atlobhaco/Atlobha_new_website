@@ -117,6 +117,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
             startAdornment: (
               <InputAdornment position="start" sx={{ mx: "8px" }}>
                 <Image
+                  loading="lazy"
                   alt="img"
                   src={`/icons/${
                     promoCodeId || allPromoCodeData

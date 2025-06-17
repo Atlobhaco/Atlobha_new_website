@@ -81,6 +81,7 @@ function EnterOtpStep({
       {isMobile ? (
         <Box sx={closeHolder}>
           <Image
+            loading="lazy"
             onClick={() => {
               setOpenAddMobile(false);
               setMigrationStep(1);
@@ -106,6 +107,7 @@ function EnterOtpStep({
       >
         {!isMobile && (
           <Image
+            loading="lazy"
             src="/imgs/add-phone.svg"
             width={122}
             height={102}
