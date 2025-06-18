@@ -50,7 +50,7 @@ function Category() {
   });
 
   const returnUrlDependOnUserLogin = () => {
-    if (isAuth()) {
+    if (defaultCar?.model?.id) {
       return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
         isMobile ? 15 : 16
       }&category_id=${selectedCategory}&subcategory_id=${subCatId}&years[]=${
