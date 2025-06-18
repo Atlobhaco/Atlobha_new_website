@@ -38,6 +38,8 @@ import ArabicLang from "../../public/icons/lang-ar.svg";
 import LogoutIcon from "../../public/icons/logout-icon.svg";
 import { logout } from "@/redux/reducers/authReducer";
 import CommunicationSection from "@/components/userProfile/communicationSection";
+import GuestMobileView from "./GuestMobileView";
+import { isAuth } from "@/config/hooks/isAuth";
 
 function UserProfile({ recallUserData = false }) {
   const router = useRouter();
@@ -46,87 +48,151 @@ function UserProfile({ recallUserData = false }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
   const { allsections } = useSelector((state) => state.quickSection);
+  const boxShadowStyle =
+    locale === "ar"
+      ? "-2px -3px 8px rgba(0, 0, 0, 0.16)"
+      : "2px -3px 8px 0px rgba(0, 0, 0, 0.16)";
 
   const profileSections = [
-    {
-      iconSrc: <YellowGift />,
-      text: t.tellFriends,
-      hint: t.winPoints,
-      //   onClick: () => alert("clicked"),
-      path: "",
-    },
-    {
-      iconSrc: <Rate />,
-      text: t.rateAtlobha,
-      //   onClick: () => alert("clicked"),
-      path: "",
-    },
-    {
-      iconSrc: <Favourite />,
-      text: t.favouriteAtlobha,
-      //   onClick: () => alert("clicked"),
-      path: "",
-    },
-    {
-      iconSrc: <Savety />,
-      text: t.safety,
-      //   onClick: () => alert("clicked"),
-      path: "",
-    },
-    {
-      iconSrc: <HelpCenter />,
-      text: t.helpCenter,
-      onClick: () => {
-        window.open(
-          `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
-          "_blank",
-          "noopener,noreferrer"
-        );
-        window.webengage.onReady(() => {
-          webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-            event_status: true,
-          });
-        });
-      },
-      path: "",
-    },
-    {
-      iconSrc: <CallUs />,
-      text: t.callUs,
-      //   onClick: () => alert("clicked"),
-      path: "",
-      hideArrow: true,
-      hint: (
-        <a href="tel:+966502670094">
-          {locale == "en" && "+"}966502670094{locale == "ar" && "+"}
-        </a>
-      ),
-    },
-    {
-      iconSrc: <Languages />,
-      text: t.language,
-      onClick: () => {
-        webengage.track("LANGUAGE_SELECTED", {
-          language: locale === "ar" ? "Arabic" : "English",
-        });
-        router
-          .push(router.pathname, router.asPath, {
-            locale: locale === "ar" ? "en" : "ar",
-          })
-          .then(() => {
-            router.reload();
-          });
-      },
-      hint: locale === "ar" ? <ArabicLang /> : <EnglishLang />,
-      path: "",
-    },
-    {
-      iconSrc: <Country />,
-      text: t.country,
-      //   onClick: () => alert("clicked"),
-      hint: locale === "ar" ? <SaudiaFlag /> : <SaudiaFlag />,
-      path: "",
-    },
+    ...(isAuth()
+      ? [
+          {
+            iconSrc: <YellowGift />,
+            text: t.tellFriends,
+            hint: t.winPoints,
+            //   onClick: () => alert("clicked"),
+            path: "",
+          },
+          {
+            iconSrc: <Rate />,
+            text: t.rateAtlobha,
+            //   onClick: () => alert("clicked"),
+            path: "",
+          },
+          {
+            iconSrc: <Favourite />,
+            text: t.favouriteAtlobha,
+            //   onClick: () => alert("clicked"),
+            path: "",
+          },
+          {
+            iconSrc: <Savety />,
+            text: t.safety,
+            //   onClick: () => alert("clicked"),
+            path: "",
+          },
+          {
+            iconSrc: <HelpCenter />,
+            text: t.helpCenter,
+            onClick: () => {
+              window.open(
+                `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+              window.webengage.onReady(() => {
+                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              });
+            },
+            path: "",
+          },
+          {
+            iconSrc: <CallUs />,
+            text: t.callUs,
+            //   onClick: () => alert("clicked"),
+            path: "",
+            hideArrow: true,
+            hint: (
+              <a href="tel:+966502670094">
+                {locale == "en" && "+"}966502670094{locale == "ar" && "+"}
+              </a>
+            ),
+          },
+          {
+            iconSrc: <Languages />,
+            text: t.language,
+            onClick: () => {
+              webengage.track("LANGUAGE_SELECTED", {
+                language: locale === "ar" ? "Arabic" : "English",
+              });
+              router
+                .push(router.pathname, router.asPath, {
+                  locale: locale === "ar" ? "en" : "ar",
+                })
+                .then(() => {
+                  router.reload();
+                });
+            },
+            hint: locale === "ar" ? <ArabicLang /> : <EnglishLang />,
+            path: "",
+          },
+          {
+            iconSrc: <Country />,
+            text: t.country,
+            //   onClick: () => alert("clicked"),
+            hint: locale === "ar" ? <SaudiaFlag /> : <SaudiaFlag />,
+            path: "",
+          },
+        ]
+      : [
+          {
+            iconSrc: <Languages />,
+            text: t.language,
+            onClick: () => {
+              webengage.track("LANGUAGE_SELECTED", {
+                language: locale === "ar" ? "Arabic" : "English",
+              });
+              router
+                .push(router.pathname, router.asPath, {
+                  locale: locale === "ar" ? "en" : "ar",
+                })
+                .then(() => {
+                  router.reload();
+                });
+            },
+            hint: locale === "ar" ? <ArabicLang /> : <EnglishLang />,
+            path: "",
+          },
+          {
+            iconSrc: <HelpCenter />,
+            text: t.helpCenter,
+            onClick: () => {
+              window.open(
+                `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
+                "_blank",
+                "noopener,noreferrer"
+              );
+              window.webengage.onReady(() => {
+                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              });
+            },
+            path: "",
+          },
+
+          {
+            iconSrc: <CallUs />,
+            text: t.callUs,
+            //   onClick: () => alert("clicked"),
+            path: "",
+            hideArrow: true,
+            hint: (
+              <a href="tel:+966502670094">
+                {locale == "en" && "+"}966502670094{locale == "ar" && "+"}
+              </a>
+            ),
+          },
+
+          {
+            iconSrc: <Rate />,
+            text: t.rateAtlobha,
+            //   onClick: () => alert("clicked"),
+            path: "",
+          },
+        ]),
   ];
 
   const [quickSections, setQuickSections] = useState([
@@ -252,21 +318,18 @@ function UserProfile({ recallUserData = false }) {
   });
 
   //   no profile page in web must be has active child
-  useEffect(() => {
-    if (!isMobile && router.pathname === "/userProfile") {
-      router.push("/userProfile/editInfo/");
-    }
-  }, [isMobile]);
+  //   useEffect(() => {
+  //     if (!isMobile && router.pathname === "/userProfile" && isAuth()) {
+  //       router.push("/userProfile/editInfo/");
+  //     }
+  //   }, [isMobile]);
 
-  return (
+  return isAuth() ? (
     <>
       <Box
         sx={{
           // -2px -3px 8px rgba(0, 0, 0, 0.16)
-          boxShadow:
-            locale === "ar"
-              ? "-2px -3px 8px rgba(0, 0, 0, 0.16)"
-              : "2px -3px 8px 0px rgba(0, 0, 0, 0.16)",
+          boxShadow: boxShadowStyle,
         }}
         className="col-12  pb-0 p-3"
       >
@@ -332,6 +395,11 @@ function UserProfile({ recallUserData = false }) {
         </div>
       </Box>
     </>
+  ) : (
+    <GuestMobileView
+      profileSections={profileSections}
+      boxShadowStyle={boxShadowStyle}
+    />
   );
 }
 

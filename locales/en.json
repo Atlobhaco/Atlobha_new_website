@@ -462,5 +462,6 @@
   "paletteInfo": "palette data",
   "extraData": "additional data",
   "loginSuccess": "Login successfully",
-  "priceWithoutVat": "Price (Exculding VAT)"
+  "priceWithoutVat": "Price (Exculding VAT)",
+  "createNewAccount": "Or create new account"
 }

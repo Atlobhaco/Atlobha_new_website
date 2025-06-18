@@ -66,20 +66,15 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             }}
             hasNum={basket?.length}
           />
-          {isAuth() ? (
-            <FootNavSection
-              icon={<More />}
-              text={t.more}
-              activeTab={
-                router?.pathname?.includes("userProfile") ? true : false
-              }
-              onClick={() => {
-                router.push("/userProfile");
-              }}
-            />
-          ) : (
-            <Box sx={{ width: "75px" }}></Box>
-          )}
+
+          <FootNavSection
+            icon={<More />}
+            text={t.more}
+            activeTab={router?.pathname?.includes("userProfile") ? true : false}
+            onClick={() => {
+              router.push("/userProfile");
+            }}
+          />
 
           {/* <FootNavSection
             icon={<Basket />}

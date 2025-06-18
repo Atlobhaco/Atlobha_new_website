@@ -460,5 +460,6 @@
   "paletteInfo": "بيانات اللوحة",
   "extraData": "بيانات إضافية",
   "loginSuccess": "تم التسجيل بنجاح",
-  "priceWithoutVat":"السعر (غير شامل الضريبة)"
+  "priceWithoutVat": "السعر (غير شامل الضريبة)",
+  "createNewAccount": "او انشاء حساب جديد"
 }
