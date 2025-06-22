@@ -3,7 +3,7 @@ import Head from "next/head";
 
 function MetaTags({
   title = "Title",
-  content = "Content of the page",
+  content = "car parts, spare parts, Atlobha, auto, السعودية, قطع غيار",
   icon = "/logo/road-atlobha-text.svg",
   keywords = "car parts, spare parts, Atlobha, auto, السعودية, قطع غيار",
   author = "Atlobha Team",
