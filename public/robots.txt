@@ -7,3 +7,5 @@ Host: https://atlobha.com
 
 # Sitemaps
 Sitemap: https://atlobha.com/sitemap.xml
+
+Sitemap: https://atlobha.com/sitemap-0.xml
