@@ -74,6 +74,7 @@ function CommunicationSection() {
           fontSize: isMobile ? "13px" : "16px",
           fontWeight: "700",
           borderBottom: "1px solid #F0F0F0",
+          textAlign: isMobile ? "center" : "start",
         }}
         className="col-md-12"
       >

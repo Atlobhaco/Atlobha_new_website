@@ -1,9 +1,9 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://shop.atlobha.com/", // Replace with your actual domain
-  generateRobotsTxt: true, // Generates a robots.txt file
-  sitemapSize: 5000, // Default size limit for the sitemap
-  transform: async (config, url) => {
-    return null; // Exclude all URLs from the sitemap
-  },
+  siteUrl: "https://atlobha.com", // replace with your actual domain
+  generateRobotsTxt: true, // (optional) Generate robots.txt file
+  sitemapSize: 7000, // optional
+  changefreq: "daily",
+  priority: 0.7,
+  exclude: ["/admin"], // optional paths to exclude
 };

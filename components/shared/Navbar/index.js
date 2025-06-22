@@ -155,7 +155,14 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       component: isAuth() ? (
         <div className={`${style["logout-btn"]}`}>{t.logout}</div>
       ) : (
-        <div className="mx-2">{t.login}</div>
+        <Box
+          sx={{
+            mx: 2,
+            fontSize: "18px",
+          }}
+        >
+          {t.login}
+        </Box>
       ),
       onClick: () => {
         router.push("/userProfile/editInfo");
@@ -255,15 +262,6 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                 hasText={false}
                 onClick={() => setOpenCategories(true)}
               />
-              {/* <IconInsideCircle
-                hasText={false}
-                iconUrl="/icons/search-black.svg"
-              /> */}
-              {/* <IconInsideCircle
-                hasText={false}
-                iconUrl="/icons/basket-black.svg"
-                hasNum={basket?.length}
-              /> */}
               <div>
                 {/* user profile icon in or no auth */}
                 {(!isMobile || !isAuth()) && (
@@ -275,14 +273,6 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                     color="inherit"
                     sx={{ margin: 0, padding: 0 }}
                   >
-                    {/* <IconInsideCircle
-                  hasText={false}
-                  iconUrl="/icons/user-black.svg"
-                  width={isMobile ? "24px" : "41px"}
-                  height={isMobile ? "24px" : "41px"}
-                  imgWidth={isMobile ? 16 : 28}
-                  imgHeight={isMobile ? 16 : 28}
-                /> */}
                     <IconInsideCircle
                       hasText={false}
                       iconUrl="/icons/basket-black.svg"
@@ -335,7 +325,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 
           <div>
             {/* user profile icon in or no auth */}
-            {(!isMobile || !isAuth()) && (
+            {!isMobile && (
               <IconButton
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
