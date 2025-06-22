@@ -15,6 +15,10 @@ export default function Document() {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
         />
+        <meta
+          name="google-site-verification"
+          content="xueeYURem7O6jInNpSIpYLWr3dzxl5hQCDErupgSqNo"
+        />
         <link rel="manifest" href="/manifest.json" />
         {/* <script
           type="text/javascript"
