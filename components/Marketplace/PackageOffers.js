@@ -102,7 +102,20 @@ function PackageOffers({ sectionInfo }) {
             key={featured?.id}
             onClick={() => {
               if (!isDragging) {
-                router.push(`/product/${featured?.id}`); // Replace with router.push(featured?.deep_link) when needed
+                router.push({
+                  pathname: `/product/${featured?.id}`,
+                  query: {
+                    name: featured?.name,
+                    desc: featured?.desc,
+                    tags: featured?.combined_tags?.[0]?.name_ar,
+                    category: featured?.marketplace_category?.name,
+                    subCategory: featured?.marketplace_subcategory?.name,
+                    model: featured?.model?.name,
+                    num: featured?.ref_num,
+                    price: featured?.price,
+                    img: featured?.image,
+                  },
+                });
               }
             }}
             sx={{

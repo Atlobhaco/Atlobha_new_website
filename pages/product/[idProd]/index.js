@@ -22,6 +22,8 @@ function ProductDetails() {
   const {
     query: { idProd },
   } = useRouter();
+  const router = useRouter();
+
   const [cityDelivery, setCityDelivery] = useState(14);
   const { isMobile } = useScreenSize();
   const {
@@ -56,6 +58,22 @@ function ProductDetails() {
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
         });
+      });
+      console.log("product", data);
+      router.push({
+        pathname: router.pathname, // or a specific path like '/products'
+        query: {
+          ...router.query, // preserve existing
+          name: data?.name,
+          desc: data?.desc,
+          tags: data?.combined_tags[0]?.name_ar,
+          category: data?.marketplace_category?.name,
+          subCategory: data?.marketplace_subcategory?.name,
+          model: data?.model?.name,
+          num: data?.ref_num,
+          price: data?.price,
+          img: data?.image,
+        },
       });
     }
   }, [idProd, data]);

@@ -19,7 +19,24 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
     <Box
       className={`${style["prod"]}`}
       key={product?.id}
-      onClick={() => !preventOnClick && router.push(`/product/${product?.id}`)}
+      onClick={() => {
+        if (!preventOnClick) {
+          router.push({
+            pathname: `/product/${product?.id}`,
+            query: {
+              name: product?.name,
+              desc: product?.desc,
+              tags: product?.combined_tags?.[0]?.name_ar,
+              category: product?.marketplace_category?.name,
+              subCategory: product?.marketplace_subcategory?.name,
+              model: product?.model?.name,
+              num: product?.ref_num,
+              price: product?.price,
+              img: product?.image,
+            },
+          });
+        }
+      }}
     >
       <Box
         className={`${style["prod-img-wrapper"]}`}

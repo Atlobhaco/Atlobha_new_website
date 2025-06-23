@@ -67,7 +67,20 @@ function Packages() {
                 >
                   <Box
                     onClick={() => {
-                      router.push(`/product/${pack?.id}`);
+                      router.push({
+                        pathname: `/product/${pack?.id}`,
+                        query: {
+                          name: pack?.name,
+                          desc: pack?.desc,
+                          tags: pack?.combined_tags?.[0]?.name_ar,
+                          category: pack?.marketplace_category?.name,
+                          subCategory: pack?.marketplace_subcategory?.name,
+                          model: pack?.model?.name,
+                          num: pack?.ref_num,
+                          price: pack?.price,
+                          img: pack?.image,
+                        },
+                      });
                     }}
                     sx={{
                       backgroundImage: `url('${pack?.featured_image?.url}')`,
