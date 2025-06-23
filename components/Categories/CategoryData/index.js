@@ -23,7 +23,20 @@ function CategoryData({
           : { backgroundColor: "#f9dd4b" }),
       }}
       key={keyValue}
-      onClick={() => router.push(`/category/${category?.id}`)}
+      onClick={() => {
+        router.push({
+          pathname: `/category/${category?.id}`,
+          query: {
+            name: category?.name,
+            tags: category?.tags?.[0]?.name,
+            label: category?.labels[0],
+            subCategory: category?.subcategory?.length
+              ? category?.subcategory?.map((info) => info?.name)?.join(",")
+              : "",
+            img: category?.image,
+          },
+        });
+      }}
     >
       {/* {isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>} */}
       <Box

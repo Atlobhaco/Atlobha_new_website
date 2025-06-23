@@ -42,7 +42,7 @@ function SubCategorySelection({
             router.replace(
               {
                 pathname: `/category/${selectedCategory}`,
-                query: { idSub: subCat?.id },
+                query: { ...router.query, idSub: subCat?.id },
               },
               undefined,
               { shallow: true } // ✅ prevents page data fetching & rerender

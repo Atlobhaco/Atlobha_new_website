@@ -43,7 +43,16 @@ const CategoriesSelection = ({
       router.replace(
         {
           pathname: `/category/${selectedCategory}`,
-          query: { idSub: selected?.subcategory?.[0]?.id || null },
+          query: {
+            name: selected?.name,
+            tags: selected?.tags?.[0]?.name,
+            label: selected?.labels[0],
+            subCategory: selected?.subcategory?.length
+              ? selected?.subcategory?.map((info) => info?.name)?.join(",")
+              : "",
+            img: selected?.image,
+            idSub: selected?.subcategory?.[0]?.id || null,
+          },
         },
         undefined,
         { shallow: true } // ✅ prevents page data fetching & rerender
@@ -74,7 +83,16 @@ const CategoriesSelection = ({
               router.replace(
                 {
                   pathname: `/category/${cat.id}`,
-                  query: { idSub: cat.subcategory?.[0]?.id || null },
+                  query: {
+                    name: cat?.name,
+                    tags: cat?.tags?.[0]?.name,
+                    label: cat?.labels[0],
+                    subCategory: cat?.subcategory?.length
+                      ? cat?.subcategory?.map((info) => info?.name)?.join(",")
+                      : "",
+                    img: cat?.image,
+                    idSub: cat.subcategory?.[0]?.id || null,
+                  },
                 },
                 undefined,
                 { shallow: true } // ✅ prevents page data fetching & rerender

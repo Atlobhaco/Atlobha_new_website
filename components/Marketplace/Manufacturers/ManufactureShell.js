@@ -100,7 +100,20 @@ function ManufactureShell({ sectionInfo }) {
   const handleProductClick = useCallback(
     (prod) => {
       if (!isDragging) {
-        router.push(`/product/${prod?.id}`);
+        router.push({
+          pathname: `/product/${prod?.id}`,
+          query: {
+            name: prod?.name,
+            desc: prod?.desc,
+            tags: prod?.combined_tags?.[0]?.name_ar,
+            category: prod?.marketplace_category?.name,
+            subCategory: prod?.marketplace_subcategory?.name,
+            model: prod?.model?.name,
+            num: prod?.ref_num,
+            price: prod?.price,
+            img: prod?.image,
+          },
+        });
       }
     },
     [isDragging, router]
@@ -111,6 +124,16 @@ function ManufactureShell({ sectionInfo }) {
       pathname: `/manufacture/${sectionInfo?.manufacturer?.id}`,
       query: {
         name: `${sectionInfo?.title}`,
+        name_en: sectionInfo?.title_en,
+        type: sectionInfo?.type,
+        manufacturer: sectionInfo?.manufacturer?.name_ar,
+        manufacturerEn: sectionInfo?.manufacturer?.name_en,
+        logo: sectionInfo?.manufacturer?.logo?.url,
+        categoryies: sectionInfo?.manufacturer?.categories?.length
+          ? sectionInfo?.manufacturer?.categories
+              ?.map((data) => data?.name)
+              ?.join(", ")
+          : "",
       },
     });
   };

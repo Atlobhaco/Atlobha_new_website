@@ -3,16 +3,15 @@ import Head from "next/head";
 
 function MetaTags({
   title = "Title",
-  content = "car parts, spare parts, Atlobha, auto, السعودية, قطع غيار",
   icon = "/logo/road-atlobha-text.svg",
-  keywords = "car parts, spare parts, Atlobha, auto, السعودية, قطع غيار",
+  content = "قطع غيار سيارات أصلية، تسعير سريع، توصيل داخل السعودية، جودة عالية، car parts, spare parts, fast delivery, KSA auto parts, warranty included",
+  keywords = "قطع غيار سيارات أصلية، تسعير سريع، توصيل داخل السعودية، جودة عالية، car parts, spare parts, fast delivery, KSA auto parts, warranty included",
   author = "Atlobha Team",
   url = "https://atlobha.com",
   image = "/logo/road-atlobha-text.svg", // Replace with your actual default image path
 }) {
   return (
     <Head>
-      {/* Primary Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={content} />
       <meta name="keywords" content={keywords} />

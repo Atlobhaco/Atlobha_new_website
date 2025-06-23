@@ -62,7 +62,21 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                 <div
                   className={style["products-contain_img"]}
                   onClick={() => {
-                    router.push(`/product/${data?.product?.id}`);
+                    router.push({
+                      pathname: `/product/${data?.product?.id}`,
+                      query: {
+                        name: data?.product?.name,
+                        desc: data?.product?.desc,
+                        tags: data?.product?.combined_tags?.[0]?.name_ar,
+                        category: data?.product?.marketplace_category?.name,
+                        subCategory:
+                          data?.product?.marketplace_subcategory?.name,
+                        model: data?.product?.model?.name,
+                        num: data?.product?.ref_num,
+                        price: data?.product?.price,
+                        img: data?.product?.image,
+                      },
+                    });
                     handleCloseBasket();
                   }}
                 >

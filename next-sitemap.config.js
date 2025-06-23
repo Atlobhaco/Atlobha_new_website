@@ -19,9 +19,23 @@ module.exports = {
       { loc: "/category", lastmod: new Date().toISOString() },
       { loc: "/category/4?idSub=3", lastmod: new Date().toISOString() },
       { loc: "/product", lastmod: new Date().toISOString() },
-      { loc: "/product/2477937", lastmod: new Date().toISOString() },
+      {
+        loc: "/product/2477937?name=الصيانةالرئيسيةالثانية",
+        lastmod: new Date().toISOString(),
+      },
       { loc: "/manufacture", lastmod: new Date().toISOString() },
-      { loc: "/manufacture/2?name=بيزوس", lastmod: new Date().toISOString() },
+      {
+        loc: "/manufacture/2?name=بيزوس&name_en=Baseus",
+        lastmod: new Date().toISOString(),
+      },
+      {
+        loc: "/manufacture/1?name=شيل&name_en=Shell",
+        lastmod: new Date().toISOString(),
+      },
+      {
+        loc: "/manufacture/28?name=تويو&name_en=TOYO",
+        lastmod: new Date().toISOString(),
+      },
       { loc: "/checkout", lastmod: new Date().toISOString() },
       { loc: "/spareParts/confirmation/", lastmod: new Date().toISOString() },
       // Add more static routes here
