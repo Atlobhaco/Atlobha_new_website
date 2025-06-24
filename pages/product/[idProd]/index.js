@@ -59,8 +59,8 @@ function ProductDetails() {
           product_url: `/product/${idProd}` || "",
         });
       });
-      console.log("product", data);
-      router.push({
+
+	  router.push({
         pathname: router.pathname, // or a specific path like '/products'
         query: {
           ...router.query, // preserve existing
