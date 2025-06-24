@@ -35,14 +35,14 @@ const nextConfig = {
     return config;
   },
 
-  async rewrites() {
-    return [
-      {
-        source: "/site-map-test.xml",
-        destination: "https://www.w3schools.com/xml/note.xml",
-      },
-    ];
-  },
+//   async rewrites() {
+//     return [
+//       {
+//         source: "/site-map-test.xml",
+//         destination: "https://www.w3schools.com/xml/note.xml",
+//       },
+//     ];
+//   },
   //   async redirects() {
   //     return [
   //       {
