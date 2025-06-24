@@ -28,10 +28,12 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
     refetchOnWindowFocus: false,
     retry: 0,
     select: (res) =>
-      res?.data?.data?.map((info) => ({
-        ...info,
-        name: info?.name,
-      })),
+      res?.data?.data
+        ?.map((info) => ({
+          ...info,
+          name: info?.name,
+        }))
+        ?.sort((a, b) => a.name.localeCompare(b.name)),
     onSuccess: (res) => {
       const checkCityFound = res?.find(
         (d) =>
