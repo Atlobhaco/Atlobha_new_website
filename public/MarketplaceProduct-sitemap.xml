@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+  xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+  xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
 
-<url>
+  <url>
     <loc>https://atlobha.com/product/259269?name=شمعة امامية يسار</loc>
     <lastmod>2025-02-19T17:11:12+03:00</lastmod>
-            </url>
-    
+  </url>
+
+  <url>
     <loc>https://atlobha.com/product/286926?name=استكر هايلكس ظهر السفينة  امامي يمين</loc>
     <lastmod>2025-06-14T16:40:24+03:00</lastmod>
-            </url>
-    <url>
+  </url>
+
+  <url>
     <loc>https://atlobha.com/product/286927?name=استكر جانب يمين  هايلكس</loc>
     <lastmod>2025-06-14T16:40:24+03:00</lastmod>
-            </url>
-    <url>
-    <loc>https://atlobha.com/product/286928?name=طقم شطرطون غمارة </loc>
+  </url>
+
+  <url>
+    <loc>https://atlobha.com/product/286928?name=طقم شطرطون غمارة</loc>
     <lastmod>2025-06-14T16:40:24+03:00</lastmod>
-            </url>
-    <url>
+  </url>
+
+  <url>
     <loc>https://atlobha.com/product/286929?name=استكر باب خلفي يمين هايلكس  غمارتين</loc>
     <lastmod>2025-06-14T16:40:24+03:00</lastmod>
-            </url>
-    <url>
+  </url>
+
+  <url>
     <loc>https://atlobha.com/product/286930?name=استكر هايلكس باب امامي يمين</loc>
     <lastmod>2025-06-14T16:40:24+03:00</lastmod>
-            </url>
+  </url>
+
 </urlset>
