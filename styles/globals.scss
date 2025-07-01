@@ -646,3 +646,33 @@ select,
 textarea {
   font-size: 16px !important;
 }
+/* -------------------------------------------------------------------------- */
+/*                   class for zoom image in product details                  */
+/* -------------------------------------------------------------------------- */
+.img-prod-details-zoom {
+  border-radius: 20px;
+  width: 100%;
+  max-width: 100%;
+  display: flex !important;
+  max-height: 255px;
+  margin: auto !important;
+  div {
+    height: inherit !important;
+    width: 100% !important;
+    max-height: 250px !important;
+    img {
+      border-radius: 20px;
+      max-width: 100% !important;
+      width: auto !important;
+      height: auto !important;
+      max-height: 100% !important;
+      margin: auto !important;
+    }
+    @include mobile-screen-style {
+      max-height: 170px;
+    }
+  }
+  @include mobile-screen-style {
+    max-height: 175px;
+  }
+}

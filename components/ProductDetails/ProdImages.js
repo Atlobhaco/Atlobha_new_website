@@ -6,6 +6,7 @@ import { Box, Divider } from "@mui/material";
 import { prodTypeArray } from "@/constants/helpers";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import InnerImageZoom from "react-inner-image-zoom";
 
 function ProdImages({ prod }) {
   const swiperRef = useRef(null);
@@ -41,7 +42,7 @@ function ProdImages({ prod }) {
       >
         {imgArray?.map((img, index) => (
           <SwiperSlide key={img?.url}>
-            <Image
+            {/* <Image
               loading="lazy"
               width={280}
               height={226}
@@ -57,6 +58,15 @@ function ProdImages({ prod }) {
               }}
               src={img?.url || "/imgs/no-prod-img.svg"}
               onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
+            /> */}
+            <InnerImageZoom
+              zoomScale="2"
+              zoomType="hover"
+              zoomPreload={true}
+              src={img?.url || "/imgs/no-prod-img.svg"}
+              zoomSrc={img?.url || "/imgs/no-prod-img.svg"}
+              className="img-prod-details-zoom"
+              alt="prod-img"
             />
           </SwiperSlide>
         ))}

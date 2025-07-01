@@ -11,10 +11,6 @@ export default function Document() {
           href="/icons/pattern.png" // Adjust the path as needed
           type="image/svg+xml"
         />
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
         <link rel="manifest" href="/manifest.json" />
         {/* <script
           type="text/javascript"
