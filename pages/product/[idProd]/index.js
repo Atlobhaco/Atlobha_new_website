@@ -85,29 +85,31 @@ function ProductDetails() {
         <ProductCardSkeleton height={"400px"} />
       ) : (
         <div className={`container`}>
-          <Head>
-            <title>
-              {locale === "en"
-                ? `Atlobha- ${data?.seo?.title_en}`
-                : `اطلبها- ${data?.seo?.title_ar}`}
-            </title>
-            <meta name="description" content={data?.seo?.meta_description} />
-            <meta
-              property="og:description"
-              content={data?.seo?.meta_description}
-            />
-            <meta
-              name="twitter:description"
-              content={data?.seo?.meta_description}
-            />
-            <link
-              rel="canonical"
-              href={`https://atlobha.com/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
-            />
-            <meta property="og:image" content={data?.seo?.image_alt} />
-            <meta name="twitter:image" content={data?.seo?.image_alt} />
-            {/* <meta name="keywords" content={data?.seo?.keywords?.join(", ")} /> */}
-          </Head>
+          {data && (
+            <Head>
+              <title>
+                {locale === "en"
+                  ? `Atlobha- ${data?.seo?.title_en}`
+                  : `اطلبها- ${data?.seo?.title_ar}`}
+              </title>
+              <meta name="description" content={data?.seo?.meta_description} />
+              <meta
+                property="og:description"
+                content={data?.seo?.meta_description}
+              />
+              <meta
+                name="twitter:description"
+                content={data?.seo?.meta_description}
+              />
+              <link
+                rel="canonical"
+                href={`https://atlobha.com/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
+              />
+              <meta property="og:image" content={data?.seo?.image_alt} />
+              <meta name="twitter:image" content={data?.seo?.image_alt} />
+              {/* <meta name="keywords" content={data?.seo?.keywords?.join(", ")} /> */}
+            </Head>
+          )}
           <div className="row">
             <div className={`col-12 col-md-4 ${isMobile ? "mt-3" : "mt-5"}`}>
               {data && <ProdImages prod={data} />}
