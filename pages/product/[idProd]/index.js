@@ -106,7 +106,7 @@ function ProductDetails() {
             />
             <meta property="og:image" content={data?.seo?.image_alt} />
             <meta name="twitter:image" content={data?.seo?.image_alt} />
-            <meta name="keywords" content={data?.seo?.keywords?.join(", ")} />
+            {/* <meta name="keywords" content={data?.seo?.keywords?.join(", ")} /> */}
           </Head>
           <div className="row">
             <div className={`col-12 col-md-4 ${isMobile ? "mt-3" : "mt-5"}`}>
