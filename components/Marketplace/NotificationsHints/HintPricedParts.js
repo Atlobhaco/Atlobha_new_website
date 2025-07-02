@@ -119,8 +119,6 @@ function HintPricedParts({ sectionInfo }) {
     // afterChange: () => setTimeout(() => setIsDragging(false), 500),
   };
 
-  console.log("notification", notification);
-
   const renderBoxes = (data) => {
     switch (data?.type) {
       case "product_review":

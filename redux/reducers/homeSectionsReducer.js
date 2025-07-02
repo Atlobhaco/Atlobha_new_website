@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   allhomeSections: [],
+  sectionsSeo: [],
 };
 
 export const homeSections = createSlice({
@@ -11,9 +12,12 @@ export const homeSections = createSlice({
     setAllHomeSections: (state, action) => {
       state.allhomeSections = action.payload || [];
     },
+    setSectionsSeo: (state, action) => {
+      state.sectionsSeo = action.payload || [];
+    },
   },
 });
 
-export const { setAllHomeSections } = homeSections.actions;
+export const { setAllHomeSections, setSectionsSeo } = homeSections.actions;
 
 export default homeSections.reducer;
