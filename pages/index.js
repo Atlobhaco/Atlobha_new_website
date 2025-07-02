@@ -1,13 +1,16 @@
 import localFont from "next/font/local";
 import MetaTags from "@/components/shared/MetaTags";
 import { Box, CircularProgress } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useBranch from "./useBranch";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useDispatch, useSelector } from "react-redux";
 import { APP_SECTIONS, HOME_SECTIONS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
-import { setAllHomeSections } from "@/redux/reducers/homeSectionsReducer";
+import {
+  setAllHomeSections,
+  setSectionsSeo,
+} from "@/redux/reducers/homeSectionsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
 import QuickLinks from "@/components/Marketplace/QuickLinks";
 import MainCarousel from "@/components/Marketplace/MainCarousel";
@@ -22,15 +25,17 @@ import RecentlyViewed from "@/components/Marketplace/RecentlyViewed";
 import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
 import PartsImages from "@/components/spareParts/PartsImages";
 import { isAuth } from "@/config/hooks/isAuth";
+import Head from "next/head";
 
 export default function Home() {
   useBranch();
   const { isMobile } = useScreenSize();
-
   const dispatch = useDispatch();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { allGroups } = useSelector((state) => state.appGroups);
-  const { allhomeSections } = useSelector((state) => state.homeSectionsData);
+  const { allhomeSections, sectionsSeo } = useSelector(
+    (state) => state.homeSectionsData
+  );
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -70,7 +75,64 @@ export default function Home() {
     </Box>
   ) : (
     <>
-      <MetaTags title={t.marketplace} content={t.marketplace} />
+      {sectionsSeo?.length && (
+        <Head>
+          <title>
+            {locale === "en"
+              ? `Atlobha- ${
+                  sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                    ?.title_en
+                }`
+              : `اطلبها- ${
+                  sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                    ?.title_ar
+                }`}
+          </title>
+          <meta
+            name="description"
+            content={
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                ?.meta_description
+            }
+          />
+          <meta
+            property="og:description"
+            content={
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                ?.meta_description ||
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                ?.top_description
+            }
+          />
+          <meta
+            name="twitter:description"
+            content={
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                ?.meta_description ||
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo
+                ?.top_description
+            }
+          />
+          <meta
+            property="og:image"
+            content={
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="twitter:image"
+            content={
+              sectionsSeo?.find((d) => d?.type === MARKETPLACE)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="keywords"
+            content={sectionsSeo
+              ?.find((d) => d?.type === MARKETPLACE)
+              ?.keywords?.join(", ")}
+          />
+        </Head>
+      )}
       {data?.map((item) => {
         switch (item.type) {
           case "quick-links":

@@ -103,11 +103,11 @@ function ProductDetails() {
               />
               <link
                 rel="canonical"
-                href={`https://atlobha.com/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
+                href={`https://atlobha.com/product/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
               />
               <meta property="og:image" content={data?.seo?.image_alt} />
               <meta name="twitter:image" content={data?.seo?.image_alt} />
-              {/* <meta name="keywords" content={data?.seo?.keywords?.join(", ")} /> */}
+              <meta name="keywords" content={data?.seo?.keywords?.join(", ")} />
             </Head>
           )}
           <div className="row">

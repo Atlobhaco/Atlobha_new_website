@@ -19,11 +19,12 @@ import ProductCard from "@/components/shared/ProductCard";
 import PaginateComponent from "@/components/Pagination";
 import useLocalization from "@/config/hooks/useLocalization";
 import { isAuth } from "@/config/hooks/isAuth";
+import Head from "next/head";
 
 function Category() {
   const router = useRouter();
   const { user } = useAuth();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { idCategory, idSub } = router.query;
   const [page, setPage] = useState(1);
   const { isMobile } = useScreenSize();
@@ -103,7 +104,83 @@ function Category() {
   return (
     <Box>
       <MetaTags title={t.selectedProducts} content={t.selectedProducts} />
+      <h1
+        style={{
+          visibility: "hidden",
+          height: "0px",
+        }}
+      >
+        {locale === "en"
+          ? `Atlobha- ${
+              allCategories.find((d) => +d.id === +idCategory)?.seo?.title_en
+            }`
+          : `اطلبها- ${
+              allCategories.find((d) => +d.id === +idCategory)?.seo?.title_ar
+            }`}
+      </h1>
 
+      {!!allCategories?.length && (
+        <Head>
+          <title>
+            {locale === "en"
+              ? `Atlobha- ${
+                  allCategories.find((d) => +d.id === +idCategory)?.seo
+                    ?.title_en
+                }`
+              : `اطلبها- ${
+                  allCategories.find((d) => +d.id === +idCategory)?.seo
+                    ?.title_ar
+                }`}
+          </title>
+          <meta
+            name="description"
+            content={
+              allCategories.find((d) => +d.id === +idCategory)?.seo
+                ?.meta_description
+            }
+          />
+          <meta
+            property="og:description"
+            content={
+              allCategories.find((d) => +d.id === +idCategory)?.seo
+                ?.meta_description
+            }
+          />
+          <meta
+            name="twitter:description"
+            content={
+              allCategories.find((d) => +d.id === +idCategory)?.seo
+                ?.meta_description
+            }
+          />
+          <link
+            rel="canonical"
+            href={`https://atlobha.com/category/${
+              allCategories.find((d) => +d.id === +idCategory).seo?.seoable_id
+            }?name${
+              allCategories.find((d) => +d.id === +idCategory)?.seo?.slug
+            }&idSub=${idSub}`}
+          />
+          <meta
+            property="og:image"
+            content={
+              allCategories.find((d) => +d.id === +idCategory)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="twitter:image"
+            content={
+              allCategories.find((d) => +d.id === +idCategory)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="keywords"
+            content={allCategories
+              .find((d) => +d.id === +idCategory)
+              ?.seo?.keywords?.join(", ")}
+          />
+        </Head>
+      )}
       <Box className="container">
         <Box className="row">
           <Box className="col-12">

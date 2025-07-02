@@ -37,6 +37,8 @@ import {
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
 import LimitedSupportCar from "@/components/LimitedSupportCar/LimitedSupportCar";
 import LimitedCarDontShowAgain from "@/components/LimitedSupportCar/LimitedCarDontShowAgain";
+import { SPAREPARTS } from "@/constants/enums";
+import Head from "next/head";
 
 const style = {
   marginTop: "32px",
@@ -46,7 +48,7 @@ function SpareParts() {
   const { user } = useAuth();
   const router = useRouter();
   const dispatch = useDispatch();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [openHowPricing, setOpenhowPricing] = useState(false);
   const [openPricingDialog, setOpenPricingDialog] = useState(false);
@@ -66,6 +68,8 @@ function SpareParts() {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const { sectionsSeo } = useSelector((state) => state.homeSectionsData);
+
   const [finalPartsAfterImgUpload, setFinalPartsAfterImageUpload] = useState(
     []
   );
@@ -307,6 +311,64 @@ function SpareParts() {
   return (
     <Box className="position-relative">
       <MetaTags title={t.sparePartPricing} content={t.discoverPricingMade} />
+      {sectionsSeo?.length && (
+        <Head>
+          <title>
+            {locale === "en"
+              ? `Atlobha- ${
+                  sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                    ?.title_en
+                }`
+              : `اطلبها- ${
+                  sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                    ?.title_ar
+                }`}
+          </title>
+          <meta
+            name="description"
+            content={
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                ?.meta_description
+            }
+          />
+          <meta
+            property="og:description"
+            content={
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                ?.meta_description ||
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                ?.top_description
+            }
+          />
+          <meta
+            name="twitter:description"
+            content={
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                ?.meta_description ||
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo
+                ?.top_description
+            }
+          />
+          <meta
+            property="og:image"
+            content={
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="twitter:image"
+            content={
+              sectionsSeo?.find((d) => d?.type === SPAREPARTS)?.seo?.image_alt
+            }
+          />
+          <meta
+            name="keywords"
+            content={sectionsSeo
+              ?.find((d) => d?.type === SPAREPARTS)
+              ?.seo?.keywords?.join(", ")}
+          />
+        </Head>
+      )}
       <div className="container pb-5 mb-5">
         <div className="row" style={style}>
           <div className="col-12">

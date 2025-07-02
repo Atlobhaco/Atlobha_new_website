@@ -5,13 +5,17 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
+import {
+  APP_SECTIONS,
+  APP_SECTIONS_GROUPS,
+} from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { useDispatch } from "react-redux";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import ProductCardSkeleton from "@/components/cardSkeleton";
+import { setSectionsSeo } from "@/redux/reducers/homeSectionsReducer";
 
 const active = {
   border: "1px solid #F9DD4B",
@@ -141,6 +145,19 @@ function CategoriesPopupcontent({
     },
     onError: () => {
       toast.error(t.someThingWrong);
+    },
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*                         save seo for each  section                         */
+  /* -------------------------------------------------------------------------- */
+  useCustomQuery({
+    name: "app-home-sections-seo",
+    url: `${APP_SECTIONS}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      dispatch(setSectionsSeo(res));
     },
   });
 

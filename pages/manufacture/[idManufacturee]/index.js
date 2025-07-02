@@ -132,6 +132,16 @@ function ManufactureDetails() {
               content={manufactureInfo?.seo?.keywords?.join(", ")}
             />
           </Head>
+          <h1
+            style={{
+              visibility: "hidden",
+              height: "0px",
+            }}
+          >
+            {locale === "en"
+              ? `Atlobha- ${manufactureInfo?.seo?.title_en}`
+              : `اطلبها- ${manufactureInfo?.seo?.title_ar}`}
+          </h1>
           <div className="row">
             <div className="col-12" id="products-man">
               <Box
