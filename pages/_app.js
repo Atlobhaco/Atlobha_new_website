@@ -31,6 +31,7 @@ import "swiper/css/pagination";
 import LogoLoader from "@/components/LogoLoader";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
+import "react-inner-image-zoom/lib/styles.min.css";
 
 const theme = createTheme();
 const queryClient = new QueryClient();

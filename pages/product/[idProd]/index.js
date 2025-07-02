@@ -16,9 +16,10 @@ import AnotherProducts from "../../../components/ProductDetails/AnotherProducts"
 import AddToBasketProdDetails from "../../../components/ProductDetails/AddToBasketProdDetails";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
+import Head from "next/head";
 
 function ProductDetails() {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const {
     query: { idProd },
   } = useRouter();
@@ -60,7 +61,7 @@ function ProductDetails() {
         });
       });
 
-	  router.push({
+      router.push({
         pathname: router.pathname, // or a specific path like '/products'
         query: {
           ...router.query, // preserve existing
@@ -80,14 +81,38 @@ function ProductDetails() {
 
   return (
     <Box>
-      <MetaTags title={data?.name} content={data?.name} />
       {ProdDetailsFetch ? (
         <ProductCardSkeleton height={"400px"} />
       ) : (
         <div className={`container`}>
+          {data && (
+            <Head>
+              <title>
+                {locale === "en"
+                  ? `Atlobha- ${data?.seo?.title_en}`
+                  : `اطلبها- ${data?.seo?.title_ar}`}
+              </title>
+              <meta name="description" content={data?.seo?.meta_description} />
+              <meta
+                property="og:description"
+                content={data?.seo?.meta_description}
+              />
+              <meta
+                name="twitter:description"
+                content={data?.seo?.meta_description}
+              />
+              <link
+                rel="canonical"
+                href={`https://atlobha.com/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
+              />
+              <meta property="og:image" content={data?.seo?.image_alt} />
+              <meta name="twitter:image" content={data?.seo?.image_alt} />
+              {/* <meta name="keywords" content={data?.seo?.keywords?.join(", ")} /> */}
+            </Head>
+          )}
           <div className="row">
             <div className={`col-12 col-md-4 ${isMobile ? "mt-3" : "mt-5"}`}>
-              <ProdImages prod={data} />
+              {data && <ProdImages prod={data} />}
               <AddToBasketProdDetails prod={data} />
             </div>
             <div

@@ -9,14 +9,17 @@ import {
   USERS,
   VEHICLES,
 } from "@/config/endPoints/endPoints";
+import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 function ManufactureDetails() {
+  const { locale } = useLocalization();
   const router = useRouter();
   const { user } = useAuth();
   const { idManufacturee, name } = router.query;
@@ -94,6 +97,41 @@ function ManufactureDetails() {
         </div>
       ) : (
         <div className="container">
+          <Head>
+            <title>
+              {locale === "en"
+                ? `Atlobha- ${manufactureInfo?.seo?.title_en}`
+                : `اطلبها- ${manufactureInfo?.seo?.title_ar}`}
+            </title>
+            <meta
+              name="description"
+              content={manufactureInfo?.seo?.meta_description}
+            />
+            <meta
+              property="og:description"
+              content={manufactureInfo?.seo?.meta_description}
+            />
+            <meta
+              name="twitter:description"
+              content={manufactureInfo?.seo?.meta_description}
+            />
+            <link
+              rel="canonical"
+              href={`https://atlobha.com/manufacture/${manufactureInfo.seo?.seoable_id}?name${manufactureInfo?.seo?.slug}`}
+            />
+            <meta
+              property="og:image"
+              content={manufactureInfo?.seo?.image_alt}
+            />
+            <meta
+              name="twitter:image"
+              content={manufactureInfo?.seo?.image_alt}
+            />
+            <meta
+              name="keywords"
+              content={manufactureInfo?.seo?.keywords?.join(", ")}
+            />
+          </Head>
           <div className="row">
             <div className="col-12" id="products-man">
               <Box

@@ -123,8 +123,8 @@ function ManufactureShell({ sectionInfo }) {
     router.push({
       pathname: `/manufacture/${sectionInfo?.manufacturer?.id}`,
       query: {
-        name: `${sectionInfo?.title}`,
-        name_en: sectionInfo?.title_en,
+        name: `${sectionInfo?.manufacturer?.name_ar}`,
+        name_en: sectionInfo?.manufacturer?.name_en,
         type: sectionInfo?.type,
         manufacturer: sectionInfo?.manufacturer?.name_ar,
         manufacturerEn: sectionInfo?.manufacturer?.name_en,
