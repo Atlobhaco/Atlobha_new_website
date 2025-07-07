@@ -39,7 +39,7 @@ function MyOrders() {
     name: ["getAllOrders", page, filters, classFilter],
     url: `${USERS}/${
       user?.data?.user?.id
-    }${ORDERS}?page=${page}&${getFilterParams(filters)}&${getFilterParams(
+    }${ORDERS}?page=${page}&excluded_status=payment-pending&${getFilterParams(filters)}&${getFilterParams(
       classFilter
     )}`,
     refetchOnWindowFocus: false,
