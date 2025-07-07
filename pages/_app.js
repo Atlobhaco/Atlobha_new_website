@@ -129,6 +129,15 @@ export default function App({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Atlobha",
+          url: "https://atlobha.com",
+          logo: "https://atlobha.com/favicon.png", // make sure this image is accessible
+        })}
+      </Script>
       <Script
         id="webengage-config"
         strategy="lazyOnload"
