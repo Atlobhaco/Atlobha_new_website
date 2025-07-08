@@ -461,5 +461,7 @@
   "extraData": "بيانات إضافية",
   "loginSuccess": "تم التسجيل بنجاح",
   "priceWithoutVat": "السعر (غير شامل الضريبة)",
-  "createNewAccount": "او انشاء حساب جديد"
+  "createNewAccount": "او انشاء حساب جديد",
+  "paymentFailure": "فشل في عملية الدفع",
+  "paymentCancelled": "تم الغاء عملية الدفع"
 }

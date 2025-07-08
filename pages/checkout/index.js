@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import style from "../spareParts/confirmation/confirmation.module.scss";
 import useLocalization from "@/config/hooks/useLocalization";
@@ -10,8 +10,11 @@ import { useRouter } from "next/router";
 import SharedBtn from "@/components/shared/SharedBtn";
 import DialogCentered from "@/components/DialogCentered";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
+import EnterPhoneNumber from "@/components/EnterPhoneNumber";
 
 function Checkout() {
+  const tamaraRef = useRef();
+  const phoneRef = useRef();
   const { t } = useLocalization();
   const router = useRouter();
   const { isMobile } = useScreenSize();
@@ -25,6 +28,8 @@ function Checkout() {
   const [openAddMobile, setOpenAddMobile] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [phoneNum, setPhoneNum] = useState(false);
+  const [addPhoneForTamara, setAddPhoneForTamara] = useState(false);
+  const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -34,6 +39,10 @@ function Checkout() {
 
   const handleChangeAddress = (data) => {
     setSelectAddress(data);
+  };
+
+  const triggerChildPayment = () => {
+    tamaraRef.current?.triggerTamaraPayment();
   };
 
   return (
@@ -75,6 +84,9 @@ function Checkout() {
                   selectAddress={selectAddress}
                   setOpenAddMobile={setOpenAddMobile}
                   promoCodeId={promoCodeId}
+                  setAddPhoneForTamara={setAddPhoneForTamara}
+                  phoneAddedForTamara={phoneAddedForTamara}
+                  ref={tamaraRef}
                 />
               )}
             </div>
@@ -111,6 +123,35 @@ function Checkout() {
             setOtpCode={setOtpCode}
             phoneNum={phoneNum}
             setPhoneNum={setPhoneNum}
+          />
+        }
+      />
+
+      {/* dialog to enter phone for user to can  pay with tamara */}
+      <DialogCentered
+        showTitle={true}
+        title={t.addPhoneNum}
+        subtitle={false}
+        open={addPhoneForTamara}
+        setOpen={setAddPhoneForTamara}
+        closeAction={() => {
+          setAddPhoneForTamara(false);
+          setPhoneAddedForTamara(false);
+          phoneRef?.current?.resetForm();
+        }}
+        hasCloseIcon
+        customClass="minimize-center-dialog-width"
+        content={
+          <EnterPhoneNumber
+            ref={phoneRef}
+            onSubmit={(phone) => {
+              setPhoneAddedForTamara(phone);
+              setAddPhoneForTamara(false);
+              setTimeout(() => {
+                triggerChildPayment();
+              }, 500);
+              phoneRef?.current?.resetForm(); // 👈 Reset form on close
+            }}
           />
         }
       />
