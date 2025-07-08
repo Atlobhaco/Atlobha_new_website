@@ -248,35 +248,36 @@ const CheckoutSummary = forwardRef(
     /*                   to fix the reference error for document                  */
     /* -------------------------------------------------------------------------- */
     useEffect(() => {
-      if (document && typeof window !== "undefined") {
-        setPayfortForm(document.createElement("form"));
+      if (typeof window === "undefined") return;
+
+      if (typeof window !== "undefined") {
+        const form = window.document.createElement("form");
+        setPayfortForm(form);
       }
-    }, [document]);
+    }, []);
 
-    useEffect(
-      () => {
-        if (
-          payFortForm &&
-          +calculateReceiptResFromMainPage?.amount_to_pay > 0 &&
-          document &&
-          typeof window !== "undefined"
-        ) {
-          payFortForm.method = "POST";
-          payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+    useEffect(() => {
+      if (typeof window === "undefined") return;
 
-          Object.keys(requestData).forEach((key) => {
-            const input = document?.createElement("input");
-            input.type = "hidden";
-            input.name = key;
-            input.value = requestData[key];
-            payFortForm.appendChild(input);
-          });
-          document?.body.appendChild(payFortForm);
-        }
-      },
-      [payFortForm, calculateReceiptResFromMainPage?.amount_to_pay],
-      document
-    );
+      if (
+        typeof window !== "undefined" &&
+        payFortForm &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        payFortForm.method = "POST";
+        payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+
+        Object.keys(requestData).forEach((key) => {
+          const input = window.document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = requestData[key];
+          payFortForm.appendChild(input);
+        });
+
+        window.document.body.appendChild(payFortForm);
+      }
+    }, [payFortForm, calculateReceiptResFromMainPage?.amount_to_pay]);
 
     /* -------------------------------------------------------------------------- */
     /*                              apple pay payment                             */
