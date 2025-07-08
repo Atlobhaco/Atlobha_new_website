@@ -11,7 +11,7 @@ const useCustomQuery = (options) => {
     url,
     baseURL,
     headers = {},
-    cacheTime = 30000,
+    cacheTime,
     enabled = true,
     initialData,
     initialDataUpdatedAt,
