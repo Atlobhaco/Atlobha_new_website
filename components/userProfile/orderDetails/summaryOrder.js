@@ -126,6 +126,13 @@ function SummaryOrder({
       ) {
         return;
       }
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        handlePayWithTamara();
+        return;
+      }
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
@@ -315,6 +322,64 @@ function SummaryOrder({
     };
 
     session.begin();
+  };
+
+  /* -------------------------------------------------------------------------- */
+  /*                            tamara payment logic                            */
+  /* -------------------------------------------------------------------------- */
+  const handlePayWithTamara = async () => {
+    const sourceItems = orderDetails?.parts?.length
+      ? orderDetails.parts
+      : orderDetails?.products || [];
+    // setLoadPayRequest(true);
+    const res = await fetch("/api/tamara/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        shipping_address: {
+          city: orderDetails?.address?.city?.name,
+          country_code: orderDetails?.address?.city?.country?.code,
+          first_name: orderDetails?.user?.name || "new",
+          last_name: orderDetails?.user?.name || "user",
+          line1: orderDetails?.address?.address,
+        },
+        description: `spare-part-order-for-user-with-id=${orderDetails?.user?.id}`,
+        order_reference_id: merchanteRefrence,
+        totalAmount: orderDetails?.receipt?.amount_to_pay,
+        successUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
+        cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        customer: {
+          first_name: orderDetails?.user?.name || "new",
+          last_name: orderDetails?.user?.name || "user",
+          phone_number: orderDetails?.user?.phone?.replace(/^(\+?966)/, ""),
+          email: orderDetails?.user?.email || "test@example.com",
+        },
+        items: sourceItems.map((prod) => ({
+          reference_id: prod?.id,
+          sku: prod?.ref_num || prod?.sku || prod?.id,
+          name: prod?.name,
+          quantity: prod?.quantity,
+          type: "Digital",
+          total_amount: {
+            amount: prod?.price,
+            currency: "SAR",
+          },
+        })),
+      }),
+    });
+
+    const data = await res.json();
+    // setTimeout(() => {
+    //   setLoadPayRequest(false);
+    // }, 500);
+
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      alert("Failed to create Tamara order.");
+      console.error(data);
+    }
   };
 
   return (
@@ -522,6 +587,12 @@ function SummaryOrder({
               ) {
                 callConfirmPricing();
                 handleApplePayPayment();
+              } else if (
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara
+              ) {
+                callCalculateReceipt();
+                // callConfirmPricing();
+                console.log(selectedPaymentMethod);
               } else {
                 callCalculateReceipt();
               }
