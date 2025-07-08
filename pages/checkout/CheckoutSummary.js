@@ -253,21 +253,29 @@ const CheckoutSummary = forwardRef(
       }
     }, [document]);
 
-    useEffect(() => {
-      if (payFortForm && +calculateReceiptResFromMainPage?.amount_to_pay > 0) {
-        payFortForm.method = "POST";
-        payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
+    useEffect(
+      () => {
+        if (
+          payFortForm &&
+          +calculateReceiptResFromMainPage?.amount_to_pay > 0 &&
+          document
+        ) {
+          payFortForm.method = "POST";
+          payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
 
-        Object.keys(requestData).forEach((key) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = key;
-          input.value = requestData[key];
-          payFortForm.appendChild(input);
-        });
-        document.body.appendChild(payFortForm);
-      }
-    }, [payFortForm, calculateReceiptResFromMainPage?.amount_to_pay]);
+          Object.keys(requestData).forEach((key) => {
+            const input = document?.createElement("input");
+            input.type = "hidden";
+            input.name = key;
+            input.value = requestData[key];
+            payFortForm.appendChild(input);
+          });
+          document?.body.appendChild(payFortForm);
+        }
+      },
+      [payFortForm, calculateReceiptResFromMainPage?.amount_to_pay],
+      document
+    );
 
     /* -------------------------------------------------------------------------- */
     /*                              apple pay payment                             */
