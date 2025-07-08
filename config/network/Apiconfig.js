@@ -33,7 +33,7 @@ const useCustomQuery = (options) => {
     retryOnMount,
     retryDelay,
     select,
-    staleTime = 30000,
+    staleTime,
     structuralSharing,
     suspense,
     useErrorBoundary,
