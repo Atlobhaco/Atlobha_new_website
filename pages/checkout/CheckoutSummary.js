@@ -248,7 +248,7 @@ const CheckoutSummary = forwardRef(
     /*                   to fix the reference error for document                  */
     /* -------------------------------------------------------------------------- */
     useEffect(() => {
-      if (document) {
+      if (document && typeof window !== "undefined") {
         setPayfortForm(document.createElement("form"));
       }
     }, [document]);
@@ -258,7 +258,8 @@ const CheckoutSummary = forwardRef(
         if (
           payFortForm &&
           +calculateReceiptResFromMainPage?.amount_to_pay > 0 &&
-          document
+          document &&
+          typeof window !== "undefined"
         ) {
           payFortForm.method = "POST";
           payFortForm.action = process.env.NEXT_PUBLIC_PAYFORT_URL;
