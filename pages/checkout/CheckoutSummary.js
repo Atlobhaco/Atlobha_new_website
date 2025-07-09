@@ -21,6 +21,7 @@ import React, {
   useState,
   useImperativeHandle,
   forwardRef,
+  useRef,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -33,6 +34,7 @@ const CheckoutSummary = forwardRef(
       promoCodeId,
       setAddPhoneForTamara,
       phoneAddedForTamara,
+      setOpenEditUserModal,
     },
     ref
   ) => {
@@ -53,11 +55,13 @@ const CheckoutSummary = forwardRef(
     const dispatch = useDispatch();
     const router = useRouter();
     const { user } = useAuth();
-    const merchanteRefrence = `${user?.data?.user?.id}_${Math.floor(
-      1000 + Math.random() * 9000
-    )}`;
+    const merchanteRefrenceRef = useRef(
+      `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
+    );
+    const merchanteRefrence = merchanteRefrenceRef.current;
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
+    const { userDataProfile } = useSelector((state) => state.quickSection);
 
     const receipt = {};
     const header = {
@@ -141,7 +145,7 @@ const CheckoutSummary = forwardRef(
           selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara &&
           +oldAmountToPay > 0
         ) {
-          if (user?.data?.user?.phone?.length) {
+          if (userDataProfile?.phone?.length) {
             handlePayWithTamara();
           } else {
             setAddPhoneForTamara();
@@ -436,11 +440,11 @@ const CheckoutSummary = forwardRef(
           shipping_address: {
             city: selectAddress?.city?.name,
             country_code: selectAddress?.city?.country?.code,
-            first_name: user?.data?.user?.name || "new",
-            last_name: user?.data?.user?.name || "user",
+            first_name: userDataProfile?.name,
+            last_name: "",
             line1: selectAddress?.address,
           },
-          description: `marketplace-order-for-user-with-id=${user?.data?.user?.id}`,
+          description: `marketplace-order-for-user-with-id=${userDataProfile?.id}`,
           order_reference_id: merchanteRefrence,
           totalAmount: calculateReceiptResFromMainPage?.amount_to_pay,
           successUrl: `${
@@ -449,12 +453,13 @@ const CheckoutSummary = forwardRef(
           cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
           failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
           customer: {
-            first_name: user?.data?.user?.name || "new",
-            last_name: user?.data?.user?.name || "user",
+            first_name: userDataProfile?.name,
+            last_name: "",
             phone_number:
               phoneAddedForTamara ||
-              user?.data?.user?.phone?.replace(/^(\+?966)/, ""),
-            email: user?.data?.user?.email || "test@example.com",
+              userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+            email:
+              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
           },
           items: basket?.map((prod) => ({
             reference_id: prod?.id,
@@ -477,7 +482,7 @@ const CheckoutSummary = forwardRef(
       }, 500);
 
       if (data.checkout_url) {
-        window.location.href = data.checkout_url;
+        window.location.assign(data.checkout_url);
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
@@ -627,6 +632,11 @@ const CheckoutSummary = forwardRef(
               setRedirectToPayfort(true);
             } else if (method === PAYMENT_METHODS.applePay) {
               handleApplePayPayment();
+            } else if (method === PAYMENT_METHODS.tamara) {
+              if (!userDataProfile?.email || !userDataProfile?.name) {
+                setOpenEditUserModal(true);
+                return;
+              }
             }
 
             callConfirmPricing();

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import style from "../spareParts/confirmation/confirmation.module.scss";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -11,9 +11,17 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import DialogCentered from "@/components/DialogCentered";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
 import EnterPhoneNumber from "@/components/EnterPhoneNumber";
+import EditInfo from "../userProfile/editInfo";
+import { Box } from "@mui/material";
+import { useAuth } from "@/config/providers/AuthProvider";
+import { USERS } from "@/config/endPoints/endPoints";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
+import useCustomQuery from "@/config/network/Apiconfig";
+import EditUserInfoDialog from "@/components/editUserInfoDialog";
 
 function Checkout() {
   const tamaraRef = useRef();
+  const { user } = useAuth();
   const phoneRef = useRef();
   const { t } = useLocalization();
   const router = useRouter();
@@ -30,12 +38,29 @@ function Checkout() {
   const [phoneNum, setPhoneNum] = useState(false);
   const [addPhoneForTamara, setAddPhoneForTamara] = useState(false);
   const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
       setSelectAddress(selectedAddress?.id ? selectedAddress : defaultAddress);
     }
   }, [selectedAddress, defaultAddress]);
+
+  const { data } = useCustomQuery({
+    name: ["getProfileInfoForCheckout", openEditUserModal],
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
 
   const handleChangeAddress = (data) => {
     setSelectAddress(data);
@@ -87,6 +112,7 @@ function Checkout() {
                   setAddPhoneForTamara={setAddPhoneForTamara}
                   phoneAddedForTamara={phoneAddedForTamara}
                   ref={tamaraRef}
+                  setOpenEditUserModal={setOpenEditUserModal}
                 />
               )}
             </div>
@@ -154,6 +180,11 @@ function Checkout() {
             }}
           />
         }
+      />
+      {/* modal to edit user info data */}
+      <EditUserInfoDialog
+        openEditUserModal={openEditUserModal}
+        setOpenEditUserModal={setOpenEditUserModal}
       />
     </div>
   );

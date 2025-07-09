@@ -463,5 +463,6 @@
   "priceWithoutVat": "السعر (غير شامل الضريبة)",
   "createNewAccount": "او انشاء حساب جديد",
   "paymentFailure": "فشل في عملية الدفع",
-  "paymentCancelled": "تم الغاء عملية الدفع"
+  "paymentCancelled": "تم الغاء عملية الدفع",
+  "canPayNow": "يمكنك الدفع الان"
 }
