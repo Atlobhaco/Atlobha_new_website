@@ -5,6 +5,7 @@ import {
   ORDERS,
   RE_OPEN,
   SPARE_PARTS,
+  USERS,
 } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
@@ -20,8 +21,10 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import EditUserInfoDialog from "@/components/editUserInfoDialog";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -37,9 +40,27 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
+  const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+  const { userDataProfile } = useSelector((state) => state.quickSection);
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+
+  useCustomQuery({
+    name: ["getUserInfoForOrder", openEditUserModal],
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
 
   const header = {
     color: "#232323",
@@ -339,8 +360,8 @@ function SummaryOrder({
         shipping_address: {
           city: orderDetails?.address?.city?.name,
           country_code: orderDetails?.address?.city?.country?.code,
-          first_name: orderDetails?.user?.name || "new",
-          last_name: orderDetails?.user?.name || "user",
+          first_name: userDataProfile?.name,
+          last_name: "",
           line1: orderDetails?.address?.address,
         },
         description: `spare-part-order-for-user-with-id=${orderDetails?.user?.id}`,
@@ -350,10 +371,11 @@ function SummaryOrder({
         cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
         failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
         customer: {
-          first_name: orderDetails?.user?.name || "new",
-          last_name: orderDetails?.user?.name || "user",
-          phone_number: orderDetails?.user?.phone?.replace(/^(\+?966)/, ""),
-          email: orderDetails?.user?.email || "test@example.com",
+          first_name: userDataProfile?.name,
+          last_name: "",
+          phone_number: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+          email:
+            userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
         },
         items: sourceItems.map((prod) => ({
           reference_id: prod?.id,
@@ -370,12 +392,9 @@ function SummaryOrder({
     });
 
     const data = await res.json();
-    // setTimeout(() => {
-    //   setLoadPayRequest(false);
-    // }, 500);
 
     if (data.checkout_url) {
-      window.location.href = data.checkout_url;
+      window.location.assign(data.checkout_url);
     } else {
       alert("Failed to create Tamara order.");
       console.error(data);
@@ -590,9 +609,14 @@ function SummaryOrder({
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara
               ) {
+                if (
+                  (!orderDetails?.user?.name && !userDataProfile?.name) ||
+                  (!orderDetails?.user?.email && !userDataProfile?.phone)
+                ) {
+                  setOpenEditUserModal(true);
+                  return;
+                }
                 callCalculateReceipt();
-                // callConfirmPricing();
-                console.log(selectedPaymentMethod);
               } else {
                 callCalculateReceipt();
               }
@@ -600,6 +624,12 @@ function SummaryOrder({
           />
         </>
       )}
+
+      {/* modal to edit user info data */}
+      <EditUserInfoDialog
+        openEditUserModal={openEditUserModal}
+        setOpenEditUserModal={setOpenEditUserModal}
+      />
     </Box>
   );
 }

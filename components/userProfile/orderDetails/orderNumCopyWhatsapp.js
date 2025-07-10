@@ -3,11 +3,42 @@ import { Box } from "@mui/material";
 import React from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import moment from "moment";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import IconButton from "@mui/material/IconButton";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 
 function OrderNumCopyWhatsapp({ orderDetails = {}, handleCopy = () => {} }) {
   const { t } = useLocalization();
+  const router = useRouter();
+  const { type } = router.query;
+
+  const ShowInvoice = () => {
+    if (
+      type === ORDERSENUM?.marketplace ||
+      (type === ORDERSENUM?.spareParts &&
+        (orderDetails?.status === STATUS?.priced ||
+          orderDetails?.status === STATUS?.confirmed))
+    ) {
+      return (
+        <Box>
+          <IconButton
+            color="inherit"
+            onClick={() => {
+              window.open(orderDetails?.invoice_url, "noopener,noreferrer");
+            }}
+          >
+            <Image
+              src="/icons/print.svg"
+              width={20}
+              height={20}
+              alt="print-invoice"
+            />
+          </IconButton>
+        </Box>
+      );
+    }
+  };
 
   return (
     <Box
@@ -37,25 +68,7 @@ function OrderNumCopyWhatsapp({ orderDetails = {}, handleCopy = () => {} }) {
           {t.orderedAt} {moment(orderDetails?.created_at).format("D MMM YYYY")}
         </Box>
       </Box>
-      <Box>
-        <IconButton
-          color="inherit"
-          onClick={() => {
-            window.open(
-              `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
-              "_blank",
-              "noopener,noreferrer"
-            );
-            window.webengage.onReady(() => {
-              webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                event_status: true,
-              });
-            });
-          }}
-        >
-          <WhatsAppIcon />
-        </IconButton>
-      </Box>
+      {ShowInvoice()}
     </Box>
   );
 }

@@ -39,9 +39,9 @@ function MyOrders() {
     name: ["getAllOrders", page, filters, classFilter],
     url: `${USERS}/${
       user?.data?.user?.id
-    }${ORDERS}?page=${page}&excluded_status=payment-pending&${getFilterParams(filters)}&${getFilterParams(
-      classFilter
-    )}`,
+    }${ORDERS}?page=${page}&excluded_status=payment-pending&${getFilterParams(
+      filters
+    )}&${getFilterParams(classFilter)}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled: !!user?.data?.user?.id,
@@ -133,6 +133,8 @@ function MyOrders() {
                   ...orderEnumArray()?.filter((d, index) => index <= 1),
                 ]}
                 handleClick={(data) => {
+                  setPage(1);
+                  setLoadMoreClicked(false);
                   if (data === "all") {
                     setClassFilter({
                       class: "",
