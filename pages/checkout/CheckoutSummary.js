@@ -433,6 +433,7 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     const handlePayWithTamara = async () => {
       setLoadPayRequest(true);
+
       const res = await fetch("/api/tamara/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -477,19 +478,19 @@ const CheckoutSummary = forwardRef(
       });
 
       const data = await res.json();
-      setTimeout(() => {
-        setLoadPayRequest(false);
-      }, 500);
+      setLoadPayRequest(false);
 
       if (data.checkout_url) {
-        const formTamaraCheckout = document.createElement("form");
-        formTamaraCheckout.method = "GET";
-        formTamaraCheckout.action = data.checkout_url;
-        formTamaraCheckout.target = "_self"; // opens in same tab
+        // ✅ Dynamically create <a> tag and trigger it as a direct user action
+        const a = document.createElement("a");
+        a.href = data.checkout_url;
+        a.target = "_self"; // force same tab
+        a.rel = "noopener noreferrer";
 
-        document.body.appendChild(formTamaraCheckout);
-        formTamaraCheckout.submit();
-        // window.open(data.checkout_url, "_self");
+        // Required for Safari: must be in DOM and triggered immediately
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
