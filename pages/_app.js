@@ -32,6 +32,7 @@ import LogoLoader from "@/components/LogoLoader";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import "react-inner-image-zoom/lib/styles.min.css";
+import * as gtag from "../config/googleAnalytics/gtag";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -43,6 +44,20 @@ const AppContent = ({ Component, pageProps }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { socialLogin } = router.query;
+
+  /* -------------------------------------------------------------------------- */
+  /*                            google analytics code                           */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      gtag.pageview(url);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router.events]);
 
   useEffect(() => {
     document.documentElement.dir = locale === "ar" ? "rtl" : "ltr";
@@ -129,6 +144,26 @@ export default function App({ Component, pageProps }) {
 
   return (
     <QueryClientProvider client={queryClient}>
+      {/* google analytics scripts */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
+
       <Script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
