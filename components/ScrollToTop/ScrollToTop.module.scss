@@ -38,3 +38,10 @@
 .scroll-to-top:hover {
   background-color: #ffd400;
 }
+
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
