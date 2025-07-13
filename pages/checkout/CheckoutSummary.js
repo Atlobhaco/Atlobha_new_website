@@ -431,69 +431,81 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     /*                            tamara payment logic                            */
     /* -------------------------------------------------------------------------- */
-    const handlePayWithTamara = async () => {
+    const handlePayWithTamara = () => {
       setLoadPayRequest(true);
-      const res = await fetch("/api/tamara/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          shipping_address: {
-            city: selectAddress?.city?.name,
-            country_code: selectAddress?.city?.country?.code,
-            first_name: userDataProfile?.name,
-            last_name: "",
-            line1: selectAddress?.address,
-          },
-          description: `marketplace-order-for-user-with-id=${userDataProfile?.id}`,
-          order_reference_id: merchanteRefrence,
-          totalAmount: calculateReceiptResFromMainPage?.amount_to_pay,
-          successUrl: `${
-            process.env.NEXT_PUBLIC_WEBSITE_URL
-          }/spareParts/confirmation/${null}?type=marketplace`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          customer: {
-            first_name: userDataProfile?.name,
-            last_name: "",
-            phone_number:
-              phoneAddedForTamara ||
-              userDataProfile?.phone?.replace(/^(\+?966)/, ""),
-            email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
-          },
-          items: basket?.map((prod) => ({
-            reference_id: prod?.id,
-            sku:
-              prod?.product?.ref_num || prod?.product?.sku || prod?.product?.id,
-            name: prod?.product?.name,
-            quantity: prod?.quantity,
-            type: "Digital",
-            total_amount: {
-              amount: prod?.product?.price,
-              currency: "SAR",
-            },
-          })),
-        }),
-      });
 
-      const data = await res.json();
-      setTimeout(() => {
-        setLoadPayRequest(false);
-      }, 500);
+      // 👇 Move everything inside an immediate IIFE to isolate async
+      (async () => {
+        try {
+          const res = await fetch("/api/tamara/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              shipping_address: {
+                city: selectAddress?.city?.name,
+                country_code: selectAddress?.city?.country?.code,
+                first_name: userDataProfile?.name,
+                last_name: "",
+                line1: selectAddress?.address,
+              },
+              description: `marketplace-order-for-user-with-id=${userDataProfile?.id}`,
+              order_reference_id: merchanteRefrence,
+              totalAmount: calculateReceiptResFromMainPage?.amount_to_pay,
+              successUrl: `${
+                process.env.NEXT_PUBLIC_WEBSITE_URL
+              }/spareParts/confirmation/${null}?type=marketplace`,
+              cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+              failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+              customer: {
+                first_name: userDataProfile?.name,
+                last_name: "",
+                phone_number:
+                  phoneAddedForTamara ||
+                  userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+                email:
+                  userDataProfile?.email ||
+                  `${userDataProfile?.phone}@atlobha.com`,
+              },
+              items: basket?.map((prod) => ({
+                reference_id: prod?.id,
+                sku:
+                  prod?.product?.ref_num ||
+                  prod?.product?.sku ||
+                  prod?.product?.id,
+                name: prod?.product?.name,
+                quantity: prod?.quantity,
+                type: "Digital",
+                total_amount: {
+                  amount: prod?.product?.price,
+                  currency: "SAR",
+                },
+              })),
+            }),
+          });
 
-      if (data.checkout_url) {
-        const formTamaraCheckout = document.createElement("form");
-        formTamaraCheckout.method = "GET";
-        formTamaraCheckout.action = data.checkout_url;
-        formTamaraCheckout.target = "_self"; // opens in same tab
+          const data = await res.json();
+          setLoadPayRequest(false);
 
-        document.body.appendChild(formTamaraCheckout);
-        formTamaraCheckout.submit();
-        // window.open(data.checkout_url, "_self");
-      } else {
-        alert("Failed to create Tamara order.");
-        console.error(data);
-      }
+          if (data.checkout_url) {
+            // ✅ 1. Prefetch using an invisible iframe to trigger a pre-load for Safari
+            const iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = data.checkout_url;
+            document.body.appendChild(iframe);
+
+            // ✅ 2. Wait briefly to ensure Safari accepts it as a same-tab action
+            setTimeout(() => {
+              window.location.href = data.checkout_url;
+            }, 300); // Delay slightly to allow Safari to bind context
+          } else {
+            alert("Failed to create Tamara order.");
+            console.error(data);
+          }
+        } catch (err) {
+          setLoadPayRequest(false);
+          console.error("Tamara checkout error:", err);
+        }
+      })();
     };
 
     return (
