@@ -394,7 +394,7 @@ function SummaryOrder({
     const data = await res.json();
 
     if (data.checkout_url) {
-      window.location.assign(data.checkout_url);
+	  router.push(data.checkout_url);
     } else {
       alert("Failed to create Tamara order.");
       console.error(data);
