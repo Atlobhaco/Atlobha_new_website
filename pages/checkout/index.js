@@ -40,6 +40,7 @@ function Checkout() {
   const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const dispatch = useDispatch();
+  const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -48,12 +49,13 @@ function Checkout() {
   }, [selectedAddress, defaultAddress]);
 
   const { data } = useCustomQuery({
-    name: ["getProfileInfoForCheckout", openEditUserModal],
+    name: ["getProfileInfoForCheckout", openEditUserModal, recallUserDataAgain],
     url: `${USERS}/${user?.data?.user?.id}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
     enabled: user?.data?.user?.id ? true : false,
     onSuccess: (res) => {
+      setRecallUserDataAgain(false);
       dispatch(
         setUserData({
           data: res,
@@ -149,6 +151,7 @@ function Checkout() {
             setOtpCode={setOtpCode}
             phoneNum={phoneNum}
             setPhoneNum={setPhoneNum}
+            setRecallUserDataAgain={setRecallUserDataAgain}
           />
         }
       />

@@ -31,6 +31,7 @@ function EnterOtpStep({
   callOtpRequest409,
   otpLoad409,
   setPhoneNum,
+  setRecallUserDataAgain = () => {},
 }) {
   const { login, user } = useAuth();
   const router = useRouter();
@@ -94,6 +95,7 @@ function EnterOtpStep({
         );
         setOpenAddMobile(false);
         setMigrationStep(1);
+        setRecallUserDataAgain(true);
       } else {
         setMigrationStep(2);
       }

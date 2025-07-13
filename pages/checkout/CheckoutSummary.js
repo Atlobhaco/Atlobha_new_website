@@ -482,7 +482,14 @@ const CheckoutSummary = forwardRef(
       }, 500);
 
       if (data.checkout_url) {
-        window.open(data.checkout_url, "_self");
+        const formTamaraCheckout = document.createElement("form");
+        formTamaraCheckout.method = "GET";
+        formTamaraCheckout.action = data.checkout_url;
+        formTamaraCheckout.target = "_self"; // opens in same tab
+
+        document.body.appendChild(formTamaraCheckout);
+        formTamaraCheckout.submit();
+        // window.open(data.checkout_url, "_self");
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
@@ -633,6 +640,10 @@ const CheckoutSummary = forwardRef(
             } else if (method === PAYMENT_METHODS.applePay) {
               handleApplePayPayment();
             } else if (method === PAYMENT_METHODS.tamara) {
+              if (!userDataProfile?.phone) {
+                callConfirmPricing();
+                return;
+              }
               if (!userDataProfile?.email || !userDataProfile?.name) {
                 setOpenEditUserModal(true);
                 return;
