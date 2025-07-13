@@ -138,7 +138,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                     color:
                       promoCodeId || allPromoCodeData || error
                         ? "#EB3C24"
-                        : promoCode?.length >= 3
+                        : promoCode?.length >= 1
                         ? "black"
                         : "grey",
                     cursor: "pointer",
@@ -150,7 +150,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                       dispatch(setPromoCodeForSpareParts({ data: null }));
                       dispatch(setPromoCodeAllData({ data: null }));
                     } else {
-                      if (promoCode?.length >= 3) {
+                      if (promoCode?.length >= 1) {
                         checkPromo();
                       }
                     }

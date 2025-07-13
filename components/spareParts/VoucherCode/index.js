@@ -128,7 +128,7 @@ function VoucherCode({
                     color:
                       canAddVoucher || voucherCode || error
                         ? "#EB3C24"
-                        : inputValVoucher?.length >= 3
+                        : inputValVoucher?.length >= 1
                         ? "black"
                         : "grey",
                     cursor: "pointer",
@@ -140,7 +140,7 @@ function VoucherCode({
                       //   dispatch(setVoucher({ data: null }));
                       //   setCanAddVoucher(false);
                     } else {
-                      if (inputValVoucher?.length >= 3) {
+                      if (inputValVoucher?.length >= 1) {
                         checkVoucher();
                       }
                     }
