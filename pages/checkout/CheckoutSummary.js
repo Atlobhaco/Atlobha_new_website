@@ -147,8 +147,7 @@ const CheckoutSummary = forwardRef(
           +oldAmountToPay > 0
         ) {
           if (userDataProfile?.phone?.length) {
-            await handlePayWithTamara();
-            handlePayNow();
+            handlePayWithTamara();
           } else {
             setAddPhoneForTamara();
           }
@@ -495,7 +494,7 @@ const CheckoutSummary = forwardRef(
       setLoadPayRequest(false);
 
       if (data.checkout_url) {
-        redirectToTamara(data.checkout_url);
+        window.location.href = data.checkout_url;
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
