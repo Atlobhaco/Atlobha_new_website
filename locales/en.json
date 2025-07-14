@@ -463,5 +463,8 @@
   "extraData": "additional data",
   "loginSuccess": "Login successfully",
   "priceWithoutVat": "Price (Exculding VAT)",
-  "createNewAccount": "Or create new account"
+  "createNewAccount": "Or create new account",
+  "paymentFailure": "Payment failure",
+  "paymentCancelled": "Payment cancelled",
+  "canPayNow": "You can pay now"
 }

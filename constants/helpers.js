@@ -235,7 +235,7 @@ export const availablePaymentMethodImages = (
           src="/icons/payments/tamara-pay.svg"
           alt="cash-pay"
           width={isMobile ? 65 : 100}
-          height={isMobile ? 26 : 40}
+          height={isMobile ? 26 : 38}
         />
       );
     default:

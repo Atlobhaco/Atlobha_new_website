@@ -43,7 +43,7 @@ const AppContent = ({ Component, pageProps }) => {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { socialLogin } = router.query;
+  const { socialLogin, paymentStatus, orderId } = router.query;
 
   /* -------------------------------------------------------------------------- */
   /*                            google analytics code                           */
@@ -105,6 +105,24 @@ const AppContent = ({ Component, pageProps }) => {
     if (socialLogin === "true") {
       toast.success(t.loginSuccess);
       router.push(router.pathname);
+    }
+  }, [router]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                handle failure and cancel for tamara payment                */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    if (orderId) {
+      if (paymentStatus === "canceled") {
+        toast.success(t.paymentCancelled);
+        router.push(router.pathname);
+        return;
+      }
+      if (paymentStatus === "declined") {
+        toast.error(t.paymentFailure);
+        router.push(router.pathname);
+        return;
+      }
     }
   }, [router]);
 

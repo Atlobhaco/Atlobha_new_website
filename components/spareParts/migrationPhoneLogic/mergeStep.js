@@ -87,7 +87,7 @@ function MergeStep({
       setMigrationStep(1);
       dispatch(loginSuccess({ data: res }));
       toast.success(
-        route !== `/checkout` ? t.canMakeSparePartReq : t.canAddOrder
+        !route?.includes(`/checkout`) ? t.canMakeSparePartReq : t.canAddOrder
       );
     },
   });

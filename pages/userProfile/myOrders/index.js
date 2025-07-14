@@ -136,6 +136,8 @@ function MyOrders() {
                   ...orderEnumArray()?.filter((d, index) => index <= 1),
                 ]}
                 handleClick={(data) => {
+                  setPage(1);
+                  setLoadMoreClicked(false);
                   if (data === "all") {
                     setClassFilter({
                       class: "",

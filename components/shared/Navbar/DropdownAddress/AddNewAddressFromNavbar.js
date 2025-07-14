@@ -153,7 +153,7 @@ const AddNewAddressFromNavbar = forwardRef(
               customHeight="400px"
             />
           </div>
-          <div className="col-md-4">
+          <div className="col-md-4 px-0">
             <AddressDetails
               locationInfo={locationInfo}
               setAddressNameOrCustom={setAddressNameOrCustom}

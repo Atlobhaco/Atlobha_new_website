@@ -5,6 +5,7 @@ import {
   ORDERS,
   RE_OPEN,
   SPARE_PARTS,
+  USERS,
 } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
@@ -20,8 +21,10 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import EditUserInfoDialog from "@/components/editUserInfoDialog";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -37,9 +40,27 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
+  const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+  const { userDataProfile } = useSelector((state) => state.quickSection);
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+
+  useCustomQuery({
+    name: ["getUserInfoForOrder", openEditUserModal],
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
 
   const header = {
     color: "#232323",
@@ -124,6 +145,13 @@ function SummaryOrder({
         selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay &&
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
       ) {
+        return;
+      }
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        handlePayWithTamara();
         return;
       }
       toast.success(t.successPayOrder);
@@ -315,6 +343,69 @@ function SummaryOrder({
     };
 
     session.begin();
+  };
+
+  /* -------------------------------------------------------------------------- */
+  /*                            tamara payment logic                            */
+  /* -------------------------------------------------------------------------- */
+  const handlePayWithTamara = async () => {
+    const sourceItems = orderDetails?.parts?.length
+      ? orderDetails.parts
+      : orderDetails?.products || [];
+    // setLoadPayRequest(true);
+    const res = await fetch("/api/tamara/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        shipping_address: {
+          city: orderDetails?.address?.city?.name,
+          country_code: orderDetails?.address?.city?.country?.code,
+          first_name: userDataProfile?.name,
+          last_name: "",
+          line1: orderDetails?.address?.address,
+        },
+        description: `spare-part-order-for-user-with-id=${orderDetails?.user?.id}`,
+        order_reference_id: merchanteRefrence,
+        totalAmount: orderDetails?.receipt?.amount_to_pay,
+        successUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
+        cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        customer: {
+          first_name: userDataProfile?.name,
+          last_name: "",
+          phone_number: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+          email:
+            userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+        },
+        items: sourceItems.map((prod) => ({
+          reference_id: prod?.id,
+          sku: prod?.ref_num || prod?.sku || prod?.id,
+          name: prod?.name,
+          quantity: prod?.quantity,
+          type: "Digital",
+          total_amount: {
+            amount: prod?.price,
+            currency: "SAR",
+          },
+        })),
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data.checkout_url) {
+      const formTamaraCheckout = document.createElement("form");
+      formTamaraCheckout.method = "GET";
+      formTamaraCheckout.action = data.checkout_url;
+      formTamaraCheckout.target = "_self"; // opens in same tab
+
+      document.body.appendChild(formTamaraCheckout);
+      formTamaraCheckout.submit();
+      //   window.open(data.checkout_url, "_self");
+    } else {
+      alert("Failed to create Tamara order.");
+      console.error(data);
+    }
   };
 
   return (
@@ -544,6 +635,17 @@ function SummaryOrder({
               ) {
                 callConfirmPricing();
                 handleApplePayPayment();
+              } else if (
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara
+              ) {
+                if (
+                  (!orderDetails?.user?.name && !userDataProfile?.name) ||
+                  (!orderDetails?.user?.email && !userDataProfile?.phone)
+                ) {
+                  setOpenEditUserModal(true);
+                  return;
+                }
+                callCalculateReceipt();
               } else {
                 callCalculateReceipt();
               }
@@ -551,6 +653,12 @@ function SummaryOrder({
           />
         </>
       )}
+
+      {/* modal to edit user info data */}
+      <EditUserInfoDialog
+        openEditUserModal={openEditUserModal}
+        setOpenEditUserModal={setOpenEditUserModal}
+      />
     </Box>
   );
 }
