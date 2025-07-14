@@ -433,14 +433,16 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     /*                            tamara payment logic                            */
     /* -------------------------------------------------------------------------- */
-    const handlePayNow = () => {
-      if (!tamaraCheckoutUrl) {
-        alert("Please wait, loading payment link...");
-        return;
-      }
+    const redirectToTamara = (url) => {
+      const link = document.createElement("a");
+      link.href = url;
+      link.target = "_self";
+      link.rel = "noopener noreferrer";
 
-      // ✅ Must happen immediately after user click
-      window.location.href = tamaraCheckoutUrl;
+      // Simulate a user gesture
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     };
 
     const handlePayWithTamara = async () => {
@@ -493,17 +495,7 @@ const CheckoutSummary = forwardRef(
       setLoadPayRequest(false);
 
       if (data.checkout_url) {
-        tamaraCheckoutUrl = data.checkout_url;
-        // ✅ Dynamically create <a> tag and trigger it as a direct user action
-        // const a = document.createElement("a");
-        // a.href = data.checkout_url;
-        // a.target = "_self"; // force same tab
-        // a.rel = "noopener noreferrer";
-
-        // // Required for Safari: must be in DOM and triggered immediately
-        // document.body.appendChild(a);
-        // a.click();
-        // document.body.removeChild(a);
+        redirectToTamara(data.checkout_url);
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
