@@ -11,6 +11,9 @@ const LanguageSwitcher = () => {
     webengage.track("LANGUAGE_SELECTED", {
       language: locale === "ar" ? "Arabic" : "English",
     });
+    window.gtag("event", "LANGUAGE_SELECTED", {
+      language: locale === "ar" ? "Arabic" : "English",
+    });
     router.push(router.pathname, router.asPath, { locale }).then(() => {
       router.reload();
     });

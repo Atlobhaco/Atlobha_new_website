@@ -50,6 +50,9 @@ function OrderNumCopyWhatsapp({ orderDetails = {}, handleCopy = () => {} }) {
               webengage.track("CUSTOMER_SUPPORT_CLICKED", {
                 event_status: true,
               });
+              window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
+                event_status: true,
+              });
             });
           }}
         >

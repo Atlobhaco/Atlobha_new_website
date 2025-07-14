@@ -97,6 +97,11 @@ function Category() {
           category_id: selected?.id || "",
           category_url: router?.asPath || "",
         });
+        window.gtag("event", "FEATURED_PRODUCT_VIEWED", {
+          category_name: selected?.name || "",
+          category_id: selected?.id || "",
+          category_url: router?.asPath || "",
+        });
       });
     }
   }, [allCategories]);

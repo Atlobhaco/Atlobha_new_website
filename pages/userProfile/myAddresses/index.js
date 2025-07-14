@@ -69,6 +69,13 @@ function MyAddresses() {
           Type: address?.name || "",
         })),
       });
+      window.gtag("event", "LOGIN", {
+        addresses: allAddresses?.map((address) => ({
+          id: address?.id || "",
+          Address: address?.address || "",
+          Type: address?.name || "",
+        })),
+      });
     }
   }, [allAddresses]);
 

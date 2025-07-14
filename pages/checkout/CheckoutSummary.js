@@ -374,6 +374,12 @@ function CheckoutSummary({ selectAddress, setOpenAddMobile, promoCodeId }) {
           basket?.filter((item) => item?.product?.is_active)?.length || 0,
         line_items: itemsMaping || [],
       });
+      window.gtag("event", "CART_CHECKOUT_CLICKED", {
+        total_price: total,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
     });
   };
 

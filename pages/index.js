@@ -60,6 +60,9 @@ export default function Home() {
       webengage.track("APP_SECTION_VIEWED", {
         app_section: "Home",
       });
+      window.gtag("event", "APP_SECTION_VIEWED", {
+        app_section: "Home",
+      });
     });
   }, []);
 

@@ -528,5 +528,10 @@ export const latestUpdatedCart = (basket = []) => {
       number_of_products: activeItems.length,
       line_items: itemsMapping,
     });
+    window.gtag("event", "CART_UPDATED", {
+      total: totalOfBasket,
+      number_of_products: activeItems.length,
+      line_items: itemsMapping,
+    });
   });
 };

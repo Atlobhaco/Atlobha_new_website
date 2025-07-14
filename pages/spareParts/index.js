@@ -101,6 +101,9 @@ function SpareParts() {
       webengage.track("SPAREPARTS_VIEWED", {
         event_status: true,
       });
+      window.gtag("event", "SPAREPARTS_VIEWED", {
+        event_status: true,
+      });
     });
   }, []);
 

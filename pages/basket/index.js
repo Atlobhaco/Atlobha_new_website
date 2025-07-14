@@ -96,6 +96,12 @@ function Basket() {
           basket?.filter((item) => item?.product?.is_active)?.length || 0,
         line_items: itemsMaping || [],
       });
+      window.gtag("event", "CART_VIEWED", {
+        total: totalPriceBasket || 0,
+        number_of_products:
+          basket?.filter((item) => item?.product?.is_active)?.length || 0,
+        line_items: itemsMaping || [],
+      });
     });
 
     latestUpdatedCart(basket);

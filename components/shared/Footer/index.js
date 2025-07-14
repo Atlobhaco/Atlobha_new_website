@@ -135,6 +135,9 @@ function Footer() {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
+                window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
               });
               router.push("mailto:info@atlobha.com");
             }}
@@ -158,6 +161,9 @@ function Footer() {
               );
               window.webengage.onReady(() => {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+                window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
               });
@@ -247,6 +253,9 @@ function Footer() {
               onClick={() =>
                 window.webengage.onReady(() => {
                   webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                    event_status: true,
+                  });
+                  window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                     event_status: true,
                   });
                 })

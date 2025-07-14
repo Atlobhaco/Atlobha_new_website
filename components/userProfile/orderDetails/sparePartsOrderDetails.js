@@ -125,6 +125,26 @@ function SparePartsOrderDetails({
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
           });
+          window.gtag("event", "ORDER_SPAREPARTS_VIEWED", {
+            car_brand: orderDetails?.vehicle?.brand?.name || "",
+            car_model: orderDetails?.vehicle?.model?.name || "",
+            car_year: orderDetails?.vehicle?.year || "",
+            order_items:
+              orderDetails?.parts?.map((part) => ({
+                Part_Name_or_Number: part?.name || part?.id || "",
+                Quantity: part?.quantity || 0,
+                Image: part?.image || "",
+              })) || [],
+            shipping_address: orderDetails?.address?.address || "",
+            promo_code: orderDetails?.promo_code?.code || "",
+            comment: orderDetails?.notes || "",
+            order_number: orderDetails?.id ? String(orderDetails.id) : "",
+            creation_date: orderDetails?.created_at
+              ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")
+              : new Date().toISOString(),
+            status: orderDetails?.status || "",
+            order_url: router?.asPath || "",
+          });
         });
       }
       /* -------------------------------------------------------------------------- */
@@ -132,6 +152,25 @@ function SparePartsOrderDetails({
       /* -------------------------------------------------------------------------- */
       window.webengage.onReady(() => {
         webengage.track("ORDER_VIEWED", {
+          order_number: orderDetails?.id ? String(orderDetails.id) : "",
+          creation_date: orderDetails?.created_at
+            ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")
+            : new Date().toISOString(),
+          order_items:
+            orderDetails?.parts?.map((part) => ({
+              Part_Name_or_Number: part?.name || part?.id || "",
+              Quantity: part?.quantity || 0,
+              Image: part?.image || "",
+            })) || [],
+          shipping_address: orderDetails?.address?.address || "",
+          deleivery_date: orderDetails?.estimated_delivery_date || "",
+          payment: orderDetails?.payment_method || "",
+          total_price: orderDetails?.receipt?.total_price || 0,
+          status: orderDetails?.status || "",
+          order_type: type || "",
+          order_url: router?.asPath || "",
+        });
+        window.gtag("event", "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
             ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")

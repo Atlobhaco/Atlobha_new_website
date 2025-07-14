@@ -83,6 +83,14 @@ function MyCars() {
             year: car?.year || "",
           })),
         });
+        window.gtag("event", "LOGIN", {
+          cars: allCars?.map((car) => ({
+            id: car?.id || "",
+            Brand: car?.brand?.name || "",
+            Model: car?.model?.name || "",
+            year: car?.year || "",
+          })),
+        });
       });
     }
   }, [allCars]);

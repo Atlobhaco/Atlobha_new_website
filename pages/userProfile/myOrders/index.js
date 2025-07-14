@@ -39,9 +39,9 @@ function MyOrders() {
     name: ["getAllOrders", page, filters, classFilter],
     url: `${USERS}/${
       user?.data?.user?.id
-    }${ORDERS}?page=${page}&excluded_status=payment-pending&${getFilterParams(filters)}&${getFilterParams(
-      classFilter
-    )}`,
+    }${ORDERS}?page=${page}&excluded_status=payment-pending&${getFilterParams(
+      filters
+    )}&${getFilterParams(classFilter)}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     enabled: !!user?.data?.user?.id,
@@ -69,6 +69,9 @@ function MyOrders() {
   useEffect(() => {
     window.webengage.onReady(() => {
       webengage.track("APP_SECTION_VIEWED", {
+        app_section: "My Orders",
+      });
+      window.gtag("event", "APP_SECTION_VIEWED", {
         app_section: "My Orders",
       });
     });

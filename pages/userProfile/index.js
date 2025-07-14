@@ -94,6 +94,9 @@ function UserProfile({ recallUserData = false }) {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
+                window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
               });
             },
             path: "",
@@ -115,6 +118,9 @@ function UserProfile({ recallUserData = false }) {
             text: t.language,
             onClick: () => {
               webengage.track("LANGUAGE_SELECTED", {
+                language: locale === "ar" ? "Arabic" : "English",
+              });
+              window.gtag("event", "LANGUAGE_SELECTED", {
                 language: locale === "ar" ? "Arabic" : "English",
               });
               router
@@ -144,6 +150,9 @@ function UserProfile({ recallUserData = false }) {
               webengage.track("LANGUAGE_SELECTED", {
                 language: locale === "ar" ? "Arabic" : "English",
               });
+              window.gtag("event", "LANGUAGE_SELECTED", {
+                language: locale === "ar" ? "Arabic" : "English",
+              });
               router
                 .push(router.pathname, router.asPath, {
                   locale: locale === "ar" ? "en" : "ar",
@@ -166,6 +175,9 @@ function UserProfile({ recallUserData = false }) {
               );
               window.webengage.onReady(() => {
                 webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+                window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
               });

@@ -59,6 +59,20 @@ function ProductDetails() {
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
         });
+        window.gtag("event", "PRODUCT_VIEWED", {
+          product_id: data?.id || "",
+          product_name: data?.name || "",
+          product_image: data?.image || "",
+          price: data?.price || "",
+          car_brand: data?.brand?.name || "",
+          car_model: data?.model?.name || "",
+          car_year: data?.year_from || "",
+          reference_number: data?.ref_num || "",
+          product_details: data?.desc || "",
+          installation_available: false || "",
+          category: data?.marketplace_category?.name || "",
+          product_url: `/product/${idProd}` || "",
+        });
       });
 
       router.push({

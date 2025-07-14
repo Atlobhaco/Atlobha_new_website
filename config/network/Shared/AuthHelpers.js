@@ -78,6 +78,13 @@ export function useLoginUser({
           number_of_orders: res?.user?.order_count,
           user_id: res?.user?.id,
         });
+        window.gtag("event", "LOGIN", {
+          email: res?.user?.email || "",
+          mobile_number: res?.user?.phone || "",
+          user_name: res?.user?.name || "",
+          number_of_orders: res?.user?.order_count,
+          user_id: res?.user?.id,
+        });
       });
     },
     onError: (err) => {

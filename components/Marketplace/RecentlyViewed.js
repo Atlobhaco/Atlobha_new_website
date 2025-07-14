@@ -68,6 +68,11 @@ function RecentlyViewed({ sectionInfo }) {
                   product_id: prod?.id || "",
                   product_url: `/product/${prod?.id}` || "",
                 });
+                window.gtag("event", "FEATURED_PRODUCT_VIEWED", {
+                  product_name: prod?.name || "",
+                  product_id: prod?.id || "",
+                  product_url: `/product/${prod?.id}` || "",
+                });
               });
             }}
           >
