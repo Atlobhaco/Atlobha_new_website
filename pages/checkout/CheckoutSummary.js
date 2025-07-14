@@ -62,6 +62,7 @@ const CheckoutSummary = forwardRef(
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
+    let tamaraCheckoutUrl = "";
 
     const receipt = {};
     const header = {
@@ -113,7 +114,7 @@ const CheckoutSummary = forwardRef(
         promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
         ref_num: null,
       },
-      onSuccess: (res) => {
+      onSuccess: async (res) => {
         sessionStorage.setItem("order_id_market", res?.id);
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -146,7 +147,8 @@ const CheckoutSummary = forwardRef(
           +oldAmountToPay > 0
         ) {
           if (userDataProfile?.phone?.length) {
-            handlePayWithTamara();
+            await handlePayWithTamara();
+            handlePayNow();
           } else {
             setAddPhoneForTamara();
           }
@@ -431,6 +433,16 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     /*                            tamara payment logic                            */
     /* -------------------------------------------------------------------------- */
+    const handlePayNow = () => {
+      if (!tamaraCheckoutUrl) {
+        alert("Please wait, loading payment link...");
+        return;
+      }
+
+      // ✅ Must happen immediately after user click
+      window.location.href = tamaraCheckoutUrl;
+    };
+
     const handlePayWithTamara = async () => {
       setLoadPayRequest(true);
 
@@ -481,16 +493,17 @@ const CheckoutSummary = forwardRef(
       setLoadPayRequest(false);
 
       if (data.checkout_url) {
+        tamaraCheckoutUrl = data.checkout_url;
         // ✅ Dynamically create <a> tag and trigger it as a direct user action
-        const a = document.createElement("a");
-        a.href = data.checkout_url;
-        a.target = "_self"; // force same tab
-        a.rel = "noopener noreferrer";
+        // const a = document.createElement("a");
+        // a.href = data.checkout_url;
+        // a.target = "_self"; // force same tab
+        // a.rel = "noopener noreferrer";
 
-        // Required for Safari: must be in DOM and triggered immediately
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // // Required for Safari: must be in DOM and triggered immediately
+        // document.body.appendChild(a);
+        // a.click();
+        // document.body.removeChild(a);
       } else {
         alert("Failed to create Tamara order.");
         console.error(data);
