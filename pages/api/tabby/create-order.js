@@ -1,8 +1,7 @@
 // pages/api/tabby/create-session.js
 
 export default async function handler(req, res) {
-  const { payment, lang, merchant_code, successUrl, cancelUrl, failureUrl } =
-    req.body;
+  const { payment, lang, merchant_code, merchant_urls } = req.body;
 
   try {
     const response = await fetch(
@@ -17,11 +16,7 @@ export default async function handler(req, res) {
           payment: payment,
           lang: lang,
           merchant_code: merchant_code,
-          merchant_urls: {
-            cancel: cancelUrl,
-            failure: failureUrl,
-            success: successUrl,
-          },
+          merchant_urls: merchant_urls,
         },
       }
     );

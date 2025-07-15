@@ -505,75 +505,63 @@ const CheckoutSummary = forwardRef(
     /*                             tabby payment logic                            */
     /* -------------------------------------------------------------------------- */
     const handlePayWithTabby = async () => {
+      const buyerInfo = {
+        phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+        email:
+          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+
+        name: userDataProfile?.name,
+      };
+
+      const shippingDetails = {
+        city: selectAddress?.city?.name,
+        address: selectAddress?.address,
+        zip: "12345",
+      };
+
       const response = await fetch("/api/tabby/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-			payment: {
-			  amount: calculateReceiptResFromMainPage?.amount_to_pay,
-			  currency: "SAR",
-			  description: `marketplace-order-for-user-with-id=${userDataProfile?.id}`,
-			  buyer: {
-				phone:
-				  phoneAddedForTamara ||
-				  userDataProfile?.phone?.replace(/^(\+?966)/, ""),
-				email:
-				  userDataProfile?.email ||
-				  `${userDataProfile?.phone}@atlobha.com`,
-  
-				name: userDataProfile?.name,
-			  },
-			  shipping_address: {
-				city: selectAddress?.city?.name,
-				address: selectAddress?.address,
-				zip: "12345",
-			  },
-			  order: {
-				reference_id: merchanteRefrence,
-				items: basket?.map((prod) => ({
-				  title: prod?.product?.name,
-				  description: prod?.product?.desc,
-				  quantity: prod?.quantity,
-				  unit_price: prod?.product?.price,
-				  category: prod?.product?.marketplace_category?.name,
-				})),
-			  },
-			  buyer_history: {
-				registered_since: new Date().toISOString(),
-				loyalty_level: 0,
-			  },
-			  order_history: [
-				{
-				  purchased_at: new Date().toISOString(),
-				  amount: calculateReceiptResFromMainPage?.amount_to_pay,
-				  status: "new",
-				  buyer: {
-					phone:
-					  phoneAddedForTamara ||
-					  userDataProfile?.phone?.replace(/^(\+?966)/, ""),
-					email:
-					  userDataProfile?.email ||
-					  `${userDataProfile?.phone}@atlobha.com`,
-  
-					name: userDataProfile?.name,
-				  },
-				  shipping_address: {
-					city: selectAddress?.city?.name,
-					address: selectAddress?.address,
-					zip: "12345",
-				  },
-				},
-			  ],
-			},
-			lang: locale,
-			merchant_code:
-			  "Please contact your integration manager to get the codes.",
-			successUrl: `${
-			  process.env.NEXT_PUBLIC_WEBSITE_URL
-			}/spareParts/confirmation/${null}?type=marketplace`,
-			cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-			failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-		  }),
+          payment: {
+            amount: calculateReceiptResFromMainPage?.amount_to_pay,
+            currency: "SAR",
+            buyer: buyerInfo,
+            shipping_address: shippingDetails,
+            order: {
+              reference_id: merchanteRefrence,
+              items: basket?.map((prod) => ({
+                title: prod?.product?.name,
+                quantity: prod?.quantity,
+                unit_price: prod?.product?.price,
+                category: prod?.product?.marketplace_category?.name,
+              })),
+            },
+            buyer_history: {
+              registered_since: new Date().toISOString(),
+              loyalty_level: 0,
+            },
+            order_history: [
+              {
+                purchased_at: new Date().toISOString(),
+                amount: calculateReceiptResFromMainPage?.amount_to_pay,
+                status: "new",
+                buyer: buyerInfo,
+                shipping_address: shippingDetails,
+              },
+            ],
+          },
+          lang: locale,
+          merchant_code:
+            "Please contact your integration manager to get the codes.",
+          merchant_urls: {
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            success: `${
+              process.env.NEXT_PUBLIC_WEBSITE_URL
+            }/spareParts/confirmation/${null}?type=marketplace`,
+          },
+        }),
       });
 
       const data = await response.json();

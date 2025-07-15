@@ -75,17 +75,19 @@ function MainCarousel({ sectionInfo }) {
                 borderRadius: "20px",
                 width: "100%",
                 maxWidth: "100%",
-                height: "auto",
+                // height: "auto",
                 display: "block",
                 margin: "auto",
                 cursor: img?.link ? "pointer" : "default",
                 maxHeight: isMobile ? "150px" : "612px",
+                minHeight: isMobile ? "150px" : "612px",
               }}
               onClick={() => {
                 if (img?.link) {
                   window.open(img.link, "_blank");
                 }
               }}
+              onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")} // Fallback to default image
             />
           </SwiperSlide>
         ))}
