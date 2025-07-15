@@ -30,6 +30,7 @@ function IconInsideCircle({
     maxWidth: "90px",
     marginTop: isMobile ? "3px" : "2px",
     lineHeight: isMobile ? "16px" : "32px",
+    wordWrap: "break-word",
   };
 
   const numStyle = {

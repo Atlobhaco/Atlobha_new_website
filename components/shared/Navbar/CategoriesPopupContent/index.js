@@ -237,7 +237,7 @@ function CategoriesPopupcontent({
                     }, 150);
                   }}
                 >
-                  <Box>
+                  <Box sx={{ maxWidth: "70%" }}>
                     <Box sx={boxHeader}>{sec?.title}</Box>
                     <Box sx={boxSub}>{sec?.description}</Box>
                     <Box

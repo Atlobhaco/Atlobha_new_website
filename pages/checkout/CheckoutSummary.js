@@ -507,6 +507,80 @@ const CheckoutSummary = forwardRef(
       }
     };
 
+    /* -------------------------------------------------------------------------- */
+    /*                             tabby payment logic                            */
+    /* -------------------------------------------------------------------------- */
+    const handlePayWithTabby = async () => {
+      const buyerInfo = {
+        phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+        email:
+          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+
+        name: userDataProfile?.name,
+      };
+
+      const shippingDetails = {
+        city: selectAddress?.city?.name,
+        address: selectAddress?.address,
+        zip: "12345",
+      };
+
+      const response = await fetch("/api/tabby/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          payment: {
+            amount: calculateReceiptResFromMainPage?.amount_to_pay,
+            currency: "SAR",
+            buyer: buyerInfo,
+            shipping_address: shippingDetails,
+            order: {
+              reference_id: merchanteRefrence,
+              items: basket?.map((prod) => ({
+                title: prod?.product?.name,
+                quantity: prod?.quantity,
+                unit_price: prod?.product?.price,
+                category: prod?.product?.marketplace_category?.name,
+              })),
+            },
+            buyer_history: {
+              registered_since: new Date().toISOString(),
+              loyalty_level: 0,
+            },
+            order_history: [
+              {
+                purchased_at: new Date().toISOString(),
+                amount: calculateReceiptResFromMainPage?.amount_to_pay,
+                status: "new",
+                buyer: buyerInfo,
+                shipping_address: shippingDetails,
+              },
+            ],
+          },
+          lang: locale,
+          merchant_code:
+            "Please contact your integration manager to get the codes.",
+          merchant_urls: {
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            success: `${
+              process.env.NEXT_PUBLIC_WEBSITE_URL
+            }/spareParts/confirmation/${null}?type=marketplace`,
+          },
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data?.configuration?.available_products?.installments) {
+        const checkoutUrl =
+          data.configuration.available_products.installments[0].web_url;
+        window.location.href = checkoutUrl; // Open in same tab
+      } else {
+        alert("Failed to create Tabby checkout.");
+      }
+    };
+
     return (
       <Box sx={{ pt: 1 }}>
         <Box sx={header}>{t.orderSummary}</Box>
@@ -660,6 +734,17 @@ const CheckoutSummary = forwardRef(
                 return;
               }
             }
+            //  else if (method === PAYMENT_METHODS.tabby) {
+            //   handlePayWithTabby();
+            //   return;
+            //   if (!userDataProfile?.phone) {
+            //     callConfirmPricing();
+            //   }
+            //   if (!userDataProfile?.email || !userDataProfile?.name) {
+            //     setOpenEditUserModal(true);
+            //     return;
+            //   }
+            // }
 
             callConfirmPricing();
           }}
