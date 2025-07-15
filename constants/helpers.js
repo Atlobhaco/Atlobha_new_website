@@ -205,7 +205,7 @@ export const availablePaymentMethodImages = (
           src="/icons/payments/tabby-pay.svg"
           alt="tabbby"
           width={isMobile ? 65 : 100}
-          height={isMobile ? 26 : 40}
+          height={isMobile ? 26 : 38}
         />
       );
     case PAYMENT_METHODS?.wallet:
@@ -233,7 +233,7 @@ export const availablePaymentMethodImages = (
         <Image
           loading="lazy"
           src="/icons/payments/tamara-pay.svg"
-          alt="cash-pay"
+          alt="tamara-pay"
           width={isMobile ? 65 : 100}
           height={isMobile ? 26 : 38}
         />

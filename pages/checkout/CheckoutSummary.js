@@ -451,6 +451,92 @@ const CheckoutSummary = forwardRef(
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          payment: {
+            amount: calculateReceiptResFromMainPage?.amount_to_pay,
+            currency: "SAR",
+            description: `marketplace-order-for-user-with-id=${userDataProfile?.id}`,
+            buyer: {
+              phone:
+                phoneAddedForTamara ||
+                userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+              email:
+                userDataProfile?.email ||
+                `${userDataProfile?.phone}@atlobha.com`,
+
+              name: userDataProfile?.name,
+            },
+            shipping_address: {
+              city: selectAddress?.city?.name,
+              address: selectAddress?.address,
+              zip: "12345",
+            },
+            order: {
+              reference_id: merchanteRefrence,
+              items: basket?.map((prod) => ({
+                title: prod?.product?.name,
+                description: prod?.product?.desc,
+                quantity: prod?.quantity,
+                unit_price: prod?.product?.price,
+                category: prod?.product?.marketplace_category?.name,
+              })),
+            },
+            buyer_history: {
+              registered_since: new Date().toISOString(),
+              loyalty_level: 0,
+            },
+            order_history: [
+              {
+                purchased_at: new Date().toISOString(),
+                amount: calculateReceiptResFromMainPage?.amount_to_pay,
+                status: "new",
+                buyer: {
+                  phone:
+                    phoneAddedForTamara ||
+                    userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+                  email:
+                    userDataProfile?.email ||
+                    `${userDataProfile?.phone}@atlobha.com`,
+
+                  name: userDataProfile?.name,
+                },
+                shipping_address: {
+                  city: selectAddress?.city?.name,
+                  address: selectAddress?.address,
+                  zip: "12345",
+                },
+              },
+            ],
+          },
+          lang: locale,
+          merchant_code:
+            "Please contact your integration manager to get the codes.",
+          successUrl: `${
+            process.env.NEXT_PUBLIC_WEBSITE_URL
+          }/spareParts/confirmation/${null}?type=marketplace`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        }),
+      });
+
+      const data = await res.json();
+      setLoadPayRequest(false);
+
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url;
+      } else {
+        alert("Failed to create Tamara order.");
+        console.error(data);
+      }
+    };
+
+    /* -------------------------------------------------------------------------- */
+    /*                             tabby payment logic                            */
+    /* -------------------------------------------------------------------------- */
+    const handlePayWithTabby = async () => {
+      const response = await fetch("/api/tabby/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
           shipping_address: {
             city: selectAddress?.city?.name,
             country_code: selectAddress?.city?.country?.code,
@@ -490,14 +576,14 @@ const CheckoutSummary = forwardRef(
         }),
       });
 
-      const data = await res.json();
-      setLoadPayRequest(false);
+      const data = await response.json();
 
-      if (data.checkout_url) {
-        window.location.href = data.checkout_url;
+      if (data?.configuration?.available_products?.installments) {
+        const checkoutUrl =
+          data.configuration.available_products.installments[0].web_url;
+        window.location.href = checkoutUrl; // Open in same tab
       } else {
-        alert("Failed to create Tamara order.");
-        console.error(data);
+        alert("Failed to create Tabby checkout.");
       }
     };
 
@@ -654,6 +740,17 @@ const CheckoutSummary = forwardRef(
                 return;
               }
             }
+			//  else if (method === PAYMENT_METHODS.tabby) {
+            //   handlePayWithTabby();
+            //   return;
+            //   if (!userDataProfile?.phone) {
+            //     callConfirmPricing();
+            //   }
+            //   if (!userDataProfile?.email || !userDataProfile?.name) {
+            //     setOpenEditUserModal(true);
+            //     return;
+            //   }
+            // }
 
             callConfirmPricing();
           }}
