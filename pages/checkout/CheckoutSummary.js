@@ -153,6 +153,18 @@ const CheckoutSummary = forwardRef(
           }
           return;
         }
+        if (
+          selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby &&
+          +oldAmountToPay > 0
+        ) {
+          if (userDataProfile?.phone?.length) {
+            handlePayWithTabby();
+          } else {
+            setAddPhoneForTamara();
+          }
+          return;
+        }
+
         router.push(`/spareParts/confirmation/${res?.id}?type=marketplace`);
         setTimeout(() => {
           dispatch(fetchCartAsync());
@@ -506,13 +518,17 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     const handlePayWithTabby = async () => {
       const buyerInfo = {
+        phone: "500000001",
+        email: "card.success@tabby.ai",
+        name: "micheal abid",
+      };
+      const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
           userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
-
       const shippingDetails = {
         city: selectAddress?.city?.name,
         address: selectAddress?.address,
@@ -526,14 +542,14 @@ const CheckoutSummary = forwardRef(
           payment: {
             amount: calculateReceiptResFromMainPage?.amount_to_pay,
             currency: "SAR",
-            buyer: buyerInfo,
+            buyer: realBuyer,
             shipping_address: shippingDetails,
             order: {
               reference_id: merchanteRefrence,
               items: basket?.map((prod) => ({
                 title: prod?.product?.name,
                 quantity: prod?.quantity,
-                unit_price: prod?.product?.price,
+                unit_price: +prod?.product?.price?.toFixed(2),
                 category: prod?.product?.marketplace_category?.name,
               })),
             },
@@ -546,14 +562,13 @@ const CheckoutSummary = forwardRef(
                 purchased_at: new Date().toISOString(),
                 amount: calculateReceiptResFromMainPage?.amount_to_pay,
                 status: "new",
-                buyer: buyerInfo,
+                buyer: realBuyer,
                 shipping_address: shippingDetails,
               },
             ],
           },
           lang: locale,
-          merchant_code:
-            "Please contact your integration manager to get the codes.",
+          merchant_code: "Atolbha",
           merchant_urls: {
             cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
             failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
@@ -718,7 +733,10 @@ const CheckoutSummary = forwardRef(
               setRedirectToPayfort(true);
             } else if (method === PAYMENT_METHODS.applePay) {
               handleApplePayPayment();
-            } else if (method === PAYMENT_METHODS.tamara) {
+            } else if (
+              method === PAYMENT_METHODS.tamara ||
+              method === PAYMENT_METHODS.tabby
+            ) {
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
@@ -728,17 +746,6 @@ const CheckoutSummary = forwardRef(
                 return;
               }
             }
-            //  else if (method === PAYMENT_METHODS.tabby) {
-            //   handlePayWithTabby();
-            //   return;
-            //   if (!userDataProfile?.phone) {
-            //     callConfirmPricing();
-            //   }
-            //   if (!userDataProfile?.email || !userDataProfile?.name) {
-            //     setOpenEditUserModal(true);
-            //     return;
-            //   }
-            // }
 
             callConfirmPricing();
           }}

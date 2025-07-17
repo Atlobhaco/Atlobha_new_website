@@ -5,19 +5,19 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_TABBY_API_URL}/api/v1/checkout`,
+      `${process.env.NEXT_PUBLIC_TABBY_API_URL}/api/v2/checkout`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${process.env.NEXT_PUBLIC_TABBY_SECRET_KEY}`,
         },
-        body: {
-          payment: payment,
-          lang: lang,
-          merchant_code: merchant_code,
-          merchant_urls: merchant_urls,
-        },
+        body: JSON.stringify({
+          payment,
+          lang,
+          merchant_code,
+          merchant_urls,
+        }),
       }
     );
 
