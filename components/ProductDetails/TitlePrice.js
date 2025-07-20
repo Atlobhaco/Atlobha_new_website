@@ -8,10 +8,21 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import { toast } from "react-toastify";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 function TitlePrice({ prod }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+
+  const handleCopy = (refNum) => {
+    navigator.clipboard.writeText(refNum).then(
+      () => {
+        toast.success(`${t.copySuccess}, ${refNum}`);
+      },
+      (err) => {}
+    );
+  };
 
   return (
     <>
@@ -20,9 +31,29 @@ function TitlePrice({ prod }) {
           color: "#1C1C28",
           fontWeight: "700",
           fontSize: "20px",
+          display: isMobile ? "block" : "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: "1px",
         }}
       >
-        {prod?.name}
+        <Box>{prod?.name}</Box>
+        <Box
+          sx={{
+            background: "#818181",
+            padding: "3px 5px",
+            borderRadius: "10px",
+            color: "white",
+            fontSize: "18px",
+            width: "fit-content",
+          }}
+        >
+          <ContentCopyIcon
+            sx={{ cursor: "pointer", width: "19px", color: "white", ml: 1 }}
+            onClick={() => handleCopy(prod?.ref_num)} // Add onClick handler
+          />
+          {prod?.ref_num}
+        </Box>
       </Box>
       <Box
         sx={{
@@ -143,7 +174,7 @@ function TitlePrice({ prod }) {
               fontWeight: "500",
             }}
           >
-            {(prod?.price?.toFixed(2) / 5)?.toFixed(2)} {riyalImgBlack()}
+            {(prod?.price?.toFixed(2) / 4)?.toFixed(2)} {riyalImgBlack()}
           </Box>{" "}
           {t.otherInstallment}
         </Box>

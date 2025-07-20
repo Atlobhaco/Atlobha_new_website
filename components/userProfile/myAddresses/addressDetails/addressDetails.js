@@ -95,6 +95,7 @@ function AddressDetails({
                   background: "white",
                   color: "black",
                   width: "130px",
+                  height: "23px",
                 }}
               />
             </Box>

@@ -42,23 +42,6 @@ function ProdImages({ prod }) {
       >
         {imgArray?.map((img, index) => (
           <SwiperSlide key={img?.url}>
-            {/* <Image
-              loading="lazy"
-              width={280}
-              height={226}
-              alt="prod-img"
-              style={{
-                width: !img?.url ? "100%" : "auto",
-                height: !img?.url ? "100%" : "auto",
-                borderRadius: "20px",
-                maxWidth: "100%",
-                display: "flex",
-                margin: "auto",
-                maxHeight: !img?.url ? "unset" : isMobile ? "150px" : "230px",
-              }}
-              src={img?.url || "/imgs/no-prod-img.svg"}
-              onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
-            /> */}
             <InnerImageZoom
               zoomScale="2"
               zoomType="hover"
@@ -67,6 +50,7 @@ function ProdImages({ prod }) {
               zoomSrc={img?.url || "/imgs/no-prod-img.svg"}
               className="img-prod-details-zoom"
               alt="prod-img"
+              hideHint={isMobile ? true : false}
             />
           </SwiperSlide>
         ))}
