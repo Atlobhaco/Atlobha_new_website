@@ -53,9 +53,9 @@ function CompatibleWith({ prod }) {
             textAlign: "center",
           }}
         >
-          {prod?.model?.name}
-          <br />
           {prod?.brand?.name}
+          <br />
+          {prod?.model?.name}
         </Box>
         <Box
           sx={{

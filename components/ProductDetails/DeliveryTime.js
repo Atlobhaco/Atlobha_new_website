@@ -17,7 +17,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
-  const today = moment().locale("en").format("YYYY-MM-DD");
+  const today = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
   //   set address for user
   const {
     data: citiesRes,
