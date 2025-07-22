@@ -50,18 +50,21 @@ function CompatibleWith({ prod }) {
           sx={{
             fontWeight: "500",
             fontSize: "16px",
+            textAlign: "center",
           }}
         >
+          {prod?.brand?.name}
+          <br />
           {prod?.model?.name}
         </Box>
-        {/* <Box
+        <Box
           sx={{
             fontWeight: "500",
             fontSize: "16px",
           }}
         >
-          {prod?.year_from}- {prod?.year_to}
-        </Box> */}
+          {prod?.year_from ? `${prod?.year_from} - ` : null} {prod?.year_to}
+        </Box>
       </Box>
     </Box>
   );

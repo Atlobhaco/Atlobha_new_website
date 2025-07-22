@@ -43,7 +43,7 @@ const AppContent = ({ Component, pageProps }) => {
   const { user } = useAuth();
   const dispatch = useDispatch();
   const router = useRouter();
-  const { socialLogin, paymentStatus, orderId } = router.query;
+  const { socialLogin, paymentStatus, orderId, payment_id } = router.query;
 
   /* -------------------------------------------------------------------------- */
   /*                            google analytics code                           */
@@ -109,7 +109,7 @@ const AppContent = ({ Component, pageProps }) => {
   }, [router]);
 
   /* -------------------------------------------------------------------------- */
-  /*                handle failure and cancel for tamara payment                */
+  /*           handle failure and cancel for tamara payment and tabby           */
   /* -------------------------------------------------------------------------- */
   useEffect(() => {
     if (orderId) {
@@ -123,6 +123,10 @@ const AppContent = ({ Component, pageProps }) => {
         router.push(router.pathname);
         return;
       }
+    } else if (payment_id && router.pathname == "/") {
+      toast.error(t.paymentFailure);
+      router.push(router.pathname);
+      return;
     }
   }, [router]);
 

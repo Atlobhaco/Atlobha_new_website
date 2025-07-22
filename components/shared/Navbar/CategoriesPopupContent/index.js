@@ -125,7 +125,7 @@ function CategoriesPopupcontent({
     onSuccess: (res) => {
       setAppGroups(res);
       setMainGroups(res);
-      // open anyway but not in order page or confirmation or mobileScreen query
+      // open just in main page
       setTimeout(() => {
         if (
           !route?.includes("myOrders") &&
@@ -133,7 +133,8 @@ function CategoriesPopupcontent({
           !mobileScreen &&
           !route?.includes("callback") &&
           !route?.includes("appleCallback") &&
-          !route?.includes("apple")
+          !route?.includes("apple") &&
+          route === "/"
         ) {
           setOpenCategories(true);
         }
@@ -237,7 +238,7 @@ function CategoriesPopupcontent({
                     }, 150);
                   }}
                 >
-                  <Box sx={{ maxWidth: "70%" }}>
+                  <Box sx={{ maxWidth: isMobile ? "100%" : "70%" }}>
                     <Box sx={boxHeader}>{sec?.title}</Box>
                     <Box sx={boxSub}>{sec?.description}</Box>
                     <Box

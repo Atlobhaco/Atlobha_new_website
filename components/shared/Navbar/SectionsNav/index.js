@@ -22,11 +22,12 @@ function SectionsNav({
   // logic inside function to make marketplace default selection
   const activeDependOnUrl = (section) => {
     return section?.title === secTitle ||
-      (section?.type === SPAREPARTS && router.pathname === "/spareParts") ||
+      (section?.type === SPAREPARTS &&
+        router.pathname?.includes("/spareParts")) ||
       (section?.type === MARKETPLACE && router.pathname === "/") ||
       (!secTitle &&
         section?.type === MARKETPLACE &&
-        router.pathname !== "/spareParts")
+        !router.pathname?.includes("/spareParts"))
       ? style["active"]
       : "";
   };

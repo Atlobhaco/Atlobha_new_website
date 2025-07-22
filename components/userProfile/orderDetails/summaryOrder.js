@@ -154,6 +154,13 @@ function SummaryOrder({
         handlePayWithTamara();
         return;
       }
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        handlePayWithTabby();
+        return;
+      }
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
@@ -401,6 +408,84 @@ function SummaryOrder({
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                             tabby payment logic                            */
+  /* -------------------------------------------------------------------------- */
+  const handlePayWithTabby = async () => {
+    const sourceItems = orderDetails?.parts?.length
+      ? orderDetails.parts
+      : orderDetails?.products || [];
+
+    const buyerInfo = {
+      phone: "500000001",
+      email: "card.success@tabby.ai",
+      name: "micheal abid",
+    };
+    const realBuyer = {
+      phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
+      email: userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+
+      name: userDataProfile?.name,
+    };
+    const shippingDetails = {
+      city: orderDetails?.address?.city?.name,
+      address: orderDetails?.address?.address,
+      zip: "12345",
+    };
+
+    const response = await fetch("/api/tabby/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        payment: {
+          amount: orderDetails?.receipt?.amount_to_pay,
+          currency: "SAR",
+          buyer: realBuyer,
+          shipping_address: shippingDetails,
+          order: {
+            reference_id: merchanteRefrence,
+            items: sourceItems?.map((prod) => ({
+              title: prod?.name,
+              quantity: prod?.quantity,
+              unit_price: +prod?.price?.toFixed(2),
+              category: "not-found",
+            })),
+          },
+          buyer_history: {
+            registered_since: new Date().toISOString(),
+            loyalty_level: 0,
+          },
+          order_history: [
+            {
+              purchased_at: new Date().toISOString(),
+              amount: orderDetails?.receipt?.amount_to_pay,
+              status: "new",
+              buyer: realBuyer,
+              shipping_address: shippingDetails,
+            },
+          ],
+        },
+        lang: locale,
+        merchant_code: "Atolbha",
+        merchant_urls: {
+          cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          success: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
+        },
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data?.configuration?.available_products?.installments) {
+      const checkoutUrl =
+        data.configuration.available_products.installments[0].web_url;
+      window.location.href = checkoutUrl; // Open in same tab
+    } else {
+      alert("Failed to create Tabby checkout.");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -629,7 +714,8 @@ function SummaryOrder({
                 callConfirmPricing();
                 handleApplePayPayment();
               } else if (
-                selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara ||
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby
               ) {
                 if (
                   (!orderDetails?.user?.name && !userDataProfile?.name) ||
