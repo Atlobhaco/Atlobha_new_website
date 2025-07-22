@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 function ManufactureDetails() {
-  const { locale } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
   const { user } = useAuth();
   const { idManufacturee, name } = router.query;
@@ -176,13 +176,27 @@ function ManufactureDetails() {
                 <ProductCard product={prod} />
               </div>
             ))}
+            {!manData?.data?.length && (
+              <Box
+                sx={{
+                  mt: 5,
+                  fontWeight: "500",
+                  fontSize: "20px",
+                  textAlign: "center",
+                }}
+              >
+                {t.noResultsFound}
+              </Box>
+            )}
           </div>
           <div className="col-12 d-flex justify-content-center mt-5">
-            <PaginateComponent
-              meta={manData?.meta}
-              setPage={setPage}
-              isLoading={isFetching}
-            />
+            {!!manData?.data?.length && (
+              <PaginateComponent
+                meta={manData?.meta}
+                setPage={setPage}
+                isLoading={isFetching}
+              />
+            )}
           </div>
         </div>
       )}
