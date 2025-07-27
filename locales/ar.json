@@ -464,5 +464,12 @@
   "createNewAccount": "او انشاء حساب جديد",
   "paymentFailure": "فشل في عملية الدفع",
   "paymentCancelled": "تم الغاء عملية الدفع",
-  "canPayNow": "يمكنك الدفع الان"
+  "canPayNow": "يمكنك الدفع الان",
+  "visitStore": "زور المتجر",
+  "filter": "فلتر",
+  "car": "السيارة",
+  "OnlyProductsOffer": "اظهر فقط منتجات العروض",
+  "manufacturers": "المصنعين",
+  "category": "التصنيف",
+  "selectBrandFirst": "اختر تصنيف اولا"
 }

@@ -466,5 +466,12 @@
   "createNewAccount": "Or create new account",
   "paymentFailure": "Payment failure",
   "paymentCancelled": "Payment cancelled",
-  "canPayNow": "You can pay now"
+  "canPayNow": "You can pay now",
+  "visitStore": "Visit store",
+  "filter": "Filter",
+  "car": "Car",
+  "OnlyProductsOffer": "Show only products offers",
+  "manufacturers": "Manufactrures",
+  "category": "Category",
+  "selectBrandFirst": "choose brand first"
 }
