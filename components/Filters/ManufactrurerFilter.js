@@ -74,10 +74,18 @@ function ManufactrurerFilter({
                 border: "1px solid #F0F0F0",
               }}
               onClick={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  manufacturer_id: manufacturer?.id,
-                }));
+                // click to release selection
+                if (+filters?.manufacturer_id === +manufacturer?.id) {
+                  setFilters((prev) => ({
+                    ...prev,
+                    manufacturer_id: null,
+                  }));
+                } else {
+                  setFilters((prev) => ({
+                    ...prev,
+                    manufacturer_id: manufacturer?.id,
+                  }));
+                }
               }}
             >
               {manufacturer?.name}

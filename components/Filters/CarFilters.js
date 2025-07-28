@@ -52,6 +52,28 @@ function CarFilters({
     setBrandId(isMobile ? filters?.brand_id : resolvedBrandId);
     setModelId(isMobile ? filters?.model_id : resolvedModelId);
     setYearId(isMobile ? filters?.year : resolvedYear);
+  }, [selectedCar, defaultCar]);
+
+  //   sync only in mobile screen
+  useEffect(() => {
+    if (isMobile) {
+      const resolvedBrandId =
+        filters?.brand_id ||
+        selectedCar?.brand?.id ||
+        defaultCar?.brand?.id ||
+        "";
+      const resolvedModelId =
+        filters?.model_id ||
+        selectedCar?.model?.id ||
+        defaultCar?.model?.id ||
+        "";
+      const resolvedYear =
+        filters?.year || selectedCar?.year || defaultCar?.year || "";
+
+      setBrandId(isMobile ? filters?.brand_id : resolvedBrandId);
+      setModelId(isMobile ? filters?.model_id : resolvedModelId);
+      setYearId(isMobile ? filters?.year : resolvedYear);
+    }
   }, [selectedCar, defaultCar, isMobile, filters]);
 
   // API hooks

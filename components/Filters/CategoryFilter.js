@@ -70,7 +70,18 @@ function CategoryFilter({
                 border: "1px solid #F0F0F0",
               }}
               onClick={() => {
-                setFilters((prev) => ({ ...prev, category_id: category?.id }));
+                // click to release category
+                if (+filters?.category_id === +category?.id) {
+                  setFilters((prev) => ({
+                    ...prev,
+                    category_id: null,
+                  }));
+                } else {
+                  setFilters((prev) => ({
+                    ...prev,
+                    category_id: category?.id,
+                  }));
+                }
               }}
             >
               {category?.name}

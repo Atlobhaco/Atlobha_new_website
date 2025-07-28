@@ -549,18 +549,31 @@ export const latestUpdatedCart = (basket = []) => {
 /* -------------------------------------------------------------------------- */
 /*                      check if object filters has value                     */
 /* -------------------------------------------------------------------------- */
-export const hasAnyFilterValue = ({ filters = {} }) => {
-  if (filters?.has_active_offer) return true;
+export const hasAnyFilterValue = ({ filters } = {}) => {
+  if (!filters) return false;
 
-  return Object?.entries(filters)?.some(([key, value]) => {
+  if (filters.has_active_offer) return true;
+
+  return Object.entries(filters).some(([key, value]) => {
     if (key === "category_id" || key === "has_active_offer") return false;
 
+    if (
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      (typeof value === "object" &&
+        !Array.isArray(value) &&
+        Object.keys(value || {}).length === 0)
+    ) {
+      return false;
+    }
+
     if (typeof value === "object" && !Array.isArray(value)) {
-      return Object?.values(value).some(
+      return Object.values(value || {}).some(
         (v) => v !== undefined && v !== null && v !== ""
       );
     }
 
-    return value !== undefined && value !== null && value !== "";
+    return true;
   });
 };
