@@ -54,3 +54,7 @@ export const VOUCHERS = "/vouchers";
 export const CITIES = "/cities";
 export const CITY_SETTINGS = "/city-settings";
 export const LAT_LNG = "/lat-lng";
+export const OIL_ATTRIBUTES = "/oils-attributes";
+export const BATTERIES_ATTRIBUTES = "/batteries-attributes";
+export const TIRES_ATTRIBUTES = "/tires-attributes";
+export const VALUES = "/values";

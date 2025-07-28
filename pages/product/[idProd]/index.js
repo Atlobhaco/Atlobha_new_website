@@ -17,6 +17,7 @@ import AddToBasketProdDetails from "../../../components/ProductDetails/AddToBask
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
 import Head from "next/head";
+import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttributes";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -139,6 +140,9 @@ function ProductDetails() {
               </Box>
               <Box sx={{ mb: 3 }}>
                 <DetailsProd prod={data} />
+              </Box>
+              <Box sx={{ mb: 3 }}>
+                <ConditionalAttributes prod={data} />
               </Box>
               {/* <Box sx={{ mb: 2 }}>
                 <AnotherProducts prod={data} />

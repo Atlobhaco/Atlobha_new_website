@@ -1,19 +1,17 @@
 import useLocalization from "@/config/hooks/useLocalization";
-import {
-  riyalImgBlack,
-  riyalImgOrange,
-  riyalImgRed,
-} from "@/constants/helpers";
+import { riyalImgBlack, riyalImgRed } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { toast } from "react-toastify";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useRouter } from "next/router";
 
 function TitlePrice({ prod }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const router = useRouter();
 
   const handleCopy = (refNum) => {
     navigator.clipboard.writeText(refNum).then(
@@ -72,6 +70,10 @@ function TitlePrice({ prod }) {
               color: "white",
               fontWeight: "500",
               fontSize: "14px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(`/products/?tagId=${tag?.id}`);
             }}
           >
             {tag?.name}

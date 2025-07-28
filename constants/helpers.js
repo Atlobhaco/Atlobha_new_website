@@ -89,13 +89,28 @@ export const translateAddressName = (name, locale) => {
 export const getFilterParams = (filters) => {
   const params = new URLSearchParams();
 
-  // Append only non-empty filter values
   Object.entries(filters).forEach(([key, value]) => {
+    // Skip conditionalAttributes for now
+    if (key === "conditionalAttributes") return;
+
     if (value) {
       params.append(key, value);
     }
   });
-  return params.toString(); // Returns a query string format
+
+  // Handle conditionalAttributes dynamically
+  if (
+    filters?.conditionalAttributes &&
+    typeof filters.conditionalAttributes === "object"
+  ) {
+    Object.entries(filters.conditionalAttributes).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, value);
+      }
+    });
+  }
+
+  return params.toString();
 };
 /* -------------------------------------------------------------------------- */
 /*                            order enum localized                            */
@@ -528,5 +543,24 @@ export const latestUpdatedCart = (basket = []) => {
       number_of_products: activeItems.length,
       line_items: itemsMapping,
     });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                      check if object filters has value                     */
+/* -------------------------------------------------------------------------- */
+export const hasAnyFilterValue = ({ filters = {} }) => {
+  if (filters?.has_active_offer) return true;
+
+  return Object?.entries(filters)?.some(([key, value]) => {
+    if (key === "category_id" || key === "has_active_offer") return false;
+
+    if (typeof value === "object" && !Array.isArray(value)) {
+      return Object?.values(value).some(
+        (v) => v !== undefined && v !== null && v !== ""
+      );
+    }
+
+    return value !== undefined && value !== null && value !== "";
   });
 };
