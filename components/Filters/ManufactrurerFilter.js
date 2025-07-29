@@ -17,11 +17,17 @@ function ManufactrurerFilter({
   const { isMobile } = useScreenSize();
   const [manufactures, setManufacturers] = useState([]);
 
+  const urlDependOnCatId = () => {
+    if (filters?.category_id) {
+      return `${MANUFACTURERS}?category_ids[]=${filters?.category_id}&is_active=1`;
+    } else {
+      return `${MANUFACTURERS}?is_active=1`;
+    }
+  };
   useCustomQuery({
     name: ["manufactureFilters", filters?.category_id],
-    url: `${MANUFACTURERS}?category_ids[]=${filters?.category_id}&is_active=1`,
+    url: urlDependOnCatId(),
     refetchOnWindowFocus: false,
-    enabled: user && filters?.category_id ? true : false,
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       // clear manufactrurer selection if not found

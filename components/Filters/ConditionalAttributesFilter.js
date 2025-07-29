@@ -5,7 +5,7 @@ import {
   VALUES,
 } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
-import React from "react";
+import React, { useState } from "react";
 import SharedDropDown from "../shared/SharedDropDown";
 import useLocalization from "@/config/hooks/useLocalization";
 import { CircularProgress } from "@mui/material";
@@ -18,6 +18,7 @@ function ConditionalAttributesFilter({
   colorHeaders,
 }) {
   const { t } = useLocalization();
+  const [attributes, setAttributes] = useState([]);
 
   const urlDependOnCatId = () => {
     switch (filters?.category_id?.toString()) {
@@ -34,12 +35,13 @@ function ConditionalAttributesFilter({
   const headerForattribute = () =>
     allCategories?.find((d) => +d.id === +filters?.category_id)?.name ?? "-";
 
-  const { data: attributes, isFetching: fetchAttributes } = useCustomQuery({
+  const { isFetching: fetchAttributes } = useCustomQuery({
     name: ["conditionalAttributes", filters?.category_id],
     url: urlDependOnCatId(),
     refetchOnWindowFocus: false,
     enabled: filters?.category_id ? true : false,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => setAttributes(res),
   });
 
   const handleAttributeChange = (key, event) => {

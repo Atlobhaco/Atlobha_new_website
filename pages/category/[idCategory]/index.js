@@ -50,7 +50,10 @@ function Category() {
       setFilters({
         ...filters,
         category_id: idCategory,
-        conditionalAttributes: {},
+        conditionalAttributes:
+          +idCategory !== +filters?.category_id
+            ? {}
+            : filters?.conditionalAttributes,
       });
     }
     if (idSub) {
@@ -103,7 +106,7 @@ function Category() {
       page,
       //   selectedCategory,
       defaultCar?.year,
-      //   subCatId,
+      subCatId,
       isMobile,
       filters,
     ],
@@ -219,7 +222,7 @@ function Category() {
       <Box className="container">
         <Box className="row">
           {!isMobile && (
-            <Box className={`col-md-3 `}>
+            <Box className={`col-md-3  mt-5`}>
               <Filters
                 filters={filters}
                 setFilters={setFilters}
