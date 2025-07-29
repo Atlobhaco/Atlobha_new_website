@@ -17,7 +17,7 @@ function ConditionalAttributesFilter({
   setFilters,
   colorHeaders,
 }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const [attributes, setAttributes] = useState([]);
 
   const urlDependOnCatId = () => {
@@ -53,7 +53,9 @@ function ConditionalAttributesFilter({
       },
     }));
   };
-
+  /* -------------------------------------------------------------------------- */
+  /*                   always send the english key for the  BE                  */
+  /* -------------------------------------------------------------------------- */
   return (
     mergedShowHideFilters?.conditionsAttributes && (
       <div>
@@ -90,12 +92,19 @@ function ConditionalAttributesFilter({
                 handleChange={(event) =>
                   handleAttributeChange(attr.filter_key, event)
                 }
-                items={attr.filter_values.map((val) => ({
-                  label: val,
-                  value: val,
-                  name: val,
-                  id: val,
-                }))}
+                items={attr.filter_values_en.map((enVal, index) => {
+                  const label =
+                    locale === "ar"
+                      ? attr.filter_values_ar?.[index] || enVal
+                      : attr.filter_values_en?.[index] || enVal;
+
+                  return {
+                    label,
+                    value: enVal, // always use English value for backend
+                    name: label,
+                    id: enVal,
+                  };
+                })}
               />
             </div>
           ))}
