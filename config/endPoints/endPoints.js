@@ -58,3 +58,7 @@ export const OIL_ATTRIBUTES = "/oils-attributes";
 export const BATTERIES_ATTRIBUTES = "/batteries-attributes";
 export const TIRES_ATTRIBUTES = "/tires-attributes";
 export const VALUES = "/values";
+export const SEARCH = "/search";
+export const AUTOCOMPLETE = "/autocomplete";
+export const HISTORY = "/history";
+export const POPULAR_TERMS = "/popular-terms";

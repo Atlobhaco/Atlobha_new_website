@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./ProductCard.module.scss";
-import { Box } from "@mui/material";
+import { Box, Tooltip } from "@mui/material";
 import { useRouter } from "next/router";
 import AddRemoveBtn from "@/components/AddRemoveBtnProd";
 import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
@@ -82,7 +82,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           className={`${style["prod-info-wrapper_price"]}`}
         >
           {product?.price_before_discount
-            ? product?.offer_price?.toFixed(2)
+            ? product?.offer_price?.toFixed(2) || 0
             : product?.price?.toFixed(2)}
           {product?.price_before_discount ? riyalImgRed() : riyalImgOrange()}
         </Box>
@@ -90,7 +90,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
         {!!product?.price_before_discount && (
           <Box className={`${style["prod-disc_percentage"]}`}>
             {(
-              ((product?.price_before_discount - product?.offer_price) /
+              ((product?.price_before_discount - (product?.offer_price || 0)) /
                 product?.price_before_discount) *
               100
             )?.toFixed(0)}
@@ -100,11 +100,25 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
 
         {product?.name && (
           <Box className={`${style["prod-info-wrapper_describe"]}`}>
-            {isHTMLString(product?.name) ? (
-              <div dangerouslySetInnerHTML={{ __html: product?.name }} />
-            ) : (
-              product?.name
-            )}
+            <Tooltip
+              title={
+                isHTMLString(product?.name) ? (
+                  <div dangerouslySetInnerHTML={{ __html: product?.name }} />
+                ) : (
+                  product?.name
+                )
+              }
+              placement="top"
+              enterDelay={200}
+              leaveDelay={200}
+              arrow
+            >
+              {isHTMLString(product?.name) ? (
+                <div dangerouslySetInnerHTML={{ __html: product?.name }} />
+              ) : (
+                product?.name
+              )}
+            </Tooltip>
           </Box>
         )}
       </Box>

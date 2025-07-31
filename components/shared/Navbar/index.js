@@ -26,6 +26,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import ContentForBasket from "./ContentForBasketPopup";
+import AutoCompleteInput from "@/components/AutoCompleteInput";
 
 const firstPartStyle = {
   display: "flex",
@@ -62,6 +63,10 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const hideAddress = ["category"].some((url) =>
     router?.pathname?.includes(url)
   );
+
+  const routeForBasketChekout =
+    router?.pathname?.includes("basket") ||
+    router?.pathname?.includes("checkout");
 
   const { allGroups } = useSelector((state) => state.appGroups);
 
@@ -414,21 +419,32 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </div>
       </Box>
-      {/* {!isMobile && !appearAt && !hideComponent && (
+      {/* search logic */}
+      {((!routeForBasketChekout && !hideComponent && !isMobile) ||
+        (isMobile && router?.pathname?.includes("search"))) && (
         <Box className={`${style["searching"]}`}>
-          <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
-          <Box className={`${style["searching-sub"]}`}>
-            يمكنك البحث في قطع الغيار والصيانة الدورية والمشاكل المتعلقة
-            بسياراتك
-          </Box>
+          {!isMobile && (
+            <>
+              <Box className={`${style["searching-header"]}`}>
+                {t.lookForParts} !
+              </Box>
+              <Box className={`${style["searching-sub"]}`}>
+                {t.searchAboutCars}
+              </Box>
+            </>
+          )}
           <Box className={`${style["searching-parent"]}`}>
-            <Box className={`${style["searching-parent_holder"]}`}>
-              <SharedInput />
-              <SharedBtn className="search-btn" text={"search"} />
+            <Box
+              className={`${style["searching-parent_holder"]} ${
+                isMobile && "w-100"
+              }`}
+            >
+              <AutoCompleteInput />
+              {/* <SharedBtn className="search-btn" text={"search"} /> */}
             </Box>
           </Box>
         </Box>
-      )} */}
+      )}
       <Box
         className={`${style["sections"]}`}
         sx={{

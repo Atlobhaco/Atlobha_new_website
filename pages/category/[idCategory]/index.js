@@ -26,6 +26,7 @@ import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
 import Image from "next/image";
 import DialogCentered from "@/components/DialogCentered";
 import SharedBtn from "@/components/shared/SharedBtn";
+import useResetPageOnFilterChange from "@/config/hooks/useResetPageOnFilterChange";
 
 function Category() {
   const router = useRouter();
@@ -138,6 +139,9 @@ function Category() {
       });
     }
   }, [allCategories]);
+
+  //  reset page  into default if the filters chaged its value
+  useResetPageOnFilterChange(filters, setPage);
 
   return (
     <Box>
