@@ -16,12 +16,12 @@ function CarFiltersCustom({
   mergedShowHideFilters,
   filters,
   setFilters,
-  brandId,
-  setBrandId,
-  modelId,
-  setModelId,
-  yearId,
-  setYearId,
+  brandName,
+  setBrandName,
+  modelName,
+  setModelName,
+  yearName,
+  setYearName,
   colorHeaders,
 }) {
   const dispatch = useDispatch();
@@ -34,36 +34,48 @@ function CarFiltersCustom({
   // Sync initial brand/model from filters, selectedCar, or defaultCar
   useEffect(() => {
     const resolvedBrandId =
-      filters?.brand || selectedCar?.brand?.id || defaultCar?.brand?.id || "";
+      filters?.brand ||
+      selectedCar?.brand?.name ||
+      defaultCar?.brand?.name ||
+      "";
     const resolvedModelId =
-      filters?.model || selectedCar?.model?.id || defaultCar?.model?.id || "";
+      filters?.model ||
+      selectedCar?.model?.name ||
+      defaultCar?.model?.name ||
+      "";
     const resolvedYear =
       filters?.year || selectedCar?.year || defaultCar?.year || "";
 
-    setBrandId(isMobile ? filters?.brand : resolvedBrandId);
-    setModelId(isMobile ? filters?.model : resolvedModelId);
-    setYearId(isMobile ? filters?.year : resolvedYear);
+    setBrandName(isMobile ? filters?.brand : resolvedBrandId);
+    setModelName(isMobile ? filters?.model : resolvedModelId);
+    setYearName(isMobile ? filters?.year : resolvedYear);
   }, [selectedCar, defaultCar]);
 
   //   sync only in mobile screen
   useEffect(() => {
     if (isMobile) {
       const resolvedBrandId =
-        filters?.brand || selectedCar?.brand?.id || defaultCar?.brand?.id || "";
+        filters?.brand ||
+        selectedCar?.brand?.name ||
+        defaultCar?.brand?.name ||
+        "";
       const resolvedModelId =
-        filters?.model || selectedCar?.model?.id || defaultCar?.model?.id || "";
+        filters?.model ||
+        selectedCar?.model?.name ||
+        defaultCar?.model?.name ||
+        "";
       const resolvedYear =
         filters?.year || selectedCar?.year || defaultCar?.year || "";
 
-      setBrandId(isMobile ? filters?.brand : resolvedBrandId);
-      setModelId(isMobile ? filters?.model : resolvedModelId);
-      setYearId(isMobile ? filters?.year : resolvedYear);
+      setBrandName(isMobile ? filters?.brand : resolvedBrandId);
+      setModelName(isMobile ? filters?.model : resolvedModelId);
+      setYearName(isMobile ? filters?.year : resolvedYear);
     }
   }, [selectedCar, defaultCar, isMobile, filters]);
 
   // API hooks
   const { refetch: callModels } = useModelsQuery({
-    brandId,
+    brandId: brands?.find((d) => d?.name === brandName)?.id,
     setModels,
     dispatch,
   });
@@ -90,10 +102,10 @@ function CarFiltersCustom({
 
   // Fetch models when brand changes
   useEffect(() => {
-    if (brandId) {
+    if (brandName) {
       callModels();
     }
-  }, [brandId]);
+  }, [brandName]);
 
   const updateFilters = (key, value, reset = {}) => {
     setFilters((prev) => ({ ...prev, [key]: value, ...reset }));
@@ -103,41 +115,44 @@ function CarFiltersCustom({
     {
       id: "brandSelectionForFilterCustom",
       label: t.brand,
-      value: brandId,
+      value: brands?.find((d) => d?.name === brandName)?.id,
       handleChange: (e) => {
         const val = e?.target?.value;
-        setBrandId(val);
-        setModelId("");
-        setYearId("");
-        updateFilters("brand", val, { model: "", year: "" });
+        setBrandName(brands?.find((d) => d?.id === val)?.name);
+        setModelName("");
+        setYearName("");
+        updateFilters("brand", brands?.find((d) => d?.id === val)?.name, {
+          model: "",
+          year: "",
+        });
       },
       items: brands,
     },
     {
       id: "modelSelectionForFilterCustom",
       label: t.model,
-      value: modelId,
+      value: models?.find((d) => d?.name === modelName)?.id,
       handleChange: (e) => {
         const val = e?.target?.value;
-        setModelId(val);
-        updateFilters("model", val);
+        setModelName(models?.find((d) => d?.id === val)?.name);
+        updateFilters("model", models?.find((d) => d?.id === val)?.name);
       },
       items: models,
-      disabled: !brandId,
-      hint: !brandId && t.selectBrandFirst,
+      disabled: !brandName,
+      hint: !brandName && t.selectBrandFirst,
     },
     {
       id: "yearSelectionFiltersCustom",
       label: t.year,
-      value: yearId || "",
+      value: years?.find((d) => d?.name === yearName)?.id,
       handleChange: (e) => {
         const val = e?.target?.value;
-        setYearId(val);
-        updateFilters("year", val);
+        setYearName(years?.find((d) => d?.id === val)?.name);
+        updateFilters("year", years?.find((d) => d?.id === val)?.name);
       },
       items: years,
-      disabled: !brandId,
-      hint: !brandId && t.selectBrandFirst,
+      disabled: !brandName,
+      hint: !brandName && t.selectBrandFirst,
     },
   ];
 

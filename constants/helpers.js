@@ -554,7 +554,6 @@ export const hasAnyFilterValue = ({
   excludeKeys = ["category_id", "has_active_offer"],
 } = {}) => {
   if (!filters) return false;
-
   return Object.entries(filters).some(([key, value]) => {
     if (excludeKeys.includes(key)) return false;
 
@@ -562,6 +561,7 @@ export const hasAnyFilterValue = ({
       value === undefined ||
       value === null ||
       value === "" ||
+      value === false ||
       (typeof value === "object" &&
         !Array.isArray(value) &&
         Object.keys(value || {}).length === 0)
@@ -571,7 +571,7 @@ export const hasAnyFilterValue = ({
 
     if (typeof value === "object" && !Array.isArray(value)) {
       return Object.values(value || {}).some(
-        (v) => v !== undefined && v !== null && v !== ""
+        (v) => v !== undefined && v !== null && v !== "" && v !== false
       );
     }
 
@@ -598,6 +598,44 @@ export const updateQueryParams = ({ filters = {}, router }) => {
     {
       pathname: router.pathname,
       query,
+    },
+    undefined,
+    { shallow: true }
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*             upadte url for global search with selected filters             */
+/* -------------------------------------------------------------------------- */
+export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
+  const newQuery = { ...router.query };
+
+  // Update only filters provided
+  //   if ("keyword" in filters) newQuery.keyword = filters.keyword || undefined;
+  //   if ("type" in filters) newQuery.type = filters.type || undefined;
+  if ("brand" in filters) newQuery.brand = filters.brand || undefined;
+  if ("model" in filters) newQuery.model = filters.model || undefined;
+  if ("year" in filters) newQuery.year = filters.year || undefined;
+  if ("has_active_offer" in filters)
+    newQuery.has_active_offer = filters.has_active_offer
+      ? true
+      : false || undefined;
+  if ("category" in filters) newQuery.category = filters.category || undefined;
+  if ("manufacturer" in filters)
+    newQuery.manufacturer = filters.manufacturer || undefined;
+  if ("conditionalAttributes" in filters) {
+    newQuery.conditionalAttributes = filters.conditionalAttributes
+      ? JSON.stringify(filters.conditionalAttributes)
+      : undefined;
+  }
+
+  // Add or keep savedQuerys
+  newQuery.newQueryForSearchGlobal = true;
+
+  router.replace(
+    {
+      pathname: router.pathname,
+      query: newQuery,
     },
     undefined,
     { shallow: true }

@@ -6,6 +6,7 @@ import ToogleProductsOfferCustom from "./ToogleProductsOfferCustom";
 import CategoryFilterCustom from "./CategoryFilterCustom";
 import ConditionalAttributesFilterCustom from "./ConditionalAttributesFilterCustom";
 import ManufactrurerFilterCustom from "./ManufactrurerFilterCustom";
+import { useRouter } from "next/router";
 
 function FiltersCustom({
   // filters accpet string (names) for this is custom
@@ -20,7 +21,9 @@ function FiltersCustom({
   },
   setFilters = () => {},
   showHideFilters = {},
+  openFiltersModal = false,
 }) {
+  const router = useRouter();
   const colorHeaders = "black";
   const { isMobile } = useScreenSize();
 
@@ -39,9 +42,9 @@ function FiltersCustom({
   };
 
   const { t, locale } = useLocalization();
-  const [brandId, setBrandId] = useState("");
-  const [modelId, setModelId] = useState("");
-  const [yearId, setYearId] = useState("");
+  const [brandName, setBrandName] = useState("");
+  const [modelName, setModelName] = useState("");
+  const [yearName, setYearName] = useState("");
   const [allCategories, setAllCategories] = useState([]);
 
   /* -------------------------------------------------------------------------- */
@@ -56,6 +59,48 @@ function FiltersCustom({
 
   const getCategoryName = (cat) =>
     locale === "ar" ? cat?.name_ar : cat?.name_en;
+
+  //   console.log(filters);
+  //   {
+  //     "brand": "",
+  //     "model": "",
+  //     "year": "",
+  //     "has_active_offer": false,
+  //     "manufacturer": null,
+  //     "conditionalAttributes": {
+  //         "oil_category": "Transmission"
+  //     },
+  //     "category": "Oils"
+  // }
+
+//   useEffect(() => {
+//     if (router?.isReady) {
+//       const {
+//         brand,
+//         model,
+//         year,
+//         has_active_offer,
+//         manufacturer,
+//         conditionalAttributes,
+//         category,
+//       } = router.query;
+//       console.log("router", router?.query);
+//       setFilters({
+//         // ...filters,
+//         brand: +brand ? +brand : filters?.brand,
+//         model: +brand ? (+model ? +model : "") : filters?.model,
+//         year: +brand ? (+year ? +year : "") : filters?.year,
+//         has_active_offer: has_active_offer === "true" ? true : false,
+//         manufacturer: manufacturer?.length
+//           ? manufacturer
+//           : filters?.manufacturer,
+//         conditionalAttributes: conditionalAttributes
+//           ? JSON.parse(conditionalAttributes)
+//           : filters?.conditionalAttributes,
+//         category: category?.length ? category : filters?.category,
+//       });
+//     }
+//   }, [router.isReady]);
 
   return (
     <div>
@@ -73,13 +118,14 @@ function FiltersCustom({
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
         setFilters={setFilters}
-        brandId={brandId}
-        setBrandId={setBrandId}
-        modelId={modelId}
-        setModelId={setModelId}
-        yearId={yearId}
-        setYearId={setYearId}
+        brandName={brandName}
+        setBrandName={setBrandName}
+        modelName={modelName}
+        setModelName={setModelName}
+        yearName={yearName}
+        setYearName={setYearName}
         colorHeaders={colorHeaders}
+		openFiltersModal={openFiltersModal}
       />
 
       <ToogleProductsOfferCustom

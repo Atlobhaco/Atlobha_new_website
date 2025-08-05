@@ -45,8 +45,8 @@ function Search() {
   useEffect(() => {
     if (selectedCar?.id || defaultCar?.id) {
       setFilters({
-        brand: defaultCar?.brand?.id || selectedCar?.brand?.id,
-        model: defaultCar?.model?.id || selectedCar?.model?.id,
+        brand: defaultCar?.brand?.name || selectedCar?.brand?.name,
+        model: defaultCar?.model?.name || selectedCar?.model?.name,
         year: defaultCar?.year || selectedCar?.year,
         has_active_offer: false,
       });
@@ -73,7 +73,7 @@ function Search() {
                 <Image
                   loading="lazy"
                   src={`/icons/${
-                    hasAnyFilterValue({ filters })
+                    hasAnyFilterValue({ filters, excludeKeys: [] })
                       ? "colored-filter.svg"
                       : "filter.svg"
                   }`}
