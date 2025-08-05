@@ -50,7 +50,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
       >
         <Image
           loading="lazy"
-          src={product?.image || "/imgs/no-prod-img.svg"}
+          src={product?.image_url || product?.image || "/imgs/no-prod-img.svg"}
           alt="Product"
           width={200}
           height={200}
@@ -82,7 +82,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           className={`${style["prod-info-wrapper_price"]}`}
         >
           {product?.price_before_discount
-            ? product?.offer_price?.toFixed(2) || 0
+            ? product?.offer_price?.toFixed(2) || product?.price?.toFixed(2)
             : product?.price?.toFixed(2)}
           {product?.price_before_discount ? riyalImgRed() : riyalImgOrange()}
         </Box>
@@ -90,7 +90,8 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
         {!!product?.price_before_discount && (
           <Box className={`${style["prod-disc_percentage"]}`}>
             {(
-              ((product?.price_before_discount - (product?.offer_price || 0)) /
+              ((product?.price_before_discount -
+                (product?.offer_price || product?.price)) /
                 product?.price_before_discount) *
               100
             )?.toFixed(0)}

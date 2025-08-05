@@ -39,9 +39,7 @@ function ConditionalAttributes({ prod }) {
                 fontWeight: "400",
               }}
             >
-              {locale === "ar"
-                ? attribute?.value_ar || "-"
-                : attribute?.value || "-"}
+              {attribute?.value || "-"}
             </Box>
           </li>
         ))}
