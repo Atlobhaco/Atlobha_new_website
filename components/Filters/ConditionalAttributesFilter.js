@@ -9,6 +9,8 @@ import React, { useState } from "react";
 import SharedDropDown from "../shared/SharedDropDown";
 import useLocalization from "@/config/hooks/useLocalization";
 import { CircularProgress } from "@mui/material";
+import { useRouter } from "next/router";
+import { updateQueryParams } from "@/constants/helpers";
 
 function ConditionalAttributesFilter({
   mergedShowHideFilters,
@@ -17,6 +19,7 @@ function ConditionalAttributesFilter({
   setFilters,
   colorHeaders,
 }) {
+  const router = useRouter();
   const { t, locale } = useLocalization();
   const [attributes, setAttributes] = useState([]);
 
@@ -52,6 +55,16 @@ function ConditionalAttributesFilter({
         [key]: event?.target?.value,
       },
     }));
+    updateQueryParams({
+      filters: {
+        ...filters,
+        conditionalAttributes: {
+          ...filters.conditionalAttributes,
+          [key]: event?.target?.value,
+        },
+      },
+      router: router,
+    });
   };
   /* -------------------------------------------------------------------------- */
   /*                   always send the english key for the  BE                  */

@@ -6,7 +6,6 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import ProdImages from "../../../components/ProductDetails/ProdImages";
 import ManufactureData from "../../../components/ProductDetails/ManufactureData";
 import TitlePrice from "../../../components/ProductDetails/TitlePrice";
 import DeliveryTime from "../../../components/ProductDetails/DeliveryTime";
@@ -18,6 +17,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
 import Head from "next/head";
 import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttributes";
+import ProdImages from "@/components/ProductDetails/ProdImages";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -104,7 +104,7 @@ function ProductDetails() {
               />
               <link
                 rel="canonical"
-                href={`https://atlobha.com/product/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
+                href={`https://atlobha.com/product/${data?.seo?.seoable_id}?name${data?.seo?.slug}`}
               />
               <meta property="og:image" content={data?.seo?.image_alt} />
               <meta name="twitter:image" content={data?.seo?.image_alt} />

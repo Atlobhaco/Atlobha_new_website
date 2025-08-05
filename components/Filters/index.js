@@ -92,9 +92,9 @@ function Filters({
         colorHeaders={colorHeaders}
       />
 
-      {(filters?.category_id === "11" ||
-        filters?.category_id === "7" ||
-        filters?.category_id === "2") && (
+      {(+filters?.category_id === 11 ||
+        +filters?.category_id === 7 ||
+        +filters?.category_id === 2) && (
         <ConditionalAttributesFilter
           mergedShowHideFilters={mergedShowHideFilters}
           filters={filters}

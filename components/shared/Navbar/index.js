@@ -457,7 +457,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             : "0px 25px",
         }}
       >
-        {!hideIfTrue && (
+        {!hideIfTrue && !router?.pathname?.includes("search") && !isMobile && (
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}

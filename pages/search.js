@@ -184,13 +184,13 @@ function Search() {
                   brand: "",
                   model: "",
                   year: "",
-                  category: filters?.category,
+                  category: "",
                 });
                 setTempfilters({
                   brand: "",
                   model: "",
                   year: "",
-                  category: filters?.category,
+                  category: "",
                 });
               }}
               className="outline-btn"

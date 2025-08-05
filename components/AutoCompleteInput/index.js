@@ -18,7 +18,8 @@ function AutoCompleteInput() {
   const [options, setOptions] = useState([]);
   const { locale, t } = useLocalization();
   const isRtl = locale === "ar";
-  const countOfLetters = 3;
+  const [open, setOpen] = useState(false);
+  const countOfLetters = 1;
 
   const { isFetching } = useCustomQuery({
     name: ["autoComplete", debouncedInput],
@@ -67,6 +68,9 @@ function AutoCompleteInput() {
       }}
     >
       <Autocomplete
+        open={open}
+        onOpen={() => setOpen(true)}
+        onClose={() => setOpen(false)}
         options={options}
         loading={isFetching}
         loadingText={t.loading}
@@ -82,12 +86,13 @@ function AutoCompleteInput() {
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            event.preventDefault(); // لمنع السلوك الافتراضي (مثل إعادة تحميل الصفحة)
+            event.preventDefault();
             if (inputValue?.trim()?.length >= countOfLetters) {
               router.push(
                 `/search?keyword=${inputValue}&type=MarketplaceProduct`
               );
               setSelectedOption(inputValue);
+              setOpen(false); // 👈 يغلق القائمة بعد الضغط
             }
           }
         }}

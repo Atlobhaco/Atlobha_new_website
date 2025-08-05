@@ -22,7 +22,11 @@ import { isAuth } from "@/config/hooks/isAuth";
 import Head from "next/head";
 import Filters from "@/components/Filters";
 import { useSelector } from "react-redux";
-import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
+import {
+  getFilterParams,
+  hasAnyFilterValue,
+  updateQueryParams,
+} from "@/constants/helpers";
 import Image from "next/image";
 import DialogCentered from "@/components/DialogCentered";
 import SharedBtn from "@/components/shared/SharedBtn";
@@ -57,10 +61,13 @@ function Category() {
             : filters?.conditionalAttributes,
       });
     }
+  }, [idCategory]);
+
+  useEffect(() => {
     if (idSub) {
       setSubCatId(+idSub);
     }
-  }, [idCategory, idSub]);
+  }, [idSub]);
 
   const { data: defaultCar } = useCustomQuery({
     name: "carForProducts",
@@ -114,8 +121,10 @@ function Category() {
     url: returnUrlDependOnUserLogin(),
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    enabled:
-      (isAuth() && selectedCategory && subCatId) || !isAuth() ? true : false,
+    enabled: !!(
+      (isAuth() && selectedCategory && subCatId) ||
+      (!isAuth() && subCatId)
+    ),
     onSuccess: (res) => {
       //   const element = document.getElementById("categroy_id");
       //   if (element) {
@@ -383,6 +392,15 @@ function Category() {
                   model_id: "",
                   year: "",
                   category_id: filters?.category_id,
+                });
+                updateQueryParams({
+                  filters: {
+                    brand_id: "",
+                    model_id: "",
+                    year: "",
+                    category_id: filters?.category_id,
+                  },
+                  router: router,
                 });
                 setTempfilters({
                   brand_id: "",

@@ -22,11 +22,11 @@ const tagStyle = (isMobile) => ({
   "&:hover": { opacity: 0.8 },
 });
 
-const sectionWrapperStyle = (isMobile) => ({
+const sectionWrapperStyle = (isMobile, items, loading) => ({
   display: "flex",
   gap: isMobile ? "10px" : "15px",
   flexWrap: "wrap",
-  minHeight: "100px",
+  minHeight: items?.length || loading ? "100px" : "0px",
 });
 
 const Section = ({ title, loading, items, onClickTag }) => {
@@ -35,18 +35,20 @@ const Section = ({ title, loading, items, onClickTag }) => {
 
   return (
     <>
-      <Box
-        sx={{
-          color: "#1C1C28",
-          fontSize: "20px",
-          fontWeight: 700,
-          mt: 2,
-          mb: 1,
-        }}
-      >
-        {title}
-      </Box>
-      <Box sx={sectionWrapperStyle(isMobile)}>
+      {!!items?.length && !loading && (
+        <Box
+          sx={{
+            color: "#1C1C28",
+            fontSize: "20px",
+            fontWeight: 700,
+            mt: 2,
+            mb: 1,
+          }}
+        >
+          {title}
+        </Box>
+      )}
+      <Box sx={sectionWrapperStyle(isMobile, items, loading)}>
         {loading ? (
           <CircularProgress
             sx={{ color: "#FFD400", mx: "auto", mt: 2 }}
@@ -63,7 +65,7 @@ const Section = ({ title, loading, items, onClickTag }) => {
                 {item}
               </Box>
             ))}
-            {!items?.length && (
+            {/* {!items?.length && (
               <Box
                 sx={{
                   color: "#1C1C28",
@@ -76,7 +78,7 @@ const Section = ({ title, loading, items, onClickTag }) => {
               >
                 {t.noResultsFound}
               </Box>
-            )}
+            )} */}
           </>
         )}
       </Box>

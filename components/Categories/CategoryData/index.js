@@ -27,13 +27,13 @@ function CategoryData({
         router.push({
           pathname: `/category/${category?.id}`,
           query: {
-            name: category?.name,
-            tags: category?.tags?.[0]?.name,
-            label: category?.labels[0],
-            subCategory: category?.subcategory?.length
-              ? category?.subcategory?.map((info) => info?.name)?.join(",")
-              : "",
-            img: category?.image,
+            // name: category?.name,
+            // tags: category?.tags?.[0]?.name,
+            // label: category?.labels[0],
+            // subCategory: category?.subcategory?.length
+            //   ? category?.subcategory?.map((info) => info?.name)?.join(",")
+            //   : "",
+            // img: category?.image,
           },
         });
       }}

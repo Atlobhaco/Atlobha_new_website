@@ -44,13 +44,14 @@ const CategoriesSelection = ({
         {
           pathname: `/category/${selectedCategory}`,
           query: {
-            name: selected?.name,
-            tags: selected?.tags?.[0]?.name,
-            label: selected?.labels[0],
-            subCategory: selected?.subcategory?.length
-              ? selected?.subcategory?.map((info) => info?.name)?.join(",")
-              : "",
-            img: selected?.image,
+            ...router?.query,
+            // name: selected?.name,
+            // tags: selected?.tags?.[0]?.name,
+            // label: selected?.labels[0],
+            // subCategory: selected?.subcategory?.length
+            //   ? selected?.subcategory?.map((info) => info?.name)?.join(",")
+            //   : "",
+            // img: selected?.image,
             idSub: selected?.subcategory?.[0]?.id || null,
           },
         },
@@ -84,13 +85,14 @@ const CategoriesSelection = ({
                 {
                   pathname: `/category/${cat.id}`,
                   query: {
-                    name: cat?.name,
-                    tags: cat?.tags?.[0]?.name,
-                    label: cat?.labels[0],
-                    subCategory: cat?.subcategory?.length
-                      ? cat?.subcategory?.map((info) => info?.name)?.join(",")
-                      : "",
-                    img: cat?.image,
+                    ...router?.query,
+                    // name: cat?.name,
+                    // tags: cat?.tags?.[0]?.name,
+                    // label: cat?.labels[0],
+                    // subCategory: cat?.subcategory?.length
+                    //   ? cat?.subcategory?.map((info) => info?.name)?.join(",")
+                    //   : "",
+                    // img: cat?.image,
                     idSub: cat.subcategory?.[0]?.id || null,
                   },
                 },

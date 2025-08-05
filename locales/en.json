@@ -475,7 +475,7 @@
   "category": "Category",
   "selectBrandFirst": "choose car brand first",
   "loading": "Loading",
-  "typeThreeCharacters": "Type at least 3 characters",
+  "typeThreeCharacters": "Type at least 1 characters",
   "lookForParts": "Looking for spare parts",
   "searchAboutCars": "You can search for spare parts, regular maintenance and problems related to your cars",
   "searchHistory": "Search history",

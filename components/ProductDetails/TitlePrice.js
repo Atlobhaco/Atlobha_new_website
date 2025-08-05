@@ -37,17 +37,23 @@ function TitlePrice({ prod }) {
       >
         <Box>{prod?.name}</Box>
         <Box
+          onClick={() => handleCopy(prod?.ref_num)}
           sx={{
             background: "#818181",
-            padding: "3px 5px",
+            padding: isMobile ? "2px 4px" : "3px 5px",
             borderRadius: "10px",
             color: "white",
-            fontSize: "18px",
+            fontSize: isMobile ? "12px" : "18px",
             width: "fit-content",
+            cursor: "pointer",
           }}
         >
           <ContentCopyIcon
-            sx={{ cursor: "pointer", width: "19px", color: "white", ml: 1 }}
+            sx={{
+              width: isMobile ? "14px" : "19px",
+              color: "white",
+              ml: isMobile ? 0 : 1,
+            }}
             onClick={() => handleCopy(prod?.ref_num)} // Add onClick handler
           />
           {prod?.ref_num}

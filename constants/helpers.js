@@ -549,13 +549,14 @@ export const latestUpdatedCart = (basket = []) => {
 /* -------------------------------------------------------------------------- */
 /*                      check if object filters has value                     */
 /* -------------------------------------------------------------------------- */
-export const hasAnyFilterValue = ({ filters } = {}) => {
+export const hasAnyFilterValue = ({
+  filters = {},
+  excludeKeys = ["category_id", "has_active_offer"],
+} = {}) => {
   if (!filters) return false;
 
-  if (filters.has_active_offer) return true;
-
   return Object.entries(filters).some(([key, value]) => {
-    if (key === "category_id" || key === "has_active_offer") return false;
+    if (excludeKeys.includes(key)) return false;
 
     if (
       value === undefined ||
@@ -576,4 +577,29 @@ export const hasAnyFilterValue = ({ filters } = {}) => {
 
     return true;
   });
+};
+
+export const updateQueryParams = ({ filters = {}, router }) => {
+  console.log("router", router?.query);
+  const query = {
+    ...router.query,
+    savedQuerys: true,
+    brand_id: filters.brand_id || undefined,
+    model_id: filters.model_id || undefined,
+    year: filters.year || undefined,
+    has_active_offer: filters.has_active_offer || undefined,
+    category_id: filters.category_id || undefined,
+    manufacturer_id: filters.manufacturer_id || undefined,
+    conditionalAttributes: filters.conditionalAttributes
+      ? JSON.stringify(filters.conditionalAttributes)
+      : undefined,
+  };
+  router.replace(
+    {
+      pathname: router.pathname,
+      query,
+    },
+    undefined,
+    { shallow: true }
+  );
 };
