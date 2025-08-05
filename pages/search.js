@@ -45,8 +45,8 @@ function Search() {
   useEffect(() => {
     if (selectedCar?.id || defaultCar?.id) {
       setFilters({
-        brand: defaultCar?.brand?.name || selectedCar?.brand?.name,
-        model: defaultCar?.model?.name || selectedCar?.model?.name,
+        brand: defaultCar?.brand?.name_en || selectedCar?.brand?.name_en,
+        model: defaultCar?.model?.name_en || selectedCar?.model?.name_en,
         year: defaultCar?.year || selectedCar?.year,
         has_active_offer: false,
       });
@@ -55,6 +55,10 @@ function Search() {
 
   //  reset page  into default if the filters chaged its value
   useResetPageOnFilterChange(filters, setPage);
+
+  useEffect(() => {
+    console.log("filters", filters);
+  }, [filters]);
 
   return isMobile && !keyword ? (
     <SearchSuggestionsMobile />

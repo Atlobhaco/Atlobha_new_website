@@ -35,13 +35,13 @@ function CarFiltersCustom({
   useEffect(() => {
     const resolvedBrandId =
       filters?.brand ||
-      selectedCar?.brand?.name ||
-      defaultCar?.brand?.name ||
+      selectedCar?.brand?.name_en ||
+      defaultCar?.brand?.name_en ||
       "";
     const resolvedModelId =
       filters?.model ||
-      selectedCar?.model?.name ||
-      defaultCar?.model?.name ||
+      selectedCar?.model?.name_en ||
+      defaultCar?.model?.name_en ||
       "";
     const resolvedYear =
       filters?.year || selectedCar?.year || defaultCar?.year || "";
@@ -56,13 +56,13 @@ function CarFiltersCustom({
     if (isMobile) {
       const resolvedBrandId =
         filters?.brand ||
-        selectedCar?.brand?.name ||
-        defaultCar?.brand?.name ||
+        selectedCar?.brand?.name_en ||
+        defaultCar?.brand?.name_en ||
         "";
       const resolvedModelId =
         filters?.model ||
-        selectedCar?.model?.name ||
-        defaultCar?.model?.name ||
+        selectedCar?.model?.name_en ||
+        defaultCar?.model?.name_en ||
         "";
       const resolvedYear =
         filters?.year || selectedCar?.year || defaultCar?.year || "";
@@ -75,7 +75,7 @@ function CarFiltersCustom({
 
   // API hooks
   const { refetch: callModels } = useModelsQuery({
-    brandId: brands?.find((d) => d?.name === brandName)?.id,
+    brandId: brands?.find((d) => d?.name_en === brandName)?.id,
     setModels,
     dispatch,
   });
@@ -115,13 +115,13 @@ function CarFiltersCustom({
     {
       id: "brandSelectionForFilterCustom",
       label: t.brand,
-      value: brands?.find((d) => d?.name === brandName)?.id,
+      value: brands?.find((d) => d?.name_en === brandName)?.id,
       handleChange: (e) => {
         const val = e?.target?.value;
-        setBrandName(brands?.find((d) => d?.id === val)?.name);
+        setBrandName(brands?.find((d) => d?.id === val)?.name_en);
         setModelName("");
         setYearName("");
-        updateFilters("brand", brands?.find((d) => d?.id === val)?.name, {
+        updateFilters("brand", brands?.find((d) => d?.id === val)?.name_en, {
           model: "",
           year: "",
         });
@@ -131,11 +131,11 @@ function CarFiltersCustom({
     {
       id: "modelSelectionForFilterCustom",
       label: t.model,
-      value: models?.find((d) => d?.name === modelName)?.id,
+      value: models?.find((d) => d?.name_en === modelName)?.id,
       handleChange: (e) => {
         const val = e?.target?.value;
-        setModelName(models?.find((d) => d?.id === val)?.name);
-        updateFilters("model", models?.find((d) => d?.id === val)?.name);
+        setModelName(models?.find((d) => d?.id === val)?.name_en);
+        updateFilters("model", models?.find((d) => d?.id === val)?.name_en);
       },
       items: models,
       disabled: !brandName,
