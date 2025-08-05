@@ -21,7 +21,7 @@ function ConditionalAttributesFilterCustom({
   const [attributes, setAttributes] = useState([]);
 
   const getLocalizedName = (cat) =>
-    locale === "ar" ? cat?.name_ar : cat?.name_en;
+    locale === "ar" ? cat?.name_en : cat?.name_en;
 
   const urlDependOnCatId = () => {
     switch (

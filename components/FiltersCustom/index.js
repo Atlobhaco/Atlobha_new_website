@@ -58,7 +58,7 @@ function FiltersCustom({
   }, [filters?.category, isMobile]);
 
   const getCategoryName = (cat) =>
-    locale === "ar" ? cat?.name_ar : cat?.name_en;
+    locale === "ar" ? cat?.name_en : cat?.name_en;
 
   //   console.log(filters);
   //   {
