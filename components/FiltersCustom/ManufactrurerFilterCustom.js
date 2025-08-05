@@ -23,7 +23,7 @@ function ManufactrurerFilterCustom({
       return `${MANUFACTURERS}?category_ids[]=${
         allCategories?.find(
           (cat) =>
-            (locale === "ar" ? cat?.name_ar : cat?.name_en) ===
+            (locale === "ar" ? cat?.name_en : cat?.name_en) ===
             filters?.category
         )?.id
       }&is_active=1`;
@@ -34,7 +34,7 @@ function ManufactrurerFilterCustom({
 
   const selectedManufacture = filters?.manufacturer;
   const getLocalizedName = (man) =>
-    locale === "ar" ? man?.name_ar : man?.name_en;
+    locale === "ar" ? man?.name_en : man?.name_en;
   const isSelected = (man) => getLocalizedName(man) === selectedManufacture;
 
   useCustomQuery({

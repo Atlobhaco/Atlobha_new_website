@@ -34,7 +34,7 @@ function CategoryFilterCustom({
 
   const selectedCategory = filters?.category;
   const getLocalizedName = (cat) =>
-    locale === "ar" ? cat?.name_ar : cat?.name_en;
+    locale === "ar" ? cat?.name_en : cat?.name_en;
   const isSelected = (cat) => getLocalizedName(cat) === selectedCategory;
 
   if (!mergedShowHideFilters?.categoryFilter) return null;
