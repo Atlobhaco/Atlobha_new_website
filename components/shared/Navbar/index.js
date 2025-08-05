@@ -256,7 +256,11 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               <HeaderPage />
             </>
           )}
-          {isMobile && appearAt && <CarPalette />}
+          {isMobile && appearAt && (
+            <Box sx={{ mb: 1 }}>
+              <CarPalette />
+            </Box>
+          )}
         </div>
         <div style={secondPartStyle}>
           <LanguageSwitcher />
