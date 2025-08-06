@@ -61,22 +61,6 @@ function ProductDetails() {
           product_url: `/product/${idProd}` || "",
         });
       });
-
-      router.push({
-        pathname: router.pathname, // or a specific path like '/products'
-        query: {
-          ...router.query, // preserve existing
-          name: data?.name,
-          desc: data?.desc,
-          tags: data?.combined_tags[0]?.name_ar,
-          category: data?.marketplace_category?.name,
-          subCategory: data?.marketplace_subcategory?.name,
-          model: data?.model?.name,
-          num: data?.ref_num,
-          price: data?.price,
-          img: data?.image,
-        },
-      });
     }
   }, [idProd, data]);
 
