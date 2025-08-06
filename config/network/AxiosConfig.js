@@ -56,9 +56,6 @@ const AxiosProvider = ({ children }) => {
         setLoader(false); // Ensure loading is set to false even on error
         if (+error?.status === 401) {
           logout();
-          setTimeout(() => {
-            window.location.reload();
-          }, 500);
         }
         return Promise.reject(error);
       }
