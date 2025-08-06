@@ -1,4 +1,5 @@
 import { HISTORY, POPULAR_TERMS, SEARCH } from "@/config/endPoints/endPoints";
+import { isAuth } from "@/config/hooks/isAuth";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -95,6 +96,7 @@ function SearchSuggestionsMobile() {
     url: `${SEARCH}${HISTORY}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
+    enabled: !!isAuth(),
   });
 
   const { data: mostSearched, isFetching: loadingPopular } = useCustomQuery({
@@ -102,6 +104,7 @@ function SearchSuggestionsMobile() {
     url: `${SEARCH}${POPULAR_TERMS}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
+    enabled: !!isAuth(),
   });
 
   const handleClick = (keyword) =>
