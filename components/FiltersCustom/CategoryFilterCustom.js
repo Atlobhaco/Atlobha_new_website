@@ -41,7 +41,7 @@ function CategoryFilterCustom({
 
   return (
     <>
-      <h3 style={{ color: colorHeaders }}>{t.category}</h3>
+      <h3 style={{ color: colorHeaders, marginTop: "15px" }}>{t.category}</h3>
       <Box
         sx={{
           display: "flex",
