@@ -53,8 +53,8 @@
       display: inline-block;
       margin-inline-end: 10px;
       @include mobile-screen-style {
-        font-size: 10px;
-        margin-inline-end: 5px;
+        font-size: 8px;
+        margin-inline-end: 3px;
       }
     }
     &_price {

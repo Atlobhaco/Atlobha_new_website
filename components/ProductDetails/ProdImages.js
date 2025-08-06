@@ -6,7 +6,12 @@ import { Box, Divider } from "@mui/material";
 import { prodTypeArray } from "@/constants/helpers";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import InnerImageZoom from "react-inner-image-zoom";
+import dynamic from "next/dynamic";
+
+const InnerImageZoom = dynamic(() => import("react-inner-image-zoom"), {
+  ssr: false,
+  loading: () => <div style={{ height: 300 }}></div>, // Optional loading placeholder
+});
 
 function ProdImages({ prod }) {
   const swiperRef = useRef(null);

@@ -1,19 +1,17 @@
 import useLocalization from "@/config/hooks/useLocalization";
-import {
-  riyalImgBlack,
-  riyalImgOrange,
-  riyalImgRed,
-} from "@/constants/helpers";
+import { riyalImgBlack, riyalImgRed } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 import { toast } from "react-toastify";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useRouter } from "next/router";
 
 function TitlePrice({ prod }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const router = useRouter();
 
   const handleCopy = (refNum) => {
     navigator.clipboard.writeText(refNum).then(
@@ -31,26 +29,33 @@ function TitlePrice({ prod }) {
           color: "#1C1C28",
           fontWeight: "700",
           fontSize: "20px",
-          display: isMobile ? "block" : "flex",
-          alignItems: "center",
+          display: "flex",
+          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          gap: "1px",
+          gap: "4px",
         }}
       >
         <Box>{prod?.name}</Box>
         <Box
+          onClick={() => handleCopy(prod?.ref_num)}
           sx={{
             background: "#818181",
-            padding: "3px 5px",
+            padding: isMobile ? "2px 4px" : "3px 5px",
             borderRadius: "10px",
             color: "white",
-            fontSize: "18px",
+            fontSize: isMobile ? "12px" : "18px",
             width: "fit-content",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <ContentCopyIcon
-            sx={{ cursor: "pointer", width: "19px", color: "white", ml: 1 }}
-            onClick={() => handleCopy(prod?.ref_num)} // Add onClick handler
+            sx={{
+              width: isMobile ? "14px" : "19px",
+              color: "white",
+              ml: isMobile ? 0 : 1,
+            }}
           />
           {prod?.ref_num}
         </Box>
@@ -72,6 +77,16 @@ function TitlePrice({ prod }) {
               color: "white",
               fontWeight: "500",
               fontSize: "14px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(
+                `/products/?tagId=${tag?.id}&tagName=${
+                  tag?.name_ar
+                }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
+                  tag?.color
+                )}`
+              );
             }}
           >
             {tag?.name}

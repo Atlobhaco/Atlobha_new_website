@@ -89,13 +89,28 @@ export const translateAddressName = (name, locale) => {
 export const getFilterParams = (filters) => {
   const params = new URLSearchParams();
 
-  // Append only non-empty filter values
   Object.entries(filters).forEach(([key, value]) => {
+    // Skip conditionalAttributes for now
+    if (key === "conditionalAttributes") return;
+
     if (value) {
       params.append(key, value);
     }
   });
-  return params.toString(); // Returns a query string format
+
+  // Handle conditionalAttributes dynamically
+  if (
+    filters?.conditionalAttributes &&
+    typeof filters.conditionalAttributes === "object"
+  ) {
+    Object.entries(filters.conditionalAttributes).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        params.append(key, value);
+      }
+    });
+  }
+
+  return params.toString();
 };
 /* -------------------------------------------------------------------------- */
 /*                            order enum localized                            */
@@ -534,4 +549,100 @@ export const latestUpdatedCart = (basket = []) => {
       line_items: itemsMapping,
     });
   });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                      check if object filters has value                     */
+/* -------------------------------------------------------------------------- */
+export const hasAnyFilterValue = ({
+  filters = {},
+  excludeKeys = ["category_id", "has_active_offer"],
+} = {}) => {
+  if (!filters) return false;
+  return Object.entries(filters).some(([key, value]) => {
+    if (excludeKeys.includes(key)) return false;
+
+    if (
+      value === undefined ||
+      value === null ||
+      value === "" ||
+      value === false ||
+      (typeof value === "object" &&
+        !Array.isArray(value) &&
+        Object.keys(value || {}).length === 0)
+    ) {
+      return false;
+    }
+
+    if (typeof value === "object" && !Array.isArray(value)) {
+      return Object.values(value || {}).some(
+        (v) => v !== undefined && v !== null && v !== "" && v !== false
+      );
+    }
+
+    return true;
+  });
+};
+
+export const updateQueryParams = ({ filters = {}, router }) => {
+  console.log("router", router?.query);
+  const query = {
+    ...router.query,
+    savedQuerys: true,
+    brand_id: filters.brand_id || undefined,
+    model_id: filters.model_id || undefined,
+    year: filters.year || undefined,
+    has_active_offer: filters.has_active_offer || undefined,
+    category_id: filters.category_id || undefined,
+    manufacturer_id: filters.manufacturer_id || undefined,
+    conditionalAttributes: filters.conditionalAttributes
+      ? JSON.stringify(filters.conditionalAttributes)
+      : undefined,
+  };
+  router.replace(
+    {
+      pathname: router.pathname,
+      query,
+    },
+    undefined,
+    { shallow: true }
+  );
+};
+
+/* -------------------------------------------------------------------------- */
+/*             upadte url for global search with selected filters             */
+/* -------------------------------------------------------------------------- */
+export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
+  const newQuery = { ...router.query };
+
+  // Update only filters provided
+  //   if ("keyword" in filters) newQuery.keyword = filters.keyword || undefined;
+  //   if ("type" in filters) newQuery.type = filters.type || undefined;
+  if ("brand" in filters) newQuery.brand = filters.brand || undefined;
+  if ("model" in filters) newQuery.model = filters.model || undefined;
+  if ("year" in filters) newQuery.year = filters.year || undefined;
+  if ("has_active_offer" in filters)
+    newQuery.has_active_offer = filters.has_active_offer
+      ? true
+      : false || undefined;
+  if ("category" in filters) newQuery.category = filters.category || undefined;
+  if ("manufacturer" in filters)
+    newQuery.manufacturer = filters.manufacturer || undefined;
+  if ("conditionalAttributes" in filters) {
+    newQuery.conditionalAttributes = filters.conditionalAttributes
+      ? JSON.stringify(filters.conditionalAttributes)
+      : undefined;
+  }
+
+  // Add or keep savedQuerys
+  newQuery.newQueryForSearchGlobal = true;
+
+  router.replace(
+    {
+      pathname: router.pathname,
+      query: newQuery,
+    },
+    undefined,
+    { shallow: true }
+  );
 };

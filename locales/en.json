@@ -466,5 +466,20 @@
   "createNewAccount": "Or create new account",
   "paymentFailure": "Payment failure",
   "paymentCancelled": "Payment cancelled",
-  "canPayNow": "You can pay now"
+  "canPayNow": "You can pay now",
+  "visitStore": "Visit store",
+  "filter": "Filter",
+  "car": "Car",
+  "OnlyProductsOffer": "Show only products offers",
+  "manufacturers": "Manufactrures",
+  "category": "Category",
+  "selectBrandFirst": "choose car brand first",
+  "loading": "Loading",
+  "typeThreeCharacters": "Type at least 1 characters",
+  "lookForParts": "Looking for spare parts",
+  "searchAboutCars": "You can search for spare parts, regular maintenance and problems related to your cars",
+  "searchHistory": "Search history",
+  "mostSearched": "Most searched",
+  "noResultRelated": "There are no associated search results, but we can help you find parts",
+  "canMakePricingrequest": "You can submit a pricing request for the required parts and we will search for them for you."
 }

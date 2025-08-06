@@ -464,5 +464,20 @@
   "createNewAccount": "او انشاء حساب جديد",
   "paymentFailure": "فشل في عملية الدفع",
   "paymentCancelled": "تم الغاء عملية الدفع",
-  "canPayNow": "يمكنك الدفع الان"
+  "canPayNow": "يمكنك الدفع الان",
+  "visitStore": "زور المتجر",
+  "filter": "فلتر",
+  "car": "السيارة",
+  "OnlyProductsOffer": "اظهر فقط منتجات العروض",
+  "manufacturers": "المصنعين",
+  "category": "التصنيف",
+  "selectBrandFirst": "اختر براند السيارة اولا",
+  "loading": "جاري التحميل",
+  "typeThreeCharacters": "اكتب حرف على الأقل",
+  "lookForParts": "تدور قطع غيار",
+  "searchAboutCars": "يمكنك البحث في قطع الغيار والصيانة الدورية والمشاكل المتعلقة بسياراتك",
+  "searchHistory": "تاريخ البحث",
+  "mostSearched": "الاكثر بحثا",
+  "noResultRelated": "لا يوجد نتائج بحث مرتبطة ولكن يمكننا مساعدتك في ايجاد القطع",
+  "canMakePricingrequest": "يمكنك عمل طلب تسعير لقطع الغيار المطلوبة ونبحث لك عنها"
 }
