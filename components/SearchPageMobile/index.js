@@ -104,7 +104,7 @@ function SearchSuggestionsMobile() {
     url: `${SEARCH}${POPULAR_TERMS}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
-    enabled: !!isAuth(),
+    // enabled: !!isAuth(),
   });
 
   const handleClick = (keyword) =>
