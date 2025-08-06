@@ -23,7 +23,7 @@ import { useSelector } from "react-redux";
 function Products() {
   const router = useRouter();
   const {
-    query: { tagId },
+    query: { tagId, tagName, tagColor, tagNameEn },
   } = useRouter();
   const { t, locale } = useLocalization();
   const [page, setPage] = useState(1);
@@ -38,8 +38,10 @@ function Products() {
     if (selectedCar?.model?.id || defaultCar?.model?.id) {
       return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
         isMobile ? 12 : 16
-      }&model_id=${
-        selectedCar?.model?.id || defaultCar?.model?.id
+      }&model_id=${selectedCar?.model?.id || defaultCar?.model?.id}&brand_id=${
+        selectedCar?.brand?.id || defaultCar?.brand?.id
+      }&year=${
+        selectedCar?.year || defaultCar?.year
       }&tag_id=${tagId}&${getFilterParams(filters)}`;
     }
     return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
@@ -66,32 +68,32 @@ function Products() {
     },
   });
 
-  useEffect(() => {
-    if (selectedCar?.id || defaultCar?.id) {
-      if (router?.query?.savedQuerys !== "true" && router.isReady) {
-        setFilters({
-          brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
-          model_id: defaultCar?.model?.id || selectedCar?.model?.id,
-          year: defaultCar?.year || selectedCar?.year,
-          has_active_offer: false,
-        });
-        updateQueryParams({
-          filters: {
-            ...filters,
-            brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
-            model_id: defaultCar?.model?.id || selectedCar?.model?.id,
-            year: defaultCar?.year || selectedCar?.year,
-            has_active_offer: false,
-          },
-          router: router,
-        });
-      }
-    }
-  }, [defaultCar, selectedCar, router.isReady]);
+  //   useEffect(() => {
+  //     if (selectedCar?.id || defaultCar?.id) {
+  //       if (router?.query?.savedQuerys !== "true" && router.isReady) {
+  //         setFilters({
+  //           brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
+  //           model_id: defaultCar?.model?.id || selectedCar?.model?.id,
+  //           year: defaultCar?.year || selectedCar?.year,
+  //           has_active_offer: false,
+  //         });
+  //         updateQueryParams({
+  //           filters: {
+  //             ...filters,
+  //             brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
+  //             model_id: defaultCar?.model?.id || selectedCar?.model?.id,
+  //             year: defaultCar?.year || selectedCar?.year,
+  //             has_active_offer: false,
+  //           },
+  //           router: router,
+  //         });
+  //       }
+  //     }
+  //   }, [defaultCar, selectedCar, router.isReady]);
   //   console.log("router", router?.query);
 
   //  reset page  into default if the filters chaged its value
-  useResetPageOnFilterChange(filters, setPage);
+  //   useResetPageOnFilterChange(filters, setPage);
 
   return (
     <div>
@@ -100,13 +102,13 @@ function Products() {
         id="all-products"
       >
         <div className="row mt-1">
-          {!isMobile && (
+          {/* {!isMobile && (
             <div className={`col-md-3`}>
               <Filters filters={filters} setFilters={setFilters} />
             </div>
-          )}
-          <div className={`${isMobile ? "col-12" : "col-9"}`}>
-            {isMobile && (
+          )} */}
+          <div className="col-12">
+            {/* {isMobile && (
               <div className="d-flex justify-content-end">
                 <Image
                   loading="lazy"
@@ -127,11 +129,29 @@ function Products() {
                   }}
                 />
               </div>
-            )}{" "}
-            <div className={`row ${isMobile && "mt-3"}`}>
+            )}{" "} */}
+            <div className="row">
+              <div className="col-12">
+                <Box
+                  sx={{
+                    padding: "0px 4px",
+                    borderRadius: "4px",
+                    background: tagColor,
+                    color: "white",
+                    fontWeight: "500",
+                    fontSize: isMobile ? "15px" : "18px",
+                    cursor: "pointer",
+                    width: "fit-content",
+                    mb: 2,
+                  }}
+                >
+                  {locale === "ar" ? tagName : tagNameEn}
+                </Box>
+              </div>
+
               {isLoading || !allProducts ? (
                 <div className="container">
-                  <div className="row">
+                  <divdiv className="row">
                     {[...Array(8)].map((_, i) => (
                       <div className="col-md-3 col-4">
                         <ProductCardSkeleton
@@ -140,13 +160,13 @@ function Products() {
                         />
                       </div>
                     ))}
-                  </div>
+                  </divdiv>
                 </div>
               ) : (
                 <>
                   {allProducts?.map((prod) => (
                     <div
-                      className="col-md-4 col-4 mb-3 d-flex justify-content-center"
+                      className="col-md-3 col-4 mb-3 d-flex justify-content-center"
                       key={prod?.id}
                     >
                       <ProductCard product={prod} />

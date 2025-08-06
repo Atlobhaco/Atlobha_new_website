@@ -29,10 +29,10 @@ function TitlePrice({ prod }) {
           color: "#1C1C28",
           fontWeight: "700",
           fontSize: "20px",
-          display: isMobile ? "block" : "flex",
-          alignItems: "center",
+          display: "flex",
+          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          gap: "1px",
+          gap: "4px",
         }}
       >
         <Box>{prod?.name}</Box>
@@ -46,6 +46,8 @@ function TitlePrice({ prod }) {
             fontSize: isMobile ? "12px" : "18px",
             width: "fit-content",
             cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
           }}
         >
           <ContentCopyIcon
@@ -54,7 +56,6 @@ function TitlePrice({ prod }) {
               color: "white",
               ml: isMobile ? 0 : 1,
             }}
-            onClick={() => handleCopy(prod?.ref_num)} // Add onClick handler
           />
           {prod?.ref_num}
         </Box>
@@ -79,7 +80,13 @@ function TitlePrice({ prod }) {
               cursor: "pointer",
             }}
             onClick={() => {
-              router.push(`/products/?tagId=${tag?.id}`);
+              router.push(
+                `/products/?tagId=${tag?.id}&tagName=${
+                  tag?.name_ar
+                }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
+                  tag?.color
+                )}`
+              );
             }}
           >
             {tag?.name}

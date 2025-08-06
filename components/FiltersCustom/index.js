@@ -128,11 +128,11 @@ function FiltersCustom({
 		openFiltersModal={openFiltersModal}
       />
 
-      <ToogleProductsOfferCustom
+      {/* <ToogleProductsOfferCustom
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
         setFilters={setFilters}
-      />
+      /> */}
 
       <CategoryFilterCustom
         filters={filters}

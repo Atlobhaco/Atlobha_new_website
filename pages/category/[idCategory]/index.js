@@ -234,6 +234,9 @@ function Category() {
       )}
       <Box className="container">
         <Box className="row">
+          <Box className="col-12">
+            <Ads id={selectedCategory} />
+          </Box>
           {!isMobile && (
             <Box className={`col-md-3  mt-5`}>
               <Filters
@@ -248,7 +251,7 @@ function Category() {
           <Box className={`${isMobile ? "col-12" : "col-9"}`}>
             <Box className="row">
               {isMobile && (
-                <Box className="d-flex justify-content-end">
+                <Box className="d-flex justify-content-end mt-2">
                   <Image
                     loading="lazy"
                     src={`/icons/${
@@ -269,9 +272,7 @@ function Category() {
                   />
                 </Box>
               )}
-              <Box className="col-12">
-                <Ads id={selectedCategory} />
-              </Box>
+
               <Box
                 className={`col-12 ${isMobile ? "mt-4" : "mt-5"}`}
                 id="categroy_id"

@@ -56,11 +56,11 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     router?.pathname?.includes(url)
   );
 
-  const hideIfTrue = ["checkout"].some((url) =>
+  const hiddenUrlsFound = ["checkout"].some((url) =>
     router?.pathname?.includes(url)
   );
 
-  const hideAddress = ["category"].some((url) =>
+  const hideAddress = ["category", "search", "products"].some((url) =>
     router?.pathname?.includes(url)
   );
 
@@ -233,7 +233,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     >
       <Box className={`${style["navbar-container"]}`}>
         <div style={firstPartStyle}>
-          {!hideComponent && !hideIfTrue && !hideAddress && <DropDownAddress />}
+          {!hideComponent && !hiddenUrlsFound && !hideAddress && (
+            <DropDownAddress />
+          )}
           <Image
             loading="lazy"
             alt="logo"
@@ -452,7 +454,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       <Box
         className={`${style["sections"]}`}
         sx={{
-          padding: hideIfTrue
+          padding: hiddenUrlsFound
             ? "0px"
             : isMobile && !hideComponent
             ? "0px 5px"
@@ -461,7 +463,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             : "0px 25px",
         }}
       >
-        {!hideIfTrue && !router?.pathname?.includes("search") && !isMobile && (
+        {!hiddenUrlsFound && !router?.pathname?.includes("search") && (
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}

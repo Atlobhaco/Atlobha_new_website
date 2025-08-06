@@ -77,11 +77,11 @@ function Filters({
         colorHeaders={colorHeaders}
       />
 
-      <ToogleProductsOffer
+      {/* <ToogleProductsOffer
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
         setFilters={setFilters}
-      />
+      /> */}
 
       <CategoryFilter
         filters={filters}

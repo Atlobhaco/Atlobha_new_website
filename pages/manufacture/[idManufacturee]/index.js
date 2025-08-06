@@ -17,6 +17,7 @@ import { Box } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 function ManufactureDetails() {
   const { t, locale } = useLocalization();
@@ -26,6 +27,7 @@ function ManufactureDetails() {
   const { isMobile } = useScreenSize();
   const [page, setPage] = useState(1);
   const [manData, setManData] = useState(false);
+  const { selectedCar } = useSelector((state) => state.selectedCar);
 
   const { data: defaultCar } = useCustomQuery({
     name: "defaultCarForEndpoint",
@@ -42,6 +44,21 @@ function ManufactureDetails() {
     enabled: idManufacturee ? true : false,
     select: (res) => res?.data?.data,
   });
+  const returnUrlDependOnCar = () => {
+    if (selectedCar?.model?.id || defaultCar?.model?.id) {
+      return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+        isMobile ? 12 : 16
+      }&manufacturer_id=${idManufacturee}&years[]=${
+        selectedCar?.year || defaultCar?.year || ""
+      }&model_ids[]=${
+        selectedCar?.model?.id || defaultCar?.model?.id
+      }&brand_id=${selectedCar?.brand?.id || defaultCar?.brand?.id}`;
+    } else {
+      return `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
+        isMobile ? 12 : 16
+      }&manufacturer_id=${idManufacturee}`;
+    }
+  };
 
   const {
     data: manufactureProducts,
@@ -55,11 +72,7 @@ function ManufactureDetails() {
       isMobile,
       defaultCar?.year,
     ],
-    url: `${MARKETPLACE}${PRODUCTS}?page=${page}&per_page=${
-      isMobile ? 12 : 16
-    }&manufacturer_id=${idManufacturee}&years[]=${
-      defaultCar?.year || ""
-    }&model_ids[]=${defaultCar?.model?.id || ""}`,
+    url: returnUrlDependOnCar(),
     refetchOnWindowFocus: false,
     enabled: idManufacturee ? true : false,
     select: (res) => res?.data,
