@@ -9,6 +9,7 @@ import React, { useState } from "react";
 import SharedDropDown from "../shared/SharedDropDown";
 import useLocalization from "@/config/hooks/useLocalization";
 import { CircularProgress } from "@mui/material";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function ConditionalAttributesFilterCustom({
   mergedShowHideFilters,
@@ -16,7 +17,9 @@ function ConditionalAttributesFilterCustom({
   allCategories,
   setFilters,
   colorHeaders,
+  returnPageIntoOriginal,
 }) {
+  const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
   const [attributes, setAttributes] = useState([]);
 
@@ -59,6 +62,9 @@ function ConditionalAttributesFilterCustom({
         [key]: event?.target?.value,
       },
     }));
+    if (!isMobile) {
+      returnPageIntoOriginal();
+    }
   };
   /* -------------------------------------------------------------------------- */
   /*                   always send the english key for the  BE                  */

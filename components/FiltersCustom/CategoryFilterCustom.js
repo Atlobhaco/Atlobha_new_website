@@ -13,6 +13,7 @@ function CategoryFilterCustom({
   setAllCategories,
   allCategories,
   colorHeaders,
+  returnPageIntoOriginal,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -64,12 +65,16 @@ function CategoryFilterCustom({
               "&:hover": { opacity: 0.8 },
               border: "1px solid #F0F0F0",
             }}
-            onClick={() =>
+            onClick={() => {
               setFilters((prev) => ({
                 ...prev,
                 category: isSelected(cat) ? null : getLocalizedName(cat),
-              }))
-            }
+                conditionalAttributes: {},
+              }));
+              if (!isMobile) {
+                returnPageIntoOriginal();
+              }
+            }}
           >
             {cat?.name}
           </Box>
