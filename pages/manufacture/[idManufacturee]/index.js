@@ -130,7 +130,7 @@ function ManufactureDetails() {
             />
             <link
               rel="canonical"
-              href={`https://atlobha.com/manufacture/${manufactureInfo.seo?.seoable_id}?name${manufactureInfo?.seo?.slug}`}
+              href={`https://atlobha.com/manufacture/${manufactureInfo?.seo?.seoable_id}?name${manufactureInfo?.seo?.slug}`}
             />
             <meta
               property="og:image"
