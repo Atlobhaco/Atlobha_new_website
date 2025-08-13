@@ -22,6 +22,7 @@ function EditInfoForm({
   setChangedField,
   otpLoad,
   changedField,
+  hideSomeComponent = false,
 }) {
   const { t } = useLocalization();
   const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -209,8 +210,10 @@ function EditInfoForm({
           </Box>
         </Box>
       </div>
-      <div className="col-12 mt-5">
-        <Divider sx={{ background: "#EAECF0", mb: 5 }} />
+      <div className={`col-12 ${hideSomeComponent ? "mt-3" : "mt-5"} `}>
+        {!hideSomeComponent && (
+          <Divider sx={{ background: "#EAECF0", mb: 5 }} />
+        )}
       </div>
       <div className="col-12 d-flex gap-2 justify-content-end">
         <SharedBtn

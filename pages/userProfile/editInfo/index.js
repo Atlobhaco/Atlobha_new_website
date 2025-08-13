@@ -23,7 +23,10 @@ const flexBox = {
   justifyContent: "space-between",
 };
 
-function EditInfo() {
+function EditInfo({
+  hideSomeComponent = false,
+  setOpenEditUserModal = () => {},
+}) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -53,7 +56,8 @@ function EditInfo() {
         setSaveUserNewData(false);
       }, 500);
       setEditPayload(false);
-      toast.success(t.editedSuccessfully);
+      toast.success(hideSomeComponent ? t.canPayNow : t.editedSuccessfully);
+      setOpenEditUserModal(false);
     },
     onError: (err) => {
       setEditPayload(false);
@@ -129,7 +133,7 @@ function EditInfo() {
           setOtpView(true);
           return null;
         }
-        toast.error(t.someThingWrong);
+        toast.error(err?.response?.data?.first_error || t.someThingWrong);
       },
     });
 
@@ -183,13 +187,21 @@ function EditInfo() {
   });
 
   const handleSubmit = (values) => {
-    setEditPayload({
-      ...values,
-      language: locale,
-      birthdate: values?.birthdate?.length
-        ? moment(values?.birthdate)?.locale("en")?.format("YYYY-MM-DD")
-        : null,
-    });
+    if (values?.birthdate?.length) {
+      setEditPayload({
+        ...values,
+        language: locale,
+        birthdate: values?.birthdate?.length
+          ? moment(values?.birthdate)?.locale("en")?.format("YYYY-MM-DD")
+          : null,
+      });
+    } else {
+      const { birthdate, ...rest } = values;
+      setEditPayload({
+        ...rest,
+        language: locale,
+      });
+    }
   };
 
   const handleInputChange = (e, setFieldValue) => {
@@ -203,26 +215,30 @@ function EditInfo() {
   return (
     <div className="container-fluid">
       <div className="row mb-2">
-        {!isMobile && (
+        {!isMobile && !hideSomeComponent && (
           <div className="col-md-4">
             <UserProfile recallUserData={saveUserNewData} />
           </div>
         )}
-        <div className="col-md-8 col-12 pt-4">
-          <div className="row">
-            <BreadCrumb />
-          </div>
+        <div className={`${!hideSomeComponent && "col-md-8 pt-4"} col-12`}>
+          {!hideSomeComponent && (
+            <div className="row">
+              <BreadCrumb />
+            </div>
+          )}
           <div className="row mb-4 mt-3">
-            <Box sx={flexBox}>
-              <Box
-                sx={{
-                  fontSize: "20px",
-                  fontWeight: "500",
-                }}
-              >
-                {t.editInfo}
+            {!hideSomeComponent && (
+              <Box sx={flexBox}>
+                <Box
+                  sx={{
+                    fontSize: "20px",
+                    fontWeight: "500",
+                  }}
+                >
+                  {t.editInfo}
+                </Box>
               </Box>
-            </Box>
+            )}
 
             <Formik
               enableReinitialize
@@ -257,6 +273,7 @@ function EditInfo() {
                     setChangedField={setChangedField}
                     otpLoad={otpLoad}
                     changedField={changedField}
+					hideSomeComponent={hideSomeComponent}
                   />
                 );
               }}

@@ -6,7 +6,6 @@ import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import ProdImages from "../../../components/ProductDetails/ProdImages";
 import ManufactureData from "../../../components/ProductDetails/ManufactureData";
 import TitlePrice from "../../../components/ProductDetails/TitlePrice";
 import DeliveryTime from "../../../components/ProductDetails/DeliveryTime";
@@ -17,6 +16,8 @@ import AddToBasketProdDetails from "../../../components/ProductDetails/AddToBask
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
 import Head from "next/head";
+import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttributes";
+import ProdImages from "@/components/ProductDetails/ProdImages";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -74,22 +75,6 @@ function ProductDetails() {
           product_url: `/product/${idProd}` || "",
         });
       });
-
-      router.push({
-        pathname: router.pathname, // or a specific path like '/products'
-        query: {
-          ...router.query, // preserve existing
-          name: data?.name,
-          desc: data?.desc,
-          tags: data?.combined_tags[0]?.name_ar,
-          category: data?.marketplace_category?.name,
-          subCategory: data?.marketplace_subcategory?.name,
-          model: data?.model?.name,
-          num: data?.ref_num,
-          price: data?.price,
-          img: data?.image,
-        },
-      });
     }
   }, [idProd, data]);
 
@@ -117,7 +102,7 @@ function ProductDetails() {
               />
               <link
                 rel="canonical"
-                href={`https://atlobha.com/product/${data.seo?.seoable_id}?name${data?.seo?.slug}`}
+                href={`https://atlobha.com/product/${data?.seo?.seoable_id}?name${data?.seo?.slug}`}
               />
               <meta property="og:image" content={data?.seo?.image_alt} />
               <meta name="twitter:image" content={data?.seo?.image_alt} />
@@ -153,6 +138,9 @@ function ProductDetails() {
               </Box>
               <Box sx={{ mb: 3 }}>
                 <DetailsProd prod={data} />
+              </Box>
+              <Box sx={{ mb: 3 }}>
+                <ConditionalAttributes prod={data} />
               </Box>
               {/* <Box sx={{ mb: 2 }}>
                 <AnotherProducts prod={data} />

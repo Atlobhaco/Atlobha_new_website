@@ -29,6 +29,7 @@ function SharedDropDown({
   disabled = false,
   id = "",
   showCloseIcon = true,
+  hint = false,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -231,6 +232,7 @@ function SharedDropDown({
           )}
         </Select>
         {error && <Box className="error-msg-inputs">{error}</Box>}
+        {hint && !error && <Box className="hint-msg-inputs">{hint}</Box>}
       </FormControl>
     </Box>
   );

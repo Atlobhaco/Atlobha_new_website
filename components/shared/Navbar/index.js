@@ -26,6 +26,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import BlurText from "../BlurText";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import ContentForBasket from "./ContentForBasketPopup";
+import AutoCompleteInput from "@/components/AutoCompleteInput";
 
 const firstPartStyle = {
   display: "flex",
@@ -55,13 +56,17 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     router?.pathname?.includes(url)
   );
 
-  const hideIfTrue = ["checkout"].some((url) =>
+  const hiddenUrlsFound = ["checkout"].some((url) =>
     router?.pathname?.includes(url)
   );
 
-  const hideAddress = ["category"].some((url) =>
+  const hideAddress = ["category", "search", "products"].some((url) =>
     router?.pathname?.includes(url)
   );
+
+  const routeForBasketChekout =
+    router?.pathname?.includes("basket") ||
+    router?.pathname?.includes("checkout");
 
   const { allGroups } = useSelector((state) => state.appGroups);
 
@@ -228,7 +233,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     >
       <Box className={`${style["navbar-container"]}`}>
         <div style={firstPartStyle}>
-          {!hideComponent && !hideIfTrue && !hideAddress && <DropDownAddress />}
+          {!hideComponent && !hiddenUrlsFound && !hideAddress && (
+            <DropDownAddress />
+          )}
           <Image
             loading="lazy"
             alt="logo"
@@ -251,7 +258,11 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
               <HeaderPage />
             </>
           )}
-          {isMobile && appearAt && <CarPalette />}
+          {isMobile && appearAt && (
+            <Box sx={{ mb: 1 }}>
+              <CarPalette />
+            </Box>
+          )}
         </div>
         <div style={secondPartStyle}>
           <LanguageSwitcher />
@@ -414,25 +425,36 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           </div>
         </div>
       </Box>
-      {/* {!isMobile && !appearAt && !hideComponent && (
+      {/* search logic */}
+      {((!routeForBasketChekout && !hideComponent && !isMobile) ||
+        (isMobile && router?.pathname?.includes("search"))) && (
         <Box className={`${style["searching"]}`}>
-          <Box className={`${style["searching-header"]}`}>تدور قطع غيار !</Box>
-          <Box className={`${style["searching-sub"]}`}>
-            يمكنك البحث في قطع الغيار والصيانة الدورية والمشاكل المتعلقة
-            بسياراتك
-          </Box>
+          {!isMobile && (
+            <>
+              <Box className={`${style["searching-header"]}`}>
+                {t.lookForParts} !
+              </Box>
+              <Box className={`${style["searching-sub"]}`}>
+                {t.searchAboutCars}
+              </Box>
+            </>
+          )}
           <Box className={`${style["searching-parent"]}`}>
-            <Box className={`${style["searching-parent_holder"]}`}>
-              <SharedInput />
-              <SharedBtn className="search-btn" text={"search"} />
+            <Box
+              className={`${style["searching-parent_holder"]} ${
+                isMobile && "w-100"
+              }`}
+            >
+              <AutoCompleteInput />
+              {/* <SharedBtn className="search-btn" text={"search"} /> */}
             </Box>
           </Box>
         </Box>
-      )} */}
+      )}
       <Box
         className={`${style["sections"]}`}
         sx={{
-          padding: hideIfTrue
+          padding: hiddenUrlsFound
             ? "0px"
             : isMobile && !hideComponent
             ? "0px 5px"
@@ -441,7 +463,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
             : "0px 25px",
         }}
       >
-        {!hideIfTrue && (
+        {!hiddenUrlsFound && !router?.pathname?.includes("search") && (
           <SectionsNav
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}

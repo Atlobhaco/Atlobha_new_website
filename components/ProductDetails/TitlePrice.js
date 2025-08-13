@@ -1,17 +1,26 @@
 import useLocalization from "@/config/hooks/useLocalization";
-import {
-  riyalImgBlack,
-  riyalImgOrange,
-  riyalImgRed,
-} from "@/constants/helpers";
+import { riyalImgBlack, riyalImgRed } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
+import { toast } from "react-toastify";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { useRouter } from "next/router";
 
 function TitlePrice({ prod }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const router = useRouter();
+
+  const handleCopy = (refNum) => {
+    navigator.clipboard.writeText(refNum).then(
+      () => {
+        toast.success(`${t.copySuccess}, ${refNum}`);
+      },
+      (err) => {}
+    );
+  };
 
   return (
     <>
@@ -20,9 +29,36 @@ function TitlePrice({ prod }) {
           color: "#1C1C28",
           fontWeight: "700",
           fontSize: "20px",
+          display: "flex",
+          alignItems: isMobile ? "flex-start" : "center",
+          justifyContent: "space-between",
+          gap: "4px",
         }}
       >
-        {prod?.name}
+        <Box>{prod?.name}</Box>
+        <Box
+          onClick={() => handleCopy(prod?.ref_num)}
+          sx={{
+            background: "#818181",
+            padding: isMobile ? "2px 4px" : "3px 5px",
+            borderRadius: "10px",
+            color: "white",
+            fontSize: isMobile ? "12px" : "18px",
+            width: "fit-content",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <ContentCopyIcon
+            sx={{
+              width: isMobile ? "14px" : "19px",
+              color: "white",
+              ml: isMobile ? 0 : 1,
+            }}
+          />
+          {prod?.ref_num}
+        </Box>
       </Box>
       <Box
         sx={{
@@ -41,6 +77,16 @@ function TitlePrice({ prod }) {
               color: "white",
               fontWeight: "500",
               fontSize: "14px",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              router.push(
+                `/products/?tagId=${tag?.id}&tagName=${
+                  tag?.name_ar
+                }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
+                  tag?.color
+                )}`
+              );
             }}
           >
             {tag?.name}
@@ -143,7 +189,7 @@ function TitlePrice({ prod }) {
               fontWeight: "500",
             }}
           >
-            {(prod?.price?.toFixed(2) / 5)?.toFixed(2)} {riyalImgBlack()}
+            {(prod?.price?.toFixed(2) / 4)?.toFixed(2)} {riyalImgBlack()}
           </Box>{" "}
           {t.otherInstallment}
         </Box>

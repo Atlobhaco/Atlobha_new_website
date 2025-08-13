@@ -7,6 +7,7 @@ import { QUICK_LINKS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 function QuickLinks({ sectionInfo }) {
   const { isMobile } = useScreenSize();
@@ -22,6 +23,17 @@ function QuickLinks({ sectionInfo }) {
     select: (res) => res?.data?.data,
   });
 
+  const textStyle = {
+    color: "#6B7280",
+    textAlign: "center",
+    fontSize: isMobile ? "10px" : "24px",
+    fontWeight: "700",
+    maxWidth: "90px",
+    marginTop: isMobile ? "3px" : "2px",
+    lineHeight: isMobile ? "16px" : "32px",
+    wordWrap: "break-word",
+  };
+
   return !sectionInfo?.is_active || !quickLinksData?.length ? null : (
     <Box
       sx={{
@@ -32,16 +44,47 @@ function QuickLinks({ sectionInfo }) {
       }}
     >
       {quickLinksData?.map((item, index) => (
-        <IconInsideCircle
-          key={item?.title + index} // Add a unique key for each element
-          title={item.title}
-          width={isMobile ? "48px" : "88px"}
-          height={isMobile ? "48px" : "88px"}
-          imgHeight={isMobile ? "22" : "42"}
-          imgWidth={isMobile ? "22" : "42"}
-          iconUrl={item?.image?.url}
-          onClick={() => router.push(item?.link)}
-        />
+        <Box
+          key={item?.title + index}
+          sx={{
+            width: "fit-content",
+          }}
+        >
+          <Box
+            sx={{
+              background: "white",
+              width: isMobile ? "48px" : "88px",
+              height: isMobile ? "48px" : "88px",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              border: "2px solid #D1D5DB",
+              boxShadow: "0px 8.946px 19.681px 0px rgba(0, 0, 0, 0.15)",
+              "&:hover": {
+                opacity: "0.8",
+              },
+              position: "relative",
+            }}
+            onClick={() => router.push(item?.link)}
+          >
+            <Image
+              alt={item?.image?.url}
+              src={item?.image?.url}
+              width="22"
+              height="22"
+              loading="lazy"
+              style={{
+                width: "auto",
+                height: "auto",
+                minWidth: `${isMobile ? "22px" : "42px"}`,
+                minHeight: `${isMobile ? "22px" : "42px"}`,
+              }}
+            />
+          </Box>
+          <Box sx={textStyle}>{item.title}</Box>
+        </Box>
       ))}
     </Box>
   );

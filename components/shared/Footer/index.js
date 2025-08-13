@@ -40,12 +40,12 @@ function Footer() {
     {
       id: 1,
       text: t.sparePart,
-      link: "",
+      link: "/spareParts",
     },
     {
       id: 2,
       text: t.accessories,
-      link: "",
+      link: "/category/10",
     },
     {
       id: 3,
@@ -115,7 +115,9 @@ function Footer() {
           <div className={`${style["footer-header"]}`}>{t.storeSections}</div>
           <ul className={`${style["footer-links"]}`}>
             {storeSections?.map((data) => (
-              <li key={data?.id}>{data?.text}</li>
+              <li key={data?.id} onClick={() => router.push(data?.link)}>
+                {data?.text}
+              </li>
             ))}
           </ul>
         </div>

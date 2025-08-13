@@ -3,9 +3,11 @@ import SharedTextField from "@/components/shared/SharedTextField";
 import { ME, PHONE } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
+import { useAuth } from "@/config/providers/AuthProvider";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -29,7 +31,11 @@ function EnterOtpStep({
   callOtpRequest409,
   otpLoad409,
   setPhoneNum,
+  setRecallUserDataAgain = () => {},
 }) {
+  const { login, user } = useAuth();
+  const router = useRouter();
+  const { route } = router;
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
 
@@ -67,9 +73,29 @@ function EnterOtpStep({
     },
     onSuccess: () => {
       if (canUsePhone) {
-        toast.success(t.canMakeSparePartReq);
+        const loggedUser = JSON.parse(window?.localStorage.getItem("user"));
+        login({
+          data: {
+            access_token: window?.localStorage.getItem("access_token"),
+            user: {
+              ...loggedUser,
+              phone: `+966${phoneNum}`,
+            },
+          },
+        });
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...loggedUser,
+            phone: `+966${phoneNum}`,
+          })
+        );
+        toast.success(
+          !route?.includes(`/checkout`) ? t.canMakeSparePartReq : t.canAddOrder
+        );
         setOpenAddMobile(false);
         setMigrationStep(1);
+        setRecallUserDataAgain(true);
       } else {
         setMigrationStep(2);
       }

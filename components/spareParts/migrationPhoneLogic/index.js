@@ -14,6 +14,7 @@ function MigrationPhoneLogic({
   setOtpCode,
   phoneNum,
   setPhoneNum,
+  setRecallUserDataAgain = () => {},
 }) {
   const [timer, setTimer] = useState(120);
   const [canUsePhone, setCanUsePhone] = useState(false);
@@ -71,26 +72,28 @@ function MigrationPhoneLogic({
     },
   });
 
-  const { isFetching: otpLoad409, refetch: callOtpRequest409 } = useCustomQuery({
-    name: ["requestOtpForCanUse409"],
-    url: `${AUTH}${OTP}`,
-    refetchOnWindowFocus: false,
-    method: "post",
-    enabled: false,
-    body: {
-      phone: `+966${phoneNum}`,
-    },
-    retry: 0,
-    select: (res) => res?.data?.data,
-    onSuccess: (res) => {
-      setTimer(120);
-      setCanUsePhone(false);
-      setMigrationStep(3);
-    },
-    onError: (err) => {
-      toast.error(err?.response?.data?.message);
-    },
-  });
+  const { isFetching: otpLoad409, refetch: callOtpRequest409 } = useCustomQuery(
+    {
+      name: ["requestOtpForCanUse409"],
+      url: `${AUTH}${OTP}`,
+      refetchOnWindowFocus: false,
+      method: "post",
+      enabled: false,
+      body: {
+        phone: `+966${phoneNum}`,
+      },
+      retry: 0,
+      select: (res) => res?.data?.data,
+      onSuccess: (res) => {
+        setTimer(120);
+        setCanUsePhone(false);
+        setMigrationStep(3);
+      },
+      onError: (err) => {
+        toast.error(err?.response?.data?.message);
+      },
+    }
+  );
 
   return migrationStep === 1 ? (
     <EnterPhoneStep
@@ -122,6 +125,7 @@ function MigrationPhoneLogic({
       callOtpRequest409={callOtpRequest409}
       otpLoad409={otpLoad409}
       setPhoneNum={setPhoneNum}
+      setRecallUserDataAgain={setRecallUserDataAgain}
     />
   );
 }

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import style from "../spareParts/confirmation/confirmation.module.scss";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -10,8 +10,19 @@ import { useRouter } from "next/router";
 import SharedBtn from "@/components/shared/SharedBtn";
 import DialogCentered from "@/components/DialogCentered";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
+import EnterPhoneNumber from "@/components/EnterPhoneNumber";
+import EditInfo from "../userProfile/editInfo";
+import { Box } from "@mui/material";
+import { useAuth } from "@/config/providers/AuthProvider";
+import { USERS } from "@/config/endPoints/endPoints";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
+import useCustomQuery from "@/config/network/Apiconfig";
+import EditUserInfoDialog from "@/components/editUserInfoDialog";
 
 function Checkout() {
+  const tamaraRef = useRef();
+  const { user } = useAuth();
+  const phoneRef = useRef();
   const { t } = useLocalization();
   const router = useRouter();
   const { isMobile } = useScreenSize();
@@ -25,6 +36,11 @@ function Checkout() {
   const [openAddMobile, setOpenAddMobile] = useState(false);
   const [otpCode, setOtpCode] = useState("");
   const [phoneNum, setPhoneNum] = useState(false);
+  const [addPhoneForTamara, setAddPhoneForTamara] = useState(false);
+  const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const dispatch = useDispatch();
+  const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -32,8 +48,28 @@ function Checkout() {
     }
   }, [selectedAddress, defaultAddress]);
 
+  const { data } = useCustomQuery({
+    name: ["getProfileInfoForCheckout", openEditUserModal, recallUserDataAgain],
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      setRecallUserDataAgain(false);
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
+
   const handleChangeAddress = (data) => {
     setSelectAddress(data);
+  };
+
+  const triggerChildPayment = () => {
+    tamaraRef.current?.triggerTamaraPayment();
   };
 
   return (
@@ -75,6 +111,10 @@ function Checkout() {
                   selectAddress={selectAddress}
                   setOpenAddMobile={setOpenAddMobile}
                   promoCodeId={promoCodeId}
+                  setAddPhoneForTamara={setAddPhoneForTamara}
+                  phoneAddedForTamara={phoneAddedForTamara}
+                  ref={tamaraRef}
+                  setOpenEditUserModal={setOpenEditUserModal}
                 />
               )}
             </div>
@@ -111,8 +151,43 @@ function Checkout() {
             setOtpCode={setOtpCode}
             phoneNum={phoneNum}
             setPhoneNum={setPhoneNum}
+            setRecallUserDataAgain={setRecallUserDataAgain}
           />
         }
+      />
+
+      {/* dialog to enter phone for user to can  pay with tamara */}
+      <DialogCentered
+        showTitle={true}
+        title={t.addPhoneNum}
+        subtitle={false}
+        open={addPhoneForTamara}
+        setOpen={setAddPhoneForTamara}
+        closeAction={() => {
+          setAddPhoneForTamara(false);
+          setPhoneAddedForTamara(false);
+          phoneRef?.current?.resetForm();
+        }}
+        hasCloseIcon
+        customClass="minimize-center-dialog-width"
+        content={
+          <EnterPhoneNumber
+            ref={phoneRef}
+            onSubmit={(phone) => {
+              setPhoneAddedForTamara(phone);
+              setAddPhoneForTamara(false);
+              setTimeout(() => {
+                triggerChildPayment();
+              }, 500);
+              phoneRef?.current?.resetForm(); // 👈 Reset form on close
+            }}
+          />
+        }
+      />
+      {/* modal to edit user info data */}
+      <EditUserInfoDialog
+        openEditUserModal={openEditUserModal}
+        setOpenEditUserModal={setOpenEditUserModal}
       />
     </div>
   );

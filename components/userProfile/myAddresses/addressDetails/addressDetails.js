@@ -94,6 +94,8 @@ function AddressDetails({
                   borderRadius: "5px",
                   background: "white",
                   color: "black",
+                  width: "130px",
+                  height: "23px",
                 }}
               />
             </Box>
