@@ -33,6 +33,7 @@ import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import "react-inner-image-zoom/lib/styles.min.css";
 import * as gtag from "../config/googleAnalytics/gtag";
+import { RouteProvider } from "@/config/providers/RouteTracker";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -93,7 +94,7 @@ const AppContent = ({ Component, pageProps }) => {
       ) {
         setTimeout(() => {
           loadingScreen.style.display = "none";
-        }, 2500);
+        }, 3000);
       }
     }
   }, []);
@@ -246,17 +247,19 @@ export default function App({ Component, pageProps }) {
       />
       <Provider store={store}>
         <ThemeProvider theme={theme}>
-          <ToastifyProvider>
-            <AuthProvider>
-              <AxiosProvider>
-                <AppContent Component={Component} pageProps={pageProps} />
-                {/* <ReactQueryDevtools
+          <RouteProvider>
+            <ToastifyProvider>
+              <AuthProvider>
+                <AxiosProvider>
+                  <AppContent Component={Component} pageProps={pageProps} />
+                  {/* <ReactQueryDevtools
                   initialIsOpen={false}
                   position="bottom-right"
                 /> */}
-              </AxiosProvider>
-            </AuthProvider>
-          </ToastifyProvider>
+                </AxiosProvider>
+              </AuthProvider>
+            </ToastifyProvider>
+          </RouteProvider>
         </ThemeProvider>
       </Provider>
     </QueryClientProvider>

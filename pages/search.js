@@ -8,26 +8,40 @@ import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import useResetPageOnFilterChange from "@/config/hooks/useResetPageOnFilterChange";
 import Image from "next/image";
 import SharedBtn from "@/components/shared/SharedBtn";
 import DialogCentered from "@/components/DialogCentered";
 import SearchSuggestionsMobile from "@/components/SearchPageMobile";
 import GlobalSearchNoResults from "@/components/GlobalSearchNoResults";
+import { useRouteTracker } from "@/config/providers/RouteTracker";
+import { isAuth } from "@/config/hooks/isAuth";
 
 function Search() {
+  const router = useRouter();
   const {
     query: { keyword, type },
   } = useRouter();
-  const [page, setPage] = useState(1);
+  const { prevRoute } = useRouteTracker();
+
+  const [page, setPage] = useState(+router?.current_active_page || 1);
   const [allData, setAllData] = useState([]);
   const { isMobile } = useScreenSize();
-  const [filters, setFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    brand: "",
+    model: "",
+    year: "",
+    has_active_offer: false,
+    category: "",
+    conditionalAttributes: {},
+    manufacturer: "",
+  });
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const [openFiltersModal, setOpenfiltersModal] = useState(false);
   const [tempFilters, setTempfilters] = useState(false);
+  const [canSavefilters, setCanSaveFilters] = useState(false);
+  const urlsForBackActions = ["product", "spareParts"];
 
   const { isFetching, isLoading } = useCustomQuery({
     name: ["searchFor", keyword, type, page, filters],
@@ -42,23 +56,94 @@ function Search() {
     },
   });
 
+  const returnPageIntoOriginal = () => {
+    const newQuery = { ...router.query, current_active_page: 1 };
+
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
   useEffect(() => {
-    if (selectedCar?.id || defaultCar?.id) {
-      setFilters({
-        brand: defaultCar?.brand?.name_en || selectedCar?.brand?.name_en,
-        model: defaultCar?.model?.name_en || selectedCar?.model?.name_en,
-        year: defaultCar?.year || selectedCar?.year,
-        has_active_offer: false,
-      });
+    if (canSavefilters) {
+      const globalSearchData = {
+        keyword, // <-- save keyword
+        ...filters,
+      };
+      localStorage.setItem("globalSearch", JSON.stringify(globalSearchData));
     }
-  }, [defaultCar, selectedCar]);
+  }, [filters, canSavefilters, keyword]);
 
-  //  reset page  into default if the filters chaged its value
-  useResetPageOnFilterChange(filters, setPage);
+  //   const returnPageIntoOriginal = (router) => {
+  // 	if (!router?.isReady) return;
+
+  // 	const newQuery = {
+  // 	  ...router.query,
+  // 	  current_active_page: 1,
+  // 	};
+
+  // 	router.replace(
+  // 	  {
+  // 		pathname: router.pathname,
+  // 		query: newQuery,
+  // 	  },
+  // 	  undefined,
+  // 	  { shallow: true }
+  // 	);
+  //   };
 
   useEffect(() => {
-    console.log("filters", filters);
-  }, [filters]);
+    const savedSearch = JSON.parse(localStorage.getItem("globalSearch"));
+    const savedKeyword = savedSearch?.keyword;
+
+    if (!router?.isReady) return;
+
+    if (!isAuth()) {
+      setCanSaveFilters(true);
+      return;
+    }
+
+    const car = selectedCar?.id ? selectedCar : defaultCar;
+
+    if (prevRoute) {
+      if (savedKeyword && savedKeyword === keyword) {
+        const { keyword: _, ...filtersOnly } = savedSearch;
+        setTimeout(() => {
+          setFilters({ ...filtersOnly });
+          setCanSaveFilters(true);
+        }, 500);
+      } else {
+        setFilters({
+          brand: car?.brand?.name_en || "",
+          model: car?.model?.name_en || "",
+          year: car?.year || "",
+          has_active_offer: false,
+          category: "",
+          conditionalAttributes: {},
+          manufacturer: "",
+        });
+        setCanSaveFilters(true);
+        returnPageIntoOriginal(router);
+      }
+    } else {
+      setFilters({
+        brand: car?.brand?.name_en || "",
+        model: car?.model?.name_en || "",
+        year: car?.year || "",
+        has_active_offer: false,
+        category: "",
+        conditionalAttributes: {},
+        manufacturer: "",
+      });
+      setCanSaveFilters(true);
+      returnPageIntoOriginal(router);
+    }
+  }, [prevRoute, keyword, selectedCar, defaultCar, router.isReady]);
 
   return isMobile && !keyword ? (
     <SearchSuggestionsMobile />
@@ -174,6 +259,7 @@ function Search() {
               onClick={() => {
                 setFilters(tempFilters);
                 setOpenfiltersModal(false);
+                returnPageIntoOriginal();
               }}
               className="big-main-btn"
               text="showResults"
@@ -196,6 +282,7 @@ function Search() {
                   year: "",
                   category: "",
                 });
+                returnPageIntoOriginal();
               }}
               className="outline-btn"
               text="reset"

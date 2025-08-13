@@ -20,8 +20,11 @@ function SectionsNav({
   const { allGroups } = useSelector((state) => state.appGroups);
 
   // logic inside function to make marketplace default selection
+  //   if i want any section to be selected then add secTitle as query params
   const activeDependOnUrl = (section) => {
     return section?.title === secTitle ||
+      section?.title_en === secTitle ||
+	  section?.title_ar === secTitle ||
       (section?.type === SPAREPARTS &&
         router.pathname?.includes("/spareParts")) ||
       (section?.type === MARKETPLACE && router.pathname === "/") ||

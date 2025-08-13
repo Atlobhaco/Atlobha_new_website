@@ -44,10 +44,8 @@ function PackageOffers({ sectionInfo }) {
   var settings = {
     dots: true,
     infinite: +featuredProducts?.data?.length > 1,
-    slidesToShow:
-      +featuredProducts?.data?.length > 4 ? 4 : +featuredProducts?.data?.length,
-    slidesToScroll:
-      +featuredProducts?.data?.length > 4 ? 2 : +featuredProducts?.data?.length,
+    slidesToShow: 4,
+    slidesToScroll: +featuredProducts?.data?.length > 5 ? 2 : 1,
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
@@ -73,8 +71,8 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: +featuredProducts?.data?.length > 1 ? 3 : 1,
-          slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToShow: 3,
+          slidesToScroll: 2,
         },
       },
     ],

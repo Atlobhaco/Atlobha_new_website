@@ -28,28 +28,19 @@ function AtlobhaPartners({ sectionInfo }) {
     onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
   });
 
-  const responsive = {
-    desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 7, // Number of items to show on desktop
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 5, // Number of items to show on tablets
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 4, // Number of items to show on mobile
-    },
-  };
-
   var settings = {
     dots: true,
     infinite: false,
     slidesToShow: isMobile ? 2 : 3,
     slidesToScroll: 1,
+    initialSlide:
+      locale === "ar"
+        ? isMobile
+          ? Math.max(Math.ceil(data.length / 3), 0)
+          : Math.max(Math.ceil(data.length / 3) - 3, 0)
+        : 0, // 👈 start at last "page"
     // autoplay: true,
-    // rtl: locale === "ar",
+    // rtl: false,
     // touchThreshold: 0,
     // speed: 2500,
     // autoplaySpeed: 0,
@@ -125,7 +116,7 @@ function AtlobhaPartners({ sectionInfo }) {
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    height: isMobile ? "80px" : "100px",
+                    height: isMobile ? "60px" : "100px",
                     mb: isMobile ? 1 : 3,
                     mx: isMobile ? 0 : 1,
                     cursor: "pointer",

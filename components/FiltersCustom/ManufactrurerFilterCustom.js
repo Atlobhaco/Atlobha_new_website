@@ -12,6 +12,7 @@ function ManufactrurerFilterCustom({
   setFilters,
   colorHeaders,
   allCategories,
+  returnPageIntoOriginal,
 }) {
   const { t, locale } = useLocalization();
   const { user } = useAuth();
@@ -19,7 +20,7 @@ function ManufactrurerFilterCustom({
   const [manufactures, setManufacturers] = useState([]);
 
   const urlDependOnCatId = () => {
-    if (filters?.category) {
+    if (filters?.category?.length) {
       return `${MANUFACTURERS}?category_ids[]=${
         allCategories?.find(
           (cat) =>
@@ -47,6 +48,7 @@ function ManufactrurerFilterCustom({
       if (!res?.find((man) => getLocalizedName(man) === selectedManufacture)) {
         setFilters((prev) => ({
           ...prev,
+          ...filters,
           manufacturer: null,
         }));
       }
@@ -94,6 +96,9 @@ function ManufactrurerFilterCustom({
                     ? null
                     : getLocalizedName(manufacturer),
                 }));
+                if (!isMobile) {
+                  returnPageIntoOriginal();
+                }
               }}
             >
               {manufacturer?.name}

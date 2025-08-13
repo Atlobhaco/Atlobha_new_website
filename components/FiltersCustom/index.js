@@ -7,6 +7,8 @@ import CategoryFilterCustom from "./CategoryFilterCustom";
 import ConditionalAttributesFilterCustom from "./ConditionalAttributesFilterCustom";
 import ManufactrurerFilterCustom from "./ManufactrurerFilterCustom";
 import { useRouter } from "next/router";
+import { useRouteTracker } from "@/config/providers/RouteTracker";
+import usePrevious from "@/config/hooks/usePrevious";
 
 function FiltersCustom({
   // filters accpet string (names) for this is custom
@@ -42,66 +44,35 @@ function FiltersCustom({
   };
 
   const { t, locale } = useLocalization();
-  const [brandName, setBrandName] = useState("");
-  const [modelName, setModelName] = useState("");
-  const [yearName, setYearName] = useState("");
   const [allCategories, setAllCategories] = useState([]);
 
-  /* -------------------------------------------------------------------------- */
-  /*               clear condtional attribute with change category              */
-  /* -------------------------------------------------------------------------- */
-  useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      conditionalAttributes: {},
-    }));
-  }, [filters?.category, isMobile]);
+  //   useEffect(() => {
+  //     const categoryChanged = prevCategory !== filters?.category;
+
+  //     if (filters?.category?.length && categoryChanged && canUpdateLogic) {
+  //       setFilters((prev) => ({
+  //         ...prev,
+  //         ...filters,
+  //         conditionalAttributes: {},
+  //       }));
+  //     }
+  //   }, [filters?.category, isMobile, prevCategory]);
 
   const getCategoryName = (cat) =>
     locale === "ar" ? cat?.name_en : cat?.name_en;
 
-  //   console.log(filters);
-  //   {
-  //     "brand": "",
-  //     "model": "",
-  //     "year": "",
-  //     "has_active_offer": false,
-  //     "manufacturer": null,
-  //     "conditionalAttributes": {
-  //         "oil_category": "Transmission"
-  //     },
-  //     "category": "Oils"
-  // }
+  const returnPageIntoOriginal = () => {
+    const newQuery = { ...router.query, current_active_page: 1 };
 
-//   useEffect(() => {
-//     if (router?.isReady) {
-//       const {
-//         brand,
-//         model,
-//         year,
-//         has_active_offer,
-//         manufacturer,
-//         conditionalAttributes,
-//         category,
-//       } = router.query;
-//       console.log("router", router?.query);
-//       setFilters({
-//         // ...filters,
-//         brand: +brand ? +brand : filters?.brand,
-//         model: +brand ? (+model ? +model : "") : filters?.model,
-//         year: +brand ? (+year ? +year : "") : filters?.year,
-//         has_active_offer: has_active_offer === "true" ? true : false,
-//         manufacturer: manufacturer?.length
-//           ? manufacturer
-//           : filters?.manufacturer,
-//         conditionalAttributes: conditionalAttributes
-//           ? JSON.parse(conditionalAttributes)
-//           : filters?.conditionalAttributes,
-//         category: category?.length ? category : filters?.category,
-//       });
-//     }
-//   }, [router.isReady]);
-
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <div>
       {!isMobile && (
@@ -118,14 +89,9 @@ function FiltersCustom({
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
         setFilters={setFilters}
-        brandName={brandName}
-        setBrandName={setBrandName}
-        modelName={modelName}
-        setModelName={setModelName}
-        yearName={yearName}
-        setYearName={setYearName}
         colorHeaders={colorHeaders}
-		openFiltersModal={openFiltersModal}
+        openFiltersModal={openFiltersModal}
+        returnPageIntoOriginal={returnPageIntoOriginal}
       />
 
       {/* <ToogleProductsOfferCustom
@@ -141,6 +107,7 @@ function FiltersCustom({
         setAllCategories={setAllCategories}
         allCategories={allCategories}
         colorHeaders={colorHeaders}
+        returnPageIntoOriginal={returnPageIntoOriginal}
       />
 
       {(allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
@@ -155,16 +122,20 @@ function FiltersCustom({
           allCategories={allCategories}
           setFilters={setFilters}
           colorHeaders={colorHeaders}
+          returnPageIntoOriginal={returnPageIntoOriginal}
         />
       )}
 
-      <ManufactrurerFilterCustom
-        filters={filters}
-        mergedShowHideFilters={mergedShowHideFilters}
-        setFilters={setFilters}
-        colorHeaders={colorHeaders}
-        allCategories={allCategories}
-      />
+      {!!allCategories?.length && (
+        <ManufactrurerFilterCustom
+          filters={filters}
+          mergedShowHideFilters={mergedShowHideFilters}
+          setFilters={setFilters}
+          colorHeaders={colorHeaders}
+          allCategories={allCategories}
+          returnPageIntoOriginal={returnPageIntoOriginal}
+        />
+      )}
     </div>
   );
 }
