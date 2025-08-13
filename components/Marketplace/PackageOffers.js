@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 function PackageOffers({ sectionInfo }) {
   const { isMobile } = useScreenSize();
-  const { t, locale } = useLocalization();
+  const { t } = useLocalization();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
@@ -28,7 +28,7 @@ function PackageOffers({ sectionInfo }) {
 
   const { data: featuredProducts } = useCustomQuery({
     name: [
-      "featured-products",
+      `featured-products-${sectionInfo?.id}`,
       sectionInfo?.is_active,
       selectedCar?.model?.id,
       defaultCar?.model?.id,

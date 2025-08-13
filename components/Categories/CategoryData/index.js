@@ -10,6 +10,7 @@ function CategoryData({
   keyValue = null,
   bgImage = null,
   category,
+  handleClick = false,
 }) {
   const { isMobile } = useScreenSize();
   const router = useRouter();
@@ -28,12 +29,15 @@ function CategoryData({
       }}
       key={keyValue}
       onClick={() => {
-        router.push({
-          pathname: `/category/${category?.id}`,
-        });
+        if (handleClick) {
+          handleClick();
+        } else {
+          router.push({
+            pathname: `/category/${category?.id}`,
+          });
+        }
       }}
     >
-      {/* {isMobile && <Box className={`${style["category-text"]}`}>{text}</Box>} */}
       <Box className={`${style["category-text"]}`}>{text}</Box>
       <Box
         className={`${style["category-image"]}`}

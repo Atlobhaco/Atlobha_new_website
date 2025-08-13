@@ -8,19 +8,25 @@ import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { MARKETPLACE } from "@/constants/enums";
 
-function MainCarousel({ sectionInfo }) {
+function MainCarousel({ sectionInfo, setHasAds = () => {} }) {
   const { isMobile } = useScreenSize();
+  const router = useRouter();
+  const { secType } = router.query;
   const [isDragging, setIsDragging] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
 
   const { data: ads } = useCustomQuery({
-    name: "ads",
+    name: [`ads-${sectionInfo?.id}`, selectedAddress?.id, defaultAddress?.id],
     url: `${ADS}?lat=${
       selectedAddress?.lat || defaultAddress?.lat || "24.7136"
-    }&lng=${selectedAddress?.lng || defaultAddress?.lng || "46.6753"}`,
+    }&lng=${
+      selectedAddress?.lng || defaultAddress?.lng || "46.6753"
+    }&app_sections[]=${secType || MARKETPLACE}`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
       ? isAuth() && sectionInfo?.is_active
@@ -28,7 +34,11 @@ function MainCarousel({ sectionInfo }) {
       ? true
       : false,
     select: (res) => res?.data,
+    onSuccess: (res) => {
+      setHasAds(res?.data?.length);
+    },
   });
+
   return !sectionInfo?.is_active || !ads?.data?.length ? null : (
     <Box>
       <Swiper
@@ -52,20 +62,6 @@ function MainCarousel({ sectionInfo }) {
       >
         {ads?.data?.map((img) => (
           <SwiperSlide key={img?.id || img?.media || index}>
-            {/* <img
-              style={{
-                borderRadius: "20px",
-                maxWidth: "100%",
-                display: "flex",
-                margin: "auto",
-              }}
-              src={img?.media}
-              onClick={() => {
-                if (img?.link) {
-                  window.open(img?.link);
-                }
-              }}
-            /> */}
             <Image
               src={img?.media || "/imgs/no-img-holder.svg"} // fallback in case media is undefined
               alt="banner-image"

@@ -11,6 +11,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 function AutoCompleteInput() {
   const router = useRouter();
   const queryKeyword = router?.query?.keyword || "";
+  const secType = router?.query?.secType || "";
   const [inputValue, setInputValue] = useState(queryKeyword);
   const { isMobile } = useScreenSize();
   const [selectedOption, setSelectedOption] = useState(null);
@@ -78,7 +79,11 @@ function AutoCompleteInput() {
         getOptionLabel={(option) => option}
         onChange={(event, newValue) => {
           if (newValue) {
-            router.push(`/search?keyword=${newValue}&type=MarketplaceProduct`);
+            router.push(
+              `/search?keyword=${newValue}&type=${
+                secType || "MarketplaceProduct"
+              }`
+            );
             setSelectedOption(newValue);
           } else {
             setSelectedOption(null);
@@ -89,7 +94,9 @@ function AutoCompleteInput() {
             event.preventDefault();
             if (inputValue?.trim()?.length >= countOfLetters) {
               router.push(
-                `/search?keyword=${inputValue}&type=MarketplaceProduct`
+                `/search?keyword=${inputValue}&type=${
+                  secType || "MarketplaceProduct"
+                }`
               );
               setSelectedOption(inputValue);
               setOpen(false); // 👈 يغلق القائمة بعد الضغط

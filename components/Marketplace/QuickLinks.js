@@ -1,7 +1,6 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import React from "react";
-import IconInsideCircle from "../IconInsideCircle";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { QUICK_LINKS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
@@ -9,18 +8,20 @@ import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 import Image from "next/image";
 
-function QuickLinks({ sectionInfo }) {
+function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
   const { isMobile } = useScreenSize();
   const router = useRouter();
+  const { secType } = router.query;
 
   const { data: quickLinksData } = useCustomQuery({
-    name: ["quick-links", sectionInfo?.is_active],
-    url: `${QUICK_LINKS}?app_section=${MARKETPLACE}&active=1`,
+    name: [`quick-links-${sectionInfo?.id}`, sectionInfo?.is_active, isAuth()],
+    url: `${QUICK_LINKS}?app_section=${secType || MARKETPLACE}&active=1`,
     refetchOnWindowFocus: false,
     enabled: sectionInfo?.requires_authentication
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => setHasQuickLinks(res?.length),
   });
 
   const textStyle = {

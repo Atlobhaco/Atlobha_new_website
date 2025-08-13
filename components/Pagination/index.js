@@ -1,57 +1,33 @@
 import React, { useEffect } from "react";
-import Pagination from "@mui/material/Pagination";
-import PaginationItem from "@mui/material/PaginationItem";
+import { Pagination, PaginationItem, CircularProgress } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
 
-function PaginateComponent({ meta, setPage, isLoading }) {
+export default function PaginateComponent({ meta, setPage, isLoading }) {
   const { locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
 
-  // Function to format page numbers based on locale
-  const formatNumber = (number) => {
-    return new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-US").format(
-      number
-    );
-  };
+  const formatNumber = (n) =>
+    new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-US").format(n);
 
-  // Update query params
-  const handlePageChange = (e, newPage) => {
-    setPage(newPage); // update internal state
-
-    const currentQuery = { ...router.query };
-    currentQuery.current_active_page = newPage;
-
+  const updatePageQuery = (page) => {
+    setPage(page);
     router.push(
       {
         pathname: router.pathname,
-        query: currentQuery,
+        query: { ...router.query, current_active_page: page },
       },
       undefined,
-      { shallow: true } // Don't reload the page, just update URL
+      { shallow: true }
     );
   };
 
   useEffect(() => {
-    if (router?.query?.current_active_page) {
-      setPage(+router?.query?.current_active_page);
-
-      const currentQuery = { ...router.query };
-      currentQuery.current_active_page = +router?.query?.current_active_page;
-
-      router.push(
-        {
-          pathname: router.pathname,
-          query: currentQuery,
-        },
-        undefined,
-        { shallow: true } // Don't reload the page, just update URL
-      );
-    }
-  }, [router?.query?.current_active_page]);
+    const page = +router.query.current_active_page;
+    if (router.pathname.includes("search") && page) updatePageQuery(page);
+  }, [router.query.current_active_page]);
 
   return (
     <div className="position-relative">
@@ -61,7 +37,7 @@ function PaginateComponent({ meta, setPage, isLoading }) {
         count={meta?.last_page || 100}
         page={meta?.current_page || 1}
         defaultPage={meta?.current_page || 1}
-        onChange={handlePageChange}
+        onChange={(_, p) => updatePageQuery(p)}
         disabled={isLoading}
         renderItem={(item) => (
           <PaginationItem
@@ -69,14 +45,13 @@ function PaginateComponent({ meta, setPage, isLoading }) {
             page={item.page ? formatNumber(item.page) : item.page}
             sx={{
               "& .MuiSvgIcon-root": {
-                width: isMobile ? 30 : 32,
-                height: isMobile ? 30 : 32,
+                width: isMobile ? 25 : 32,
+                height: isMobile ? 25 : 32,
                 borderRadius: "50%",
                 border: "1px solid #6B7280",
                 backgroundColor: "#fff",
                 color: "#6B7280",
                 padding: "3px",
-                margin: "0px 0px",
                 fontSize: isMobile ? "12px" : "16px",
                 transform: locale === "ar" ? "rotate(180deg)" : "none",
               },
@@ -86,16 +61,15 @@ function PaginateComponent({ meta, setPage, isLoading }) {
         sx={{
           "& .MuiPaginationItem-root": {
             color: "#6B7280",
-            fontSize: "14px",
-            fontWeight: "500",
-            margin: isMobile ? 0 : "auto",
+            fontSize: isMobile ? "12px" : "14px",
+            fontWeight: 500,
+            margin: isMobile ? 0 : "1px",
+            ...(isMobile && { minWidth: "25px", height: "25px" }),
             "&.Mui-selected": {
               backgroundColor: "#FFCE21",
               color: "black",
-              fontWeight: "600",
-            },
-            "&.Mui-selected:hover": {
-              backgroundColor: "#FFCE21",
+              fontWeight: 600,
+              "&:hover": { backgroundColor: "#FFCE21" },
             },
           },
         }}
@@ -107,12 +81,10 @@ function PaginateComponent({ meta, setPage, isLoading }) {
             color: "#FFD400",
             position: "absolute",
             top: "5px",
-            left: "-15px",
+            left: "-25px",
           }}
         />
       )}
     </div>
   );
 }
-
-export default PaginateComponent;

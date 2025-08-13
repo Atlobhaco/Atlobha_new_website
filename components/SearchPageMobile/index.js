@@ -66,20 +66,6 @@ const Section = ({ title, loading, items, onClickTag }) => {
                 {item}
               </Box>
             ))}
-            {/* {!items?.length && (
-              <Box
-                sx={{
-                  color: "#1C1C28",
-                  fontSize: "20px",
-                  fontWeight: 700,
-                  mt: 2,
-                  textAlign: "center",
-                  width: "100%",
-                }}
-              >
-                {t.noResultsFound}
-              </Box>
-            )} */}
           </>
         )}
       </Box>
@@ -90,6 +76,9 @@ const Section = ({ title, loading, items, onClickTag }) => {
 function SearchSuggestionsMobile() {
   const { t } = useLocalization();
   const router = useRouter();
+  const {
+    query: { secType },
+  } = useRouter();
 
   const { data: searchHistory, isFetching: loadingHistory } = useCustomQuery({
     name: "searchHistory",
@@ -104,11 +93,12 @@ function SearchSuggestionsMobile() {
     url: `${SEARCH}${POPULAR_TERMS}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
-    // enabled: !!isAuth(),
   });
 
   const handleClick = (keyword) =>
-    router.push(`/search?keyword=${keyword}&type=MarketplaceProduct`);
+    router.push(
+      `/search?keyword=${keyword}&type=${secType || "MarketplaceProduct"}`
+    );
 
   return (
     <Box className="container mt-3">

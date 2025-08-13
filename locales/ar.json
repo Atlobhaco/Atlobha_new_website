@@ -479,5 +479,11 @@
   "searchHistory": "تاريخ البحث",
   "mostSearched": "الاكثر بحثا",
   "noResultRelated": "لا يوجد نتائج بحث مرتبطة ولكن يمكننا مساعدتك في ايجاد القطع",
-  "canMakePricingrequest": "يمكنك عمل طلب تسعير لقطع الغيار المطلوبة ونبحث لك عنها"
+  "canMakePricingrequest": "يمكنك عمل طلب تسعير لقطع الغيار المطلوبة ونبحث لك عنها",
+  "serviceCategories": "تصنيفات الخدمات",
+  "portableServices": "خدمات متنقلة",
+  "fixedServices": "خدمات ثابتة",
+  "deliverAtDoor": "نقدمها لين باب بيتك ف الوقت الي يناسبك",
+  "approvedCenters": "نقدم خدماتنا في مراكز الخدمة المعتمدة",
+  "orderServiceAgain": "احجز مرة اخري"
 }

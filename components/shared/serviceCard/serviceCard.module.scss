@@ -1,0 +1,86 @@
+@import "../../../styles/variables.scss";
+@import "../../../styles/mixins.scss";
+
+.service {
+  background-color: #fff;
+  width: 315px;
+  height: 150px;
+  border: 1.875px solid #f4f4f4;
+  border-radius: 16px;
+  padding: 8px 15px;
+  display: flex;
+  gap: 7px;
+  transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+
+  &:hover {
+    transform: scale(0.99);
+    box-shadow: inset 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+  }
+  @include mobile-screen-style {
+    width: 196px;
+    height: 90px;
+  }
+  &-img {
+    max-width: 95px;
+    max-height: 100%;
+    align-self: center;
+    @include mobile-screen-style {
+      max-width: 60px;
+      height: auto;
+    }
+  }
+  &-info {
+    &_title {
+      color: #232323;
+      font-size: 22px;
+      font-weight: 500;
+      margin-bottom: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 185px;
+      @include mobile-screen-style {
+        font-size: 12px;
+        margin-bottom: 1px;
+        max-width: 115px;
+      }
+    }
+    &_price {
+      color: #ee772f;
+      font-size: 30;
+      font-weight: 500;
+      margin-bottom: 3px;
+      display: flex;
+      gap: 5px;
+      @include mobile-screen-style {
+        font-size: 15px;
+        margin-bottom: 1px;
+      }
+      &-old--price {
+        color: #b0b0b0;
+        font-size: 19px;
+        font-weight: 500;
+        text-decoration: line-through;
+        @include mobile-screen-style {
+          font-size: 10px;
+        }
+      }
+      &-has--disc {
+        color: #eb3c24;
+      }
+    }
+    &_reserve {
+      color: #232323;
+      font-size: 17px;
+      font-weight: 500;
+      border: 1.875px solid #f9dd4b;
+      background: #f9dd4b;
+      border-radius: 14px;
+      padding: 9px 16px;
+      @include mobile-screen-style {
+        padding: 6px 10px;
+        font-size: 10px;
+      }
+    }
+  }
+}

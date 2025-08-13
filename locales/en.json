@@ -481,5 +481,11 @@
   "searchHistory": "Search history",
   "mostSearched": "Most searched",
   "noResultRelated": "There are no associated search results, but we can help you find parts",
-  "canMakePricingrequest": "You can submit a pricing request for the required parts and we will search for them for you."
+  "canMakePricingrequest": "You can submit a pricing request for the required parts and we will search for them for you.",
+  "serviceCategories": "Services categories",
+  "portableServices": "Portable services",
+  "fixedServices": "Fixed services",
+  "deliverAtDoor": "We deliver it to your door at a time that suits you",
+  "approvedCenters": "We provide our services in approved service centers",
+  "orderServiceAgain": "order again"
 }

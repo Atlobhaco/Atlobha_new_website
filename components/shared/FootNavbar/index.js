@@ -15,6 +15,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 
 function FootNavbar({ setOpenCategories, openCategories }) {
   const router = useRouter();
+  const secType = router?.query?.secType;
   const { basket } = useSelector((state) => state.basket);
   const { t } = useLocalization();
 
@@ -46,10 +47,14 @@ function FootNavbar({ setOpenCategories, openCategories }) {
             icon={<Search />}
             text={t.common.search}
             activeTab={router?.pathname?.includes("search") ? true : false}
-            onClick={() => router.push("/search")}
+            onClick={() => {
+              if (secType) {
+                router.push(`/search/?secType=${secType}`);
+              } else {
+                router.push(`/search`);
+              }
+            }}
           />
-          {/* <Box sx={{ width: "75px" }}></Box>
-          <Box sx={{ width: "75px" }}></Box> */}
           <FootNavSection
             icon={<BlackMenu />}
             customWidth="43px"
@@ -75,19 +80,6 @@ function FootNavbar({ setOpenCategories, openCategories }) {
               router.push("/userProfile");
             }}
           />
-
-          {/* <FootNavSection
-            icon={<Basket />}
-            text="السلة"
-            activeTab={activeTab === "basket" ? true : false}
-            onClick={() => setActiveTab("basket")}
-          />
-          <FootNavSection
-            icon={<More />}
-            text="المزيد"
-            activeTab={activeTab === "more" ? true : false}
-            onClick={() => setActiveTab("more")}
-          />{" "} */}
         </>
       )}
     </Box>

@@ -1,4 +1,5 @@
 import ComingSoon from "@/components/comingSoon";
+import Services from "@/components/sectionsInfo/services/Services";
 import MetaTags from "@/components/shared/MetaTags";
 import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
@@ -60,11 +61,19 @@ function Sections() {
     );
   };
 
+  const renderSectionForsecType = () => {
+    switch (secType) {
+      case "services":
+        return <Services />;
+      default:
+        return <ComingSoon />;
+    }
+  };
   return (
     <Box>
       <MetaTags title={secTitle} content={secType} />
       {renderMetaTagsDependOnSecType()}
-      <ComingSoon />
+      {renderSectionForsecType()}
     </Box>
   );
 }
