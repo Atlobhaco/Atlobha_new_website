@@ -79,7 +79,7 @@ const AppContent = ({ Component, pageProps }) => {
       ) {
         setTimeout(() => {
           loadingScreen.style.display = "none";
-        }, 2500);
+        }, 3000);
       }
     }
   }, []);

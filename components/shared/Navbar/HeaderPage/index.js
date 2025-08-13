@@ -11,7 +11,6 @@ function HeaderPage() {
   const router = useRouter();
   const spareParts = router?.pathname?.includes("spare");
   const { allGroups } = useSelector((state) => state.appGroups);
-
   const renderHeaderDependOnUrl = () => {
     if (spareParts) {
       return t.sparePartPricing;
@@ -19,6 +18,16 @@ function HeaderPage() {
     if (router?.pathname === "/") {
       return t.marketplacePage;
     } else {
+      if (allGroups?.length) {
+        return (
+          allGroups[1]?.sections?.find(
+            (sec) => sec?.title === router?.query?.secTitle
+          )?.title ||
+          allGroups[1]?.sections?.find(
+            (sec) => sec?.title_ar === router?.query?.secTitle
+          )?.title
+        );
+      }
       return router?.query?.secTitle;
     }
   };
