@@ -50,7 +50,7 @@ function Search() {
     // url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${
     //   type?.includes("MarketplaceProduct") ? "MarketplaceProduct" : "Service"
     // }&${getFilterParams(filters)}`,
-    url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${type}&${getFilterParams(
+    url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${"MarketplaceProduct"}&${getFilterParams(
       filters
     )}`,
     enabled: keyword && type ? true : false,

@@ -68,6 +68,8 @@ function Sections() {
   };
 
   const renderSectionForsecType = () => {
+    return <ComingSoon />;
+
     switch (secType) {
       case "services":
         return <Services />;
