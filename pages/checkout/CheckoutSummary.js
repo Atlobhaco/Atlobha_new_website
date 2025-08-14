@@ -63,7 +63,7 @@ const CheckoutSummary = forwardRef(
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
     let tamaraCheckoutUrl = "";
-
+console.log('userDataProfile',userDataProfile);
     const receipt = {};
     const header = {
       color: "#232323",
@@ -737,7 +737,10 @@ const CheckoutSummary = forwardRef(
 
             if (method === PAYMENT_METHODS.credit) {
               setRedirectToPayfort(true);
-            } else if (method === PAYMENT_METHODS.applePay) {
+            } else if (
+              method === PAYMENT_METHODS.applePay &&
+              userDataProfile?.phone?.length
+            ) {
               handleApplePayPayment();
             } else if (
               method === PAYMENT_METHODS.tamara ||

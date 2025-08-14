@@ -45,6 +45,11 @@ function Search() {
 
   const { isFetching, isLoading } = useCustomQuery({
     name: ["searchFor", keyword, type, page, filters],
+    // need to hanle service details page first
+    // just remember this logic is correct
+    // url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${
+    //   type?.includes("MarketplaceProduct") ? "MarketplaceProduct" : "Service"
+    // }&${getFilterParams(filters)}`,
     url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${type}&${getFilterParams(
       filters
     )}`,

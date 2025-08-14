@@ -28,6 +28,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 import Head from "next/head";
 
 export default function Home() {
+  // useBranch user for deep  links
   useBranch();
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
@@ -252,8 +253,6 @@ export default function Home() {
             return null;
         }
       })}
-
-      {/* <ComingSoon /> */}
     </>
   );
 }

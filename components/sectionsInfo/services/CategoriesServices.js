@@ -1,23 +1,26 @@
 import { Box } from "@mui/material";
 import React from "react";
-import HeaderSection from "../HeaderSection";
-import CategoryData from "../Categories/CategoryData";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { CATEGORY, MARKETPLACE } from "@/config/endPoints/endPoints";
+import { SERVICE_CATEGORIES } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useSelector } from "react-redux";
+import HeaderSection from "@/components/HeaderSection";
+import CategoryData from "@/components/Categories/CategoryData";
+import { useRouter } from "next/router";
 
-function CategoriesMarketplace({ sectionInfo }) {
+function CategoriesServices({ sectionInfo }) {
   const { isMobile } = useScreenSize();
+  const router = useRouter();
+
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const { data: categories } = useCustomQuery({
-    name: [`marketplace-categories=${sectionInfo?.id}`],
-    url: `${MARKETPLACE}${CATEGORY}?lat=${
+    name: [`services-categories=${sectionInfo?.id}`],
+    url: `${SERVICE_CATEGORIES}?lat=${
       selectedAddress?.lat || defaultAddress?.lat || 24.7136
     }&lng=${selectedAddress?.lng || defaultAddress?.lng || 46.6753}&model_id=${
       selectedCar?.model?.id || defaultCar?.model?.id
@@ -38,6 +41,7 @@ function CategoriesMarketplace({ sectionInfo }) {
         display: "flex",
         gap: isMobile ? "10px" : "25px",
         flexDirection: "column",
+        mb: 2,
       }}
     >
       <HeaderSection title={sectionInfo?.title} />
@@ -53,9 +57,14 @@ function CategoriesMarketplace({ sectionInfo }) {
           <CategoryData
             category={cat}
             keyValue={cat?.name}
-            imgPath={cat?.image}
+            imgPath={cat?.image?.url}
             text={cat?.name}
             bgImage={cat?.background_image?.url}
+            handleClick={() =>
+              router.push(
+                `/serviceCategory/${cat?.id}?secTitle=${router?.query?.secTitle}`
+              )
+            }
           />
         ))}
       </Box>
@@ -63,4 +72,4 @@ function CategoriesMarketplace({ sectionInfo }) {
   );
 }
 
-export default CategoriesMarketplace;
+export default CategoriesServices;
