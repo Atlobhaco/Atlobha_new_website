@@ -75,6 +75,7 @@ function Layout({ children }) {
             activeSection={activeSection}
             setActiveSection={setActiveSection}
             setOpenCategories={setOpenCategories}
+            openCategories={openCategories}
           />
         }
       />

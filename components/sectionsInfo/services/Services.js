@@ -65,7 +65,7 @@ function Services() {
       }
     },
   });
-  console.log("sections", sections);
+
   return isLoading ? (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <CircularProgress

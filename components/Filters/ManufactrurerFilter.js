@@ -31,7 +31,10 @@ function ManufactrurerFilter({
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       // clear manufactrurer selection if not found
-      if (!res?.find((man) => +man?.id === +filters?.manufacturer_id)) {
+      if (
+        filters?.manufacturer_id &&
+        !res?.find((man) => +man?.id === +filters?.manufacturer_id)
+      ) {
         setFilters((prev) => ({
           ...prev,
           manufacturer_id: null,

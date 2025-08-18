@@ -197,7 +197,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     )?.background_color;
     const sectionBgColor =
       allGroups[1]?.sections?.find(
-        (sec) => sec?.title === router?.query?.secTitle
+        (sec) =>
+          sec?.type?.toLowerCase() === router?.query?.secTitle ||
+          sec?.type?.toLowerCase() === router?.query?.secType?.toLowerCase()
       )?.background_color || marketPlaceColor;
     //   marketPlaceColor default bg color for any page no section
     //   the correct one to detect the old path not marketPlaceColor
@@ -215,7 +217,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       router.push(section?.type === MARKETPLACE ? "/" : "/spareParts");
     } else {
       router.push(
-        `/sections?secTitle=${section?.title}&&secType=${section?.type}`
+        `/sections?secTitle=${section?.title}&secType=${section?.type}`
       );
     }
   };

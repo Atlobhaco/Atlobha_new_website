@@ -3,22 +3,36 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
 
 function StaticDynamicSections({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
+  const router = useRouter();
 
   const sectionsData = [
     {
       imgSrc: "/imgs/dynamic-car-service.svg",
       title: t.portableServices,
       subTitle: t.deliverAtDoor,
+      redirect: () =>
+        router.push(
+          `/serviceCategory/${"first-id"}?secTitle=${
+            router?.query?.secTitle
+          }&secType=services&portableService=true`
+        ),
     },
     {
       imgSrc: "/imgs/static-car-service.svg",
       title: t.fixedServices,
       subTitle: t.approvedCenters,
+      redirect: () =>
+        router.push(
+          `/serviceCategory/${"first-id"}?secTitle=${
+            router?.query?.secTitle
+          }&secType=services&portableService=false`
+        ),
     },
   ];
   return (
@@ -42,6 +56,7 @@ function StaticDynamicSections({ sectionInfo }) {
                 opacity: "0.8",
               },
             }}
+            onClick={() => info?.redirect()}
           >
             <Box>
               <Box

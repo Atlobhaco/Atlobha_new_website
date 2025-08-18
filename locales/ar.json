@@ -485,5 +485,8 @@
   "fixedServices": "خدمات ثابتة",
   "deliverAtDoor": "نقدمها لين باب بيتك ف الوقت الي يناسبك",
   "approvedCenters": "نقدم خدماتنا في مراكز الخدمة المعتمدة",
-  "orderServiceAgain": "احجز مرة اخري"
+  "orderServiceAgain": "احجز مرة اخري",
+  "serviceAfterOrder": "تقدم هذه الخدمات في مراكز الخدمة المعتمدة بعد حجز موعد",
+  "noServicesInside": "لا توجد خدمات في هذا القسم",
+  "soonWillBeAdded": "قريبا سوف يتم اضافة خدمات في هذا القسم"
 }

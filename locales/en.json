@@ -487,5 +487,8 @@
   "fixedServices": "Fixed services",
   "deliverAtDoor": "We deliver it to your door at a time that suits you",
   "approvedCenters": "We provide our services in approved service centers",
-  "orderServiceAgain": "order again"
+  "orderServiceAgain": "order again",
+  "serviceAfterOrder": "These services are provided at approved service centers after booking an appointment",
+  "noServicesInside": "No services inside this section",
+  "soonWillBeAdded": "Soon services will be added to this section"
 }

@@ -116,10 +116,12 @@ function AtlobhaPartners({ sectionInfo }) {
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    height: isMobile ? "60px" : "100px",
+                    height: isMobile ? "52px" : "100px",
                     mb: isMobile ? 1 : 3,
-                    mx: isMobile ? 0 : 1,
+                    // mx: isMobile ? 0 : 1,
                     cursor: "pointer",
+                    width: "85%",
+                    margin: isMobile ? "8px auto 8px auto" : 1,
                   }}
                   onClick={() => {
                     if (!isDragging) {

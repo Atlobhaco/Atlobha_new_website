@@ -44,7 +44,7 @@ function TitlePrice({ prod }) {
             borderRadius: "10px",
             color: "white",
             fontSize: isMobile ? "12px" : "18px",
-            width: "fit-content",
+            minWidth: "fit-content",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",

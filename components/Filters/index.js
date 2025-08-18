@@ -46,10 +46,12 @@ function Filters({
   /*               clear condtional attribute with change category              */
   /* -------------------------------------------------------------------------- */
   useEffect(() => {
-    setFilters((prev) => ({
-      ...prev,
-      conditionalAttributes: {},
-    }));
+    if (filters?.category_id) {
+      setFilters((prev) => ({
+        ...prev,
+        conditionalAttributes: {},
+      }));
+    }
   }, [filters?.category_id, isMobile]);
 
   return (

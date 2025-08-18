@@ -63,7 +63,7 @@ const CheckoutSummary = forwardRef(
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
     let tamaraCheckoutUrl = "";
-console.log('userDataProfile',userDataProfile);
+
     const receipt = {};
     const header = {
       color: "#232323",
@@ -606,8 +606,8 @@ console.log('userDataProfile',userDataProfile);
           <Box sx={{ ...text, color: "#EB3C24" }}>
             {(calculateReceiptResFromMainPage?.discount ??
               receipt?.discount) === receipt?.discount
-              ? receipt?.discount
-              : calculateReceiptResFromMainPage?.discount}{" "}
+              ? receipt?.discount?.toFixed(2)
+              : calculateReceiptResFromMainPage?.discount?.toFixed(2)}{" "}
             {riyalImgRed()}
           </Box>
         </Box>
@@ -640,8 +640,10 @@ console.log('userDataProfile',userDataProfile);
             <Box sx={{ ...text, color: "#EB3C24" }}>
               {(calculateReceiptResFromMainPage?.offers_discount ??
                 receipt?.offers_discount) === receipt?.offers_discount
-                ? receipt?.offers_discount
-                : calculateReceiptResFromMainPage?.offers_discount}{" "}
+                ? receipt?.offers_discount?.toFixed(2)
+                : calculateReceiptResFromMainPage?.offers_discount?.toFixed(
+                    2
+                  )}{" "}
               {riyalImgRed()}
             </Box>
           </Box>
