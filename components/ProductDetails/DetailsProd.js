@@ -4,16 +4,17 @@ import React from "react";
 
 function DetailsProd({ prod }) {
   const { t } = useLocalization();
+  const textDescription = prod?.desc || prod?.description;
 
   const isHTML = () =>
-    /<\/?[a-z][\s\S]*>/i.test(prod?.desc) ? (
-      <div dangerouslySetInnerHTML={{ __html: prod?.desc }} />
+    /<\/?[a-z][\s\S]*>/i.test(textDescription) ? (
+      <div dangerouslySetInnerHTML={{ __html: textDescription }} />
     ) : (
-      <div>{prod?.desc}</div>
+      <div>{textDescription}</div>
     );
 
   return (
-    prod?.desc && (
+    textDescription && (
       <Box>
         <Divider
           sx={{
@@ -30,7 +31,7 @@ function DetailsProd({ prod }) {
             mb: 1,
           }}
         >
-          {t.prodDetails}
+          {prod?.desc ? t.prodDetails : t.serviceDetails}
         </Box>
         <Box
           sx={{

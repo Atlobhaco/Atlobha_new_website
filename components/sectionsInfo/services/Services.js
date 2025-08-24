@@ -183,16 +183,16 @@ function Services() {
           //   //       </div>
           //   //     );
 
-          case "static-dynamic-section":
-            return (
-              <div className="container mb-3">
-                <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-                    <StaticDynamicSections sectionInfo={item} />
-                  </div>
-                </div>
-              </div>
-            );
+          //   case "static-dynamic-section":
+          //     return (
+          //       <div className="container mb-3">
+          //         <div className="row">
+          //           <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+          //             <StaticDynamicSections sectionInfo={item} />
+          //           </div>
+          //         </div>
+          //       </div>
+          //     );
 
           case "service-categories":
             if (
@@ -200,13 +200,26 @@ function Services() {
               !item?.requires_authentication
             ) {
               return (
-                <div className="container" key={item?.id}>
-                  <div className="row">
-                    <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
-                      <CategoriesServices sectionInfo={item} />
+                <>
+                  <div className="container mb-3">
+                    <div className="row">
+                      <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                        <StaticDynamicSections
+                          sectionInfo={sections?.find(
+                            (d) => d?.type === "static-dynamic-section"
+                          )}
+                        />
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <div className="container" key={item?.id}>
+                    <div className="row">
+                      <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                        <CategoriesServices sectionInfo={item} />
+                      </div>
+                    </div>
+                  </div>
+                </>
               );
             }
             return null;

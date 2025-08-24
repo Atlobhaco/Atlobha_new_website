@@ -17,7 +17,7 @@ export default function CategoriesServices({ sectionInfo }) {
   const { isMobile } = useScreenSize();
   const router = useRouter();
   const [openStaticDynamic, setOpenStaticDynamic] = useState(false);
-
+  const [selectedCatIdForRouting, setSelectedCatIdForRouting] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
     (s) => s.selectedAddress
   );
@@ -70,11 +70,15 @@ export default function CategoriesServices({ sectionInfo }) {
             handleClick={() => {
               const hasPortable = cat?.portable_services_count > 0;
               const hasStore = cat?.store_services_count > 0;
-              hasPortable && hasStore
-                ? setOpenStaticDynamic(true)
-                : router.push(
-                    `/serviceCategory/${cat?.id}?secTitle=${router.query?.secTitle}&secType=services&portableService=${hasPortable}`
-                  );
+
+              if (hasPortable && hasStore) {
+                setOpenStaticDynamic(true);
+                setSelectedCatIdForRouting(cat?.id);
+              } else {
+                router.push(
+                  `/serviceCategory/${cat?.id}?secTitle=${router.query?.secTitle}&secType=services&portableService=${hasPortable}`
+                );
+              }
             }}
           />
         ))}
@@ -85,8 +89,12 @@ export default function CategoriesServices({ sectionInfo }) {
         open={openStaticDynamic}
         setOpen={setOpenStaticDynamic}
         hasCloseIcon
+        actionsWhenClose={() => setSelectedCatIdForRouting(false)}
         content={
-          <StaticDynamicSections sectionInfo={{ title: t.serviceCategories }} />
+          <StaticDynamicSections
+            sectionInfo={{ title: t.serviceCategories }}
+            selectedId={selectedCatIdForRouting}
+          />
         }
       />
     </Box>

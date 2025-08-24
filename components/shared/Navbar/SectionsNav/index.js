@@ -15,7 +15,7 @@ function SectionsNav({
   showLineBelow = false,
 }) {
   const router = useRouter();
-  const { secTitle } = router.query;
+  const { secTitle, secType } = router.query;
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
 
@@ -24,11 +24,13 @@ function SectionsNav({
   const activeDependOnUrl = (section) => {
     return section?.title === secTitle ||
       section?.title_en === secTitle ||
-	  section?.title_ar === secTitle ||
+      section?.title_ar === secTitle ||
+      section?.type === secType ||
       (section?.type === SPAREPARTS &&
         router.pathname?.includes("/spareParts")) ||
       (section?.type === MARKETPLACE && router.pathname === "/") ||
       (!secTitle &&
+        !secType &&
         section?.type === MARKETPLACE &&
         !router.pathname?.includes("/spareParts"))
       ? style["active"]

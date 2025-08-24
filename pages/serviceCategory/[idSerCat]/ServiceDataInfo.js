@@ -1,13 +1,15 @@
-import { riyalImgRed } from "@/constants/helpers";
+import { riyalImgRed, servicePrice } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 function ServiceDataInfo({ product }) {
   const { isMobile } = useScreenSize();
   const router = useRouter();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   return (
     <Box
@@ -24,6 +26,21 @@ function ServiceDataInfo({ product }) {
           boxShadow: "inset 0px 0px 1px 1px rgba(18, 26, 43, 0.05)",
           borderRadius: "8px",
         },
+      }}
+      onClick={() => {
+        router.push({
+          pathname: `/service/${product?.id}`,
+          query: {
+            portableService: router?.query?.portableService || "no-info",
+            secType: router?.query?.secType,
+            name: product?.name,
+            desc: product?.description,
+            tags: product?.combined_tags?.[0]?.name_ar,
+            category: product?.category?.name,
+            price: product?.price,
+            img: product?.thumbnail?.url,
+          },
+        });
       }}
     >
       <Box
@@ -57,6 +74,7 @@ function ServiceDataInfo({ product }) {
               margin: "auto",
               maxWidth: "100%",
               mawHeight: "100%",
+              minWidth: "50px",
             }}
           />
         </Box>
@@ -148,7 +166,11 @@ function ServiceDataInfo({ product }) {
             fontWeight: "500",
           }}
         >
-          {product?.price?.toFixed(2) || 0} {riyalImgRed()}
+          {servicePrice({
+            service: product,
+            userCar: selectedCar?.id ? selectedCar : defaultCar,
+          })}
+          {riyalImgRed()}
         </Box>
       </Box>
     </Box>

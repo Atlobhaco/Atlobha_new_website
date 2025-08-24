@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 
-function StaticDynamicSections({ sectionInfo }) {
+function StaticDynamicSections({ sectionInfo, selectedId = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const router = useRouter();
@@ -18,7 +18,7 @@ function StaticDynamicSections({ sectionInfo }) {
       subTitle: t.deliverAtDoor,
       redirect: () =>
         router.push(
-          `/serviceCategory/${"first-id"}?secTitle=${
+          `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle
           }&secType=services&portableService=true`
         ),
@@ -29,7 +29,7 @@ function StaticDynamicSections({ sectionInfo }) {
       subTitle: t.approvedCenters,
       redirect: () =>
         router.push(
-          `/serviceCategory/${"first-id"}?secTitle=${
+          `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle
           }&secType=services&portableService=false`
         ),

@@ -147,30 +147,30 @@ function ServiceCategory() {
       <MetaTags title={"serviceCategory"} content={"serviceCategory"} />
       <Box className="container">
         <Box className="row">
-          {portableService === "false" && (
-            <Box
-              className="col-12"
+          <Box
+            className="col-12"
+            sx={{
+              background: "rgba(196, 225, 253, 0.10)",
+              padding: isMobile ? "4px 8px" : "7px 20px",
+              borderRadius: "8px",
+              display: "flex",
+              fontSize: isMobile ? "12px" : "14px",
+              fontWeight: "500",
+              color: "#429DF8",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <ErrorIcon
               sx={{
-                background: "rgba(196, 225, 253, 0.10)",
-                padding: isMobile ? "4px 8px" : "7px 20px",
-                borderRadius: "8px",
-                display: "flex",
-                fontSize: isMobile ? "12px" : "14px",
-                fontWeight: "500",
                 color: "#429DF8",
-                alignItems: "center",
-                gap: "8px",
+                width: isMobile ? 15 : "auto",
               }}
-            >
-              <ErrorIcon
-                sx={{
-                  color: "#429DF8",
-                  width: isMobile ? 15 : "auto",
-                }}
-              />
-              {t.serviceAfterOrder}
-            </Box>
-          )}
+            />
+            {portableService === "false"
+              ? t.serviceAfterOrder
+              : t.servicePortbaleAfterOrder}
+          </Box>
           <Box className="col-12">
             <Ads id={idSerCat} />
           </Box>
