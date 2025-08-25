@@ -70,6 +70,18 @@ function ServiceCategory() {
       });
     },
   });
+  
+  useEffect(() => {
+    if (selectedCar?.id) {
+      setFilters({
+        brand_id: selectedCar?.brand?.id || "",
+        model_id: selectedCar?.model?.id || "",
+        year: selectedCar?.year || "",
+        has_active_offer: false,
+        category_id: idSerCat,
+      });
+    }
+  }, [selectedCar]);
 
   const productsUrl = React.useMemo(() => {
     if (!requiredParamsReady || idSerCat === "first-id" || !idSerCat)
@@ -93,7 +105,16 @@ function ServiceCategory() {
     params.set("category_id", idSerCat);
 
     return `${SERVICES}?lat=${lat}&lng=${lng}&${params.toString()}`;
-  }, [page, isMobile, filters, requiredParamsReady, idSerCat, lat, lng]);
+  }, [
+    page,
+    isMobile,
+    filters,
+    requiredParamsReady,
+    idSerCat,
+    lat,
+    lng,
+    selectedCar,
+  ]);
 
   const { isLoading: loadPRoducts, isFetching } = useCustomQuery({
     name: [
@@ -105,6 +126,7 @@ function ServiceCategory() {
       filters,
       lat,
       lng,
+      selectedCar?.id,
     ],
     url: productsUrl,
     refetchOnWindowFocus: false,

@@ -2,7 +2,7 @@ import Login from "@/components/Login";
 import DeliveryTime from "@/components/ProductDetails/DeliveryTime";
 import DetailsProd from "@/components/ProductDetails/DetailsProd";
 import AvailableTimeFotServicePortable from "@/components/ServiceDetails/AvailableTimeFotServicePortable";
-import ChooseServiceFromDetails from "@/components/ServiceDetails/ChooseServiceFromDetails";
+import RedirectToCheckoutService from "@/components/ServiceDetails/RedirectToCheckoutService";
 import ServiceCompatibleWith from "@/components/ServiceDetails/ServiceCompatibleWith";
 import ServiceImages from "@/components/ServiceDetails/ServiceImages";
 import ServiceStoreSelections from "@/components/ServiceDetails/ServiceStoreSelections";
@@ -179,7 +179,7 @@ function ServiceDetails() {
                 />
               )}
 
-              <ChooseServiceFromDetails
+              <RedirectToCheckoutService
                 prod={data}
                 setOpenLogin={setOpenLogin}
               />

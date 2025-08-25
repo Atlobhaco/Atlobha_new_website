@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 
-function ChooseServiceFromDetails({ prod, setOpenLogin }) {
+function RedirectToCheckoutService({ prod, setOpenLogin }) {
   const router = useRouter();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -137,4 +137,4 @@ function ChooseServiceFromDetails({ prod, setOpenLogin }) {
   );
 }
 
-export default ChooseServiceFromDetails;
+export default RedirectToCheckoutService;
