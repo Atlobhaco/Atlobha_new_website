@@ -16,6 +16,7 @@ import LoginFirstToShowTimes from "./LoginFirstToShowTimes";
 import { isAuth } from "@/config/hooks/isAuth";
 import WillCallLater from "./WillCallLater";
 import UserHasNoAddress from "./UserHasNoAddress";
+import NoSlotsPortableService from "./NoSlotsPortableService";
 
 function AvailableTimeFotServicePortable({
   selectedDatePortable,
@@ -98,99 +99,105 @@ function AvailableTimeFotServicePortable({
         {t.availableAppointments}
       </Box>
 
-      <Box sx={{ maxWidth: isMobile ? "100%" : "50%", mx: isMobile ? 0 : 3 }}>
-        <SharedSelectionDatePicker
-          value={selectedDatePortable}
-          handleChange={(newValue) => {
-            setSelectedPortableTime(null);
-            setSelectedDatePortable(newValue);
-          }}
-          disablePast
-        />
-      </Box>
-
-      <Box
-        sx={{
-          fontSize: isMobile ? "12px" : "20px",
-          fontWeight: 700,
-          color: "#1C1C28",
-          mb: 1,
-        }}
-      >
-        {t.chooseSuitableTime}
-      </Box>
-
-      {isFetching ? (
-        <CircularProgress
-          size={20}
-          sx={{
-            color: "#FFD400",
-            mt: 2,
-          }}
-        />
-      ) : !authed ? (
-        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
-          <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
-        </Box>
-      ) : prod?.slots_disabled ? (
-        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
-          <WillCallLater />
-        </Box>
-      ) : !userHasAddress ? (
-        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
-          <UserHasNoAddress />
-        </Box>
-      ) : !portableAreaId ? (
-        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
-          <SelectedAddressNotSupported />
-        </Box>
-      ) : (
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "10px",
-            minHeight: "100px",
-          }}
-        >
-          {AvailableSlots?.length ? (
-            AvailableSlots?.map((time) => (
-              <Box
-                onClick={() => setSelectedPortableTime(time)}
-                key={time?.id}
-                sx={{
-                  minWidth: "fit-content",
-                  border: "1px solid #F0F0F0",
-                  padding: "6px 10px",
-                  background:
-                    selectedPortableTime?.id === time?.id ? "#232323" : "#fff",
-                  borderRadius: "8px",
-                  color:
-                    selectedPortableTime?.id === time?.id ? "#FFF" : "#232323",
-                  fontWeight: 500,
-                  fontSize: "12px",
-                  cursor: "pointer",
-                  height: "fit-content",
-                  "&:hover": {
-                    opacity: selectedPortableTime?.id !== time?.id && "0.8",
-                  },
-                }}
-              >
-                {moment(time?.start).format("h:mm")} -{" "}
-                {moment(time?.end).format("h:mm")}
-              </Box>
-            ))
+      {!prod?.slots_disabled ? (
+        <>
+          <Box
+            sx={{ maxWidth: isMobile ? "100%" : "50%", mx: isMobile ? 0 : 3 }}
+          >
+            <SharedSelectionDatePicker
+              value={selectedDatePortable}
+              handleChange={(newValue) => {
+                setSelectedPortableTime(null);
+                setSelectedDatePortable(newValue);
+              }}
+              disablePast
+            />
+          </Box>
+          <Box
+            sx={{
+              fontSize: isMobile ? "12px" : "20px",
+              fontWeight: 700,
+              color: "#1C1C28",
+              mb: 1,
+            }}
+          >
+            {t.chooseSuitableTime}
+          </Box>
+          {isFetching ? (
+            <CircularProgress
+              size={20}
+              sx={{
+                color: "#FFD400",
+                mt: 2,
+              }}
+            />
+          ) : !authed ? (
+            <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+              <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
+            </Box>
+          ) : prod?.slots_disabled ? (
+            <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+              <WillCallLater />
+            </Box>
+          ) : !userHasAddress ? (
+            <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+              <UserHasNoAddress />
+            </Box>
+          ) : !portableAreaId ? (
+            <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+              <SelectedAddressNotSupported />
+            </Box>
           ) : (
             <Box
               sx={{
-                fontSize: "20px",
-                mt: 3,
-                color: "#000",
+                display: AvailableSlots?.length ? "flex" : "block",
+                flexWrap: "wrap",
+                gap: "10px",
+                minHeight: "100px",
               }}
             >
-              {t.noResultsFound}
+              {AvailableSlots?.length ? (
+                AvailableSlots?.map((time) => (
+                  <Box
+                    onClick={() => setSelectedPortableTime(time)}
+                    key={time?.id}
+                    sx={{
+                      minWidth: "fit-content",
+                      border: "1px solid #F0F0F0",
+                      padding: "6px 10px",
+                      background:
+                        selectedPortableTime?.id === time?.id
+                          ? "#232323"
+                          : "#fff",
+                      borderRadius: "8px",
+                      color:
+                        selectedPortableTime?.id === time?.id
+                          ? "#FFF"
+                          : "#232323",
+                      fontWeight: 500,
+                      fontSize: "12px",
+                      cursor: "pointer",
+                      height: "fit-content",
+                      "&:hover": {
+                        opacity: selectedPortableTime?.id !== time?.id && "0.8",
+                      },
+                    }}
+                  >
+                    {moment(time?.start).format("h:mm")} -{" "}
+                    {moment(time?.end).format("h:mm")}
+                  </Box>
+                ))
+              ) : (
+                <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+                  <NoSlotsPortableService />
+                </Box>
+              )}
             </Box>
           )}
+        </>
+      ) : (
+        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+          <WillCallLater />
         </Box>
       )}
     </>
