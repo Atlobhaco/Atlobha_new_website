@@ -78,8 +78,8 @@ function ServiceCompatibleWith({ prod }) {
               fontSize: "16px",
             }}
           >
-            {prod?.model?.year_from ? `${prod?.model?.year_from} - ` : null}{" "}
-            {prod?.model?.year_to}
+            {prod?.model?.year_from > 0 ? `${prod?.model?.year_from} - ` : null}{" "}
+            {prod?.model?.year_to > 0 ? prod?.model?.year_to : null}
           </Box>
         </Box>
       </Box>
@@ -91,7 +91,12 @@ function ServiceCompatibleWith({ prod }) {
         title={t.compatibleWith}
         hasCloseIcon={true}
         content={
-          <Box>
+          <Box
+            sx={{
+              maxHeight: "500px",
+              overflow: "auto",
+            }}
+          >
             {prod?.service_models?.map((singleModel, index) => (
               <Box>
                 <Box
