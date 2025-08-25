@@ -15,6 +15,7 @@ import AddNewAddressFromNavbar from "./AddNewAddressFromNavbar";
 import ShowAddressesFromNavbarMobile from "./ShowAddressesFromNavbarMobile";
 import { getAddressFromLatLng } from "@/constants/helpers";
 import { useRouter } from "next/router";
+import { SERVICES } from "@/constants/enums";
 
 function DropDownAddress() {
   const childRef = useRef(null);
@@ -43,7 +44,6 @@ function DropDownAddress() {
   };
 
   const handleOpen = (event) => {
-    console.log("event.isTrusted", event.isTrusted);
     if (!isAuth()) {
       setOpenLogin(true);
     } else {
