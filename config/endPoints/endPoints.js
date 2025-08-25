@@ -63,3 +63,6 @@ export const AUTOCOMPLETE = "/autocomplete";
 export const HISTORY = "/history";
 export const POPULAR_TERMS = "/popular-terms";
 export const SERVICES = "/services";
+export const SERVICE_CENTERS = "/service-centers";
+export const AREAS = "/areas";
+export const SLOTS = "/slots";

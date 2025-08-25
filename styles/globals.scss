@@ -666,7 +666,6 @@ textarea {
   max-height: 255px;
   margin: auto !important;
   div {
-    background: red;
     height: inherit !important;
     width: 100% !important;
     max-height: 250px !important;
@@ -725,19 +724,17 @@ textarea {
 }
 
 // style for shared selection date picker
-#general-dialog {
-  .MuiDateCalendar-root {
-    width: 100%;
-    margin: 0px;
-    .MuiDayCalendar-header {
-      justify-content: space-between;
-    }
-    .MuiDayCalendar-weekContainer {
-      justify-content: space-between;
-    }
-    .MuiYearCalendar-root {
-      width: 100%;
-    }
+.MuiDateCalendar-root {
+  width: 100% !important;
+  margin: 0px !important;
+  .MuiDayCalendar-header {
+    justify-content: space-between !important;
   }
-  //   background-color: red;
+  .MuiDayCalendar-weekContainer {
+    justify-content: space-between !important;
+  }
+  .MuiYearCalendar-root {
+    width: 100% !important;
+  }
 }
+//   background-color: red;

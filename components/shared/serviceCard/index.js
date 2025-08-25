@@ -5,13 +5,32 @@ import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
 import { Tooltip } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
+import { useRouter } from "next/router";
 
 function ServiceCard({ service = {} }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
+  const router = useRouter();
 
   return (
-    <div className={`${style["service"]}`}>
+    <div
+      className={`${style["service"]}`}
+      onClick={() => {
+        router.push({
+          pathname: `/service/${service?.id}`,
+          query: {
+            portableService: router?.query?.portableService || "no-info",
+            secType: router?.query?.secType,
+            name: service?.name,
+            desc: service?.description,
+            tags: service?.combined_tags?.[0]?.name_ar,
+            category: service?.category?.name,
+            price: service?.price,
+            img: service?.thumbnail?.url,
+          },
+        });
+      }}
+    >
       <div className={`${style["service-img"]}`}>
         <Image
           loading="lazy"
