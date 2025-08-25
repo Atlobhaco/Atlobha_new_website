@@ -147,11 +147,11 @@ function ServiceDetails() {
                 prod={{ ...data, model: data?.service_models[0] }}
               />
 
-              <DeliveryTime
+              {/* <DeliveryTime
                 prod={data}
                 cityDelivery={cityDelivery}
                 setCityDelivery={setCityDelivery}
-              />
+              /> */}
 
               <DetailsProd prod={data} />
 

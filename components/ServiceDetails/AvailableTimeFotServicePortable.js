@@ -15,6 +15,7 @@ import SelectedAddressNotSupported from "./SelectedAddressNotSupported";
 import LoginFirstToShowTimes from "./LoginFirstToShowTimes";
 import { isAuth } from "@/config/hooks/isAuth";
 import WillCallLater from "./WillCallLater";
+import UserHasNoAddress from "./UserHasNoAddress";
 
 function AvailableTimeFotServicePortable({
   selectedDatePortable,
@@ -41,11 +42,17 @@ function AvailableTimeFotServicePortable({
     setAuthed(isAuth());
   }, []);
 
+  useEffect(() => {
+    setAuthed(isAuth());
+  }, [isAuth()]);
+
   const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
   const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
   const portableAreaId =
     selectedAddress?.portable_service_area?.id ||
     defaultAddress?.portable_service_area?.id;
+  const userHasAddress =
+    selectedAddress?.id || defaultAddress?.id !== "currentLocation";
 
   const { data: AvailableSlots, isFetching } = useCustomQuery({
     name: [
@@ -128,6 +135,10 @@ function AvailableTimeFotServicePortable({
       ) : prod?.slots_disabled ? (
         <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
           <WillCallLater />
+        </Box>
+      ) : !userHasAddress ? (
+        <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
+          <UserHasNoAddress />
         </Box>
       ) : !portableAreaId ? (
         <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
