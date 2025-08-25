@@ -179,7 +179,10 @@ function ServiceDetails() {
                 />
               )}
 
-              <ChooseServiceFromDetails prod={data} />
+              <ChooseServiceFromDetails
+                prod={data}
+                setOpenLogin={setOpenLogin}
+              />
             </Box>
           </Box>
         </Box>

@@ -47,9 +47,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { mobileScreen } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+
+  //   appear at service section page with no checkout
   const appearAt =
     router?.pathname?.includes("spare") ||
     router?.pathname?.includes("sections") ||
+    (router?.pathname?.includes("service") &&
+      !router?.pathname?.includes("checkout")) ||
     router?.pathname === "/";
 
   const hideComponent = hideNavbarInUrls.some((url) =>

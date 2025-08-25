@@ -1,5 +1,6 @@
 import HeaderSection from "@/components/HeaderSection";
 import useLocalization from "@/config/hooks/useLocalization";
+import { SERVICES } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
@@ -20,7 +21,7 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle
-          }&secType=services&portableService=true`
+          }&secType=${SERVICES}&portableService=true`
         ),
     },
     {
@@ -31,7 +32,7 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle
-          }&secType=services&portableService=false`
+          }&secType=${SERVICES}&portableService=false`
         ),
     },
   ];

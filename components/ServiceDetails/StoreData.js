@@ -58,7 +58,7 @@ function StoreData({
             ? "1px solid #FFD400"
             : "1px solid #F0F0F0",
         borderRadius: "12px",
-        minWidth: isMobile ? "fit-content" : "400px",
+        minWidth: isMobile ? "fit-content" : "440px",
         padding: "19px 9px",
         cursor: "pointer",
       }}
@@ -197,6 +197,7 @@ function StoreData({
         >
           {t.chooseTime}
         </Box>
+		
         {isAuth() ? (
           prod?.slots_disabled ? (
             <WillCallLater />

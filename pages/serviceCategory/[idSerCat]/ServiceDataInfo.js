@@ -97,6 +97,10 @@ function ServiceDataInfo({ product }) {
               fontSize: isMobile ? "10px" : "14px",
               fontWeight: "400",
               wordBreak: "break-all",
+			  overflow: "hidden",
+			  display: "-webkit-box",
+			  WebkitBoxOrient: "vertical",
+			  WebkitLineClamp: 2,
             }}
           >
             {product?.description}

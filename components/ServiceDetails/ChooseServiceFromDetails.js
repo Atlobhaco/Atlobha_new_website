@@ -6,25 +6,51 @@ import SharedBtn from "../shared/SharedBtn";
 import useLocalization from "@/config/hooks/useLocalization";
 import { useSelector } from "react-redux";
 import { isAuth } from "@/config/hooks/isAuth";
+import { useRouter } from "next/router";
 
-function ChooseServiceFromDetails({ prod }) {
-  const { isMobile } = useScreenSize();
+function ChooseServiceFromDetails({ prod, setOpenLogin }) {
+  const router = useRouter();
   const { t } = useLocalization();
+  const { isMobile } = useScreenSize();
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+  const { selectedAddress, defaultAddress } = useSelector(
+    (state) => state.selectedAddress
+  );
+  const handleCheckoutRedirection = () => {
+    if (!isAuth()) {
+      return setOpenLogin(true);
+    }
+    // maybe logicfor not supported car is missing
 
-  //   will need this logic
-  //   const triggers = [
-  // 	{
-  // 	  condition: !selectedCar?.id && !defaultCar?.id,
-  // 	  elementId: "openAddCarModalProgramatically",
-  // 	},
-  // 	{
-  // 	  condition:
-  // 		(!selectedAddress?.id && defaultAddress?.id === "currentLocation") ||
-  // 		!defaultAddress?.id,
-  // 	  elementId: "openAddAddressModalProgramatically",
-  // 	},
-  //   ];
+    const triggers = [
+      {
+        condition: !selectedCar?.id && !defaultCar?.id,
+        elementId: "openAddCarModalProgramatically",
+      },
+      {
+        condition:
+          (!selectedAddress?.id && defaultAddress?.id === "currentLocation") ||
+          !defaultAddress?.id,
+        elementId: "openAddAddressModalProgramatically",
+      },
+    ];
+    for (const { condition, elementId } of triggers) {
+      if (condition) {
+        console.log("elementId", elementId);
+        document?.getElementById(elementId)?.click();
+        return;
+      }
+    }
+
+    router.push({
+      pathname: "/service/checkout",
+      query: {
+        secType: router?.query?.secType,
+        serviceDetails: encodeURIComponent(JSON.stringify(prod)), // encode it
+      },
+    });
+  };
+
   return (
     <Box
       className={`${
@@ -104,7 +130,7 @@ function ChooseServiceFromDetails({ prod }) {
         <SharedBtn
           text="chooseService"
           className="big-main-btn"
-          disabled={!isAuth()}
+          onClick={() => handleCheckoutRedirection()}
         />
       </Box>
     </Box>

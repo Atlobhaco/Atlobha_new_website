@@ -1,16 +1,18 @@
 import React from "react";
 import style from "./serviceCard.module.scss";
 import Image from "next/image";
-import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
+import { riyalImgOrange, riyalImgRed, servicePrice } from "@/constants/helpers";
 import { Tooltip } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function ServiceCard({ service = {} }) {
-  const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
   const router = useRouter();
+  const { t } = useLocalization();
+  const { isMobile } = useScreenSize();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   return (
     <div
@@ -25,7 +27,10 @@ function ServiceCard({ service = {} }) {
             desc: service?.description,
             tags: service?.combined_tags?.[0]?.name_ar,
             category: service?.category?.name,
-            price: service?.price,
+            price: servicePrice({
+              service: service,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            }),
             img: service?.thumbnail?.url,
           },
         });
@@ -78,7 +83,10 @@ function ServiceCard({ service = {} }) {
               ]
             }`}
           >
-            {service?.price?.toFixed(2) || 0}{" "}
+            {servicePrice({
+              service: service,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            })}{" "}
             {!!service?.price_before_discount
               ? riyalImgRed()
               : riyalImgOrange()}

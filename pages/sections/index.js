@@ -2,6 +2,7 @@ import ComingSoon from "@/components/comingSoon";
 import Services from "@/components/sectionsInfo/services/Services";
 import MetaTags from "@/components/shared/MetaTags";
 import useLocalization from "@/config/hooks/useLocalization";
+import { SERVICES } from "@/constants/enums";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -33,7 +34,7 @@ function Sections() {
 
   const renderMetaTagsDependOnSecType = () => {
     const selectedSection = sectionsSeo?.find((d) => d?.type === secType)?.seo;
-    if (!selectedSection || !["test-drive", "services"].includes(secType))
+    if (!selectedSection || !["test-drive", SERVICES].includes(secType))
       return null;
 
     const title =
@@ -63,7 +64,7 @@ function Sections() {
 
   const renderSectionForsecType = () => {
     switch (secType) {
-      case "services":
+      case SERVICES:
         return <Services />;
       default:
         return <ComingSoon />;

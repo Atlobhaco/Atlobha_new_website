@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import DialogCentered from "@/components/DialogCentered";
 import StaticDynamicSections from "./StaticDynamicSections";
 import useLocalization from "@/config/hooks/useLocalization";
+import { SERVICES } from "@/constants/enums";
 
 export default function CategoriesServices({ sectionInfo }) {
   const { t } = useLocalization();
@@ -32,7 +33,7 @@ export default function CategoriesServices({ sectionInfo }) {
     (!sectionInfo?.requires_authentication || (isAuth() && lat));
 
   const { data: categories } = useCustomQuery({
-    name: [`services-categories=${sectionInfo?.id}`],
+    name: [`services-categories=${sectionInfo?.id}`,modelId],
     url: `${SERVICE_CATEGORIES}?lat=${lat}&lng=${lng}&model_id=${modelId}`,
     refetchOnWindowFocus: false,
     enabled: authEnabled,
@@ -76,7 +77,7 @@ export default function CategoriesServices({ sectionInfo }) {
                 setSelectedCatIdForRouting(cat?.id);
               } else {
                 router.push(
-                  `/serviceCategory/${cat?.id}?secTitle=${router.query?.secTitle}&secType=services&portableService=${hasPortable}`
+                  `/serviceCategory/${cat?.id}?secTitle=${router.query?.secTitle}&secType=${SERVICES}&portableService=${hasPortable}`
                 );
               }
             }}

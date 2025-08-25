@@ -1,5 +1,6 @@
 export const MARKETPLACE = "marketplace";
 export const SPAREPARTS = "spare-parts";
+export const SERVICES = "services";
 
 export const UrlsSpecific = ["userProfile"];
 
