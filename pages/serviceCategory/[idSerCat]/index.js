@@ -103,6 +103,8 @@ function ServiceCategory() {
       defaultCar?.year,
       isMobile,
       filters,
+      lat,
+      lng,
     ],
     url: productsUrl,
     refetchOnWindowFocus: false,
