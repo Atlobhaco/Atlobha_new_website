@@ -35,7 +35,7 @@ function NoSlotsPortableService() {
           width: isMobile ? 15 : "auto",
         }}
       />
-      لا يوجد مواعيد متاحه في التاريخ المحدد{" "}
+      {t.noTimeForDate}
     </Box>
   );
 }

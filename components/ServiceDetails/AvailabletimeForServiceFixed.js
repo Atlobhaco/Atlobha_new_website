@@ -17,6 +17,7 @@ import { Box, CircularProgress } from "@mui/material";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { isAuth } from "@/config/hooks/isAuth";
+import NoSlotsPortableService from "./NoSlotsPortableService";
 
 function AvailabletimeForServiceFixed({
   selectNewDate,
@@ -106,13 +107,13 @@ function AvailabletimeForServiceFixed({
             ) : slots?.length === 0 ? (
               <Box
                 sx={{
-                  mx: "auto",
+                  mx: isMobile ? 0 : "auto",
                   color: "#000",
                   fontWeight: "500",
-                  mt: 2,
+                  mt: isMobile ? 1 : 2,
                 }}
               >
-                {t.noResultsFound}
+                <NoSlotsPortableService />
               </Box>
             ) : (
               slots?.map((time) => (

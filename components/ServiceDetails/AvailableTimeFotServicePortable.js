@@ -72,12 +72,11 @@ function AvailableTimeFotServicePortable({
     refetchOnWindowFocus: false,
     enabled: !!(lng && idService && portableAreaId && isAuth()),
     select: (res) => res?.data?.data,
-    onError: () => toast.error(t.someThingWrong),
     onSuccess: () => setAuthed(true),
   });
 
   if (!mounted) return null; // ⛔️ Prevent SSR mismatch
-  console.log("AvailableSlots", AvailableSlots);
+
   return (
     <>
       <Divider

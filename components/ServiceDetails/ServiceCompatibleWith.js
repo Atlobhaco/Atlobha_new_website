@@ -29,7 +29,11 @@ function ServiceCompatibleWith({ prod }) {
             cursor: "pointer",
             width: "fit-content",
           }}
-          onClick={() => setOpenAllModels(true)}
+          onClick={() => {
+            if (prod?.service_models?.length) {
+              setOpenAllModels(true);
+            }
+          }}
         >
           {t.compatibleWith}
         </Box>
@@ -41,12 +45,16 @@ function ServiceCompatibleWith({ prod }) {
             width: "fit-content",
             cursor: "pointer",
           }}
-          onClick={() => setOpenAllModels(true)}
+          onClick={() => {
+            if (prod?.service_models?.length) {
+              setOpenAllModels(true);
+            }
+          }}
         >
           <Image
             src={
               prod?.model?.model?.vehicle_brand?.image ||
-              "/imgs/no-prod-img.svg"
+              "/icons/car-yellow-logo.svg"
             }
             alt="model"
             width={80}
@@ -55,8 +63,8 @@ function ServiceCompatibleWith({ prod }) {
             style={{
               width: "auto",
               height: "auto",
-              maxWidth: isMobile ? "60px" : "80px",
-              maxHeight: isMobile ? "60px" : "80px",
+              maxWidth: isMobile ? "40px" : "80px",
+              maxHeight: isMobile ? "auto" : "80px",
               borderRadius: "10px",
             }}
             loading="lazy"
@@ -68,7 +76,7 @@ function ServiceCompatibleWith({ prod }) {
               textAlign: "center",
             }}
           >
-            {prod?.model?.model?.vehicle_brand?.name}
+            {prod?.model?.model?.vehicle_brand?.name || t.allCars}
             <br />
             {prod?.model?.model?.name}
           </Box>
@@ -118,8 +126,8 @@ function ServiceCompatibleWith({ prod }) {
                     style={{
                       width: "auto",
                       height: "auto",
-                      maxWidth: "80px",
-                      maxHeight: "80px",
+                      maxWidth: isMobile ? "40px" : "80px",
+                      maxHeight: isMobile ? "auto" : "80px",
                       borderRadius: "10px",
                     }}
                     loading="lazy"

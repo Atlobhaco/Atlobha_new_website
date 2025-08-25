@@ -507,5 +507,8 @@
   "callLater": "Wiil contacted to schedule appointment to provide service within 2 days.",
   "loginFirstForTime": "Log in first to know the timings",
   "addAddressFirst": "Add your address here to can find out the available times",
-  "selectedAddressNoSupport": "Selected address is not supported. click to change the address"
+  "selectedAddressNoSupport": "Selected address is not supported. click to change the address",
+  "addAddressForTimes": "Add your address here so we can know the available appointments",
+  "noTimeForDate": "There are no appointments available on the specified date",
+  "allCars": "All cars"
 }

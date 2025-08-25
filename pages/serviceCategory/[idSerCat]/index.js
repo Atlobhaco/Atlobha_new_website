@@ -93,7 +93,7 @@ function ServiceCategory() {
     params.set("category_id", idSerCat);
 
     return `${SERVICES}?lat=${lat}&lng=${lng}&${params.toString()}`;
-  }, [page, isMobile, filters, requiredParamsReady, idSerCat]);
+  }, [page, isMobile, filters, requiredParamsReady, idSerCat, lat, lng]);
 
   const { isLoading: loadPRoducts, isFetching } = useCustomQuery({
     name: [

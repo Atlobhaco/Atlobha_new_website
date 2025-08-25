@@ -15,7 +15,7 @@ function ServiceDataInfo({ product }) {
     <Box
       sx={{
         display: "flex",
-        gap: "10px",
+        gap: "20px",
         padding: isMobile ? "8px 18px" : "16px 20px",
         background: "#FFF",
         justifyContent: "space-between",
@@ -74,7 +74,8 @@ function ServiceDataInfo({ product }) {
               margin: "auto",
               maxWidth: "100%",
               mawHeight: "100%",
-              minWidth: "50px",
+              minWidth: isMobile ? "50px" : "90px",
+              minHeight: isMobile ? "auto" : "50px",
             }}
           />
         </Box>

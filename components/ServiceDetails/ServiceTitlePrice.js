@@ -147,7 +147,10 @@ function ServiceTitlePrice({ prod, tabValue }) {
               >
                 {Math.round(
                   ((prod?.price_before_discount?.toFixed(2) -
-                    prod?.price?.toFixed(2)) /
+                    servicePrice({
+                      service: prod,
+                      userCar: selectedCar?.id ? selectedCar : defaultCar,
+                    })) /
                     prod?.price_before_discount?.toFixed(2)) *
                     100
                 )}
@@ -167,7 +170,10 @@ function ServiceTitlePrice({ prod, tabValue }) {
           {t.PriceIncludeVat}
         </Box>
       </Box>
-      {+prod?.price?.toFixed(2) > 100 && (
+      {+servicePrice({
+        service: prod,
+        userCar: selectedCar?.id ? selectedCar : defaultCar,
+      }) > 100 && (
         <Box
           sx={{
             display: "flex",
@@ -187,7 +193,13 @@ function ServiceTitlePrice({ prod, tabValue }) {
                 fontWeight: "500",
               }}
             >
-              {(prod?.price?.toFixed(2) / 4)?.toFixed(2)} {riyalImgBlack()}
+              {(
+                servicePrice({
+                  service: prod,
+                  userCar: selectedCar?.id ? selectedCar : defaultCar,
+                }) / 4
+              )?.toFixed(2)}{" "}
+              {riyalImgBlack()}
             </Box>{" "}
             {t.otherInstallment}
           </Box>

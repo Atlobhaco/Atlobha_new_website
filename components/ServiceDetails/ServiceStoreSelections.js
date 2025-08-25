@@ -102,7 +102,7 @@ function ServiceStoreSelections({
         <Box
           sx={{
             fontWeight: "bold",
-            mx: 5,
+            mx: 1,
           }}
         >
           {!isFetching && t.noResultsFound}

@@ -43,10 +43,15 @@ function DropDownAddress() {
   };
 
   const handleOpen = (event) => {
+    console.log("event.isTrusted", event.isTrusted);
     if (!isAuth()) {
       setOpenLogin(true);
     } else {
-      if (isMobile || router?.pathname?.includes("service")) {
+      // open it in middle of screen when clicked programatically
+      if (
+        isMobile ||
+        (router?.pathname?.includes("service") && !event.isTrusted)
+      ) {
         setSelectCarPopUpModal(true);
         event.preventDefault(); // Prevents the default action (e.g., navigation for links)
         event.stopPropagation();

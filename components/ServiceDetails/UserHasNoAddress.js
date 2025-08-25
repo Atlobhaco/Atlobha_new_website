@@ -35,7 +35,7 @@ function UserHasNoAddress() {
           width: isMobile ? 15 : "auto",
         }}
       />
-      اضف عنوانك من هنا حتي نتمكن من معرفه المواعيد المتاحه
+      {t.addAddressForTimes}
     </Box>
   );
 }
