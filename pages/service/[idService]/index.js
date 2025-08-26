@@ -35,6 +35,7 @@ function ServiceDetails() {
   const [selectedStoreTime, setSelectedStoreTime] = useState(false);
   const [selectedDatePortable, setSelectedDatePortable] = useState(dayjs());
   const [selectedPortableTime, setSelectedPortableTime] = useState(false);
+  const [allStores, setAllStores] = useState(false);
 
   const handleChange = (event, newValue) => {
     setSelectedStoreTime(false);
@@ -165,6 +166,7 @@ function ServiceDetails() {
                   selectedStoreTime={selectedStoreTime}
                   setSelectedStoreTime={setSelectedStoreTime}
                   setOpenLogin={setOpenLogin}
+                  setAllStores={setAllStores}
                 />
               )}
 
@@ -182,6 +184,9 @@ function ServiceDetails() {
               <RedirectToCheckoutService
                 prod={data}
                 setOpenLogin={setOpenLogin}
+                tabValue={tabValue}
+                selectedPortableTime={selectedPortableTime}
+                allStores={allStores}
               />
             </Box>
           </Box>

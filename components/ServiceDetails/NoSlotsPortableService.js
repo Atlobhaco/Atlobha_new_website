@@ -10,11 +10,6 @@ function NoSlotsPortableService() {
 
   return (
     <Box
-      onClick={(e) => {
-        e?.preventDefault();
-        e?.stopPropagation();
-        document?.getElementById("openAddAddressModalProgramatically")?.click();
-      }}
       className="col-12"
       sx={{
         background: "rgba(224, 110, 14, 0.10)",
@@ -26,7 +21,6 @@ function NoSlotsPortableService() {
         color: "#E06E0E",
         alignItems: "center",
         gap: "8px",
-        cursor: "pointer",
       }}
     >
       <ErrorIcon

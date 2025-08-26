@@ -18,6 +18,7 @@ function ServiceStoreSelections({
   selectedStoreTime,
   setSelectedStoreTime,
   setOpenLogin,
+  setAllStores,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -38,6 +39,7 @@ function ServiceStoreSelections({
       toast.error(t.someThingWrong);
     },
     onSuccess: (res) => {
+      setAllStores(res);
       if (res?.length) {
         setSelectedStore(res[0]);
       }
@@ -83,7 +85,7 @@ function ServiceStoreSelections({
               setSelectedStore={setSelectedStore}
               prod={prod}
               setOpenAppointments={setOpenAppointments}
-			  setOpenLogin={setOpenLogin}
+              setOpenLogin={setOpenLogin}
             />
           ))}
           {/* choose another time logic for store */}

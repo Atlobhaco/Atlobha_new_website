@@ -8,7 +8,13 @@ import { useSelector } from "react-redux";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 
-function RedirectToCheckoutService({ prod, setOpenLogin }) {
+function RedirectToCheckoutService({
+  prod,
+  setOpenLogin,
+  selectedPortableTime,
+  tabValue,
+  allStores,
+}) {
   const router = useRouter();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -131,6 +137,10 @@ function RedirectToCheckoutService({ prod, setOpenLogin }) {
           text="chooseService"
           className="big-main-btn"
           onClick={() => handleCheckoutRedirection()}
+          disabled={
+            (tabValue === "portable" && !selectedPortableTime) ||
+            !allStores?.length
+          }
         />
       </Box>
     </Box>
