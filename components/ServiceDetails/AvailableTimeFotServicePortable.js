@@ -196,7 +196,11 @@ function AvailableTimeFotServicePortable({
         </>
       ) : (
         <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
-          <WillCallLater />
+          {!authed ? (
+            <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
+          ) : (
+            <WillCallLater />
+          )}
         </Box>
       )}
     </>
