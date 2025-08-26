@@ -198,6 +198,10 @@ function AvailableTimeFotServicePortable({
         <Box sx={{ maxWidth: isMobile ? "100%" : "50%" }}>
           {!authed ? (
             <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
+          ) : !userHasAddress ? (
+            <UserHasNoAddress />
+          ) : !portableAreaId ? (
+            <SelectedAddressNotSupported />
           ) : (
             <WillCallLater />
           )}
