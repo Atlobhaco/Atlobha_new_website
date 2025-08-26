@@ -14,6 +14,10 @@ function RedirectToCheckoutService({
   selectedPortableTime,
   tabValue,
   allStores,
+  selectedStoreTime,
+  selectedDatePortable,
+  userConfirmStoreDate,
+  selectedStore,
 }) {
   const router = useRouter();
   const { t } = useLocalization();
@@ -22,6 +26,7 @@ function RedirectToCheckoutService({
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+
   const handleCheckoutRedirection = () => {
     if (!isAuth()) {
       return setOpenLogin(true);
@@ -42,17 +47,26 @@ function RedirectToCheckoutService({
     ];
     for (const { condition, elementId } of triggers) {
       if (condition) {
-        console.log("elementId", elementId);
         document?.getElementById(elementId)?.click();
         return;
       }
     }
-
     router.push({
       pathname: "/service/checkout",
       query: {
         secType: router?.query?.secType,
         serviceDetails: encodeURIComponent(JSON.stringify(prod)), // encode it
+        serviceTimeFixedOrPortable: selectedPortableTime
+          ? encodeURIComponent(JSON.stringify(selectedPortableTime))
+          : encodeURIComponent(JSON.stringify(selectedStoreTime)),
+        serviceDatePortable: encodeURIComponent(
+          JSON.stringify(selectedDatePortable)
+        ),
+        serviceDatefixed: encodeURIComponent(
+          JSON.stringify(userConfirmStoreDate)
+        ),
+        type: tabValue,
+        selectedStore: encodeURIComponent(JSON.stringify(selectedStore)),
       },
     });
   };

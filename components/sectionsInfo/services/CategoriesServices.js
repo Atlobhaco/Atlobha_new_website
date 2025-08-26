@@ -23,7 +23,11 @@ export default function CategoriesServices({ sectionInfo }) {
     (s) => s.selectedAddress
   );
   const { selectedCar, defaultCar } = useSelector((s) => s.selectedCar);
-
+  const { allGroups } = useSelector((state) => state.appGroups);
+  const sectiontitle = allGroups
+    ?.map((data) => data?.sections)
+    ?.flat()
+    ?.find((sec) => sec?.type === SERVICES)?.title;
   const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
   const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
   const modelId = selectedCar?.model?.id || defaultCar?.model?.id || "";
@@ -33,7 +37,7 @@ export default function CategoriesServices({ sectionInfo }) {
     (!sectionInfo?.requires_authentication || (isAuth() && lat));
 
   const { data: categories } = useCustomQuery({
-    name: [`services-categories=${sectionInfo?.id}`,modelId],
+    name: [`services-categories=${sectionInfo?.id}`, modelId],
     url: `${SERVICE_CATEGORIES}?lat=${lat}&lng=${lng}&model_id=${modelId}`,
     refetchOnWindowFocus: false,
     enabled: authEnabled,
@@ -77,7 +81,9 @@ export default function CategoriesServices({ sectionInfo }) {
                 setSelectedCatIdForRouting(cat?.id);
               } else {
                 router.push(
-                  `/serviceCategory/${cat?.id}?secTitle=${router.query?.secTitle}&secType=${SERVICES}&portableService=${hasPortable}`
+                  `/serviceCategory/${cat?.id}?secTitle=${
+                    router.query?.secTitle || sectiontitle
+                  }&secType=${SERVICES}&portableService=${hasPortable}`
                 );
               }
             }}

@@ -28,6 +28,7 @@ function AvailabletimeForServiceFixed({
   selectedStoreTime,
   setSelectedStoreTime,
   prod,
+  setUserConfirmStoreDate,
 }) {
   const {
     query: { idService },
@@ -58,6 +59,7 @@ function AvailabletimeForServiceFixed({
 
   return (
     <DialogCentered
+      actionsWhenClose={() => setUserConfirmStoreDate(selectNewDate)}
       title={t.availableAppointments}
       open={openAppointments}
       setOpen={setOpenAppointments}
@@ -118,7 +120,11 @@ function AvailabletimeForServiceFixed({
             ) : (
               slots?.map((time) => (
                 <Box
-                  onClick={() => setSelectedStoreTime(time)}
+                  onClick={() => {
+                    setOpenAppointments(false);
+                    setSelectedStoreTime(time);
+                    setUserConfirmStoreDate(selectNewDate);
+                  }}
                   key={time?.id}
                   sx={{
                     minWidth: "fit-content",

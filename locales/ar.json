@@ -508,5 +508,8 @@
   "selectedAddressNoSupport": "العنوان المحدد غير مدعوم حاليا, لتغير العنوان اضغط هنا",
   "addAddressForTimes": "اضف عنوانك من هنا حتي نتمكن من معرفه المواعيد المتاحه",
   "noTimeForDate": "لا يوجد مواعيد متاحه في التاريخ المحدد",
-  "allCars": "كل السيارات"
+  "allCars": "كل السيارات",
+  "centerLocation": "عنوان مركز الخدمة",
+  "serviceLocation": "عنوان الخدمة",
+  "serviceTime": "موعد الخدمة"
 }

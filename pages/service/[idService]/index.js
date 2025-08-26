@@ -36,8 +36,10 @@ function ServiceDetails() {
   const [selectedDatePortable, setSelectedDatePortable] = useState(dayjs());
   const [selectedPortableTime, setSelectedPortableTime] = useState(false);
   const [allStores, setAllStores] = useState(false);
+  const [userConfirmStoreDate, setUserConfirmStoreDate] = useState(false);
 
   const handleChange = (event, newValue) => {
+    setSelectedPortableTime(false);
     setSelectedStoreTime(false);
     setTabValue(newValue);
   };
@@ -160,13 +162,19 @@ function ServiceDetails() {
                 <ServiceStoreSelections
                   prod={data}
                   selectNewDate={selectNewDate}
-                  handleDateChange={(newValue) => setSelectNewDate(newValue)}
+                  handleDateChange={(newValue) => {
+                    setSelectedStoreTime(false);
+                    setSelectNewDate(newValue);
+                  }}
                   selectedStore={selectedStore}
                   setSelectedStore={setSelectedStore}
                   selectedStoreTime={selectedStoreTime}
                   setSelectedStoreTime={setSelectedStoreTime}
                   setOpenLogin={setOpenLogin}
                   setAllStores={setAllStores}
+                  setUserConfirmStoreDate={setUserConfirmStoreDate}
+                  userConfirmStoreDate={userConfirmStoreDate}
+                  setSelectNewDate={setSelectNewDate}
                 />
               )}
 
@@ -186,7 +194,11 @@ function ServiceDetails() {
                 setOpenLogin={setOpenLogin}
                 tabValue={tabValue}
                 selectedPortableTime={selectedPortableTime}
+                selectedStoreTime={selectedStoreTime}
                 allStores={allStores}
+                selectedDatePortable={selectedDatePortable}
+                userConfirmStoreDate={userConfirmStoreDate}
+                selectedStore={selectedStore}
               />
             </Box>
           </Box>

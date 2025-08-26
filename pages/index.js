@@ -26,6 +26,7 @@ import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
 import PartsImages from "@/components/spareParts/PartsImages";
 import { isAuth } from "@/config/hooks/isAuth";
 import Head from "next/head";
+import CategoriesServices from "@/components/sectionsInfo/services/CategoriesServices";
 
 export default function Home() {
   // useBranch user for deep  links
@@ -213,6 +214,26 @@ export default function Home() {
                 </div>
               </div>
             );
+
+          case "service-categories":
+            if (
+              (item?.requires_authentication && isAuth()) ||
+              !item?.requires_authentication
+            ) {
+              return (
+                <>
+                  <div className="container" key={item?.id}>
+                    <div className="row">
+                      <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                        <CategoriesServices sectionInfo={item} />
+                      </div>
+                    </div>
+                  </div>
+                </>
+              );
+            }
+            return null;
+
           case "manufacturer":
             return (
               <div className={`${isMobile ? "" : "container"}`} key={item?.id}>

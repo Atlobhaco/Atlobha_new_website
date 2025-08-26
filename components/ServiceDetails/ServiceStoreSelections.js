@@ -19,6 +19,9 @@ function ServiceStoreSelections({
   setSelectedStoreTime,
   setOpenLogin,
   setAllStores,
+  setUserConfirmStoreDate,
+  userConfirmStoreDate,
+  setSelectNewDate
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -86,6 +89,12 @@ function ServiceStoreSelections({
               prod={prod}
               setOpenAppointments={setOpenAppointments}
               setOpenLogin={setOpenLogin}
+              selectedStoreTime={selectedStoreTime}
+              selectNewDate={selectNewDate}
+              userConfirmStoreDate={userConfirmStoreDate}
+              setSelectedStoreTime={setSelectedStoreTime}
+              setUserConfirmStoreDate={setUserConfirmStoreDate}
+			  setSelectNewDate={setSelectNewDate}
             />
           ))}
           {/* choose another time logic for store */}
@@ -98,6 +107,7 @@ function ServiceStoreSelections({
             selectedStoreTime={selectedStoreTime}
             setSelectedStoreTime={setSelectedStoreTime}
             prod={prod}
+            setUserConfirmStoreDate={setUserConfirmStoreDate}
           />
         </Box>
       ) : (

@@ -727,6 +727,8 @@ textarea {
 .MuiDateCalendar-root {
   width: 100% !important;
   margin: 0px !important;
+  position: relative;
+
   .MuiDayCalendar-header {
     justify-content: space-between !important;
   }
@@ -736,5 +738,20 @@ textarea {
   .MuiYearCalendar-root {
     width: 100% !important;
   }
+  .MuiPickersCalendarHeader-labelContainer {
+    min-width: fit-content;
+    position: absolute;
+    margin: auto;
+    left: 40%;
+    @include mobile-screen-style {
+      left: 30%;
+    }
+  }
+  .MuiPickersCalendarHeader-root {
+    padding: 0px !important;
+  }
+  .MuiPickersArrowSwitcher-root {
+    width: 100% !important;
+    justify-content: space-between;
+  }
 }
-//   background-color: red;

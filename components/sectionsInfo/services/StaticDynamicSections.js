@@ -6,11 +6,17 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
 function StaticDynamicSections({ sectionInfo, selectedId = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const router = useRouter();
+  const { allGroups } = useSelector((state) => state.appGroups);
+  const sectiontitle = allGroups
+    ?.map((data) => data?.sections)
+    ?.flat()
+    ?.find((sec) => sec?.type === SERVICES)?.title;
 
   const sectionsData = [
     {
@@ -20,7 +26,7 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
       redirect: () =>
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
-            router?.query?.secTitle
+            router?.query?.secTitle || sectiontitle
           }&secType=${SERVICES}&portableService=true`
         ),
     },
@@ -31,7 +37,7 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
       redirect: () =>
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
-            router?.query?.secTitle
+            router?.query?.secTitle || sectiontitle
           }&secType=${SERVICES}&portableService=false`
         ),
     },

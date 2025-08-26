@@ -510,5 +510,8 @@
   "selectedAddressNoSupport": "Selected address is not supported. click to change the address",
   "addAddressForTimes": "Add your address here so we can know the available appointments",
   "noTimeForDate": "There are no appointments available on the specified date",
-  "allCars": "All cars"
+  "allCars": "All cars",
+  "centerLocation": "Service center location",
+  "serviceLocation": "service location",
+  "serviceTime": "Service time"
 }

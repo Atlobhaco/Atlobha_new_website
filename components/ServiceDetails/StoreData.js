@@ -10,6 +10,14 @@ import LoginFirstToShowTimes from "./LoginFirstToShowTimes";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import UserHasNoAddress from "./UserHasNoAddress";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import isToday from "dayjs/plugin/isToday";
+import "dayjs/locale/ar"; // Arabic
+import "dayjs/locale/en"; // English
+
+dayjs.extend(localizedFormat);
+dayjs.extend(isToday);
 
 function StoreData({
   store,
@@ -18,12 +26,21 @@ function StoreData({
   prod,
   setOpenAppointments,
   setOpenLogin,
+  selectedStoreTime,
+  userConfirmStoreDate,
+  setSelectedStoreTime,
+  setUserConfirmStoreDate,
+  setSelectNewDate,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
   const { selectedAddress, defaultAddress } = useSelector(
     (s) => s.selectedAddress
   );
+  //   useEffect(() => {
+  //     dayjs.locale(locale); // Set Day.js locale (e.g., "en" or "ar")
+  //   }, [locale]);
+
   const userHasAddress =
     selectedAddress?.id ||
     defaultAddress?.id !== "currentLocation" ||
@@ -46,7 +63,6 @@ function StoreData({
 
   const formatSlotDate = (dateStr) => {
     const date = moment(dateStr);
-
     if (date.isSame(moment(), "day")) {
       // same day as today
       return `${t.todayAtTime} ${date.format("h:mm A")}`;
@@ -56,6 +72,21 @@ function StoreData({
     return locale === "ar"
       ? date.format("YYYY/MM/DD, hh:mm A")
       : date.format("DD/MM/YYYY, hh:mm A");
+  };
+
+  const toArabicDigits = (str) => str.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[d]);
+
+  const formatSelectedUserDate = (dateStr) => {
+    if (!dateStr) return "";
+
+    const date = dayjs(dateStr).locale(locale);
+
+    if (date.isToday()) {
+      return `${t.todayAtTime}`;
+    }
+
+    const formatted = date.format("YYYY/MM/DD,");
+    return locale === "ar" ? toArabicDigits(formatted) : formatted;
   };
 
   return (
@@ -71,7 +102,12 @@ function StoreData({
         padding: "19px 9px",
         cursor: "pointer",
       }}
-      onClick={() => setSelectedStore(store)}
+      onClick={() => {
+        setSelectedStore(store);
+        setSelectedStoreTime(null);
+        setUserConfirmStoreDate(false);
+        setSelectNewDate(dayjs());
+      }}
     >
       <Box
         sx={{
@@ -227,22 +263,29 @@ function StoreData({
                 sx={{
                   background: "#232323",
                   borderRadius: "8px",
-                  padding: isMobile ? "6px 10px" : "7px 12px",
+                  padding: isMobile ? "6px 4px" : "7px 12px",
                   color: "white",
                   fontSize: isMobile ? "12px" : "14px",
                   fontWeight: "500",
                   minWidth: "fit-content",
                 }}
               >
-                {formatSlotDate(store?.next_available_slot?.start)}
+                {selectedStoreTime
+                  ? `${formatSelectedUserDate(userConfirmStoreDate)} ${moment(
+                      selectedStoreTime?.start
+                    ).format("h:mm")} -
+                  ${moment(selectedStoreTime?.end).format("h:mm")}`
+                  : formatSlotDate(store?.next_available_slot?.start)}
               </Box>
               <Box
                 sx={{
                   minWidth: "fit-content",
                   cursor: "pointer",
-                  fontSize: isMobile ? "12px" : "14px",
+                  fontSize: isMobile ? "11px" : "14px",
                 }}
-                onClick={() => {
+                onClick={(e) => {
+                  e?.stopPropagation();
+                  e?.preventDefault();
                   setSelectedStore(store);
                   setOpenAppointments(true);
                 }}
