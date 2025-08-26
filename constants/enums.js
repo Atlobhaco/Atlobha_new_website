@@ -1,6 +1,8 @@
 export const MARKETPLACE = "marketplace";
 export const SPAREPARTS = "spare-parts";
 export const SERVICES = "services";
+export const PORTABLE = "PORTABLE";
+export const FIXED = "fixed";
 
 export const UrlsSpecific = ["userProfile"];
 
@@ -9,7 +11,7 @@ export const ORDERSENUM = {
   spareParts: "SparePartsOrder",
   estimation: "EstimationRequest",
   maintenance: "MaintenanceReservation",
-  portable: "PortableMaintenanceReservation",
+  PORTABLE: "PortableMaintenanceReservation",
   //   midEast: "MideastOrder",
   //   majdou: "MajdouieMaintenanceReservation",
 };

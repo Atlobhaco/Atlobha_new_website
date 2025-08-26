@@ -6,6 +6,7 @@ import Image from "next/image";
 import React from "react";
 import ErrorIcon from "@mui/icons-material/Error";
 import { useSelector } from "react-redux";
+import { FIXED } from "@/constants/enums";
 
 function ServiceTitlePrice({ prod, tabValue }) {
   const { t } = useLocalization();
@@ -82,9 +83,7 @@ function ServiceTitlePrice({ prod, tabValue }) {
             width: isMobile ? 15 : "auto",
           }}
         />
-        {tabValue === "fixed"
-          ? t.serviceAfterOrder
-          : t.servicePortbaleAfterOrder}
+        {tabValue === FIXED ? t.serviceAfterOrder : t.servicePortbaleAfterOrder}
       </Box>
 
       <Divider

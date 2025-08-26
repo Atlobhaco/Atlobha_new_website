@@ -12,6 +12,7 @@ import { SERVICES } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
+import { FIXED, PORTABLE } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Tab, Tabs } from "@mui/material";
 import dayjs from "dayjs";
@@ -29,7 +30,7 @@ function ServiceDetails() {
 
   const { isMobile } = useScreenSize();
   const [cityDelivery, setCityDelivery] = useState(14);
-  const [tabValue, setTabValue] = React.useState("portable");
+  const [tabValue, setTabValue] = React.useState(PORTABLE);
   const [selectNewDate, setSelectNewDate] = useState(dayjs());
   const [selectedStore, setSelectedStore] = useState(false);
   const [selectedStoreTime, setSelectedStoreTime] = useState(false);
@@ -62,23 +63,23 @@ function ServiceDetails() {
   useEffect(() => {
     if (data?.id && portableService) {
       if (portableService === "false") {
-        return setTabValue("fixed");
+        return setTabValue(FIXED);
       }
       if (portableService === "true") {
-        return setTabValue("portable");
+        return setTabValue(PORTABLE);
       }
       if (portableService === "no-info") {
         if (
           data?.qualifies_as_portable_service &&
           data?.qualifies_as_store_service
         ) {
-          return setTabValue("fixed");
+          return setTabValue(FIXED);
         }
         if (data?.qualifies_as_portable_service) {
-          return setTabValue("portable");
+          return setTabValue(PORTABLE);
         }
         if (data?.qualifies_as_store_service) {
-          return setTabValue("fixed");
+          return setTabValue(FIXED);
         }
       }
     }
@@ -120,7 +121,7 @@ function ServiceDetails() {
                     >
                       <Tab
                         label={t.insideCenter}
-                        value="fixed"
+                        value={FIXED}
                         sx={{
                           color: "black", // ✅ Default text color
                           fontSize: "12px",
@@ -131,7 +132,7 @@ function ServiceDetails() {
                       />
                       <Tab
                         label={t.inYourPlace}
-                        value="portable"
+                        value={PORTABLE}
                         sx={{
                           color: "black",
                           fontSize: "12px",
@@ -158,7 +159,7 @@ function ServiceDetails() {
 
               <DetailsProd prod={data} />
 
-              {tabValue === "fixed" && (
+              {tabValue === FIXED && (
                 <ServiceStoreSelections
                   prod={data}
                   selectNewDate={selectNewDate}
@@ -178,7 +179,7 @@ function ServiceDetails() {
                 />
               )}
 
-              {tabValue === "portable" && (
+              {tabValue === PORTABLE && (
                 <AvailableTimeFotServicePortable
                   prod={data}
                   selectedDatePortable={selectedDatePortable}

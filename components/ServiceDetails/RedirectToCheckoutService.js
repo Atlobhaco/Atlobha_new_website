@@ -7,6 +7,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { useSelector } from "react-redux";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
+import { FIXED, PORTABLE } from "@/constants/enums";
 
 function RedirectToCheckoutService({
   prod,
@@ -152,8 +153,8 @@ function RedirectToCheckoutService({
           className="big-main-btn"
           onClick={() => handleCheckoutRedirection()}
           disabled={
-            (tabValue === "portable" && !selectedPortableTime) ||
-            !allStores?.length
+            (tabValue === PORTABLE && !selectedPortableTime) ||
+            (tabValue === FIXED && !allStores?.length)
           }
         />
       </Box>
