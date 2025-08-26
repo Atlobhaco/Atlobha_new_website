@@ -79,7 +79,7 @@ function Layout({ children }) {
           />
         }
       />
-      {!mobileScreen && <ScrollToTop />}
+      {/* {!mobileScreen && <ScrollToTop />} */}
     </div>
   );
 }

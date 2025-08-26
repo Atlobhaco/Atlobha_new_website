@@ -8,6 +8,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useLocalization from "@/config/hooks/useLocalization";
 import LoginFirstToShowTimes from "./LoginFirstToShowTimes";
 import moment from "moment";
+import { useSelector } from "react-redux";
+import UserHasNoAddress from "./UserHasNoAddress";
 
 function StoreData({
   store,
@@ -19,6 +21,13 @@ function StoreData({
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
+  const { selectedAddress, defaultAddress } = useSelector(
+    (s) => s.selectedAddress
+  );
+  const userHasAddress =
+    selectedAddress?.id ||
+    defaultAddress?.id !== "currentLocation" ||
+    !defaultAddress?.id;
 
   const buttonStyle = {
     background: "#FFD400",
@@ -197,10 +206,14 @@ function StoreData({
         >
           {t.chooseTime}
         </Box>
-		
+
         {isAuth() ? (
           prod?.slots_disabled ? (
-            <WillCallLater />
+            !userHasAddress ? (
+              <UserHasNoAddress />
+            ) : (
+              <WillCallLater />
+            )
           ) : (
             <Box
               sx={{

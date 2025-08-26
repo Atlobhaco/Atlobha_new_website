@@ -53,7 +53,9 @@ function AvailableTimeFotServicePortable({
     selectedAddress?.portable_service_area?.id ||
     defaultAddress?.portable_service_area?.id;
   const userHasAddress =
-    selectedAddress?.id || defaultAddress?.id !== "currentLocation";
+    selectedAddress?.id ||
+    defaultAddress?.id !== "currentLocation" ||
+    !defaultAddress?.id;
 
   const { data: AvailableSlots, isFetching } = useCustomQuery({
     name: [
