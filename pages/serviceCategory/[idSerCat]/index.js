@@ -70,7 +70,7 @@ function ServiceCategory() {
       });
     },
   });
-  
+
   useEffect(() => {
     if (selectedCar?.id) {
       setFilters({
@@ -260,7 +260,7 @@ function ServiceCategory() {
                 <>
                   {prodInfo?.data?.map((prod, index) => (
                     <Box className="col-12 mb-3 px-0" key={prod?.id}>
-                      <ServiceDataInfo product={prod} />
+                      <ServiceDataInfo product={prod} key={prod?.id} />
 
                       {index !== prodInfo?.data?.length - 1 && (
                         <Divider

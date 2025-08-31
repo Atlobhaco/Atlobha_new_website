@@ -207,8 +207,12 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       )?.background_color || marketPlaceColor;
     //   marketPlaceColor default bg color for any page no section
     //   the correct one to detect the old path not marketPlaceColor
-    if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
-      return router?.pathname?.includes("/spareParts")
+    if (
+      (router?.pathname?.includes("/spareParts") && !router?.query?.secType) ||
+      router?.pathname === "/"
+    ) {
+      return router?.pathname?.includes("/spareParts") &&
+        !router?.query?.secType
         ? sparePartColor || "#FFF5EF"
         : marketPlaceColor || "#FFF5EF";
     } else {

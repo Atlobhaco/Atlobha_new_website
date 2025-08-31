@@ -511,5 +511,8 @@
   "allCars": "كل السيارات",
   "centerLocation": "عنوان مركز الخدمة",
   "serviceLocation": "عنوان الخدمة",
-  "serviceTime": "موعد الخدمة"
+  "serviceTime": "موعد الخدمة",
+  "changeCar": "تغيير السيارة",
+  "carAvailabilityHint": "الخدمة غير متوفره لسيارتك الحالية برجاء مراجعه السيارات المتوافقة مع الخدمة و تغير السيارة الحالية",
+  "servviceAvailable": "توفر الخدمة"
 }

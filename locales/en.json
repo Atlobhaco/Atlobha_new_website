@@ -513,5 +513,8 @@
   "allCars": "All cars",
   "centerLocation": "Service center location",
   "serviceLocation": "service location",
-  "serviceTime": "Service time"
+  "serviceTime": "Service time",
+  "changeCar": "Change car",
+  "carAvailabilityHint": "The service is not available for your current car. Please check the cars that are compatible with the service and change the current car",
+  "servviceAvailable": "Service availabile"
 }

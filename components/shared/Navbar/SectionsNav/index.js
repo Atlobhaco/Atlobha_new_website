@@ -27,12 +27,14 @@ function SectionsNav({
       section?.title_ar === secTitle ||
       section?.type === secType ||
       (section?.type === SPAREPARTS &&
-        router.pathname?.includes("/spareParts")) ||
+        router.pathname?.includes("/spareParts") &&
+        !secType) ||
       (section?.type === MARKETPLACE && router.pathname === "/") ||
       (!secTitle &&
         !secType &&
         section?.type === MARKETPLACE &&
-        !router.pathname?.includes("/spareParts"))
+        !router.pathname?.includes("/spareParts") &&
+        !secType)
       ? style["active"]
       : "";
   };

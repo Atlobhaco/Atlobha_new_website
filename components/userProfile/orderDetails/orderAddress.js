@@ -33,6 +33,9 @@ function OrderAddress({
   orderDetails = {},
   callSingleOrder = () => {},
   handleChangeAddress = false,
+  customtitle = false,
+  customDialogTitle = false,
+  hideArrow = false,
 }) {
   const childRef = useRef(null);
   const router = useRouter();
@@ -113,7 +116,7 @@ function OrderAddress({
     >
       <div
         className="d-flex align-items-center"
-        onClick={() => setOpenChangeAddress(true)}
+        onClick={() => !hideArrow && setOpenChangeAddress(true)}
         style={{
           cursor: "pointer",
         }}
@@ -130,7 +133,7 @@ function OrderAddress({
         </div>
         <div className={`${style["deliverySec_address"]}`}>
           <Box className={`${style["deliverySec_address-holder"]}`}>
-            {t.deliveryAddress}
+            {customtitle || t.deliveryAddress}
           </Box>
           <div className={`${style["deliverySec_address-location"]}`}>
             {orderDetails?.address?.address || ""}{" "}
@@ -143,23 +146,26 @@ function OrderAddress({
         type !== ORDERSENUM?.marketplace && (
           <Box
             sx={{ p: isMobile ? 0 : 3, cursor: "pointer" }}
-            onClick={() => setOpenChangeAddress(true)}
+            onClick={() => !hideArrow && setOpenChangeAddress(true)}
           >
-            <Image
-              loading="lazy"
-              src="/icons/arrow-left-sm.svg"
-              width={isMobile ? 9 : 20}
-              height={15}
-              alt="arrow"
-              style={{
-                transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
-              }}
-            />
+            {!hideArrow && (
+              <Image
+                loading="lazy"
+                src="/icons/arrow-left-sm.svg"
+                width={isMobile ? 9 : 20}
+                height={15}
+                alt="arrow"
+                style={{
+                  transform:
+                    locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
+                }}
+              />
+            )}
           </Box>
         )}
       {/* change the address for the order from here */}
       <DialogCentered
-        title={t.changeAddress}
+        title={customDialogTitle || t.changeAddress}
         subtitle={false}
         open={openchangeAddress}
         setOpen={setOpenChangeAddress}

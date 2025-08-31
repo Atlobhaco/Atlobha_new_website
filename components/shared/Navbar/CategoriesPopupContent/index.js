@@ -18,7 +18,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import { setSectionsSeo } from "@/redux/reducers/homeSectionsReducer";
 
 const active = {
-  border: "1px solid #F9DD4B",
+//   border: "1px solid #F9DD4B",
 };
 
 const coloredBox = {

@@ -50,7 +50,7 @@ function DropDownAddress() {
       // open it in middle of screen when clicked programatically
       if (
         isMobile ||
-        (router?.pathname?.includes(SERVICES) && !event.isTrusted)
+        (router?.pathname?.includes("service") && !event.isTrusted)
       ) {
         setSelectCarPopUpModal(true);
         event.preventDefault(); // Prevents the default action (e.g., navigation for links)
