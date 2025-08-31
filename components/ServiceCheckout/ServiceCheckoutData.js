@@ -3,7 +3,7 @@ import OrderAddress from "../userProfile/orderDetails/orderAddress";
 import useLocalization from "@/config/hooks/useLocalization";
 import SelectedCarDetails from "./SelectedCarDetails";
 import Image from "next/image";
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import moment from "moment";
 import { FIXED } from "@/constants/enums";
@@ -22,7 +22,7 @@ function ServiceCheckoutData({
   promoCodeId,
   setPromoCodeId,
 }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
 
   const returnServiceTime = () => {
@@ -31,13 +31,21 @@ function ServiceCheckoutData({
     }
     const startFrom = checkoutServiceDetails?.serviceTimeFixedOrPortable?.start;
     const endAt = checkoutServiceDetails?.serviceTimeFixedOrPortable?.end;
+    const dateStart = moment(
+      checkoutServiceDetails?.serviceTimeFixedOrPortable?.start
+    );
+    const today = moment();
 
     return `${
-      startFrom === endAt
+      dateStart.isSame(today, "day")
+        ? `${t.todayAtTime} ${dateStart.format("H:mm")}`
+        : startFrom === endAt
         ? `${moment(startFrom).format("h:mm")}`
         : `${moment(startFrom).format("h:mm")} - ${moment(endAt).format(
             "h:mm"
-          )}`
+          )} (${dateStart.format(
+            locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
+          )})`
     }`;
   };
 
@@ -56,7 +64,18 @@ function ServiceCheckoutData({
         }
       : selectAddress;
   };
-
+  const renderDivider = () => {
+    return (
+      <Divider
+        sx={{
+          background: "#EAECF0",
+          my: 1,
+          height: "3px",
+          borderBottomWidth: "0px",
+        }}
+      />
+    );
+  };
   return (
     <>
       {!carAvailable && <ServiceAvailabilityWithCar />}
@@ -70,6 +89,8 @@ function ServiceCheckoutData({
         customtitle={returnAddresstitleDependType()}
         hideArrow={true}
       />
+      {renderDivider()}
+
       {/* time for service */}
       <Box
         sx={{
@@ -112,8 +133,12 @@ function ServiceCheckoutData({
           </Box>
         </Box>
       </Box>
+      {renderDivider()}
+
       {/* car for service */}
       <SelectedCarDetails userCar={userCar} />
+
+      {renderDivider()}
 
       <AddAvailablePayMethods
         orderDetails={{
@@ -121,11 +146,13 @@ function ServiceCheckoutData({
           status: "new",
         }}
       />
+      {renderDivider()}
 
       <PromoCodeMarket
         promoCodeId={promoCodeId}
         setPromoCodeId={setPromoCodeId}
       />
+      <Divider sx={{ background: "#F6F6F6", mb: 2, height: "5px" }} />
 
       <AtlobhaPlusHint alwaysHorizontalDesgin={true} />
     </>
