@@ -514,5 +514,6 @@
   "serviceTime": "موعد الخدمة",
   "changeCar": "تغيير السيارة",
   "carAvailabilityHint": "الخدمة غير متوفره لسيارتك الحالية برجاء مراجعه السيارات المتوافقة مع الخدمة و تغير السيارة الحالية",
-  "servviceAvailable": "توفر الخدمة"
+  "servviceAvailable": "توفر الخدمة",
+  "selectedServices": "الخدمات المختارة"
 }

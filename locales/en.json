@@ -516,5 +516,6 @@
   "serviceTime": "Service time",
   "changeCar": "Change car",
   "carAvailabilityHint": "The service is not available for your current car. Please check the cars that are compatible with the service and change the current car",
-  "servviceAvailable": "Service availabile"
+  "servviceAvailable": "Service availabile",
+  "selectedServices": "Selected service"
 }

@@ -104,7 +104,7 @@ function ServiceDataInfo({ product, key }) {
               WebkitLineClamp: 2,
             }}
           >
-            {product?.description}
+            {product?.description || product?.desc}
           </Box>
 
           <Box
