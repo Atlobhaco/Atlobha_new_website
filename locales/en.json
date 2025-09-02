@@ -166,6 +166,8 @@
   "marketplace": "Marketplace",
   "spareParts": "Spare parts",
   "estimation": "Estimation order",
+  "maintenance": "fixed service",
+  "portable": "portable service",
   "new": "new",
   "cancelled": "cancelled",
   "shipping": "shipping",
@@ -212,15 +214,16 @@
     "incomplete": "incomplete",
     "returned": "returned",
     "priced": "priced",
-    "pricing-unavailable": "not available"
+    "pricing-unavailable": "not available",
+    "completed": "completed"
   },
   "noResultsFound": "No results found",
   "order": {
     "MarketplaceOrder": "Marketplace",
     "SparePartsOrder": "Spare parts Pricing",
     "EstimationRequest": "Taqdeer",
-    "MaintenanceReservation": "Maintenance",
-    "PortableMaintenanceReservation": "Help on the road"
+    "MaintenanceReservation": "Fixed service",
+    "PortableMaintenanceReservation": "Portable service"
   },
   "[idOrder]": "Orders details",
   "orderedAt": "Ordered at",
@@ -339,6 +342,7 @@
   "propertyRight": "Intellectual Property Rights",
   "propertyForAtlobha": "All intellectual property rights for the app and its content are owned by “Atlobha.” No copying, sharing, or reproduction of content is allowed except for personal use.",
   "orderUnderReview": "The order is under review",
+  "completedSuccess": "Order completed",
   "waitForPricing": "Awaiting pricing.",
   "outForDelivery": "Out for delivery at ",
   "deliveredOn": "Delivered on ",

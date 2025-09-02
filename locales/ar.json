@@ -165,6 +165,8 @@
   "marketplace": "المتجر",
   "spareParts": "قطع غيار",
   "estimation": "طلب تقدير",
+  "maintenance": "خدمة ثابتة",
+  "portable": "خدمة متنقلة",
   "new": "جديد",
   "cancelled": "ملغي",
   "shipping": "جار التوصيل",
@@ -211,15 +213,16 @@
     "incomplete": "غير مكتمل",
     "returned": "إرجاع",
     "priced": "مسعر",
-    "pricing-unavailable": "غير متاح"
+    "pricing-unavailable": "غير متاح",
+    "completed": "مكتمل"
   },
   "noResultsFound": "لا يوجد نتائج",
   "order": {
     "MarketplaceOrder": "المتجر",
     "SparePartsOrder": "تسعير قطع غيار السيارات",
     "EstimationRequest": "تقدير",
-    "MaintenanceReservation": "الصيانة",
-    "PortableMaintenanceReservation": "المساعدة علي الطريق"
+    "MaintenanceReservation": "خدمة ثابتة",
+    "PortableMaintenanceReservation": "خدمة متنقلة"
   },
   "[idOrder]": "تفاصيل الطلب",
   "orderedAt": "تم الطلب في",
@@ -338,6 +341,7 @@
   "propertyRight": "الملكية الفكرية",
   "propertyForAtlobha": "جميع الحقوق محفوظة لـ ”اطلبها”. لا يجوز نسخ أو استخدام المحتوى إلا للاغراض الشخصية.",
   "orderUnderReview": "الطلب قيد المراجعة",
+  "completedSuccess": "تم الطلب بنجاح",
   "waitForPricing": "بانتظار التسعير",
   "outForDelivery": "خرج للتوصيل في ",
   "deliveredOn": "تم التوصيل في ",

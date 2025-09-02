@@ -6,7 +6,7 @@ import { SEARCH } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import { Box } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -17,6 +17,8 @@ import SearchSuggestionsMobile from "@/components/SearchPageMobile";
 import GlobalSearchNoResults from "@/components/GlobalSearchNoResults";
 import { useRouteTracker } from "@/config/providers/RouteTracker";
 import { isAuth } from "@/config/hooks/isAuth";
+import { SERVICES } from "@/constants/enums";
+import ServiceDataInfo from "./serviceCategory/[idSerCat]/ServiceDataInfo";
 
 function Search() {
   const router = useRouter();
@@ -45,14 +47,9 @@ function Search() {
 
   const { isFetching, isLoading } = useCustomQuery({
     name: ["searchFor", keyword, type, page, filters],
-    // need to hanle service details page first
-    // just remember this logic is correct
-    // url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${
-    //   type?.includes("MarketplaceProduct") ? "MarketplaceProduct" : "Service"
-    // }&${getFilterParams(filters)}`,
-    url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${type}&${getFilterParams(
-      filters
-    )}`,
+    url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${
+      type?.includes("MarketplaceProduct") ? "MarketplaceProduct" : "Service"
+    }&${getFilterParams(filters)}`,
     enabled: keyword && type ? true : false,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
@@ -189,10 +186,20 @@ function Search() {
                 <div className="container">
                   <div className="row">
                     {[...Array(12)].map((_, i) => (
-                      <div className="col-md-4 col-4">
+                      <div
+                        className={`${
+                          type === SERVICES ? "col-12" : "col-md-4 col-4"
+                        }`}
+                      >
                         <ProductCardSkeleton
                           key={i}
-                          height={isMobile ? "200px" : "440px"}
+                          height={
+                            isMobile
+                              ? "200px"
+                              : type === SERVICES
+                              ? "100px"
+                              : "440px"
+                          }
                         />
                       </div>
                     ))}
@@ -200,14 +207,31 @@ function Search() {
                 </div>
               ) : (
                 <>
-                  {allData?.data?.map((prod) => (
-                    <div
-                      className="col-md-4 col-4 mb-3 px-0 d-flex justify-content-center"
-                      key={prod?.id}
-                    >
-                      <ProductCard product={prod} />
-                    </div>
-                  ))}
+                  {type === SERVICES
+                    ? allData?.data?.map((prod, index) => (
+                        <Box className="col-12">
+                          <ServiceDataInfo product={prod} key={prod?.id} />
+
+                          {index !== allData?.data?.length - 1 && (
+                            <Divider
+                              sx={{
+                                background: "#EAECF0",
+                                my: 0,
+                                height: "5px",
+                                borderBottomWidth: "0px",
+                              }}
+                            />
+                          )}
+                        </Box>
+                      ))
+                    : allData?.data?.map((prod) => (
+                        <div
+                          className="col-md-4 col-6 mb-3 px-0 d-flex justify-content-center"
+                          key={prod?.id}
+                        >
+                          <ProductCard product={prod} />
+                        </div>
+                      ))}
                   {!allData?.data?.length && !isFetching && (
                     <Box
                       sx={{
