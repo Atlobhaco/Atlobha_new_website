@@ -69,7 +69,7 @@ function AvailableTimeFotServicePortable({
     url: `${SERVICES}/${idService}${AREAS}/${portableAreaId}${SLOTS}?from=${dayjs(
       selectedDatePortable
     ).format("YYYY-MM-DD HH:mm:ss")}&to=${dayjs(selectedDatePortable)
-      .add(1, "day")
+      .endOf("day")
       .format("YYYY-MM-DD HH:mm:ss")}`,
     refetchOnWindowFocus: false,
     enabled: !!(lng && idService && portableAreaId && isAuth()),
@@ -153,7 +153,7 @@ function AvailableTimeFotServicePortable({
               sx={{
                 display: AvailableSlots?.length ? "flex" : "block",
                 flexWrap: "wrap",
-                gap: "10px",
+                gap: isMobile ? "2px" : "10px",
                 minHeight: "100px",
               }}
             >
@@ -165,7 +165,7 @@ function AvailableTimeFotServicePortable({
                     sx={{
                       minWidth: "fit-content",
                       border: "1px solid #F0F0F0",
-                      padding: "6px 10px",
+                      padding: isMobile ? "5px 5px" : "6px 10px;",
                       background:
                         selectedPortableTime?.id === time?.id
                           ? "#232323"
@@ -184,8 +184,8 @@ function AvailableTimeFotServicePortable({
                       },
                     }}
                   >
-                    {moment(time?.start).format("h:mm")} -{" "}
-                    {moment(time?.end).format("h:mm")}
+                    {moment(time?.start).format("h:mm a")}-
+                    {moment(time?.end).format("h:mm a")}
                   </Box>
                 ))
               ) : (

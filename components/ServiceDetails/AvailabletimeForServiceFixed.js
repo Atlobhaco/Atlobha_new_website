@@ -93,7 +93,7 @@ function AvailabletimeForServiceFixed({
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "10px",
+              gap: isMobile ? "2px" : "10px",
               minHeight: "100px",
             }}
           >
@@ -129,7 +129,7 @@ function AvailabletimeForServiceFixed({
                   sx={{
                     minWidth: "fit-content",
                     border: "1px  solid #F0F0F0",
-                    padding: "6px 10px;",
+                    padding: isMobile ? "5px 5px" : "6px 10px;",
                     background:
                       selectedStoreTime?.id === time?.id ? "#232323" : "#fff",
                     borderRadius: "8px",
@@ -144,8 +144,8 @@ function AvailabletimeForServiceFixed({
                     },
                   }}
                 >
-                  {moment(time?.start).format("h:mm")} -{" "}
-                  {moment(time?.end).format("h:mm")}
+                  {moment(time?.start).format("h:mm a")}-
+                  {moment(time?.end).format("h:mm a")}
                 </Box>
               ))
             )}
