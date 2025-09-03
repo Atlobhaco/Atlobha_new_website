@@ -78,7 +78,7 @@ function Services() {
     </Box>
   ) : (
     <>
-      {sectionsSeo?.length && (
+      {!!sectionsSeo?.length && (
         <Head>
           <title>
             {locale === "en"

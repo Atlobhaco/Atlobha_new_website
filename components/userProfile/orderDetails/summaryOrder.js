@@ -15,6 +15,7 @@ import {
   generateSignatureApplePay,
   riyalImgBlack,
   riyalImgRed,
+  servicePrice,
 } from "@/constants/helpers";
 import { ORDERSENUM, STATUS, PAYMENT_METHODS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -40,6 +41,7 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
@@ -497,23 +499,33 @@ function SummaryOrder({
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.priceWithoutVat}</Box>
-        <Box sx={text}>
-          {orderDetails?.parts?.length
-            ? orderDetails?.parts
-                ?.reduce(
-                  (accumulator, current) => accumulator + current.total_price,
-                  0
-                )
-                ?.toFixed(2)
-            : orderDetails?.products
-                ?.reduce(
-                  (accumulator, current) =>
-                    accumulator + current.price * current?.quantity,
-                  0
-                )
-                ?.toFixed(2)}{" "}
-          {riyalImgBlack()}
-        </Box>
+        {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.estimation ? (
+          <Box sx={text}>
+            {servicePrice({
+              service: orderDetails?.service,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            })}
+            {riyalImgBlack()}
+          </Box>
+        ) : (
+          <Box sx={text}>
+            {orderDetails?.parts?.length
+              ? orderDetails?.parts
+                  ?.reduce(
+                    (accumulator, current) => accumulator + current.total_price,
+                    0
+                  )
+                  ?.toFixed(2)
+              : orderDetails?.products
+                  ?.reduce(
+                    (accumulator, current) =>
+                      accumulator + current.price * current?.quantity,
+                    0
+                  )
+                  ?.toFixed(2)}{" "}
+            {riyalImgBlack()}
+          </Box>
+        )}
       </Box>
       {/* discount */}
       <Box className="d-flex justify-content-between mb-2">

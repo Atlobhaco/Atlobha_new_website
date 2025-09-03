@@ -20,7 +20,11 @@ function OrderActions({
   const orderStatus = (status) => {
     switch (status) {
       case STATUS?.new:
-        if (order?.class === ORDERSENUM?.marketplace) {
+        if (
+          order?.class === ORDERSENUM?.marketplace ||
+          order?.class === ORDERSENUM?.PORTABLE ||
+          order?.class === ORDERSENUM?.maintenance
+        ) {
           return (
             <div className={`${style["new"]}`}>
               <div className={`${style["title"]}`}>{t.orderUnderReview}</div>
@@ -49,6 +53,13 @@ function OrderActions({
             </div>
           );
         }
+
+      case STATUS?.processing:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>{t.orderUnderReview}</div>
+          </div>
+        );
 
       case STATUS?.cancelled:
         return (
@@ -249,6 +260,13 @@ function OrderActions({
 						  customClass={`${style["btn-style"]}`}
 						/>
 					  </div> */}
+          </div>
+        );
+
+      case STATUS?.completed:
+        return (
+          <div className={`${style["new"]}`}>
+            <div className={`${style["title"]}`}>{t.completedSuccess}</div>
           </div>
         );
 

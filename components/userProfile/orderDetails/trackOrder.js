@@ -43,63 +43,57 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
   };
 
   const renderColorDependOnStatusProgress = (currentStep, index) => {
+    const { status } = orderDetails || {};
+    const isMarketplaceType =
+      type === ORDERSENUM?.marketplace ||
+      type === ORDERSENUM?.maintenance ||
+      type === ORDERSENUM?.PORTABLE;
+
     // for spare parts in pricing  (0 index)
-    if (
-      orderDetails?.status === STATUS?.new &&
-      ORDERSENUM?.spareParts === type
-    ) {
+    if (status === STATUS?.new && type === ORDERSENUM?.spareParts) {
       return index === 0 ? "#EE772F" : "#A1AEBE";
     }
+
     // for marketplace confirmed (first index)
     if (
-      orderDetails?.status === STATUS?.new &&
-      ORDERSENUM?.marketplace === type
+      (status === STATUS?.new || status === STATUS?.processing) &&
+      isMarketplaceType
     ) {
       return index === 1 ? "#EE772F" : "#A1AEBE";
     }
 
-    if (orderDetails?.status === STATUS?.priced) {
+    if (status === STATUS?.priced) {
       return index === 0 ? "#1FB256" : index === 1 ? "#EE772F" : "#A1AEBE";
     }
 
-    if (
-      orderDetails?.status === STATUS?.confirmed ||
-      orderDetails?.status === STATUS?.readyToShip
-    ) {
-      return index === 0 ||
-        index === 1 ||
-        (index === 2 && ORDERSENUM?.marketplace === type)
+    if (status === STATUS?.confirmed) {
+      return index === 0 || index === 1 || (index === 2 && isMarketplaceType)
         ? "#1FB256"
-        : (ORDERSENUM?.marketplace === type && index === 2) ||
-          (ORDERSENUM?.marketplace === type && index === 3)
+        : isMarketplaceType && (index === 2 || index === 3)
         ? "#EE772F"
         : "#A1AEBE";
     }
 
     // need to remove readyToShip it is wrong
-    if (orderDetails?.status === STATUS?.shipping) {
+    if (status === STATUS?.shipping) {
       return index === 0 ||
         index === 1 ||
         index === 3 ||
-        (ORDERSENUM?.marketplace === type && index === 2) ||
-        (ORDERSENUM?.marketplace === type && index === 3) ||
-        (ORDERSENUM?.spareParts === type && index === 3)
+        (isMarketplaceType && (index === 2 || index === 3)) ||
+        (type === ORDERSENUM?.spareParts && index === 3)
         ? "#1FB256"
         : index === 4
         ? "#EE772F"
         : "#A1AEBE";
     }
 
-    if (orderDetails?.status === STATUS?.delivered) {
-      return "#1FB256";
-    }
-    if (orderDetails?.status === STATUS?.returned) {
-      return "#A1AEBE"; //grey
-    }
+    if (status === STATUS?.delivered) return "#1FB256";
+    if (status === STATUS?.completed) return "#1FB256"; //green
+    if (status === STATUS?.returned) return "#A1AEBE"; //grey
     if (
-      orderDetails?.status === STATUS?.cancelled ||
-      orderDetails?.status === STATUS?.priceUnavailable ||
-      orderDetails?.status === STATUS?.incomplete
+      status === STATUS?.cancelled ||
+      status === STATUS?.priceUnavailable ||
+      status === STATUS?.incomplete
     ) {
       return index === 0 ? "#1FB256" : "#EB3C24";
     }
@@ -162,6 +156,7 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
                 <Box sx={textStyle}>{t.inPricing}</Box>
               </Box>
             )}
+
             <Box sx={parentStyle}>
               <Box
                 sx={{
@@ -172,7 +167,9 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
               <Box sx={textStyle}>{t.inCorfirmed}</Box>
             </Box>
             {/* need to handle this type for marketplace and render the color */}
-            {ORDERSENUM?.marketplace === type && (
+            {(ORDERSENUM?.marketplace === type ||
+              ORDERSENUM?.PORTABLE === type ||
+              ORDERSENUM?.maintenance === type) && (
               <Box sx={parentStyle}>
                 <Box
                   sx={{

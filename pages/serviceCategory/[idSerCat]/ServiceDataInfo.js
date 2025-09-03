@@ -61,7 +61,11 @@ function ServiceDataInfo({ product, key }) {
         >
           <Image
             loading="lazy"
-            src={product?.thumbnail?.url || "/imgs/no-prod-img.svg"}
+            src={
+              product?.thumbnail?.url ||
+              product?.image_url ||
+              "/imgs/no-prod-img.svg"
+            }
             alt="Product"
             width={200}
             height={200}

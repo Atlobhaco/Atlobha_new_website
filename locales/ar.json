@@ -214,7 +214,8 @@
     "returned": "إرجاع",
     "priced": "مسعر",
     "pricing-unavailable": "غير متاح",
-    "completed": "مكتمل"
+    "completed": "مكتمل",
+    "processing": "جاري العمل"
   },
   "noResultsFound": "لا يوجد نتائج",
   "order": {

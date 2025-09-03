@@ -77,7 +77,7 @@ export default function Home() {
     </Box>
   ) : (
     <>
-      {sectionsSeo?.length && (
+      {!!sectionsSeo?.length && (
         <Head>
           <title>
             {locale === "en"

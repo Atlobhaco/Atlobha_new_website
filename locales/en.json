@@ -215,7 +215,8 @@
     "returned": "returned",
     "priced": "priced",
     "pricing-unavailable": "not available",
-    "completed": "completed"
+    "completed": "completed",
+    "processing": "processing"
   },
   "noResultsFound": "No results found",
   "order": {

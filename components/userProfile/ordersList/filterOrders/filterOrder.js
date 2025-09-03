@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
@@ -41,6 +41,11 @@ function FilterOrder({
     fontWeight: "700",
     mb: 2,
   };
+
+  useEffect(() => {
+    setTempFilters(filters);
+  }, [filters]);
+
   return (
     <div>
       <Button

@@ -9,9 +9,9 @@ export const UrlsSpecific = ["userProfile"];
 export const ORDERSENUM = {
   marketplace: "MarketplaceOrder",
   spareParts: "SparePartsOrder",
-  estimation: "EstimationRequest",
   maintenance: "MaintenanceReservation",
   PORTABLE: "PortableMaintenanceReservation",
+  estimation: "EstimationRequest",
   //   midEast: "MideastOrder",
   //   majdou: "MajdouieMaintenanceReservation",
 };
@@ -28,6 +28,8 @@ export const STATUS = {
   returned: "returned",
   priced: "priced",
   priceUnavailable: "pricing-unavailable",
+  completed: "completed",
+  processing: "processing",
 };
 
 export const PAYMENT_METHODS = {

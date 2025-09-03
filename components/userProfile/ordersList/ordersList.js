@@ -61,6 +61,10 @@ function OrdersList({ order, callOrders }) {
         return t.spareParts;
       case ORDERSENUM?.estimation:
         return t.estimation;
+      case ORDERSENUM?.maintenance:
+        return t.maintenance;
+      case ORDERSENUM?.PORTABLE:
+        return t.portable;
       default:
         return "";
     }

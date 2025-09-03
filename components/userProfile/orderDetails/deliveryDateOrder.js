@@ -43,12 +43,14 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   }, [orderDetails]);
 
   const deliveryDate = () => {
+    const isMarketplaceType =
+      type === ORDERSENUM?.marketplace ||
+      type === ORDERSENUM?.maintenance ||
+      type === ORDERSENUM?.PORTABLE;
+
     if (!orderDetails) return null;
 
-    if (
-      orderDetails?.status === STATUS?.new &&
-      ORDERSENUM?.marketplace !== type
-    )
+    if (orderDetails?.status === STATUS?.new && !isMarketplaceType)
       return t.dateLater;
 
     const date =

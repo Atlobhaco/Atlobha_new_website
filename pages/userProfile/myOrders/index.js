@@ -12,8 +12,10 @@ import FilterOrder from "@/components/userProfile/ordersList/filterOrders/filter
 import { useSelector } from "react-redux";
 import SectionsNav from "@/components/shared/Navbar/SectionsNav";
 import { getFilterParams, orderEnumArray } from "@/constants/helpers";
+import { useRouter } from "next/router";
 
 function MyOrders() {
+  const router = useRouter();
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const { user } = useAuth();
@@ -74,6 +76,52 @@ function MyOrders() {
     });
   }, []);
 
+  // ✅ Sync state -> URL
+  useEffect(() => {
+    const query = {
+      ...filters,
+      ...classFilter,
+      //   page,
+    };
+
+    // remove empty query values
+    Object.keys(query).forEach((key) => query[key] === "" && delete query[key]);
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query,
+      },
+      undefined,
+      { shallow: true } // don't reload page, just update URL
+    );
+  }, [filters, classFilter]);
+
+  // ✅ Load URL -> state on mount
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    const {
+      created_at_from,
+      created_at_to,
+      status,
+      class: classQ,
+      //   page: pageQ,
+    } = router.query;
+
+    setFilters({
+      created_at_from: created_at_from || "",
+      created_at_to: created_at_to || "",
+      status: status || "",
+    });
+
+    setClassFilter({
+      class: classQ || "",
+    });
+
+    // setPage(Number(pageQ) || 1);
+  }, [router.isReady]);
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -130,7 +178,7 @@ function MyOrders() {
                 fontSize="14px"
                 arrayData={[
                   { id: "all", name: t.showAll },
-                  ...orderEnumArray()?.filter((d, index) => index <= 1),
+                  ...orderEnumArray()?.filter((d, index) => index <= 3),
                 ]}
                 handleClick={(data) => {
                   setPage(1);
