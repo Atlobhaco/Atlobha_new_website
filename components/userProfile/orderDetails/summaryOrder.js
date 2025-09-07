@@ -499,12 +499,9 @@ function SummaryOrder({
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.priceWithoutVat}</Box>
-        {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.estimation ? (
+        {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.maintenance ? (
           <Box sx={text}>
-            {servicePrice({
-              service: orderDetails?.service,
-              userCar: selectedCar?.id ? selectedCar : defaultCar,
-            })}
+            {receipt?.subtotal}
             {riyalImgBlack()}
           </Box>
         ) : (
@@ -540,7 +537,9 @@ function SummaryOrder({
       </Box>
       {/* delivery fees */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.deliveryFees}</Box>
+        <Box sx={text}>
+          {type === ORDERSENUM?.PORTABLE ? t.serviceFees : t.deliveryFees}
+        </Box>
         <Box sx={text}>
           {(calculateReceiptResFromMainPage?.delivery_fees ??
             receipt?.delivery_fees) === receipt?.delivery_fees

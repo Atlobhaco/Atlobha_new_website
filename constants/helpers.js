@@ -661,3 +661,11 @@ export const servicePrice = ({ service, userCar }) => {
   const vehicleClass = userCar?.model?.vehicle_class || "small";
   return price_per_class[vehicleClass] ?? price_per_class.small ?? 0;
 };
+
+/* -------------------------------------------------------------------------- */
+/*                  open location in google map external link                 */
+/* -------------------------------------------------------------------------- */
+export const openInGoogleMaps = (lat, lng) => {
+  const url = `https://www.google.com/maps?q=${lat},${lng}`;
+  window?.open(url, "_blank");
+};

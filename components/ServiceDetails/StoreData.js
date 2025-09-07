@@ -15,6 +15,7 @@ import localizedFormat from "dayjs/plugin/localizedFormat";
 import isToday from "dayjs/plugin/isToday";
 import "dayjs/locale/ar"; // Arabic
 import "dayjs/locale/en"; // English
+import { openInGoogleMaps } from "@/constants/helpers";
 
 dayjs.extend(localizedFormat);
 dayjs.extend(isToday);
@@ -54,11 +55,6 @@ function StoreData({
     display: "flex",
     gap: "2px",
     fontSize: isMobile ? "10px" : "15px",
-  };
-
-  const openInGoogleMaps = (lat, lng) => {
-    const url = `https://www.google.com/maps?q=${lat},${lng}`;
-    window.open(url, "_blank");
   };
 
   const formatSlotDate = (dateStr) => {
@@ -270,7 +266,7 @@ function StoreData({
                   minWidth: "fit-content",
                 }}
               >
-                {selectedStoreTime
+                {selectedStoreTime && selectedStore?.id === store?.id
                   ? `${formatSelectedUserDate(userConfirmStoreDate)} ${moment(
                       selectedStoreTime?.start
                     ).format("h:mm")} -

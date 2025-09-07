@@ -46,6 +46,11 @@ function FilterOrder({
     setTempFilters(filters);
   }, [filters]);
 
+  const checkIfSelectFilter = () => {
+    return (
+      filters?.created_at_from || filters?.created_at_to || filters?.status
+    );
+  };
   return (
     <div>
       <Button
@@ -57,7 +62,9 @@ function FilterOrder({
       >
         <Image
           loading="lazy"
-          src="/icons/filter.svg"
+          src={`/icons/${
+            checkIfSelectFilter() ? "colored-filter.svg" : "filter.svg"
+          }`}
           width={isMobile ? 24 : 30}
           height={isMobile ? 24 : 30}
           alt="filter"

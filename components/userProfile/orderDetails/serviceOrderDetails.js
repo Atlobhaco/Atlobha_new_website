@@ -1,17 +1,21 @@
 import useLocalization from "@/config/hooks/useLocalization";
-import { Box, CircularProgress, Divider } from "@mui/material";
+import { Box, CircularProgress, Divider, Button } from "@mui/material";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { toast } from "react-toastify";
 import OrderNumCopyWhatsapp from "./orderNumCopyWhatsapp";
 import TrackOrder from "./trackOrder";
 import RateProductsSection from "./rateProductsSection";
-import { STATUS } from "@/constants/enums";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import OrderProducts from "./orderProducts";
 import OrderAddress from "./orderAddress";
-import DeliveryDateOrder from "./deliveryDateOrder";
 import PaymentMethodOrder from "./paymentMethodOrder";
 import SummaryOrder from "./summaryOrder";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
+import moment from "moment";
+import WillCallLater from "@/components/ServiceDetails/WillCallLater";
+import Image from "next/image";
+import { openInGoogleMaps } from "@/constants/helpers";
 
 function ServiceOrderDetails({
   orderDetails = {},
@@ -32,9 +36,20 @@ function ServiceOrderDetails({
     );
   }
 
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
-  const { idOrder, type, status } = router.query;
+  const { isMobile } = useScreenSize();
+  const { type } = router.query;
+
+  const buttonStyle = {
+    background: "#FFD400",
+    padding: isMobile ? "6px 10px" : "7px 12px",
+    borderRadius: "8px",
+    color: "black",
+    display: "flex",
+    gap: "2px",
+    fontSize: isMobile ? "10px" : "15px",
+  };
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -44,28 +59,6 @@ function ServiceOrderDetails({
       (err) => {}
     );
   };
-
-  /* -------------------------------------------------------------------------- */
-  /*                     logic  for cancel order marketplace                    */
-  /* -------------------------------------------------------------------------- */
-  //   const {
-  //     data,
-  //     isFetching,
-  //     refetch: callCancelOrder,
-  //   } = useCustomQuery({
-  //     name: ["cancelMarketplacceOrder"],
-  //     url: `${DASHBOARD}${SPARE_PARTS}${ORDERS}/${orderDetails?.id}${CANCELLED}`,
-  //     refetchOnWindowFocus: false,
-  //     select: (res) => res?.data?.data,
-  //     enabled: false,
-  //     method: "post",
-  //     onSuccess: (res) => {
-  //       callSingleOrder();
-  //     },
-  //     onError: (err) => {
-  //       toast.error(err?.response?.data?.first_error || t.someThingWrong);
-  //     },
-  //   });
 
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
@@ -98,6 +91,44 @@ function ServiceOrderDetails({
 
   const returnDivider = () => <Divider sx={{ background: "#EAECF0", mb: 2 }} />;
 
+  const returnServiceTime = () => {
+    if (orderDetails?.service?.slots_disabled) {
+      return <WillCallLater />;
+    }
+    const startFrom = orderDetails?.slot?.start;
+    const endAt = orderDetails?.slot?.end;
+    const dateStart = moment(orderDetails?.slot?.start);
+    const today = moment();
+
+    return `${
+      dateStart.isSame(today, "day")
+        ? `${t.todayAtTime} ${dateStart.format("H:mm a")}`
+        : startFrom === endAt
+        ? `${moment(startFrom).format("h:mm a")}`
+        : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
+            "h:mm a"
+          )} (${dateStart.format(
+            locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
+          )})`
+    }`;
+  };
+
+  const returnAddresstitleDependType = () => {
+    if (type === ORDERSENUM?.maintenance) {
+      return t.centerLocation;
+    }
+    return t.serviceLocation;
+  };
+
+  const addressDependOnType = () => {
+    return type === ORDERSENUM?.maintenance
+      ? {
+          address: orderDetails?.service_center?.address,
+          city: orderDetails?.service_center?.store?.city,
+        }
+      : orderDetails?.address;
+  };
+
   return (
     <>
       {/* copy order num with whatsapp chat */}
@@ -124,15 +155,113 @@ function ServiceOrderDetails({
       <OrderAddress
         orderDetails={{
           ...orderDetails,
-          address: orderDetails?.address || orderDetails?.service_center,
+          address: addressDependOnType(),
         }}
         callSingleOrder={callSingleOrder}
+        customtitle={returnAddresstitleDependType()}
         hideArrow={true}
       />
+      {/* show store location and calling */}
+      {type === ORDERSENUM?.maintenance && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            gap: "5px",
+            mb: 2,
+          }}
+        >
+          <Button
+            sx={buttonStyle}
+            onClick={(e) => {
+              e?.preventDefault();
+              e?.stopPropagation();
+              openInGoogleMaps(
+                orderDetails?.service_center?.store?.latitude,
+                orderDetails?.service_center?.store?.longitude
+              );
+            }}
+          >
+            <Image
+              loading="lazy"
+              alt={"GPS-lo"}
+              src={"/icons/gps-detector.svg"}
+              width={isMobile ? 18 : 20}
+              height={isMobile ? 18 : 20}
+              style={{
+                marginBottom: "4px",
+              }}
+            />
+            {t.storeLocation}
+          </Button>
+          <Button
+            sx={buttonStyle}
+            onClick={(e) => {
+              e?.preventDefault();
+              e?.stopPropagation();
+              window.location.href = `tel:${orderDetails?.service_center?.phone}`;
+            }}
+          >
+            <Image
+              loading="lazy"
+              alt={"calling"}
+              src={"/icons/call-us.svg"}
+              width={isMobile ? 18 : 22}
+              height={isMobile ? 18 : 22}
+              style={{
+                marginBottom: "4px",
+              }}
+            />
+            {t.callStore}
+          </Button>{" "}
+        </Box>
+      )}
+
       {returnDivider()}
 
-      {/* delivery date order */}
-      <DeliveryDateOrder orderDetails={orderDetails} />
+      {/* time for service */}
+      <Box
+        sx={{
+          padding: "16px 13px",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+        }}
+      >
+        <Box>
+          <Image
+            loading="lazy"
+            src="/icons/yellow-calendar.svg"
+            width={20}
+            height={20}
+            alt="yellow-calendar"
+          />
+        </Box>
+        <Box>
+          <Box
+            sx={{
+              color: "#232323",
+              fontSize: isMobile ? "14px" : "20px",
+              fontWeight: "700",
+              lineHeight: "30px",
+              letterSpacing: "-0.4px",
+            }}
+          >
+            {t.serviceTime}
+          </Box>
+          <Box
+            sx={{
+              color: "#1FB256",
+              fontSize: isMobile ? "12px" : "18px",
+              fontWeight: "500",
+              lineHeight: "24px",
+            }}
+          >
+            {returnServiceTime()}
+          </Box>
+        </Box>
+      </Box>
+
       {returnDivider()}
 
       <PaymentMethodOrder orderDetails={orderDetails} />

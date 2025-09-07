@@ -21,7 +21,7 @@ function ServiceStoreSelections({
   setAllStores,
   setUserConfirmStoreDate,
   userConfirmStoreDate,
-  setSelectNewDate
+  setSelectNewDate,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -68,35 +68,72 @@ function ServiceStoreSelections({
           mb: 1,
         }}
       >
-        {t.chooseTestDriveLocation}
+        {isMobile && stores?.length > 1
+          ? t.nearestCenter
+          : t.chooseTestDriveLocation}
       </Box>
+
       {stores?.length ? (
         <Box
           sx={{
-            display: "flex",
+            display: isMobile ? "block" : "flex",
             gap: "15px",
             overflow: "auto  hidden",
             pb: 1,
-            mx: 2,
+            mx: isMobile ? 0 : 2,
           }}
         >
-          {stores?.map((store) => (
-            // show single store data
-            <StoreData
-              store={store}
-              selectedStore={selectedStore}
-              setSelectedStore={setSelectedStore}
-              prod={prod}
-              setOpenAppointments={setOpenAppointments}
-              setOpenLogin={setOpenLogin}
-              selectedStoreTime={selectedStoreTime}
-              selectNewDate={selectNewDate}
-              userConfirmStoreDate={userConfirmStoreDate}
-              setSelectedStoreTime={setSelectedStoreTime}
-              setUserConfirmStoreDate={setUserConfirmStoreDate}
-			  setSelectNewDate={setSelectNewDate}
-            />
-          ))}
+          {stores
+            ?.filter((d, index) => index === 0)
+            ?.map((store) => (
+              // show single store data
+              <StoreData
+                store={store}
+                selectedStore={selectedStore}
+                setSelectedStore={setSelectedStore}
+                prod={prod}
+                setOpenAppointments={setOpenAppointments}
+                setOpenLogin={setOpenLogin}
+                selectedStoreTime={selectedStoreTime}
+                selectNewDate={selectNewDate}
+                userConfirmStoreDate={userConfirmStoreDate}
+                setSelectedStoreTime={setSelectedStoreTime}
+                setUserConfirmStoreDate={setUserConfirmStoreDate}
+                setSelectNewDate={setSelectNewDate}
+              />
+            ))}
+          <Box
+            sx={{
+              color: "#1C1C28",
+              fontSize: isMobile ? "18px" : "27px",
+              fontWeight: "700",
+              mb: 1,
+              mt: 1,
+            }}
+          >
+            {isMobile && stores?.length > 1 && t.chooseTestDriveLocation}
+          </Box>
+          {stores
+            ?.filter((d, index) => index > 0)
+            ?.map((store) => (
+              // show single store data
+              <Box sx={{ mb: isMobile ? 1 : 0 }}>
+                <StoreData
+                  store={store}
+                  selectedStore={selectedStore}
+                  setSelectedStore={setSelectedStore}
+                  prod={prod}
+                  setOpenAppointments={setOpenAppointments}
+                  setOpenLogin={setOpenLogin}
+                  selectedStoreTime={selectedStoreTime}
+                  selectNewDate={selectNewDate}
+                  userConfirmStoreDate={userConfirmStoreDate}
+                  setSelectedStoreTime={setSelectedStoreTime}
+                  setUserConfirmStoreDate={setUserConfirmStoreDate}
+                  setSelectNewDate={setSelectNewDate}
+                />
+              </Box>
+            ))}
           {/* choose another time logic for store */}
           <AvailabletimeForServiceFixed
             selectNewDate={selectNewDate}

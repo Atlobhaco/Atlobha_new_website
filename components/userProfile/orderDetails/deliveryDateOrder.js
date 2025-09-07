@@ -16,11 +16,11 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const [LngLat, setLngLat] = useState();
 
   const {
-    query: { type },
+    query: { type, idOrder },
   } = useRouter();
 
   const { data: estimateRes } = useCustomQuery({
-    name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng],
+    name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng, idOrder],
     url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
     refetchOnWindowFocus: false,
     enabled: LngLat?.lat && LngLat?.lng ? true : false,
@@ -36,8 +36,12 @@ function DeliveryDateOrder({ orderDetails = {} }) {
       !orderDetails?.estimated_delivery_date
     ) {
       setLngLat({
-        lng: orderDetails?.address?.lng,
-        lat: orderDetails?.address?.lat,
+        lng:
+          orderDetails?.address?.lng ||
+          orderDetails?.service_center?.store?.longitude,
+        lat:
+          orderDetails?.address?.lat ||
+          orderDetails?.service_center?.store?.latitude,
       });
     }
   }, [orderDetails]);

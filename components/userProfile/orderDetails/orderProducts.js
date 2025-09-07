@@ -98,15 +98,19 @@ function OrderProducts({
             fontWeight: 700,
           }}
         >
-          {t.selectedProducts} (
-          {orderDetails?.parts?.length || orderDetails?.products?.length})
+          {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.maintenance
+            ? t.selectedServices
+            : t.selectedProducts}{" "}
+          ({orderDetails?.parts?.length || orderDetails?.products?.length})
         </Box>
 
         {(orderDetails?.status === STATUS?.new ||
           orderDetails?.status === STATUS?.incomplete ||
           orderDetails?.status === STATUS?.priced) &&
           (!editMode ? (
-            type !== ORDERSENUM?.marketplace && (
+            type !== ORDERSENUM?.marketplace &&
+            type !== ORDERSENUM?.PORTABLE &&
+            type !== ORDERSENUM?.maintenance && (
               <SharedBtn
                 compBeforeText={
                   (isFetching || orderDetailsFetching) && (

@@ -38,11 +38,11 @@ function ServiceCheckoutData({
 
     return `${
       dateStart.isSame(today, "day")
-        ? `${t.todayAtTime} ${dateStart.format("H:mm")}`
+        ? `${t.todayAtTime} ${dateStart.format("H:mm a")}`
         : startFrom === endAt
-        ? `${moment(startFrom).format("h:mm")}`
-        : `${moment(startFrom).format("h:mm")} - ${moment(endAt).format(
-            "h:mm"
+        ? `${moment(startFrom).format("h:mm a")}`
+        : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
+            "h:mm a"
           )} (${dateStart.format(
             locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
           )})`

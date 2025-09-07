@@ -79,7 +79,7 @@ function ServiceDataInfo({ product, key }) {
               margin: "auto",
               maxWidth: "100%",
               mawHeight: "100%",
-              minWidth: isMobile ? "50px" : "90px",
+              minWidth: isMobile ? "50px" : "auto",
               minHeight: isMobile ? "auto" : "50px",
             }}
           />
