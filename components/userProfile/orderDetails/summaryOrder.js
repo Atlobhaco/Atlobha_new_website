@@ -538,7 +538,7 @@ function SummaryOrder({
       {/* delivery fees */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>
-          {type === ORDERSENUM?.PORTABLE ? t.serviceFees : t.deliveryFees}
+          {type === ORDERSENUM?.PORTABLE ? t.deliveryFees : t.serviceFees}
         </Box>
         <Box sx={text}>
           {(calculateReceiptResFromMainPage?.delivery_fees ??

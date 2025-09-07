@@ -606,8 +606,8 @@ const ServiceCheckoutSummary = forwardRef(
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>
             {checkoutServiceDetails?.type === PORTABLE
-              ? t.serviceFees
-              : t.deliveryFees}
+              ? t.deliveryFees
+              : t.serviceFees}
           </Box>
           <Box sx={text}>
             {calculateReceiptResFromMainPage?.delivery_fees} {riyalImgBlack()}
