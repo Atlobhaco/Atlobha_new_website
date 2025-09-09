@@ -129,6 +129,7 @@ function EditInfo({
       },
       onError: (err) => {
         if (err?.response?.status === 409) {
+          toast.error(t.phoneUsedForMerge);
           setMigrationStep(true);
           setOtpView(true);
           return null;
@@ -273,7 +274,7 @@ function EditInfo({
                     setChangedField={setChangedField}
                     otpLoad={otpLoad}
                     changedField={changedField}
-					hideSomeComponent={hideSomeComponent}
+                    hideSomeComponent={hideSomeComponent}
                   />
                 );
               }}

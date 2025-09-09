@@ -6,12 +6,12 @@ export default function handler(req, res) {
     if (req.query.service) {
       res.redirect(
         302,
-        `/spareParts/confirmation/${req.query.order_id}?secType=services&type=services`
+        `/spareParts/confirmation/${req.query.order_id}?secType=services&type=services&serviceType=${req.query?.serviceType}`
       );
     } else {
       res.redirect(
         302,
-        `/spareParts/confirmation/${req.query.order_id}?secType=services&type=services`
+        `/spareParts/confirmation/${req.query.order_id}?secType=services&type=services&serviceType=${req.query?.serviceType}`
       );
     }
   }

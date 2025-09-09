@@ -123,8 +123,10 @@ function SelectedCarDetails({ userCar }) {
               height={isMobile ? 30 : 45}
               src={userCar?.brand?.image}
               style={{
-                width: isMobile ? 30 : 45,
-                height: isMobile ? 30 : 45,
+                width: isMobile ? 30 : "auto",
+                height: isMobile ? 30 : "auto",
+                maxWidth: isMobile ? 30 : "45px",
+                maxHeight: isMobile ? 30 : "45px",
               }}
             />
             <Box>

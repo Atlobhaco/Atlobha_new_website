@@ -256,6 +256,7 @@
   "orderSummary": "ملخص الطلب",
   "productsPrice": "سعر المنتجات",
   "additionaldiscount": "خصم اضافي",
+  "codeDiscount": "قيمة كود الخصم",
   "deliveryFees": "رسوم التوصيل",
   "serviceFees": "رسوم الخدمة",
   "payFromBlanace": "المدفوع من الرصيد",
@@ -522,5 +523,7 @@
   "changeCar": "تغيير السيارة",
   "carAvailabilityHint": "الخدمة غير متوفره لسيارتك الحالية برجاء مراجعه السيارات المتوافقة مع الخدمة و تغير السيارة الحالية",
   "servviceAvailable": "توفر الخدمة",
-  "selectedServices": "الخدمات المختارة"
+  "selectedServices": "الخدمات المختارة",
+  "canNotAddPromoForFixed": "لا يمكن اضافة كود توصيل مجاني للخدمات المقدمة في مركز الخدمة",
+  "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف"
 }

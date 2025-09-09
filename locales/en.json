@@ -257,6 +257,7 @@
   "orderSummary": "order summary",
   "productsPrice": "products price",
   "additionaldiscount": "discount",
+  "codeDiscount": "discount code",
   "deliveryFees": "delivery fees",
   "serviceFees": "service fees",
   "payFromBlanace": "paid from balance",
@@ -524,5 +525,7 @@
   "changeCar": "Change car",
   "carAvailabilityHint": "The service is not available for your current car. Please check the cars that are compatible with the service and change the current car",
   "servviceAvailable": "Service availabile",
-  "selectedServices": "Selected service"
+  "selectedServices": "Selected service",
+  "canNotAddPromoForFixed": "can not add coupon free delivery for services provided at the center",
+  "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number"
 }

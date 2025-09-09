@@ -2,6 +2,7 @@ export const LOOKUPS = "/lookups";
 export const BRANDS = "/brands";
 export const MODELS = "/models";
 export const VEHICLES = "/vehicles";
+export const VEHICLE = "/vehicle";
 export const AUTH = "/auth";
 export const OTP = "/otp";
 export const REGISTER = "/register";

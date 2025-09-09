@@ -273,7 +273,7 @@ const ServiceCheckoutSummary = forwardRef(
       language: locale,
       currency: "SAR",
       customer_email: "userTest@example.com",
-      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true`,
+      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true&serviceType=${checkoutServiceDetails?.type}`,
     };
 
     requestData.merchant_reference = merchanteRefrence;
@@ -587,7 +587,6 @@ const ServiceCheckoutSummary = forwardRef(
         alert("Failed to create Tabby checkout.");
       }
     };
-
     return (
       <Box sx={{ pt: 1 }}>
         <Box sx={header}>{t.orderSummary}</Box>
@@ -599,19 +598,21 @@ const ServiceCheckoutSummary = forwardRef(
           </Box>
         </Box>
         {/* discount */}
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
-          <Box sx={{ ...text, color: "#EB3C24" }}>
-            {calculateReceiptResFromMainPage?.discount?.toFixed(2)}{" "}
-            {riyalImgRed()}
+        {calculateReceiptResFromMainPage?.discount > 0 && (
+          <Box className="d-flex justify-content-between mb-2">
+            <Box sx={{ ...text, color: "#EB3C24" }}>{t.codeDiscount}</Box>
+            <Box sx={{ ...text, color: "#EB3C24" }}>
+              {calculateReceiptResFromMainPage?.discount?.toFixed(2)}{" "}
+              {riyalImgRed()}
+            </Box>
           </Box>
-        </Box>
+        )}
         {/* delivery fees */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>
             {checkoutServiceDetails?.type === PORTABLE
-              ? t.deliveryFees
-              : t.serviceFees}
+              ? t.serviceFees
+              : t.deliveryFees}
           </Box>
           <Box sx={text}>
             {calculateReceiptResFromMainPage?.delivery_fees} {riyalImgBlack()}
@@ -628,7 +629,7 @@ const ServiceCheckoutSummary = forwardRef(
         {/* offers discount */}
         {calculateReceiptResFromMainPage?.offers_discount > 0 && (
           <Box className="d-flex justify-content-between mb-2">
-            <Box sx={{ ...text, color: "#EB3C24" }}>{t.offerDiscount}</Box>
+            <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
             <Box sx={{ ...text, color: "#EB3C24" }}>
               {calculateReceiptResFromMainPage?.offers_discount?.toFixed(2)}{" "}
               {riyalImgRed()}

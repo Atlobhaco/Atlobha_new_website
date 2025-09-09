@@ -17,7 +17,19 @@ export function usersVehiclesQuery({
     url: `${USERS}/${user?.data?.user?.id}${VEHICLES}`,
     refetchOnWindowFocus: false,
     enabled: user?.data?.user?.id ? true : false,
-    select: (res) => res?.data?.data,
+    select: (res) => {
+      let cars = res?.data?.data || [];
+
+      // If there’s only one car, force it as default
+      if (cars.length === 1) {
+        cars = cars.map((car, index) => ({
+          ...car,
+          is_default: true, // force this one to be default
+        }));
+      }
+
+      return cars;
+    },
     onSuccess: (res) => {
       const defaultCar = res?.find((d) => d?.is_default);
       //   dispatch(setSelectedCar({ data: defaultCar }));
@@ -49,7 +61,19 @@ export function usersAddressesQuery({
     url: `${USERS}/${user?.data?.user?.id}${ADDRESSES}`,
     refetchOnWindowFocus: false,
     enabled: user?.data?.user?.id ? true : false,
-    select: (res) => res?.data?.data,
+    select: (res) => {
+      let addresses = res?.data?.data || [];
+
+      // If there’s only one car, force it as default
+      if (addresses.length === 1) {
+        addresses = addresses.map((car, index) => ({
+          ...car,
+          is_default: true, // force this one to be default
+        }));
+      }
+
+      return addresses;
+    },
     onSuccess: async (res) => {
       const defaultAddress = res?.find((d) => d?.is_default);
       if (!defaultAddress) {
@@ -61,7 +85,7 @@ export function usersAddressesQuery({
             })
           );
         } catch (error) {
-        //   console.error(error);
+          //   console.error(error);
         }
       } else {
         dispatch(setDefaultAddress({ data: defaultAddress }));
