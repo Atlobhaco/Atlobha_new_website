@@ -202,7 +202,11 @@ const ServiceCheckoutSummary = forwardRef(
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
-        toast.error(err?.response?.data?.message || t.someThingWrong);
+        toast.error(
+          err?.response?.data?.first_error ||
+            err?.response?.data?.message ||
+            t.someThingWrong
+        );
       },
     });
 
@@ -700,6 +704,7 @@ const ServiceCheckoutSummary = forwardRef(
             const method = selectedPaymentMethod?.key;
 
             if (amount === 0) return callConfirmPricing();
+            if (!userDataProfile?.phone) return setOpenAddMobile(true);
 
             if (method === PAYMENT_METHODS.credit) {
               setRedirectToPayfort(true);
