@@ -15,6 +15,7 @@ import StaticDynamicSections from "./StaticDynamicSections";
 import RecentlyViewedServices from "./RecentlyViewedServices";
 import BoughtAgainServices from "./BoughtAgainSerivces";
 import PackageOffers from "@/components/Marketplace/PackageOffers";
+import SponserAds from "@/components/Marketplace/SponserAds";
 
 function Services() {
   const router = useRouter();
@@ -34,31 +35,7 @@ function Services() {
     }${HOME_SECTIONS}`,
     refetchOnWindowFocus: false,
     enabled: allGroups?.length && secType ? true : false,
-    select: (res) => {
-      // Filter only active items and sort them
-      const sorted = (res?.data?.data || [])
-        .filter((d) => d?.is_active)
-        .sort((a, b) => a.position - b.position);
-
-      // Create the new object you want to insert
-      const newSection = {
-        id: "static-1",
-        type: "static-dynamic-section",
-        position: 3,
-        is_active: true,
-        requires_authentication: false,
-        title: t.serviceCategories,
-        // you can add other properties needed for your frontend
-      };
-
-      // Insert at index 2 (which is position 3)
-      sorted.splice(2, 0, newSection);
-      // Recalculate positions so they remain sequential
-      return sorted.map((item, index) => ({
-        ...item,
-        position: index + 1,
-      }));
-    },
+    select: (res) => res?.data?.data,
     onSuccess: (res) => {
       if (isAuth()) {
         setHasQuickLinks(true);
@@ -230,6 +207,17 @@ function Services() {
                 <div className="row">
                   <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
                     <BoughtAgainServices sectionInfo={item} />
+                  </div>
+                </div>
+              </div>
+            );
+
+          case "sponsor_ad":
+            return (
+              <div className="container mb-3">
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                    <SponserAds sectionInfo={item} />
                   </div>
                 </div>
               </div>

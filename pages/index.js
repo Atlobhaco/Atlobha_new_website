@@ -1,5 +1,3 @@
-import localFont from "next/font/local";
-import MetaTags from "@/components/shared/MetaTags";
 import { Box, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import useBranch from "./useBranch";
@@ -7,10 +5,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { useDispatch, useSelector } from "react-redux";
 import { APP_SECTIONS, HOME_SECTIONS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
-import {
-  setAllHomeSections,
-  setSectionsSeo,
-} from "@/redux/reducers/homeSectionsReducer";
+import { setAllHomeSections } from "@/redux/reducers/homeSectionsReducer";
 import useLocalization from "@/config/hooks/useLocalization";
 import QuickLinks from "@/components/Marketplace/QuickLinks";
 import MainCarousel from "@/components/Marketplace/MainCarousel";
@@ -23,10 +18,10 @@ import ManufactureShell from "@/components/Marketplace/Manufacturers/Manufacture
 import CategoriesProducts from "@/components/Marketplace/CategoriesProducts/CategoriesProducts";
 import RecentlyViewed from "@/components/Marketplace/RecentlyViewed";
 import AtlobhaPartners from "@/components/Marketplace/AtlobhaPartners";
-import PartsImages from "@/components/spareParts/PartsImages";
 import { isAuth } from "@/config/hooks/isAuth";
 import Head from "next/head";
 import CategoriesServices from "@/components/sectionsInfo/services/CategoriesServices";
+import SponserAds from "@/components/Marketplace/SponserAds";
 
 export default function Home() {
   // useBranch user for deep  links
@@ -153,6 +148,17 @@ export default function Home() {
                 <div className="row">
                   <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
                     <MainCarousel sectionInfo={item} />
+                  </div>
+                </div>
+              </div>
+            );
+
+          case "sponsor_ad":
+            return (
+              <div className="container mb-3">
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                    <SponserAds sectionInfo={item} />
                   </div>
                 </div>
               </div>

@@ -50,7 +50,12 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
       >
         <Image
           loading="lazy"
-          src={product?.image_url || product?.image || "/imgs/no-prod-img.svg"}
+          src={
+            product?.image_url ||
+            product?.image?.url ||
+            product?.image ||
+            "/imgs/no-prod-img.svg"
+          }
           alt="Product"
           width={200}
           height={200}

@@ -81,7 +81,7 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                   }}
                 >
                   <Image
-                    src={data?.product?.image || "/imgs/no-img-holder.svg"}
+                    src={data?.product?.image?.url || "/imgs/no-img-holder.svg"}
                     width={isMobile ? 55 : 200}
                     height={isMobile ? 55 : 200}
                     alt={data?.id}

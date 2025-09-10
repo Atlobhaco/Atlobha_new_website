@@ -6,7 +6,7 @@ import DialogCentered from "../DialogCentered";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 function ServiceCompatibleWith({ prod }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [openAllModels, setOpenAllModels] = useState(false);
 
@@ -42,7 +42,7 @@ function ServiceCompatibleWith({ prod }) {
             display: "flex",
             gap: "10px",
             alignItems: "center",
-            width: "fit-content",
+            width: isMobile ? "100%" : "50vw",
             cursor: "pointer",
           }}
           onClick={() => {
@@ -89,6 +89,19 @@ function ServiceCompatibleWith({ prod }) {
             {prod?.model?.year_from > 0 ? `${prod?.model?.year_from} - ` : null}{" "}
             {prod?.model?.year_to > 0 ? prod?.model?.year_to : null}
           </Box>
+          {!!prod?.service_models?.length && (
+            <Image
+              loading="lazy"
+              src="/icons/arrow-left-sm.svg"
+              width={isMobile ? 9 : 20}
+              height={15}
+              alt="arrow"
+              style={{
+                marginInlineStart: "auto",
+                transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
+              }}
+            />
+          )}
         </Box>
       </Box>
 

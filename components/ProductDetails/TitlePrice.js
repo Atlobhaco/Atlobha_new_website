@@ -68,7 +68,7 @@ function TitlePrice({ prod }) {
           flexWrap: "wrap",
         }}
       >
-        {prod?.combined_tags?.map((tag) => (
+        {prod?.tags?.map((tag) => (
           <Box
             sx={{
               padding: "0px 4px",

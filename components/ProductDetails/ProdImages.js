@@ -24,8 +24,8 @@ function ProdImages({ prod }) {
 
   const imgArray = (
     prod?.images?.length
-      ? [...prod?.images, prod?.image ? { url: prod?.image } : null]
-      : [{ url: prod?.image }]
+      ? [...prod?.images, prod?.image?.url ? { url: prod?.image?.url } : null]
+      : [{ url: prod?.image?.url }]
   )?.filter((d) => d);
 
   return (
