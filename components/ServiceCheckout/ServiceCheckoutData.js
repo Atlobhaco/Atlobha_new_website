@@ -38,7 +38,7 @@ function ServiceCheckoutData({
 
     return `${
       dateStart.isSame(today, "day")
-        ? `${t.todayAtTime} ${dateStart.format("H:mm a")}`
+        ? `${t.todayAtTime} ${dateStart.format("h:mm a")}`
         : startFrom === endAt
         ? `${moment(startFrom).format("h:mm a")}`
         : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
