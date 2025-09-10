@@ -601,16 +601,37 @@ const CheckoutSummary = forwardRef(
           </Box>
         </Box>
         {/* discount */}
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
-          <Box sx={{ ...text, color: "#EB3C24" }}>
-            {(calculateReceiptResFromMainPage?.discount ??
-              receipt?.discount) === receipt?.discount
-              ? receipt?.discount?.toFixed(2)
-              : calculateReceiptResFromMainPage?.discount?.toFixed(2)}{" "}
-            {riyalImgRed()}
+        {(calculateReceiptResFromMainPage?.discount ?? receipt?.discount) >
+          0 && (
+          <Box className="d-flex justify-content-between mb-2">
+            <Box sx={{ ...text, color: "#EB3C24" }}>{t.codeDiscount}</Box>
+            <Box sx={{ ...text, color: "#EB3C24" }}>
+              {(calculateReceiptResFromMainPage?.discount ??
+                receipt?.discount) === receipt?.discount
+                ? receipt?.discount?.toFixed(2)
+                : calculateReceiptResFromMainPage?.discount?.toFixed(2)}{" "}
+              {riyalImgRed()}
+            </Box>
           </Box>
-        </Box>
+        )}
+
+        {/* offers discount */}
+        {(calculateReceiptResFromMainPage?.offers_discount ??
+          receipt?.offers_discount) > 0 && (
+          <Box className="d-flex justify-content-between mb-2">
+            <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
+            <Box sx={{ ...text, color: "#EB3C24" }}>
+              {(calculateReceiptResFromMainPage?.offers_discount ??
+                receipt?.offers_discount) === receipt?.offers_discount
+                ? receipt?.offers_discount?.toFixed(2)
+                : calculateReceiptResFromMainPage?.offers_discount?.toFixed(
+                    2
+                  )}{" "}
+              {riyalImgRed()}
+            </Box>
+          </Box>
+        )}
+
         {/* delivery fees */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>{t.deliveryFees}</Box>
