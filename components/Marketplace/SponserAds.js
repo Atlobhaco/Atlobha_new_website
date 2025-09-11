@@ -16,8 +16,8 @@ function SponserAds({ sectionInfo }) {
         maxWidth: "100%",
         display: "block",
         margin: "auto",
-        maxHeight: isMobile ? "120px" : "400px",
-        minHeight: isMobile ? "120px" : "400px",
+        maxHeight: isMobile ? "100px" : "350px",
+        minHeight: isMobile ? "100px" : "350px",
       }}
       onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")} // Fallback to default image
     />

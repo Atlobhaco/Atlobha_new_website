@@ -61,30 +61,32 @@ function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
               alignItems: "center",
               justifyContent: "center",
               cursor: "pointer",
-              border: "2px solid #D1D5DB",
-              boxShadow: "0px 8.946px 19.681px 0px rgba(0, 0, 0, 0.15)",
               "&:hover": {
                 opacity: "0.8",
               },
               position: "relative",
+              backgroundImage: `url('${item?.image?.url}')`,
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              backgroundSize: "cover",
             }}
             onClick={() => router.push(item?.link)}
           >
-            <Image
+            {/* <Image
               alt={item?.image?.url}
-              src={item?.image?.url}
+              src={"https://atlobha-prod.s3.me-south-1.amazonaws.com/images/2025-Sep/mHsRtEFKiECtkHS0tbgkuCrVjYV3nLdBTBlILZQe.png"}
               width="22"
               height="22"
               loading="lazy"
               style={{
-                width: "auto",
-                height: "auto",
+                width: "100%",
+                height: "100%",
                 minWidth: `${isMobile ? "22px" : "42px"}`,
                 minHeight: `${isMobile ? "22px" : "42px"}`,
               }}
-            />
+            /> */}
           </Box>
-          <Box sx={textStyle}>{item.title}</Box>
+          {/* <Box sx={textStyle}>{item.title}</Box> */}
         </Box>
       ))}
     </Box>
