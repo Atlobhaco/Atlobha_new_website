@@ -25,7 +25,7 @@ function ServiceCard({ service = {} }) {
             secType: router?.query?.secType,
             name: service?.name,
             desc: service?.description,
-            tags: service?.combined_tags?.[0]?.name_ar,
+            tags: service?.tags?.[0]?.name_ar,
             category: service?.category?.name,
             price: servicePrice({
               service: service,

@@ -36,7 +36,7 @@ function ServiceDataInfo({ product, key }) {
             secType: router?.query?.secType,
             name: product?.name,
             desc: product?.description,
-            tags: product?.combined_tags?.[0]?.name_ar,
+            tags: product?.tags?.[0]?.name_ar,
             category: product?.category?.name,
             price: product?.price,
             img: product?.thumbnail?.url,
@@ -119,7 +119,7 @@ function ServiceDataInfo({ product, key }) {
               flexWrap: "wrap",
             }}
           >
-            {product?.combined_tags?.map((tag) => (
+            {product?.tags?.map((tag) => (
               <Box
                 sx={{
                   padding: "0px 4px",
