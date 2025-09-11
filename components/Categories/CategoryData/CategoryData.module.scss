@@ -11,6 +11,7 @@
   align-items: center;
   border-radius: 90px;
   overflow: hidden;
+  position: relative;
   &:hover {
     opacity: 0.8;
   }
@@ -28,11 +29,11 @@
     width: 100%;
     border-radius: 10px;
     position: relative;
-    bottom: -35px;
+    bottom: -55px;
     @include mobile-screen-style {
       height: 100%;
       width: 100%;
-      bottom: -20px;
+      bottom: -33px;
     }
   }
   &-text {
@@ -40,8 +41,10 @@
     font-weight: 500;
     max-width: 77%;
     text-align: center;
-    position: relative;
+    position: absolute;
     top: 25px;
+    z-index: 1;
+    text-shadow: 0px 2px 5px #f9dd4b4d;
     @include mobile-screen-style {
       font-size: 12px;
       top: 20px;

@@ -75,10 +75,11 @@ function Layout({ children }) {
             activeSection={activeSection}
             setActiveSection={setActiveSection}
             setOpenCategories={setOpenCategories}
+            openCategories={openCategories}
           />
         }
       />
-      {!mobileScreen && <ScrollToTop />}
+      {/* {!mobileScreen && <ScrollToTop />} */}
     </div>
   );
 }

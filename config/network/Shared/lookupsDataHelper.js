@@ -3,6 +3,7 @@ import {
   LOOKUPS,
   MODELS,
   USERS,
+  VEHICLE,
   VEHICLES,
 } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
@@ -11,7 +12,7 @@ import useCustomQuery from "../Apiconfig";
 export function userBrandsQuery({ setBrands, dispatch }) {
   return useCustomQuery({
     name: "getBrands",
-    url: `${LOOKUPS}${BRANDS}`,
+    url: `${VEHICLE}${BRANDS}`,
     refetchOnWindowFocus: false,
     enabled: false,
     select: (res) => res?.data?.data,
@@ -27,7 +28,7 @@ export function userBrandsQuery({ setBrands, dispatch }) {
 export function useModelsQuery({ setModels, dispatch, brandId }) {
   return useCustomQuery({
     name: ["getModels", brandId],
-    url: `${LOOKUPS}${BRANDS}/${brandId}${MODELS}`,
+    url: `${VEHICLE}${BRANDS}/${brandId}${MODELS}`,
     refetchOnWindowFocus: false,
     enabled: brandId ? true : false,
     select: (res) => res?.data?.data,

@@ -26,7 +26,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
             query: {
               name: product?.name,
               desc: product?.desc,
-              tags: product?.combined_tags?.[0]?.name_ar,
+              tags: product?.tags?.[0]?.name_ar,
               category: product?.marketplace_category?.name,
               subCategory: product?.marketplace_subcategory?.name,
               model: product?.model?.name,
@@ -50,7 +50,12 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
       >
         <Image
           loading="lazy"
-          src={product?.image_url || product?.image || "/imgs/no-prod-img.svg"}
+          src={
+            product?.image_url ||
+            product?.image?.url ||
+            product?.image ||
+            "/imgs/no-prod-img.svg"
+          }
           alt="Product"
           width={200}
           height={200}
@@ -124,15 +129,15 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
         )}
       </Box>
 
-      {!!product?.combined_tags?.length && (
+      {!!product?.tags?.length && (
         <Box
           sx={{
-            background: product?.combined_tags[0]?.color,
+            background: product?.tags[0]?.color,
             color: "white",
           }}
           className={`${style["prod-label"]}`}
         >
-          {product?.combined_tags[0]?.name}
+          {product?.tags[0]?.name}
         </Box>
       )}
     </Box>

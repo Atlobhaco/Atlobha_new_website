@@ -44,7 +44,7 @@ function TitlePrice({ prod }) {
             borderRadius: "10px",
             color: "white",
             fontSize: isMobile ? "12px" : "18px",
-            width: "fit-content",
+            minWidth: "fit-content",
             cursor: "pointer",
             display: "flex",
             alignItems: "center",
@@ -68,7 +68,7 @@ function TitlePrice({ prod }) {
           flexWrap: "wrap",
         }}
       >
-        {prod?.combined_tags?.map((tag) => (
+        {prod?.tags?.map((tag) => (
           <Box
             sx={{
               padding: "0px 4px",

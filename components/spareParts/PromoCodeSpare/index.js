@@ -11,9 +11,13 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { PROMO_CODES } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { FIXED } from "@/constants/enums";
 
 function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { type } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { promoCode, allPromoCodeData } = useSelector(
@@ -29,6 +33,11 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
     retry: 0,
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
+      if (res?.type === "FREE_DELIVERY" && type === FIXED) {
+        toast.error(t.canNotAddPromoForFixed);
+        dispatch(setPromoCodeForSpareParts({ data: "" }));
+        return;
+      }
       if (res?.can_be_redeemed) {
         setPromoCodeId(res?.id);
         setError(false);

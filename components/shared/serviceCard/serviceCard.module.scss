@@ -11,6 +11,7 @@
   display: flex;
   gap: 7px;
   transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+  cursor: pointer;
 
   &:hover {
     transform: scale(0.99);
@@ -47,7 +48,7 @@
     }
     &_price {
       color: #ee772f;
-      font-size: 30;
+      font-size: 20px;
       font-weight: 500;
       margin-bottom: 3px;
       display: flex;

@@ -1,17 +1,41 @@
 import React from "react";
 import style from "./serviceCard.module.scss";
 import Image from "next/image";
-import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
+import { riyalImgOrange, riyalImgRed, servicePrice } from "@/constants/helpers";
 import { Tooltip } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
+import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 function ServiceCard({ service = {} }) {
-  const { isMobile } = useScreenSize();
+  const router = useRouter();
   const { t } = useLocalization();
+  const { isMobile } = useScreenSize();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   return (
-    <div className={`${style["service"]}`}>
+    <div
+      className={`${style["service"]}`}
+      onClick={() => {
+        router.push({
+          pathname: `/service/${service?.id}`,
+          query: {
+            portableService: router?.query?.portableService || "no-info",
+            secType: router?.query?.secType,
+            name: service?.name,
+            desc: service?.description,
+            tags: service?.tags?.[0]?.name_ar,
+            category: service?.category?.name,
+            price: servicePrice({
+              service: service,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            }),
+            img: service?.thumbnail?.url,
+          },
+        });
+      }}
+    >
       <div className={`${style["service-img"]}`}>
         <Image
           loading="lazy"
@@ -59,7 +83,10 @@ function ServiceCard({ service = {} }) {
               ]
             }`}
           >
-            {service?.price?.toFixed(2) || 0}{" "}
+            {servicePrice({
+              service: service,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            })}{" "}
             {!!service?.price_before_discount
               ? riyalImgRed()
               : riyalImgOrange()}

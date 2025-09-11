@@ -69,6 +69,7 @@ const CategoriesSelection = ({
         gap: isMobile ? "15px" : "20px",
         overflow: "auto hidden",
       }}
+	  className="hide-scrollbar"
     >
       {categories?.map((cat) => {
         const isSelected = +cat.id === +selectedCategory;

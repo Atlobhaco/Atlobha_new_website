@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import Fade from "@mui/material/Fade";
@@ -41,6 +41,16 @@ function FilterOrder({
     fontWeight: "700",
     mb: 2,
   };
+
+  useEffect(() => {
+    setTempFilters(filters);
+  }, [filters]);
+
+  const checkIfSelectFilter = () => {
+    return (
+      filters?.created_at_from || filters?.created_at_to || filters?.status
+    );
+  };
   return (
     <div>
       <Button
@@ -52,7 +62,9 @@ function FilterOrder({
       >
         <Image
           loading="lazy"
-          src="/icons/filter.svg"
+          src={`/icons/${
+            checkIfSelectFilter() ? "colored-filter.svg" : "filter.svg"
+          }`}
           width={isMobile ? 24 : 30}
           height={isMobile ? 24 : 30}
           alt="filter"

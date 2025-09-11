@@ -66,7 +66,7 @@ function DialogCentered({
   showTitle = true,
   hasCloseIcon = false,
   title = "Title Dialog",
-  subtitle = "subtitle here",
+  subtitle = false,
   content = <div>put your content here</div>,
   showBtns = false,
   cancelBtnText = "cancel",

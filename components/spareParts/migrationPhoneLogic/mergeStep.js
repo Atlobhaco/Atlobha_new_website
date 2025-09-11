@@ -11,6 +11,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 
 const closeHolder = {
   display: "flex",
@@ -30,7 +31,7 @@ function MergeStep({
 }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const dispatch = useDispatch();
   const router = useRouter();
   const { route } = router;
@@ -49,7 +50,7 @@ function MergeStep({
     retry: 0,
     select: (res) => res?.data?.data,
     onError: (err) => {
-      toast.error(editProfile ? t.cannotMerge : err?.response?.data?.message);
+      toast.error(editProfile ? t.cannotMerge : t.cannotMerge);
       if (editProfile) {
         handleCloseStep();
       }
@@ -82,10 +83,38 @@ function MergeStep({
       setMigrationStep(1);
     },
     onSuccess: (res) => {
-      login({ data: res });
+      const newUserObject = {
+        ...res?.user,
+        default_address: res?.user?.default_address?.length
+          ? res?.user?.default_address
+          : user?.default_address,
+        default_vehicle: res?.user?.default_vehicle?.length
+          ? res?.user?.default_vehicle
+          : user?.default_vehicle,
+      };
+      login({
+        data: {
+          user: newUserObject,
+          access_token: res?.access_token,
+        },
+      });
       setOpenAddMobile(false);
       setMigrationStep(1);
-      dispatch(loginSuccess({ data: res }));
+      dispatch(
+        loginSuccess({
+          data: {
+            user: newUserObject,
+            access_token: res?.access_token,
+          },
+        })
+      );
+      dispatch(
+        setUserData({
+          data: {
+            ...newUserObject,
+          },
+        })
+      );
       toast.success(
         !route?.includes(`/checkout`) ? t.canMakeSparePartReq : t.canAddOrder
       );

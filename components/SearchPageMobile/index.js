@@ -97,7 +97,9 @@ function SearchSuggestionsMobile() {
 
   const handleClick = (keyword) =>
     router.push(
-      `/search?keyword=${keyword}&type=${secType || "MarketplaceProduct"}`
+      `/search?keyword=${keyword}&type=${
+        secType || "MarketplaceProduct"
+      }&secType=${secType}`
     );
 
   return (

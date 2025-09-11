@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { SERVICE_CATEGORIES } from "@/config/endPoints/endPoints";
@@ -8,39 +8,50 @@ import { useSelector } from "react-redux";
 import HeaderSection from "@/components/HeaderSection";
 import CategoryData from "@/components/Categories/CategoryData";
 import { useRouter } from "next/router";
+import DialogCentered from "@/components/DialogCentered";
+import StaticDynamicSections from "./StaticDynamicSections";
+import useLocalization from "@/config/hooks/useLocalization";
+import { SERVICES } from "@/constants/enums";
 
-function CategoriesServices({ sectionInfo }) {
+export default function CategoriesServices({ sectionInfo }) {
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
-
+  const [openStaticDynamic, setOpenStaticDynamic] = useState(false);
+  const [selectedCatIdForRouting, setSelectedCatIdForRouting] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (s) => s.selectedAddress
   );
-  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+  const { selectedCar, defaultCar } = useSelector((s) => s.selectedCar);
+  const { allGroups } = useSelector((state) => state.appGroups);
+  const sectiontitle = allGroups
+    ?.map((data) => data?.sections)
+    ?.flat()
+    ?.find((sec) => sec?.type === SERVICES)?.title;
+  const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
+  const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
+  const modelId = selectedCar?.model?.id || defaultCar?.model?.id || "";
+
+  const authEnabled =
+    sectionInfo?.is_active &&
+    (!sectionInfo?.requires_authentication || (isAuth() && lat));
 
   const { data: categories } = useCustomQuery({
-    name: [`services-categories=${sectionInfo?.id}`],
-    url: `${SERVICE_CATEGORIES}?lat=${
-      selectedAddress?.lat || defaultAddress?.lat || 24.7136
-    }&lng=${selectedAddress?.lng || defaultAddress?.lng || 46.6753}&model_id=${
-      selectedCar?.model?.id || defaultCar?.model?.id
-    }`,
+    name: [`services-categories=${sectionInfo?.id}`, modelId],
+    url: `${SERVICE_CATEGORIES}?lat=${lat}&lng=${lng}&model_id=${modelId}`,
     refetchOnWindowFocus: false,
-    enabled:
-      (sectionInfo?.is_active &&
-        sectionInfo?.requires_authentication &&
-        isAuth() &&
-        (defaultAddress?.lat || selectedAddress?.lat)) ||
-      (sectionInfo?.is_active && !sectionInfo?.requires_authentication),
+    enabled: authEnabled,
     select: (res) => res?.data?.data,
   });
 
-  return !sectionInfo?.is_active || !categories?.length ? null : (
+  if (!sectionInfo?.is_active || !categories?.length) return null;
+
+  return (
     <Box
       sx={{
         display: "flex",
-        gap: isMobile ? "10px" : "25px",
         flexDirection: "column",
+        gap: isMobile ? "10px" : "25px",
         mb: 2,
       }}
     >
@@ -53,23 +64,46 @@ function CategoriesServices({ sectionInfo }) {
           justifyContent: isMobile ? "space-around" : "flex-start",
         }}
       >
-        {categories?.map((cat) => (
+        {categories.map((cat) => (
           <CategoryData
+            key={cat?.name}
             category={cat}
             keyValue={cat?.name}
             imgPath={cat?.image?.url}
             text={cat?.name}
             bgImage={cat?.background_image?.url}
-            handleClick={() =>
-              router.push(
-                `/serviceCategory/${cat?.id}?secTitle=${router?.query?.secTitle}`
-              )
-            }
+            handleClick={() => {
+              const hasPortable = cat?.portable_services_count > 0;
+              const hasStore = cat?.store_services_count > 0;
+
+              if (hasPortable && hasStore) {
+                setOpenStaticDynamic(true);
+                setSelectedCatIdForRouting(cat?.id);
+              } else {
+                router.push(
+                  `/serviceCategory/${cat?.id}?secTitle=${
+                    router.query?.secTitle || sectiontitle
+                  }&secType=${SERVICES}&portableService=${hasPortable}`
+                );
+              }
+            }}
           />
         ))}
       </Box>
+      <DialogCentered
+        title={false}
+        subtitle={false}
+        open={openStaticDynamic}
+        setOpen={setOpenStaticDynamic}
+        hasCloseIcon
+        actionsWhenClose={() => setSelectedCatIdForRouting(false)}
+        content={
+          <StaticDynamicSections
+            sectionInfo={{ title: t.serviceCategories }}
+            selectedId={selectedCatIdForRouting}
+          />
+        }
+      />
     </Box>
   );
 }
-
-export default CategoriesServices;

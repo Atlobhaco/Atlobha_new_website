@@ -66,7 +66,7 @@
   }
   @include mobile-screen-style {
     border-bottom: 4px solid #f6f6f6;
-	padding: 32px 13px;
+    padding: 32px 13px;
   }
 }
 
@@ -196,6 +196,18 @@
           font-size: 14px;
         }
       }
+      &-desc {
+        color: #6b7280;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px; /* 150% */
+        width: 50%;
+        @include mobile-screen-style {
+          font-size: 11px;
+          width: 100%;
+        }
+      }
       &-qty {
         display: flex;
         width: 100px;
@@ -217,13 +229,12 @@
           height: 30px;
         }
       }
-	  &-second-qty {
+      &-second-qty {
         display: flex;
         height: 38px;
-        // justify-content: center;
         align-items: center;
         background: #fff;
-        color: #6B7280;
+        color: #6b7280;
         font-size: 16px;
         font-style: normal;
         font-weight: 500;

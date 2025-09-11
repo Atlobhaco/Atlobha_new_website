@@ -88,8 +88,8 @@ function ProductDetails() {
             <Head>
               <title>
                 {locale === "en"
-                  ? `Atlobha- ${data?.seo?.title_en}`
-                  : `اطلبها- ${data?.seo?.title_ar}`}
+                  ? `Atlobha- ${data?.seo?.title_en || data?.name}`
+                  : `اطلبها- ${data?.seo?.title_ar || data?.name}`}
               </title>
               <meta name="description" content={data?.seo?.meta_description} />
               <meta

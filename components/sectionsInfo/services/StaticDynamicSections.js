@@ -1,24 +1,45 @@
 import HeaderSection from "@/components/HeaderSection";
 import useLocalization from "@/config/hooks/useLocalization";
+import { SERVICES } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React from "react";
+import { useSelector } from "react-redux";
 
-function StaticDynamicSections({ sectionInfo }) {
+function StaticDynamicSections({ sectionInfo, selectedId = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
+  const router = useRouter();
+  const { allGroups } = useSelector((state) => state.appGroups);
+  const sectiontitle = allGroups
+    ?.map((data) => data?.sections)
+    ?.flat()
+    ?.find((sec) => sec?.type === SERVICES)?.title;
 
   const sectionsData = [
     {
       imgSrc: "/imgs/dynamic-car-service.svg",
       title: t.portableServices,
       subTitle: t.deliverAtDoor,
+      redirect: () =>
+        router.push(
+          `/serviceCategory/${selectedId || "first-id"}?secTitle=${
+            router?.query?.secTitle || sectiontitle
+          }&secType=${SERVICES}&portableService=true`
+        ),
     },
     {
       imgSrc: "/imgs/static-car-service.svg",
       title: t.fixedServices,
       subTitle: t.approvedCenters,
+      redirect: () =>
+        router.push(
+          `/serviceCategory/${selectedId || "first-id"}?secTitle=${
+            router?.query?.secTitle || sectiontitle
+          }&secType=${SERVICES}&portableService=false`
+        ),
     },
   ];
   return (
@@ -42,6 +63,7 @@ function StaticDynamicSections({ sectionInfo }) {
                 opacity: "0.8",
               },
             }}
+            onClick={() => info?.redirect()}
           >
             <Box>
               <Box

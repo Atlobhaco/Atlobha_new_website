@@ -63,7 +63,7 @@ export default function PaginateComponent({ meta, setPage, isLoading }) {
             color: "#6B7280",
             fontSize: isMobile ? "12px" : "14px",
             fontWeight: 500,
-            margin: isMobile ? 0 : "1px",
+            margin: isMobile ? '0.7px' : "1px",
             ...(isMobile && { minWidth: "25px", height: "25px" }),
             "&.Mui-selected": {
               backgroundColor: "#FFCE21",

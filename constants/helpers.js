@@ -646,3 +646,31 @@ export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
     { shallow: true }
   );
 };
+
+/* -------------------------------------------------------------------------- */
+/*               price of service depend on multiple variations               */
+/* -------------------------------------------------------------------------- */
+export const servicePrice = ({ service, userCar }) => {
+  const directPrice =
+    service?.products_price > 0
+      ? service?.products_price
+      : service?.price > 0
+      ? service?.price
+      : null;
+
+  if (directPrice !== null) return directPrice.toFixed(2);
+
+  const { price_per_class } = service || {};
+  if (!price_per_class) return 0;
+
+  const vehicleClass = userCar?.model?.vehicle_class || "small";
+  return price_per_class[vehicleClass] ?? price_per_class.small ?? 0;
+};
+
+/* -------------------------------------------------------------------------- */
+/*                  open location in google map external link                 */
+/* -------------------------------------------------------------------------- */
+export const openInGoogleMaps = (lat, lng) => {
+  const url = `https://www.google.com/maps?q=${lat},${lng}`;
+  window?.open(url, "_blank");
+};

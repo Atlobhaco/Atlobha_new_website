@@ -82,7 +82,7 @@ function AutoCompleteInput() {
             router.push(
               `/search?keyword=${newValue}&type=${
                 secType || "MarketplaceProduct"
-              }`
+              }&secType=${secType}`
             );
             setSelectedOption(newValue);
           } else {
@@ -96,7 +96,7 @@ function AutoCompleteInput() {
               router.push(
                 `/search?keyword=${inputValue}&type=${
                   secType || "MarketplaceProduct"
-                }`
+                }&secType=${secType}`
               );
               setSelectedOption(inputValue);
               setOpen(false); // 👈 يغلق القائمة بعد الضغط

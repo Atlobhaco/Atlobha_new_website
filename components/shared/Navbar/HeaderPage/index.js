@@ -9,9 +9,12 @@ function HeaderPage() {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
-  const spareParts = router?.pathname?.includes("spare");
+  const spareParts =
+    router?.pathname?.includes("spare") && !router?.query?.secType;
   const { allGroups } = useSelector((state) => state.appGroups);
+
   const renderHeaderDependOnUrl = () => {
+    if (router?.pathname?.includes("checkout")) return null;
     if (spareParts) {
       return t.sparePartPricing;
     }
@@ -19,14 +22,12 @@ function HeaderPage() {
       return t.marketplacePage;
     } else {
       if (allGroups?.length) {
-        return (
-          allGroups[1]?.sections?.find(
-            (sec) => sec?.title === router?.query?.secTitle
-          )?.title ||
-          allGroups[1]?.sections?.find(
-            (sec) => sec?.title_ar === router?.query?.secTitle
-          )?.title
-        );
+        return allGroups[1]?.sections?.find(
+          (sec) =>
+            sec?.title === router?.query?.secTitle ||
+            sec?.type === router?.query?.secType ||
+            sec?.title_ar === router?.query?.secTitle
+        )?.title;
       }
       return router?.query?.secTitle;
     }

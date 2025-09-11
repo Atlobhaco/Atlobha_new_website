@@ -69,6 +69,9 @@ function EnterOtpStep({
     retry: 0,
     select: (res) => res?.data?.data,
     onError: (err) => {
+      if (err?.status === 409) {
+        return toast.error(err?.response?.data?.message);
+      }
       toast.error(t.invalidOtp);
     },
     onSuccess: () => {

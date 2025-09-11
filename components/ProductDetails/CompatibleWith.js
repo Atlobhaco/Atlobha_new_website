@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 
 function CompatibleWith({ prod }) {
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   return (
     <Box>
       <Divider
@@ -32,7 +32,7 @@ function CompatibleWith({ prod }) {
         }}
       >
         <Image
-          src={prod?.model?.vehicle_brand?.image || "/imgs/no-prod-img.svg"}
+          src={prod?.vehicle_brand?.image || "/imgs/no-prod-img.svg"}
           alt="model"
           width={80}
           height={80}
@@ -53,9 +53,13 @@ function CompatibleWith({ prod }) {
             textAlign: "center",
           }}
         >
-          {prod?.brand?.name}
+          {locale === "ar"
+            ? prod?.vehicle_brand?.name_ar
+            : prod?.vehicle_brand?.name_en}
           <br />
-          {prod?.model?.name}
+          {locale === "ar"
+            ? prod?.vehicle_model?.name_ar
+            : prod?.vehicle_model?.name_en}
         </Box>
         <Box
           sx={{

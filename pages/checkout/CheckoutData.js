@@ -31,7 +31,7 @@ function CheckoutData({
       toast.error(err?.response?.data?.first_error);
     },
   });
-  
+
   const deliveryDate = () => {
     return estimateRes?.estimated_delivery_date_from &&
       estimateRes?.estimated_delivery_date_to
@@ -53,6 +53,7 @@ function CheckoutData({
         }}
         handleChangeAddress={handleChangeAddress}
       />
+
       {/* delivery date */}
       <Box
         sx={{
@@ -64,8 +65,7 @@ function CheckoutData({
       >
         <Box>
           <Image
-		            loading="lazy"
-
+            loading="lazy"
             src="/icons/yellow-calendar.svg"
             width={20}
             height={20}

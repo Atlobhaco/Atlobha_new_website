@@ -5,11 +5,17 @@ import UserProfile from "../..";
 import BreadCrumb from "@/components/BreadCrumb";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERSENUM } from "@/constants/enums";
-import { ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import {
+  MAINTENANCE_RESERVATIONS,
+  ORDERS,
+  PORTABLE_MAINTENANCE_RESERVATIONS,
+  SPARE_PARTS,
+} from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import MarketplaceOrderDetails from "@/components/userProfile/orderDetails/marketplaceOrderDetails";
+import ServiceOrderDetails from "@/components/userProfile/orderDetails/serviceOrderDetails";
 
 function OrderDetails() {
   const router = useRouter();
@@ -23,6 +29,10 @@ function OrderDetails() {
         return `/marketplace${ORDERS}/${idOrder}`;
       case ORDERSENUM?.spareParts:
         return `${SPARE_PARTS}${ORDERS}/${idOrder}`;
+      case ORDERSENUM?.maintenance:
+        return `${MAINTENANCE_RESERVATIONS}/${idOrder}`;
+      case ORDERSENUM?.PORTABLE:
+        return `${PORTABLE_MAINTENANCE_RESERVATIONS}/${idOrder}`;
       default:
         return type;
     }
@@ -57,6 +67,22 @@ function OrderDetails() {
       case ORDERSENUM?.marketplace:
         return (
           <MarketplaceOrderDetails
+            orderDetails={data}
+            callSingleOrder={callSingleOrder}
+            orderDetailsFetching={orderDetailsFetching}
+          />
+        );
+      case ORDERSENUM?.PORTABLE:
+        return (
+          <ServiceOrderDetails
+            orderDetails={data}
+            callSingleOrder={callSingleOrder}
+            orderDetailsFetching={orderDetailsFetching}
+          />
+        );
+      case ORDERSENUM?.maintenance:
+        return (
+          <ServiceOrderDetails
             orderDetails={data}
             callSingleOrder={callSingleOrder}
             orderDetailsFetching={orderDetailsFetching}

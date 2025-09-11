@@ -14,9 +14,12 @@ import AddressSelectionFromNavbarWeb from "./AddressSelectionFromNavbarWeb";
 import AddNewAddressFromNavbar from "./AddNewAddressFromNavbar";
 import ShowAddressesFromNavbarMobile from "./ShowAddressesFromNavbarMobile";
 import { getAddressFromLatLng } from "@/constants/helpers";
+import { useRouter } from "next/router";
+import { SERVICES } from "@/constants/enums";
 
 function DropDownAddress() {
   const childRef = useRef(null);
+  const router = useRouter();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedAddress, defaultAddress } = useSelector(
@@ -35,6 +38,7 @@ function DropDownAddress() {
   const handleOpenProgrmatically = (event) => {
     if (!event.isTrusted) {
       setAddressModalKey(Date.now());
+      //   setSelectCarPopUpModal(true);
       return setOpenAddNewAddress(true);
     }
   };
@@ -43,7 +47,11 @@ function DropDownAddress() {
     if (!isAuth()) {
       setOpenLogin(true);
     } else {
-      if (isMobile) {
+      // open it in middle of screen when clicked programatically
+      if (
+        isMobile ||
+        (router?.pathname?.includes("service") && !event.isTrusted)
+      ) {
         setSelectCarPopUpModal(true);
         event.preventDefault(); // Prevents the default action (e.g., navigation for links)
         event.stopPropagation();

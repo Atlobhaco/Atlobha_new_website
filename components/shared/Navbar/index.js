@@ -47,9 +47,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   const { mobileScreen } = router.query;
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+
+  //   appear at service section page with no checkout
   const appearAt =
     router?.pathname?.includes("spare") ||
     router?.pathname?.includes("sections") ||
+    (router?.pathname?.includes("service") &&
+      !router?.pathname?.includes("checkout")) ||
     router?.pathname === "/";
 
   const hideComponent = hideNavbarInUrls.some((url) =>
@@ -197,12 +201,18 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     )?.background_color;
     const sectionBgColor =
       allGroups[1]?.sections?.find(
-        (sec) => sec?.title === router?.query?.secTitle
+        (sec) =>
+          sec?.type?.toLowerCase() === router?.query?.secTitle ||
+          sec?.type?.toLowerCase() === router?.query?.secType?.toLowerCase()
       )?.background_color || marketPlaceColor;
     //   marketPlaceColor default bg color for any page no section
     //   the correct one to detect the old path not marketPlaceColor
-    if (router?.pathname?.includes("/spareParts") || router?.pathname === "/") {
-      return router?.pathname?.includes("/spareParts")
+    if (
+      (router?.pathname?.includes("/spareParts") && !router?.query?.secType) ||
+      router?.pathname === "/"
+    ) {
+      return router?.pathname?.includes("/spareParts") &&
+        !router?.query?.secType
         ? sparePartColor || "#FFF5EF"
         : marketPlaceColor || "#FFF5EF";
     } else {
@@ -215,7 +225,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
       router.push(section?.type === MARKETPLACE ? "/" : "/spareParts");
     } else {
       router.push(
-        `/sections?secTitle=${section?.title}&&secType=${section?.type}`
+        `/sections?secTitle=${section?.title}&secType=${section?.type}`
       );
     }
   };

@@ -97,6 +97,11 @@ function CarFilters({
 
   // Fetch brands and user vehicles once
   useEffect(() => {
+    callBrands();
+  }, []);
+
+  // Fetch buser vehicles once
+  useEffect(() => {
     if (user) {
       callBrands();
       callUserVehicles();
@@ -137,8 +142,7 @@ function CarFilters({
   };
 
   return (
-    mergedShowHideFilters.carFilter &&
-    user && (
+    mergedShowHideFilters.carFilter && (
       <div>
         <h3
           style={{

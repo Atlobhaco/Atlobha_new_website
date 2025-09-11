@@ -87,7 +87,7 @@ function Footer() {
       router.push(section?.type === MARKETPLACE ? "/" : "/spareParts");
     } else {
       router.push(
-        `/sections?secTitle=${section?.title}&&secType=${section?.type}`
+        `/sections?secTitle=${section?.title}&secType=${section?.type}`
       );
     }
   };

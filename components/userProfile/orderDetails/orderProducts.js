@@ -16,7 +16,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERS, PARTS, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
-import { riyalImgOrange } from "@/constants/helpers";
+import { riyalImgOrange, servicePrice } from "@/constants/helpers";
 
 function OrderProducts({
   orderDetails = {},
@@ -31,6 +31,7 @@ function OrderProducts({
   const dispatch = useDispatch();
   const { selectedParts } = useSelector((state) => state.addSpareParts);
   const [largeImage, setLargeImage] = useState(false);
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const imgHolderStyle = {
     borderRadius: isMobile ? "8px" : "20px",
@@ -97,15 +98,19 @@ function OrderProducts({
             fontWeight: 700,
           }}
         >
-          {t.selectedProducts} (
-          {orderDetails?.parts?.length || orderDetails?.products?.length})
+          {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.maintenance
+            ? t.selectedServices
+            : t.selectedProducts}{" "}
+          ({orderDetails?.parts?.length || orderDetails?.products?.length})
         </Box>
 
         {(orderDetails?.status === STATUS?.new ||
           orderDetails?.status === STATUS?.incomplete ||
           orderDetails?.status === STATUS?.priced) &&
           (!editMode ? (
-            type !== ORDERSENUM?.marketplace && (
+            type !== ORDERSENUM?.marketplace &&
+            type !== ORDERSENUM?.PORTABLE &&
+            type !== ORDERSENUM?.maintenance && (
               <SharedBtn
                 compBeforeText={
                   (isFetching || orderDetailsFetching) && (
@@ -199,12 +204,22 @@ function OrderProducts({
                       onError={(e) =>
                         (e.target.srcset = "/imgs/no-img-holder.svg")
                       }
-                      src={part?.image || "/imgs/no-img-holder.svg"}
+                      src={
+                        part?.image ||
+                        part?.thumbnail?.url ||
+                        "/imgs/no-img-holder.svg"
+                      }
                       width={isMobile ? 50 : 61}
                       height={isMobile ? 50 : 61}
                       alt="spare-part"
                       onClick={() =>
-                        setLargeImage(part?.image ? part?.image : false)
+                        setLargeImage(
+                          part?.image
+                            ? part?.image
+                            : part?.thumbnail?.url
+                            ? part?.thumbnail?.url
+                            : false
+                        )
                       } // Open modal on click
                     />
                   </Box>
@@ -214,14 +229,17 @@ function OrderProducts({
                     <div className={`${style["details-parts_details-name"]}`}>
                       {part?.name}
                     </div>
-                    <div
-                      className={`${style["details-parts_details-second-qty"]}`}
-                    >
-                      {part?.quantity} {t.piece}{" "}
-                    </div>
+                    {(part?.quantity || part?.description) && (
+                      <div
+                        className={style["details-parts_details-second-qty"]}
+                      >
+                        {part?.quantity && `${part.quantity} ${t.piece}`}
+                        {part?.description && part.description}
+                      </div>
+                    )}
                   </div>
                 </div>
-                {orderDetails?.status !== STATUS?.new ||
+                {orderDetails?.status !== STATUS?.new &&
                 type === ORDERSENUM?.marketplace ? (
                   <div
                     style={{
@@ -231,6 +249,21 @@ function OrderProducts({
                     }}
                   >
                     {part?.total_price || part?.price} {riyalImgOrange()}
+                  </div>
+                ) : type === ORDERSENUM?.maintenance ||
+                  type === ORDERSENUM?.PORTABLE ? (
+                  <div
+                    style={{
+                      color: "#EE772F",
+                      fontWeight: "500",
+                      fontSize: isMobile ? "14px" : "16px",
+                    }}
+                  >
+                    {servicePrice({
+                      service: orderDetails?.service,
+                      userCar: selectedCar?.id ? selectedCar : defaultCar,
+                    })}{" "}
+                    {riyalImgOrange()}
                   </div>
                 ) : null}
               </div>

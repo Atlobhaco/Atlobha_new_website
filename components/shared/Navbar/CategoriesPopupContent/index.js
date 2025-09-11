@@ -18,7 +18,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import { setSectionsSeo } from "@/redux/reducers/homeSectionsReducer";
 
 const active = {
-  border: "1px solid #F9DD4B",
+//   border: "1px solid #F9DD4B",
 };
 
 const coloredBox = {
@@ -40,6 +40,7 @@ function CategoriesPopupcontent({
   activeSection,
   setActiveSection,
   setOpenCategories = () => {},
+  openCategories = false,
 }) {
   const router = useRouter();
   const { route } = router;
@@ -224,8 +225,9 @@ function CategoriesPopupcontent({
                   }}
                   onClick={() => {
                     if (
-                      (route === "/spareParts" && +sec?.type === SPAREPARTS) ||
-                      (route === "/" && +sec?.type === MARKETPLACE)
+                      ((route === "/spareParts" && +sec?.type === SPAREPARTS) ||
+                        (route === "/" && +sec?.type === MARKETPLACE)) &&
+                      openCategories
                     ) {
                       return setOpenCategories(false);
                     }
@@ -235,7 +237,7 @@ function CategoriesPopupcontent({
                     );
                     setTimeout(() => {
                       setOpenCategories(false);
-                    }, 150);
+                    }, 200);
                   }}
                 >
                   <Box sx={{ maxWidth: isMobile ? "100%" : "70%" }}>
@@ -282,11 +284,11 @@ function CategoriesPopupcontent({
                   <Box
                     onClick={() => {
                       router.push(
-                        `/sections?secTitle=${sec?.title}&&secType=${sec?.type}`
+                        `/sections?secTitle=${sec?.title}&secType=${sec?.type}`
                       );
                       setTimeout(() => {
                         setOpenCategories(false);
-                      }, 150);
+                      }, 200);
                     }}
                     sx={{
                       ...sectionService,

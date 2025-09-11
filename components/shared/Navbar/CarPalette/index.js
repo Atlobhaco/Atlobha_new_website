@@ -185,12 +185,16 @@ function CarPalette() {
               />
             </Box>
             <Box sx={{ ...textStyle, letterSpacing: "5.854px" }}>
-              {selectedCar?.year
-                ?.toString()
-                ?.replace(/\d/g, (digit) => "٠١٢٣٤٥٦٧٨٩"[digit]) ||
-                defaultCar?.year
-                  ?.toString()
-                  ?.replace(/\d/g, (digit) => "٠١٢٣٤٥٦٧٨٩"[digit])}
+              <Box>
+                {(selectedCar?.year?.toString() || defaultCar?.year?.toString())
+                  .replace(/\d/g, (digit) => "٠١٢٣٤٥٦٧٨٩"[digit])
+                  .split("")
+                  .map((char, idx) => (
+                    <span key={idx} style={{ margin: "0px 3px" }}>
+                      {char}
+                    </span>
+                  ))}
+              </Box>
               <Box> {selectedCar?.year || defaultCar?.year}</Box>
             </Box>
           </Box>

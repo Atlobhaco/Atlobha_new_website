@@ -5,6 +5,7 @@ import { AUTH, CAN_USE, OTP, PHONE } from "@/config/endPoints/endPoints";
 import MergeStep from "./mergeStep";
 import EnterOtpStep from "./enterOtpStep";
 import { toast } from "react-toastify";
+import useLocalization from "@/config/hooks/useLocalization";
 
 function MigrationPhoneLogic({
   migrationStep,
@@ -16,6 +17,7 @@ function MigrationPhoneLogic({
   setPhoneNum,
   setRecallUserDataAgain = () => {},
 }) {
+  const { t } = useLocalization();
   const [timer, setTimer] = useState(120);
   const [canUsePhone, setCanUsePhone] = useState(false);
 
@@ -38,6 +40,7 @@ function MigrationPhoneLogic({
       setCanUsePhone(false);
       if (err?.response?.status === 409) {
         callOtpRequest409();
+        toast.error(t.phoneUsedForMerge);
         return null;
       }
       toast.error(err?.response?.data?.message);
@@ -66,6 +69,7 @@ function MigrationPhoneLogic({
     onError: (err) => {
       setCanUsePhone(false);
       if (err?.response?.status === 409) {
+        toast.error(t.phoneUsedForMerge);
         return setMigrationStep(2);
       }
       toast.error(err?.response?.data?.message);

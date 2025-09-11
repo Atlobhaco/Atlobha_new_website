@@ -3,8 +3,6 @@ import style from "./confirmation.module.scss";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -12,23 +10,33 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import useCustomQuery from "@/config/network/Apiconfig";
 import {
   ESTIMATED_DELIVERY,
+  MAINTENANCE_RESERVATIONS,
   ORDERS,
+  PORTABLE_MAINTENANCE_RESERVATIONS,
   SETTINGS,
   SPARE_PARTS,
 } from "@/config/endPoints/endPoints";
-import { MARKETPLACE } from "@/constants/enums";
+import { FIXED, MARKETPLACE, PORTABLE, SERVICES } from "@/constants/enums";
 import moment from "moment";
 import { STATUS } from "@/constants/enums";
-import { CircularProgress } from "@mui/material";
-import { availablePaymentMethodImages } from "@/constants/helpers";
+import { Box, CircularProgress } from "@mui/material";
+import {
+  availablePaymentMethodImages,
+  riyalImgOrange,
+  servicePrice,
+} from "@/constants/helpers";
+import { useSelector } from "react-redux";
 
 function Confirmation() {
-  const [orderId, setOrderId] = useState(null);
-  const [LngLat, setLngLat] = useState(null);
-  const { isMobile } = useScreenSize();
   const router = useRouter();
-  const { id, type } = router.query;
-  const { t } = useLocalization();
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+
+  const { isMobile } = useScreenSize();
+  const { t, locale } = useLocalization();
+  const [LngLat, setLngLat] = useState(null);
+  const [orderId, setOrderId] = useState(null);
+  const { id, type, serviceType } = router.query;
+  const [serciceTypeFromStorage, setServiceType] = useState(false);
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -53,7 +61,13 @@ function Confirmation() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const orderIdFromStorage =
-        type === MARKETPLACE ? sessionStorage.getItem("order_id_market") : null;
+        type === MARKETPLACE || type === SERVICES
+          ? sessionStorage.getItem("order_id_market")
+          : null;
+
+      const serviceType =
+        type === SERVICES ? sessionStorage.getItem("service_type") : null;
+      setServiceType(serviceType);
       setOrderId(orderIdFromStorage);
     }
   }, [type]);
@@ -61,13 +75,19 @@ function Confirmation() {
   const renderUrlDependOnType = () => {
     switch (type) {
       case MARKETPLACE:
-        return `/marketplace/orders/${+id || orderId}`;
+        return `/marketplace${ORDERS}/${+id || orderId}`;
+      case SERVICES:
+        if (serviceType === PORTABLE || serciceTypeFromStorage === PORTABLE) {
+          return `${PORTABLE_MAINTENANCE_RESERVATIONS}/${+id || orderId}`;
+        }
+        return `${MAINTENANCE_RESERVATIONS}/${+id || orderId}`;
+
       default:
         return `${SPARE_PARTS}${ORDERS}/${+id || orderId}`;
     }
   };
 
-  const { data, refetch: addPricing } = useCustomQuery({
+  const { data } = useCustomQuery({
     name: ["getDataforPricing", id, orderId],
     url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
@@ -81,6 +101,7 @@ function Confirmation() {
         });
       }
       sessionStorage.removeItem("order_id_market");
+      sessionStorage.removeItem("service_type");
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
@@ -89,6 +110,19 @@ function Confirmation() {
 
   const deliveryDate = () => {
     if (!data) return null;
+
+    const dateStart = moment(data?.slot?.start);
+    const today = moment();
+
+    if (type === SERVICES) {
+      if (dateStart.isSame(today, "day")) {
+        return `${t.todayAtTime} ${dateStart.format("H:mm")}`;
+      } else {
+        return `${moment(dateStart).format("h:mm")} (${dateStart.format(
+          locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
+        )})`;
+      }
+    }
 
     if (data?.status === STATUS?.new && type !== MARKETPLACE)
       return t.dateLater;
@@ -107,6 +141,41 @@ function Confirmation() {
           .unix(estimateRes.estimated_delivery_date_to)
           .format("dddd, D MMMM YYYY")}`
       : t.dateLater;
+  };
+
+  const HeaderAddressForType = () => {
+    if (type === SERVICES && serviceType === FIXED) {
+      return t.centerLocation;
+    }
+    if (type === SERVICES && serviceType === PORTABLE) {
+      return t.serviceLocation;
+    }
+    return t.deliveryAddress;
+  };
+
+  const headerTimeType = () => {
+    if (type === SERVICES) {
+      return t.serviceTime;
+    }
+    return t.deliveryTime;
+  };
+
+  const headerParts = () => {
+    if (type === SERVICES) {
+      return t.selectedServices;
+    }
+    return (
+      <>
+        <Image
+          loading="lazy"
+          src="/icons/brakes-black.svg"
+          alt="alert"
+          width={24}
+          height={24}
+        />
+        {type === MARKETPLACE ? t.marketData : t.partsData}
+      </>
+    );
   };
 
   return (
@@ -143,10 +212,11 @@ function Confirmation() {
         </div>
         <div className={`${style["deliverySec_address"]}`}>
           <div className={`${style["deliverySec_address-holder"]}`}>
-            {t.deliveryAddress}
+            {HeaderAddressForType()}
           </div>
           <div className={`${style["deliverySec_address-location"]}`}>
-            {data?.address?.address || ""} {data?.address?.city?.name}
+            {data?.address?.address || data?.service_center?.address || ""}{" "}
+            {data?.address?.city?.name}
           </div>
         </div>
       </div>
@@ -162,16 +232,18 @@ function Confirmation() {
         </div>
         <div className={`${style["timeSec_appoin"]}`}>
           <div className={`${style["timeSec_appoin-holder"]}`}>
-            {t.deliveryTime}
+            {headerTimeType()}
           </div>
           <div className={`${style["timeSec_appoin-date"]}`}>
-            <Image
-              loading="lazy"
-              src="/icons/alert-blue.svg"
-              alt="alert"
-              width={isMobile ? 14 : 20}
-              height={isMobile ? 14 : 20}
-            />
+            {type !== SERVICES && (
+              <Image
+                loading="lazy"
+                src="/icons/alert-blue.svg"
+                alt="alert"
+                width={isMobile ? 14 : 20}
+                height={isMobile ? 14 : 20}
+              />
+            )}
             {loadDate ? (
               <CircularProgress color="inherit" size={20} />
             ) : (
@@ -181,8 +253,8 @@ function Confirmation() {
         </div>
       </div>
 
-      {/* show payment method for marketplace */}
-      {type === MARKETPLACE ? (
+      {/* show payment method for marketplace or services */}
+      {type === MARKETPLACE || type === SERVICES ? (
         <div className={`${style["deliverySec"]}`}>
           <div>
             <Image
@@ -208,17 +280,8 @@ function Confirmation() {
       ) : null}
 
       <div className={`${style["details"]}`}>
-        <div className={`${style["details-header"]}`}>
-          <Image
-            loading="lazy"
-            src="/icons/brakes-black.svg"
-            alt="alert"
-            width={24}
-            height={24}
-          />
-          {type === MARKETPLACE ? t.marketData : t.partsData}
-        </div>
-        {(data?.products || data?.parts)?.map((part) => (
+        <div className={`${style["details-header"]}`}>{headerParts()}</div>
+        {(data?.products || data?.parts || [data?.service])?.map((part) => (
           <div className={`${style["details-parts"]}`} key={part?.id}>
             <div className={`${style["details-parts_imgHolder"]}`}>
               <Image
@@ -226,7 +289,7 @@ function Confirmation() {
                 src={part?.image || "/imgs/no-img-holder.svg"}
                 width={isMobile ? 50 : 70}
                 height={isMobile ? 50 : 70}
-                alt={part?.quantity}
+                alt={part?.quantity || 1}
                 onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
               />
             </div>
@@ -234,10 +297,34 @@ function Confirmation() {
               <div className={`${style["details-parts_details-name"]}`}>
                 {part?.name}
               </div>
-              <div className={`${style["details-parts_details-qty"]}`}>
-                {part?.quantity} {t.piece}{" "}
-              </div>
+              {type === SERVICES && (
+                <div className={`${style["details-parts_details-desc"]}`}>
+                  {part?.description}
+                </div>
+              )}
+              {part?.quantity && (
+                <div className={`${style["details-parts_details-qty"]}`}>
+                  {part?.quantity} {t.piece}{" "}
+                </div>
+              )}
             </div>
+            {type === SERVICES && (
+              <Box
+                sx={{
+                  px: isMobile ? 0 : 3,
+                  color: "#ee772f",
+                  fontSize: isMobile ? "16px" : "20px",
+                  fontWeight: "500",
+                  minWidth: "fit-content",
+                }}
+              >
+                {servicePrice({
+                  service: data?.service,
+                  userCar: selectedCar?.id ? selectedCar : defaultCar,
+                })}
+                {riyalImgOrange()}
+              </Box>
+            )}
           </div>
         ))}
       </div>

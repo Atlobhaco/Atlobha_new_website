@@ -67,7 +67,7 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                       query: {
                         name: data?.product?.name,
                         desc: data?.product?.desc,
-                        tags: data?.product?.combined_tags?.[0]?.name_ar,
+                        tags: data?.product?.tags?.[0]?.name_ar,
                         category: data?.product?.marketplace_category?.name,
                         subCategory:
                           data?.product?.marketplace_subcategory?.name,
@@ -81,7 +81,7 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                   }}
                 >
                   <Image
-                    src={data?.product?.image || "/imgs/no-img-holder.svg"}
+                    src={data?.product?.image?.url || "/imgs/no-img-holder.svg"}
                     width={isMobile ? 55 : 200}
                     height={isMobile ? 55 : 200}
                     alt={data?.id}

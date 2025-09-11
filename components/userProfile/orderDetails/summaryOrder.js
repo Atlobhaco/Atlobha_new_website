@@ -15,6 +15,7 @@ import {
   generateSignatureApplePay,
   riyalImgBlack,
   riyalImgRed,
+  servicePrice,
 } from "@/constants/helpers";
 import { ORDERSENUM, STATUS, PAYMENT_METHODS } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -40,6 +41,7 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
@@ -497,38 +499,65 @@ function SummaryOrder({
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.priceWithoutVat}</Box>
-        <Box sx={text}>
-          {orderDetails?.parts?.length
-            ? orderDetails?.parts
-                ?.reduce(
-                  (accumulator, current) => accumulator + current.total_price,
-                  0
-                )
-                ?.toFixed(2)
-            : orderDetails?.products
-                ?.reduce(
-                  (accumulator, current) =>
-                    accumulator + current.price * current?.quantity,
-                  0
-                )
-                ?.toFixed(2)}{" "}
-          {riyalImgBlack()}
-        </Box>
+        {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.maintenance ? (
+          <Box sx={text}>
+            {receipt?.subtotal}
+            {riyalImgBlack()}
+          </Box>
+        ) : (
+          <Box sx={text}>
+            {orderDetails?.parts?.length
+              ? orderDetails?.parts
+                  ?.reduce(
+                    (accumulator, current) => accumulator + current.total_price,
+                    0
+                  )
+                  ?.toFixed(2)
+              : orderDetails?.products
+                  ?.reduce(
+                    (accumulator, current) =>
+                      accumulator + current.price * current?.quantity,
+                    0
+                  )
+                  ?.toFixed(2)}{" "}
+            {riyalImgBlack()}
+          </Box>
+        )}
       </Box>
-      {/* discount */}
-      <Box className="d-flex justify-content-between mb-2">
-        <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
-        <Box sx={{ ...text, color: "#EB3C24" }}>
-          {(calculateReceiptResFromMainPage?.discount ?? receipt?.discount) ===
-          receipt?.discount
-            ? receipt?.discount
-            : calculateReceiptResFromMainPage?.discount}{" "}
-          {riyalImgRed()}
+      {/* Code Discount */}
+      {(calculateReceiptResFromMainPage?.discount ?? receipt?.discount) > 0 && (
+        <Box className="d-flex justify-content-between mb-2">
+          <Box sx={{ ...text, color: "#EB3C24" }}>{t.codeDiscount}</Box>
+          <Box sx={{ ...text, color: "#EB3C24" }}>
+            {(calculateReceiptResFromMainPage?.discount ??
+              receipt?.discount) === receipt?.discount
+              ? receipt?.discount
+              : calculateReceiptResFromMainPage?.discount}{" "}
+            {riyalImgRed()}
+          </Box>
         </Box>
-      </Box>
+      )}
+
+      {/* Additional Discount */}
+      {(calculateReceiptResFromMainPage?.offers_discount ??
+        receipt?.offers_discount) > 0 && (
+        <Box className="d-flex justify-content-between mb-2">
+          <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
+          <Box sx={{ ...text, color: "#EB3C24" }}>
+            {(calculateReceiptResFromMainPage?.offers_discount ??
+              receipt?.offers_discount) === receipt?.offers_discount
+              ? receipt?.offers_discount
+              : calculateReceiptResFromMainPage?.offers_discount}{" "}
+            {riyalImgRed()}
+          </Box>
+        </Box>
+      )}
+
       {/* delivery fees */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.deliveryFees}</Box>
+        <Box sx={text}>
+          {type === ORDERSENUM?.PORTABLE ? t.serviceFees : t.deliveryFees}
+        </Box>
         <Box sx={text}>
           {(calculateReceiptResFromMainPage?.delivery_fees ??
             receipt?.delivery_fees) === receipt?.delivery_fees

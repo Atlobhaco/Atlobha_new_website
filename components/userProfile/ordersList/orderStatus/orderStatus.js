@@ -19,6 +19,13 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>{t.new}</div>
           </div>
         );
+      case STATUS?.processing:
+        return (
+          <div className={`${style["new"]} ${style["status"]}`}>
+            <InfoIcon className={`${style["svg"]}`} />
+            <div className={`${style["text"]}`}>{t.status.processing}</div>
+          </div>
+        );
       case STATUS?.cancelled:
         return (
           <div className={`${style["cancelled"]} ${style["status"]}`}>
@@ -147,6 +154,21 @@ function OrderStatus({ status }) {
             <div className={`${style["text"]}`}>
               {t.status["pricing-unavailable"]}
             </div>
+          </div>
+        );
+
+      case STATUS?.completed:
+        return (
+          <div className={`${style["completed"]} ${style["status"]}`}>
+            <Image
+              loading="lazy"
+              src="/icons/completed-tick.svg"
+              width={24}
+              height={12}
+              alt="completed"
+              className={`${style["image"]}`}
+            />
+            <div className={`${style["text"]}`}>{t.status["completed"]}</div>
           </div>
         );
       default:
