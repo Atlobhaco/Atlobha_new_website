@@ -153,8 +153,9 @@ function RedirectToCheckoutService({
           className="big-main-btn"
           onClick={() => handleCheckoutRedirection()}
           disabled={
-            (tabValue === PORTABLE && !selectedPortableTime) ||
-            (tabValue === FIXED && !allStores?.length)
+            !prod?.slots_disabled &&
+            ((tabValue === PORTABLE && !selectedPortableTime) ||
+              (tabValue === FIXED && !allStores?.length))
           }
         />
       </Box>

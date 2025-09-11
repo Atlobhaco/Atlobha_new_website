@@ -15,7 +15,7 @@ function ServiceAvailabilityWithCar() {
         padding: "16px 9px",
         background: "#FEFCED",
         borderRadius: "10px",
-        display: "flex",
+        display: isMobile ? "block" : "flex",
         alignItems: "center",
         justifyContent: "space-between",
         gap: "10px",
@@ -58,7 +58,13 @@ function ServiceAvailabilityWithCar() {
           </Box>
         </Box>
       </Box>
-      <Box>
+      <Box
+        sx={{
+          display: isMobile ? "flex" : "block",
+          justifyContent: "center",
+          mt: isMobile ? 1 : 0,
+        }}
+      >
         <SharedBtn
           className="black-btn"
           customStyle={{

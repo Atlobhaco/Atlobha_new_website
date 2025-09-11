@@ -32,7 +32,11 @@ function CompatibleWith({ prod }) {
         }}
       >
         <Image
-          src={prod?.vehicle_brand?.image || "/imgs/no-prod-img.svg"}
+          src={
+            prod?.vehicle_brand?.image ||
+            prod?.model?.vehicle_brand?.image ||
+            "/imgs/no-prod-img.svg"
+          }
           alt="model"
           width={80}
           height={80}
@@ -53,11 +57,11 @@ function CompatibleWith({ prod }) {
             textAlign: "center",
           }}
         >
-          {locale === "ar"
+          {prod?.brand?.name || locale === "ar"
             ? prod?.vehicle_brand?.name_ar
             : prod?.vehicle_brand?.name_en}
           <br />
-          {locale === "ar"
+          {prod?.model?.name || locale === "ar"
             ? prod?.vehicle_model?.name_ar
             : prod?.vehicle_model?.name_en}
         </Box>
