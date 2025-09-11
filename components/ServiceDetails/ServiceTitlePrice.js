@@ -36,7 +36,7 @@ function ServiceTitlePrice({ prod, tabValue }) {
           flexWrap: "wrap",
         }}
       >
-        {prod?.tags?.map((tag) => (
+        {prod?.combined_tags?.map((tag) => (
           <Box
             sx={{
               padding: "0px 4px",

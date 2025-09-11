@@ -7,21 +7,27 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
 
-function Ads({ id }) {
+function Ads({ id, idService = false }) {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
 
   const { data: ads } = useCustomQuery({
-    name: ["adsCategory", id, defaultAddress?.lat, selectedAddress?.lat],
+    name: [
+      "adsCategory",
+      id,
+      idService,
+      defaultAddress?.lat,
+      selectedAddress?.lat,
+    ],
     url: `${ADS}?lat=${
       selectedAddress?.lat || defaultAddress?.lat || 24.7136
-    }&lng=${
-      selectedAddress?.lng || defaultAddress?.lng || 46.6753
-    }&category_id=${id}`,
+    }&lng=${selectedAddress?.lng || defaultAddress?.lng || 46.6753}&${
+      idService ? `service_category_id=${idService}` : `category_id=${id}`
+    }`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
-    enabled: true,
+    enabled: id || idService ? true : false,
   });
 
   return ads?.data?.length ? (
@@ -59,7 +65,7 @@ function Ads({ id }) {
                 }
               }}
             /> */}
-			 <Image
+            <Image
               src={img?.media || "/imgs/no-img-holder.svg"} // fallback in case media is undefined
               alt="banner-image-ads"
               width={800} // adjust based on your design

@@ -196,7 +196,7 @@ function ServiceCategory() {
               : t.servicePortbaleAfterOrder}
           </Box>
           <Box className="col-12">
-            <Ads id={idSerCat} />
+            <Ads idService={idSerCat} />
           </Box>
           {!isMobile && false && (
             <Box className={`col-md-3  mt-5`}>

@@ -148,7 +148,12 @@ function ServiceDetails() {
               <ServiceTitlePrice prod={data} tabValue={tabValue} />
 
               <ServiceCompatibleWith
-                prod={{ ...data, model: data?.service_models[0] }}
+                prod={{
+                  ...data,
+                  model: data?.service_models?.length
+                    ? data?.service_models[0]
+                    : {},
+                }}
               />
 
               {/* <DeliveryTime
