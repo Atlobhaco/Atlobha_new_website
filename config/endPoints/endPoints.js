@@ -71,3 +71,5 @@ export const PORTABLE_MAINTENANCE_RESERVATIONS =
   "/portable-maintenance-reservations";
 export const RECEIPT_PREVIEW = "/receipt-preview";
 export const MAINTENANCE_RESERVATIONS = "/maintenance-reservations";
+export const SUGGESTIONS = "/suggestions";
+export const POPULAR_KEYWORD = "/popular-keywords";

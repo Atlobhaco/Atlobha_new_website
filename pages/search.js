@@ -2,7 +2,7 @@ import FiltersCustom from "@/components/FiltersCustom";
 import PaginateComponent from "@/components/Pagination";
 import ProductCardSkeleton from "@/components/cardSkeleton";
 import ProductCard from "@/components/shared/ProductCard";
-import { SEARCH } from "@/config/endPoints/endPoints";
+import { MARKETPLACE, PRODUCTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -23,7 +23,7 @@ import ServiceDataInfo from "./serviceCategory/[idSerCat]/ServiceDataInfo";
 function Search() {
   const router = useRouter();
   const {
-    query: { keyword, type },
+    query: { keyword, type, secType },
   } = useRouter();
   const { prevRoute } = useRouteTracker();
 
@@ -45,11 +45,18 @@ function Search() {
   const [canSavefilters, setCanSaveFilters] = useState(false);
   const urlsForBackActions = ["product", "spareParts"];
 
+  const urlDependOnSection = () => {
+    if (secType === SERVICES) {
+      return `/services`;
+    } else {
+      return `${MARKETPLACE}${PRODUCTS}`;
+    }
+  };
   const { isFetching, isLoading } = useCustomQuery({
     name: ["searchFor", keyword, type, page, filters],
-    url: `${SEARCH}?page=${page}&per_page=12&keyword=${keyword}&class=${
-      type?.includes("MarketplaceProduct") ? "MarketplaceProduct" : "Service"
-    }&${getFilterParams(filters)}`,
+    url: `${urlDependOnSection()}?page=${page}&per_page=12&keyword=${keyword}&${getFilterParams(
+      filters
+    )}`,
     enabled: keyword && type ? true : false,
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
@@ -121,8 +128,8 @@ function Search() {
         }, 500);
       } else {
         setFilters({
-          brand: car?.brand?.name_en || "",
-          model: car?.model?.name_en || "",
+          brand: car?.brand?.id || "",
+          model: car?.model?.id || "",
           year: car?.year || "",
           has_active_offer: false,
           category: "",
@@ -134,8 +141,8 @@ function Search() {
       }
     } else {
       setFilters({
-        brand: car?.brand?.name_en || "",
-        model: car?.model?.name_en || "",
+        brand: car?.brand?.id || "",
+        model: car?.model?.id || "",
         year: car?.year || "",
         has_active_offer: false,
         category: "",
@@ -226,7 +233,7 @@ function Search() {
                       ))
                     : allData?.data?.map((prod) => (
                         <div
-                          className="col-md-4 col-6 mb-3 px-0 d-flex justify-content-center"
+                          className="col-md-4 col-4 mb-3 px-0 d-flex justify-content-center"
                           key={prod?.id}
                         >
                           <ProductCard product={prod} />

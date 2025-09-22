@@ -27,7 +27,7 @@ function CarFiltersCustom({
 
   // API hooks
   const { refetch: callModels } = useModelsQuery({
-    brandId: brands?.find((d) => d?.name_en === filters?.brand)?.id,
+    brandId: filters?.brand,
     setModels,
     dispatch,
   });
@@ -70,10 +70,10 @@ function CarFiltersCustom({
     {
       id: "brandSelectionForFilterCustom",
       label: t.brand,
-      value: brands?.find((d) => d?.name_en === filters?.brand)?.id,
+      value: filters?.brand,
       handleChange: (e) => {
         const val = e?.target?.value;
-        updateFilters("brand", brands?.find((d) => d?.id === val)?.name_en, {
+        updateFilters("brand", val, {
           model: "",
           year: "",
         });
@@ -83,10 +83,10 @@ function CarFiltersCustom({
     {
       id: "modelSelectionForFilterCustom",
       label: t.model,
-      value: models?.find((d) => d?.name_en === filters?.model)?.id,
+      value: filters?.model,
       handleChange: (e) => {
         const val = e?.target?.value;
-        updateFilters("model", models?.find((d) => d?.id === val)?.name_en);
+        updateFilters("model", val);
       },
       items: models,
       disabled: !filters?.brand,
@@ -95,10 +95,10 @@ function CarFiltersCustom({
     {
       id: "yearSelectionFiltersCustom",
       label: t.year,
-      value: years?.find((d) => d?.name === filters?.year)?.id,
+      value: filters?.year,
       handleChange: (e) => {
         const val = e?.target?.value;
-        updateFilters("year", years?.find((d) => d?.id === val)?.name);
+        updateFilters("year", val);
       },
       items: years,
       disabled: !filters?.brand,

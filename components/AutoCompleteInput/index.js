@@ -3,10 +3,15 @@ import { Autocomplete, TextField, Box, CircularProgress } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
 import { Image } from "react-bootstrap";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { AUTOCOMPLETE, SEARCH } from "@/config/endPoints/endPoints";
+import {
+  MARKETPLACE_PRODUCTS,
+  SEARCH,
+  SUGGESTIONS,
+} from "@/config/endPoints/endPoints";
 import useDebounce from "@/config/hooks/useDebounce";
 import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { SERVICES } from "@/constants/enums";
 
 function AutoCompleteInput() {
   const router = useRouter();
@@ -22,9 +27,17 @@ function AutoCompleteInput() {
   const [open, setOpen] = useState(false);
   const countOfLetters = 1;
 
+  const urlDependOnSection = () => {
+    if (secType === SERVICES) {
+      return `/services${SEARCH}${SUGGESTIONS}`;
+    } else {
+      return `${MARKETPLACE_PRODUCTS}${SEARCH}${SUGGESTIONS}`;
+    }
+  };
+
   const { isFetching } = useCustomQuery({
     name: ["autoComplete", debouncedInput],
-    url: `${SEARCH}${AUTOCOMPLETE}?keyword=${debouncedInput}`,
+    url: `${urlDependOnSection()}?keyword=${debouncedInput}`,
     enabled: debouncedInput.length >= countOfLetters,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
@@ -58,6 +71,20 @@ function AutoCompleteInput() {
     }
   }, [router.isReady, router.query.keyword]);
 
+  const handleRedirectToSearchList = (value) => {
+    const key = "searchHistory";
+    const history = JSON.parse(localStorage.getItem(key)) || [];
+    // Remove duplicates + add new search at front
+    const updated = [value, ...history.filter((t) => t !== value)].slice(0, 10);
+    localStorage.setItem(key, JSON.stringify(updated));
+
+    router.push(
+      `/search?keyword=${value}&type=${
+        secType || "MarketplaceProduct"
+      }&secType=${secType}`
+    );
+  };
+
   return (
     <Box
       dir={isRtl ? "rtl" : "ltr"}
@@ -72,18 +99,15 @@ function AutoCompleteInput() {
         open={open}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
-        options={options}
+        options={[...new Set(options)]}
         loading={isFetching}
         loadingText={t.loading}
         value={selectedOption}
+        filterOptions={(x) => x} // 👈 disables default filtering(for keyword not found in results)
         getOptionLabel={(option) => option}
         onChange={(event, newValue) => {
           if (newValue) {
-            router.push(
-              `/search?keyword=${newValue}&type=${
-                secType || "MarketplaceProduct"
-              }&secType=${secType}`
-            );
+            handleRedirectToSearchList(newValue);
             setSelectedOption(newValue);
           } else {
             setSelectedOption(null);
@@ -93,11 +117,7 @@ function AutoCompleteInput() {
           if (event.key === "Enter") {
             event.preventDefault();
             if (inputValue?.trim()?.length >= countOfLetters) {
-              router.push(
-                `/search?keyword=${inputValue}&type=${
-                  secType || "MarketplaceProduct"
-                }&secType=${secType}`
-              );
+              handleRedirectToSearchList(inputValue);
               setSelectedOption(inputValue);
               setOpen(false); // 👈 يغلق القائمة بعد الضغط
             }

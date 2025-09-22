@@ -35,10 +35,15 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      const history = localStorage.getItem("searchHistory");
       localStorage.removeItem("access_token");
       localStorage.removeItem("user");
       localStorage.removeItem("carLimitSupport");
       localStorage.clear();
+      // Restore history if exists
+      if (history) {
+        localStorage.setItem("searchHistory", history);
+      }
       window.location.reload();
       webengage.user.logout();
     },

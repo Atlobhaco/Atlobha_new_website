@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import CarFiltersCustom from "./CarFiltersCustom";
@@ -58,8 +58,7 @@ function FiltersCustom({
   //     }
   //   }, [filters?.category, isMobile, prevCategory]);
 
-  const getCategoryName = (cat) =>
-    locale === "ar" ? cat?.name_en : cat?.name_en;
+  const getCategoryName = (cat) => cat?.id;
 
   const returnPageIntoOriginal = () => {
     const newQuery = { ...router.query, current_active_page: 1 };
@@ -110,12 +109,9 @@ function FiltersCustom({
         returnPageIntoOriginal={returnPageIntoOriginal}
       />
 
-      {(allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-        ?.id === 11 ||
-        allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-          ?.id === 7 ||
-        allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-          ?.id === 2) && (
+      {(filters?.category === 11 ||
+        filters?.category === 7 ||
+        filters?.category === 2) && (
         <ConditionalAttributesFilterCustom
           mergedShowHideFilters={mergedShowHideFilters}
           filters={filters}

@@ -14,29 +14,21 @@ function ManufactrurerFilterCustom({
   allCategories,
   returnPageIntoOriginal,
 }) {
-  const { t, locale } = useLocalization();
-  const { user } = useAuth();
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const [manufactures, setManufacturers] = useState([]);
 
   const urlDependOnCatId = () => {
-    if (filters?.category?.length) {
-      return `${MANUFACTURERS}?category_ids[]=${
-        allCategories?.find(
-          (cat) =>
-            (locale === "ar" ? cat?.name_en : cat?.name_en) ===
-            filters?.category
-        )?.id
-      }&is_active=1`;
+    if (filters?.category) {
+      return `${MANUFACTURERS}?category_ids[]=${filters?.category}&is_active=1`;
     } else {
       return `${MANUFACTURERS}?is_active=1`;
     }
   };
 
   const selectedManufacture = filters?.manufacturer;
-  const getLocalizedName = (man) =>
-    locale === "ar" ? man?.name_en : man?.name_en;
-  const isSelected = (man) => getLocalizedName(man) === selectedManufacture;
+  const getID = (man) => man?.id;
+  const isSelected = (man) => getID(man) === selectedManufacture;
 
   useCustomQuery({
     name: ["manufactureFilters", filters?.category],
@@ -45,7 +37,7 @@ function ManufactrurerFilterCustom({
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       // clear manufactrurer selection if not found in response
-      if (!res?.find((man) => getLocalizedName(man) === selectedManufacture)) {
+      if (!res?.find((man) => getID(man) === selectedManufacture)) {
         setFilters((prev) => ({
           ...prev,
           ...filters,
@@ -94,7 +86,7 @@ function ManufactrurerFilterCustom({
                   ...prev,
                   manufacturer: isSelected(manufacturer)
                     ? null
-                    : getLocalizedName(manufacturer),
+                    : getID(manufacturer),
                 }));
                 if (!isMobile) {
                   returnPageIntoOriginal();

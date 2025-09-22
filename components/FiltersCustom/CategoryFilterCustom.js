@@ -15,7 +15,7 @@ function CategoryFilterCustom({
   colorHeaders,
   returnPageIntoOriginal,
 }) {
-  const { t, locale } = useLocalization();
+  const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
@@ -34,9 +34,8 @@ function CategoryFilterCustom({
   });
 
   const selectedCategory = filters?.category;
-  const getLocalizedName = (cat) =>
-    locale === "ar" ? cat?.name_en : cat?.name_en;
-  const isSelected = (cat) => getLocalizedName(cat) === selectedCategory;
+  const getCatID = (cat) => cat?.id;
+  const isSelected = (cat) => getCatID(cat) === selectedCategory;
 
   if (!mergedShowHideFilters?.categoryFilter) return null;
 
@@ -68,7 +67,7 @@ function CategoryFilterCustom({
             onClick={() => {
               setFilters((prev) => ({
                 ...prev,
-                category: isSelected(cat) ? null : getLocalizedName(cat),
+                category: isSelected(cat) ? null : getCatID(cat),
                 conditionalAttributes: {},
               }));
               if (!isMobile) {
