@@ -88,7 +88,7 @@
   "addressAsDefault": "تعيين كعنوان افتراضي",
   "wantSpareParts": "هل تريد قطع غيار؟",
   "sparePartPricing": "تسعير قطع الغيار",
-  "marketplacePage": "طلبات المتجر",
+  "marketplacePage": "المتجر",
   "bestPriceForYou": "افضل الاسعار نلاقيها لك!",
   "free": "مجاني",
   "store": "المتجر",
@@ -525,5 +525,6 @@
   "servviceAvailable": "توفر الخدمة",
   "selectedServices": "الخدمات المختارة",
   "canNotAddPromoForFixed": "لا يمكن اضافة كود توصيل مجاني للخدمات المقدمة في مركز الخدمة",
-  "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف"
+  "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف",
+  "serviceCategoriesSection": "اقسام الخدمات"
 }

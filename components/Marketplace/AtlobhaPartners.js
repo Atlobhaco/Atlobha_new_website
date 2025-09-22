@@ -159,6 +159,7 @@ function AtlobhaPartners({ sectionInfo }) {
                       sx={{
                         fontWeight: "bold",
                         color: "#232323",
+                        textAlign: "end",
                       }}
                     >
                       {part?.name}

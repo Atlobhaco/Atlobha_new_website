@@ -527,5 +527,6 @@
   "servviceAvailable": "Service availabile",
   "selectedServices": "Selected service",
   "canNotAddPromoForFixed": "can not add coupon free delivery for services provided at the center",
-  "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number"
+  "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number",
+  "serviceCategoriesSection": "Services Categories"
 }

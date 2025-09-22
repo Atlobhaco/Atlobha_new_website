@@ -1,4 +1,4 @@
-import { CATEGORY, MARKETPLACE } from "@/config/endPoints/endPoints";
+import { SERVICE_CATEGORIES } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -6,12 +6,10 @@ import { Box } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 
-function CategoryFilterCustom({
+function ServiceCategoryFilterCustom({
   filters,
   mergedShowHideFilters,
   setFilters,
-  setAllCategories,
-  allCategories,
   colorHeaders,
   returnPageIntoOriginal,
 }) {
@@ -24,24 +22,25 @@ function CategoryFilterCustom({
   const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
   const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
 
-  useCustomQuery({
-    name: ["categoriesForfilters", lng],
-    url: `${MARKETPLACE}${CATEGORY}?lat=${lat}&lng=${lng}`,
+  const { data: serviceCategories } = useCustomQuery({
+    name: ["serviceCategoriesForfilters", lng],
+    url: `${SERVICE_CATEGORIES}?lat=${lat}&lng=${lng}`,
     enabled: !!lng,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
-    onSuccess: setAllCategories,
   });
 
-  const selectedCategory = filters?.category;
-  const getCatID = (cat) => cat?.id;
-  const isSelected = (cat) => getCatID(cat) === selectedCategory;
+  const selectedServiceCategory = filters?.category_id;
+  const getServiceCatID = (cat) => cat?.id;
+  const isSelected = (cat) => getServiceCatID(cat) === selectedServiceCategory;
 
-  if (!mergedShowHideFilters?.categoryFilter) return null;
+  if (!mergedShowHideFilters?.showServiceCategoryFilter) return null;
 
   return (
     <>
-      <h3 style={{ color: colorHeaders, marginTop: "25px" }}>{t.category}</h3>
+      <h3 style={{ color: colorHeaders, marginTop: "25px" }}>
+        {t.serviceCategoriesSection}
+      </h3>
       <Box
         sx={{
           display: "flex",
@@ -49,7 +48,7 @@ function CategoryFilterCustom({
           flexWrap: "wrap",
         }}
       >
-        {allCategories?.map((cat) => (
+        {serviceCategories?.map((cat) => (
           <Box
             key={cat?.id}
             sx={{
@@ -67,8 +66,7 @@ function CategoryFilterCustom({
             onClick={() => {
               setFilters((prev) => ({
                 ...prev,
-                category: isSelected(cat) ? null : getCatID(cat),
-                conditionalAttributes: {},
+                category_id: isSelected(cat) ? null : getServiceCatID(cat),
               }));
               if (!isMobile) {
                 returnPageIntoOriginal();
@@ -83,4 +81,4 @@ function CategoryFilterCustom({
   );
 }
 
-export default CategoryFilterCustom;
+export default ServiceCategoryFilterCustom;

@@ -162,7 +162,13 @@ function Search() {
         <div className="row mt-1">
           {!isMobile && (
             <div className={`col-md-3`}>
-              <FiltersCustom filters={filters} setFilters={setFilters} />
+              <FiltersCustom
+                filters={filters}
+                setFilters={setFilters}
+                showHideFilters={{
+                  showServiceCategoryFilter: secType === SERVICES,
+                }}
+              />
             </div>
           )}
           <div className={`${isMobile ? "col-12" : "col-9"}`}>
@@ -275,7 +281,13 @@ function Search() {
         setOpen={setOpenfiltersModal}
         hasCloseIcon
         content={
-          <FiltersCustom filters={tempFilters} setFilters={setTempfilters} />
+          <FiltersCustom
+            filters={tempFilters}
+            setFilters={setTempfilters}
+            showHideFilters={{
+              showServiceCategoryFilter: secType === SERVICES,
+            }}
+          />
         }
         renderCustomBtns={
           <Box
