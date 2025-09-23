@@ -23,14 +23,10 @@ function ConditionalAttributesFilterCustom({
   const { locale } = useLocalization();
   const [attributes, setAttributes] = useState([]);
 
-  const getLocalizedName = (cat) =>
-    locale === "ar" ? cat?.name_en : cat?.name_en;
+  const getCatID = (cat) => cat?.id;
 
   const urlDependOnCatId = () => {
-    switch (
-      allCategories?.find((cat) => getLocalizedName(cat) === filters?.category)
-        ?.id
-    ) {
+    switch (filters?.category) {
       case 11:
         return `${OIL_ATTRIBUTES}${VALUES}`;
       case 7:
@@ -42,7 +38,7 @@ function ConditionalAttributesFilterCustom({
     }
   };
   const headerForattribute = () =>
-    allCategories?.find((cat) => getLocalizedName(cat) === filters?.category)
+    allCategories?.find((cat) => getCatID(cat) === filters?.category)
       ?.name ?? "-";
 
   const { isFetching: fetchAttributes } = useCustomQuery({

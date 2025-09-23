@@ -15,6 +15,7 @@ import Footer from "@/components/shared/Footer";
 import Login from "@/components/Login";
 import ScrollToTop from "@/components/ScrollToTop";
 import { UrlsSpecific } from "@/constants/enums";
+import MergeEmailExist from "@/components/shared/MergeEmailExist";
 
 function Layout({ children }) {
   const { t } = useLocalization();
@@ -79,7 +80,8 @@ function Layout({ children }) {
           />
         }
       />
-      {/* {!mobileScreen && <ScrollToTop />} */}
+      {!mobileScreen && !isMobile && <ScrollToTop />}
+      {/* <MergeEmailExist /> */}
     </div>
   );
 }

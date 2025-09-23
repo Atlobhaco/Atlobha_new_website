@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import CarFiltersCustom from "./CarFiltersCustom";
@@ -9,6 +9,8 @@ import ManufactrurerFilterCustom from "./ManufactrurerFilterCustom";
 import { useRouter } from "next/router";
 import { useRouteTracker } from "@/config/providers/RouteTracker";
 import usePrevious from "@/config/hooks/usePrevious";
+import { SERVICES } from "@/constants/enums";
+import ServiceCategoryFilterCustom from "./ServiceCategoryfilterCustom";
 
 function FiltersCustom({
   // filters accpet string (names) for this is custom
@@ -28,6 +30,7 @@ function FiltersCustom({
   const router = useRouter();
   const colorHeaders = "black";
   const { isMobile } = useScreenSize();
+  const { secType } = router.query;
 
   const defaultShowHideFilters = {
     carFilter: true,
@@ -35,6 +38,7 @@ function FiltersCustom({
     categoryFilter: true,
     conditionsAttributes: true,
     manufacturerFilter: true,
+    showServiceCategoryFilter: false,
   };
 
   //  Merge passed props with defaults
@@ -58,8 +62,7 @@ function FiltersCustom({
   //     }
   //   }, [filters?.category, isMobile, prevCategory]);
 
-  const getCategoryName = (cat) =>
-    locale === "ar" ? cat?.name_en : cat?.name_en;
+  const getCategoryName = (cat) => cat?.id;
 
   const returnPageIntoOriginal = () => {
     const newQuery = { ...router.query, current_active_page: 1 };
@@ -100,33 +103,43 @@ function FiltersCustom({
         setFilters={setFilters}
       /> */}
 
-      <CategoryFilterCustom
-        filters={filters}
-        mergedShowHideFilters={mergedShowHideFilters}
-        setFilters={setFilters}
-        setAllCategories={setAllCategories}
-        allCategories={allCategories}
-        colorHeaders={colorHeaders}
-        returnPageIntoOriginal={returnPageIntoOriginal}
-      />
-
-      {(allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-        ?.id === 11 ||
-        allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-          ?.id === 7 ||
-        allCategories?.find((cat) => getCategoryName(cat) === filters?.category)
-          ?.id === 2) && (
-        <ConditionalAttributesFilterCustom
-          mergedShowHideFilters={mergedShowHideFilters}
+      {!secType && (
+        <CategoryFilterCustom
           filters={filters}
+          mergedShowHideFilters={mergedShowHideFilters}
+          setFilters={setFilters}
+          setAllCategories={setAllCategories}
           allCategories={allCategories}
+          colorHeaders={colorHeaders}
+          returnPageIntoOriginal={returnPageIntoOriginal}
+        />
+      )}
+
+      {secType === SERVICES && (
+        <ServiceCategoryFilterCustom
+          filters={filters}
+          mergedShowHideFilters={mergedShowHideFilters}
           setFilters={setFilters}
           colorHeaders={colorHeaders}
           returnPageIntoOriginal={returnPageIntoOriginal}
         />
       )}
 
-      {!!allCategories?.length && (
+      {(filters?.category === 11 ||
+        filters?.category === 7 ||
+        filters?.category === 2) &&
+        !secType && (
+          <ConditionalAttributesFilterCustom
+            mergedShowHideFilters={mergedShowHideFilters}
+            filters={filters}
+            allCategories={allCategories}
+            setFilters={setFilters}
+            colorHeaders={colorHeaders}
+            returnPageIntoOriginal={returnPageIntoOriginal}
+          />
+        )}
+
+      {!!allCategories?.length && !secType && (
         <ManufactrurerFilterCustom
           filters={filters}
           mergedShowHideFilters={mergedShowHideFilters}

@@ -452,7 +452,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           <Box className={`${style["searching-parent"]}`}>
             <Box
               className={`${style["searching-parent_holder"]} ${
-                isMobile && "w-100"
+                isMobile && "w-100 mb-3"
               }`}
             >
               <AutoCompleteInput />

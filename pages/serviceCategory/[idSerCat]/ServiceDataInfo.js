@@ -16,11 +16,12 @@ function ServiceDataInfo({ product, key }) {
       key={key}
       sx={{
         display: "flex",
-        gap: "20px",
+        gap: "10px",
         padding: isMobile ? "8px 18px" : "16px 20px",
         background: "#FFF",
         justifyContent: "space-between",
-        alignItems: "center",
+        alignItems: "start",
+        flexDirection: "column",
         cursor: "pointer",
         "&: hover": {
           opacity: "0.9",
@@ -45,143 +46,147 @@ function ServiceDataInfo({ product, key }) {
       }}
     >
       <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          gap: "20px",
-        }}
+        sx={{ display: "flex", justifyContent: "space-between", width: "100%" }}
       >
         <Box
           sx={{
-            width: isMobile ? "50px" : "80px",
-            height: isMobile ? "50px" : "80px",
             display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: "20px",
           }}
         >
-          <Image
-            loading="lazy"
-            src={
-              product?.thumbnail?.url ||
-              product?.image_url ||
-              "/imgs/no-prod-img.svg"
-            }
-            alt="Product"
-            width={200}
-            height={200}
-            onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
-            style={{
-              width: "auto",
-              height: "auto",
-              maxWidth: "100%",
-              maxHeight: "100%",
-              borderRadius: "8px",
-              margin: "auto",
-              maxWidth: "100%",
-              mawHeight: "100%",
-              minWidth: isMobile ? "50px" : "auto",
-              minHeight: isMobile ? "auto" : "50px",
-            }}
-          />
-        </Box>
-        <Box>
           <Box
             sx={{
-              fontSize: isMobile ? "12px" : "16px",
-              color: "#232323",
-              fontWeight: "500",
-              mb: 1,
-              wordBreak: "break-all",
-            }}
-          >
-            {product?.name}
-          </Box>
-          <Box
-            sx={{
-              color: "#6B7280",
-              fontSize: isMobile ? "10px" : "14px",
-              fontWeight: "400",
-              wordBreak: "break-all",
-              overflow: "hidden",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
-            }}
-          >
-            {product?.description || product?.desc}
-          </Box>
-
-          <Box
-            sx={{
+              width: isMobile ? "50px" : "80px",
+              height: isMobile ? "50px" : "80px",
               display: "flex",
-              gap: "6px",
-              mt: 1,
-              flexWrap: "wrap",
             }}
           >
-            {product?.combined_tags?.map((tag) => (
-              <Box
-                sx={{
-                  padding: "0px 4px",
-                  borderRadius: "4px",
-                  background: tag?.color,
-                  color: "white",
-                  fontWeight: "500",
-                  fontSize: "14px",
-                  cursor: "pointer",
-                }}
-                // onClick={() => {
-                //     router.push(
-                //       `/products/?tagId=${tag?.id}&tagName=${
-                //         tag?.name_ar
-                //       }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
-                //         tag?.color
-                //       )}`
-                //     );
-                // }}
-              >
-                {tag?.name}
-              </Box>
-            ))}
+            <Image
+              loading="lazy"
+              src={
+                product?.thumbnail?.url ||
+                product?.image_url ||
+                "/imgs/no-prod-img.svg"
+              }
+              alt="Product"
+              width={200}
+              height={200}
+              onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
+              style={{
+                width: "auto",
+                height: "auto",
+                maxWidth: "100%",
+                maxHeight: "100%",
+                borderRadius: "8px",
+                margin: "auto",
+                maxWidth: "100%",
+                mawHeight: "100%",
+                minWidth: isMobile ? "50px" : "80px",
+                minHeight: isMobile ? "auto" : "50px",
+              }}
+            />
+          </Box>
+          <Box>
+            <Box
+              sx={{
+                fontSize: isMobile ? "12px" : "16px",
+                color: "#232323",
+                fontWeight: "500",
+                mb: 1,
+                wordBreak: "break-all",
+              }}
+            >
+              {product?.name}
+            </Box>
+            <Box
+              sx={{
+                color: "#6B7280",
+                fontSize: isMobile ? "10px" : "14px",
+                fontWeight: "400",
+                wordBreak: "break-all",
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+              }}
+            >
+              {product?.description || product?.desc}
+            </Box>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            minWidth: "fit-content",
+            justifyContent: "flex-end",
+          }}
+        >
+          {!!product?.price_before_discount && (
+            <Box
+              component="span"
+              sx={{
+                textDecoration: "line-through",
+                color: "#B0B0B0",
+                fontSize: isMobile ? "10px" : "16px",
+                fontWeight: "500",
+                mx: isMobile ? 1 : 5,
+              }}
+            >
+              {product?.price_before_discount?.toFixed(2)}
+            </Box>
+          )}
+          <Box
+            component="span"
+            sx={{
+              color: "#EB3C24",
+              fontSize: isMobile ? "15px" : "24px",
+              fontWeight: "500",
+            }}
+          >
+            {servicePrice({
+              service: product,
+              userCar: selectedCar?.id ? selectedCar : defaultCar,
+            })}
+            {riyalImgRed()}
           </Box>
         </Box>
       </Box>
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
-          minWidth: "fit-content",
-          justifyContent: "flex-end",
+          gap: "6px",
+          mt: 1,
+          flexWrap: "wrap",
+          mx: 1,
         }}
       >
-        {!!product?.price_before_discount && (
+        {product?.combined_tags?.map((tag) => (
           <Box
-            component="span"
             sx={{
-              textDecoration: "line-through",
-              color: "#B0B0B0",
-              fontSize: isMobile ? "10px" : "16px",
+              padding: "0px 4px",
+              borderRadius: "4px",
+              background: tag?.color,
+              color: "white",
               fontWeight: "500",
-              mx: 1,
+              fontSize: "14px",
+              cursor: "pointer",
             }}
+            // onClick={() => {
+            //     router.push(
+            //       `/products/?tagId=${tag?.id}&tagName=${
+            //         tag?.name_ar
+            //       }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
+            //         tag?.color
+            //       )}`
+            //     );
+            // }}
           >
-            {product?.price_before_discount?.toFixed(2)}
+            {tag?.name}
           </Box>
-        )}
-        <Box
-          component="span"
-          sx={{
-            color: "#EB3C24",
-            fontSize: isMobile ? "15px" : "24px",
-            fontWeight: "500",
-          }}
-        >
-          {servicePrice({
-            service: product,
-            userCar: selectedCar?.id ? selectedCar : defaultCar,
-          })}
-          {riyalImgRed()}
-        </Box>
+        ))}
       </Box>
     </Box>
   );

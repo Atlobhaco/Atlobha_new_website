@@ -58,8 +58,10 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
     if (allPromoCodeData?.id) {
       if (allPromoCodeData?.type === "FIXED") {
         return `${allPromoCodeData?.code} (${allPromoCodeData?.value} ${t.sar})`;
+      } else if (allPromoCodeData?.type === "FREE_DELIVERY") {
+        return t.freeDilevery;
       } else {
-        return `${allPromoCodeData?.code} (${allPromoCodeData?.value}%) `;
+        return `${allPromoCodeData?.code} (${allPromoCodeData?.value * 100}%) `;
       }
     } else {
       return promoCode || "";

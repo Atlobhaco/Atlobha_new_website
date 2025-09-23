@@ -88,7 +88,7 @@
   "addressAsDefault": "تعيين كعنوان افتراضي",
   "wantSpareParts": "هل تريد قطع غيار؟",
   "sparePartPricing": "تسعير قطع الغيار",
-  "marketplacePage": "طلبات المتجر",
+  "marketplacePage": "المتجر",
   "bestPriceForYou": "افضل الاسعار نلاقيها لك!",
   "free": "مجاني",
   "store": "المتجر",
@@ -190,6 +190,7 @@
   "choose": "اختر",
   "ok": "موافق",
   "numberEnteredBefore": "الرقم الذي ادخلته مسجل بالفعل لدي أطلبها.",
+  "emailEnteredBefore": "الايميل الذي ادخلته مسجل بالفعل لدي أطلبها.",
   "mergeTwoAccounts": "سيتم دمج الحسابين الان. هل أنت متأكد ؟",
   "cannotMerge": "لا يمكن دمج الحسابين",
   "resendOtpAgain": "اعادة ارسال رمز التفعيل خلال",
@@ -525,5 +526,6 @@
   "servviceAvailable": "توفر الخدمة",
   "selectedServices": "الخدمات المختارة",
   "canNotAddPromoForFixed": "لا يمكن اضافة كود توصيل مجاني للخدمات المقدمة في مركز الخدمة",
-  "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف"
+  "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف",
+  "serviceCategoriesSection": "اقسام الخدمات"
 }

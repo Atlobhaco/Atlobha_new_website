@@ -42,6 +42,7 @@ export const PAYMENT_METHODS = {
   tabby: "TABBY",
   wallet: "WALLET",
   tamara: "TAMARA",
+  mis: "MIS",
 };
 
 export const INFORMATIVE_TYPES = {

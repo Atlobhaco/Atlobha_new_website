@@ -191,6 +191,7 @@
   "choose": "Choose",
   "ok": "Confirm",
   "numberEnteredBefore": "The number you entered is already registered with Atlobha",
+  "emailEnteredBefore": "The email you entered is already registered with Atlobha",
   "mergeTwoAccounts": "The accounts will now be merged. Are you sure?",
   "cannotMerge": "The accounts can not merged",
   "resendOtpAgain": "Resend OTP",
@@ -527,5 +528,6 @@
   "servviceAvailable": "Service availabile",
   "selectedServices": "Selected service",
   "canNotAddPromoForFixed": "can not add coupon free delivery for services provided at the center",
-  "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number"
+  "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number",
+  "serviceCategoriesSection": "Services Categories"
 }

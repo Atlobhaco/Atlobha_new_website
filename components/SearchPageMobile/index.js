@@ -1,7 +1,12 @@
-import { HISTORY, POPULAR_TERMS, SEARCH } from "@/config/endPoints/endPoints";
+import {
+  MARKETPLACE_PRODUCTS,
+  POPULAR_KEYWORD,
+  SEARCH,
+} from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
+import { SERVICES } from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
@@ -27,7 +32,6 @@ const sectionWrapperStyle = (isMobile, items, loading) => ({
   display: "flex",
   gap: isMobile ? "10px" : "15px",
   flexWrap: "wrap",
-  minHeight: items?.length || loading ? "100px" : "0px",
 });
 
 const Section = ({ title, loading, items, onClickTag }) => {
@@ -80,17 +84,19 @@ function SearchSuggestionsMobile() {
     query: { secType },
   } = useRouter();
 
-  const { data: searchHistory, isFetching: loadingHistory } = useCustomQuery({
-    name: "searchHistory",
-    url: `${SEARCH}${HISTORY}`,
-    refetchOnWindowFocus: false,
-    select: (res) => res?.data?.data,
-    enabled: !!isAuth(),
-  });
+  const searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+  const urlDependOnSection = () => {
+    if (secType === SERVICES) {
+      return `/services${SEARCH}${POPULAR_KEYWORD}`;
+    } else {
+      return `${MARKETPLACE_PRODUCTS}${SEARCH}${POPULAR_KEYWORD}`;
+    }
+  };
 
   const { data: mostSearched, isFetching: loadingPopular } = useCustomQuery({
-    name: "mostSearched",
-    url: `${SEARCH}${POPULAR_TERMS}`,
+    name: ["mostSearched", secType],
+    url: `${urlDependOnSection()}`,
     refetchOnWindowFocus: false,
     select: (res) => res?.data?.data,
   });
@@ -104,12 +110,14 @@ function SearchSuggestionsMobile() {
 
   return (
     <Box className="container mt-3">
-      <Section
-        title={t.searchHistory}
-        loading={loadingHistory}
-        items={searchHistory}
-        onClickTag={handleClick}
-      />
+      {isAuth() && (
+        <Section
+          title={t.searchHistory}
+          loading={false}
+          items={searchHistory}
+          onClickTag={handleClick}
+        />
+      )}
       <Section
         title={t.mostSearched}
         loading={loadingPopular}
