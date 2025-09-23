@@ -16,10 +16,6 @@ import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
 import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
-import {
-  setEmailForMerge,
-  toggleMergeEmail,
-} from "@/redux/reducers/mergeEmailExistReducer";
 
 const flexBox = {
   display: "flex",
@@ -139,19 +135,7 @@ function EditInfo({
           setOtpView(true);
           return null;
         }
-        if (
-          err?.response?.data?.first_error?.includes("email_taken") &&
-          false
-        ) {
-          dispatch(toggleMergeEmail());
-          dispatch(setEmailForMerge(changedField["value"]));
-          setOtpView(false);
-          setMigrationStep(false);
-          setChangedField(false);
-          setOtpPayload(false);
-        } else {
-          toast.error(err?.response?.data?.first_error || t.someThingWrong);
-        }
+        toast.error(err?.response?.data?.first_error || t.someThingWrong);
       },
     });
 

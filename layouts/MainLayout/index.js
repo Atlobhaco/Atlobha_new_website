@@ -80,7 +80,6 @@ function Layout({ children }) {
         }
       />
       {!mobileScreen && !isMobile && <ScrollToTop />}
-      {/* <MergeEmailExist /> */}
     </div>
   );
 }
