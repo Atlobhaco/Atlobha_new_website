@@ -781,8 +781,8 @@ const CheckoutSummary = forwardRef(
             ) : null
           }
           onClick={() => {
+			  handleMisPay();
             handleWebengageCheckoutClicked();
-            handleMisPay();
             return;
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
