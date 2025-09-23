@@ -102,7 +102,8 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                 d?.key === PAYMENT_METHODS?.credit ||
                 d?.key === PAYMENT_METHODS?.applePay ||
                 d?.key === PAYMENT_METHODS?.tamara ||
-                d?.key === PAYMENT_METHODS?.tabby)
+                d?.key === PAYMENT_METHODS?.tabby ||
+                d?.key === PAYMENT_METHODS?.mis)
           )
           ?.map(
             (pay) =>

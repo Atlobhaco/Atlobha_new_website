@@ -164,13 +164,13 @@ const CheckoutSummary = forwardRef(
           }
           return;
         }
-        // if (
-        //   selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
-        //   +oldAmountToPay > 0
-        // ) {
-        //   handleMisPay();
-        //   return;
-        // }
+        if (
+          selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+          +oldAmountToPay > 0
+        ) {
+          handleMisPay();
+          return;
+        }
 
         router.push(`/spareParts/confirmation/${res?.id}?type=marketplace`);
         setTimeout(() => {
@@ -599,33 +599,33 @@ const CheckoutSummary = forwardRef(
     /* -------------------------------------------------------------------------- */
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
-    // const handleMisPay = async () => {
+    const handleMisPay = async () => {
 		
-    //   const res = await fetch("/api/mis/create-order", {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json" },
-    //     body: JSON.stringify({
-    //       // send success failutre call bakc every thing from here
-    //       merchantId: merchanteRefrence,
-    //       orderId: merchanteRefrence + "_" + Date.now(),
-    //       amount: calculateReceiptResFromMainPage?.amount_to_pay, // example
-    //       currency: "SAR", // or your currency
-    //       successUrl: `${
-    //         process.env.NEXT_PUBLIC_WEBSITE_URL
-    //       }/spareParts/confirmation/${null}?type=marketplace`,
-    //       failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-    //       callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
-    //     }),
-    //   });
+      const res = await fetch("/api/mis/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // send success failutre call bakc every thing from here
+          merchantId: merchanteRefrence,
+          orderId: merchanteRefrence + "_" + Date.now(),
+          amount: calculateReceiptResFromMainPage?.amount_to_pay, // example
+          currency: "SAR", // or your currency
+          successUrl: `${
+            process.env.NEXT_PUBLIC_WEBSITE_URL
+          }/spareParts/confirmation/${null}?type=marketplace`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
+        }),
+      });
 
-    //   const data = await res.json();
+      const data = await res.json();
 
-    //   if (data?.paymentUrl) {
-    //     window.location.href = data.paymentUrl; // redirect to MIS Pay
-    //   } else {
-    //     alert("Payment initiation failed");
-    //   }
-    // };
+      if (data?.paymentUrl) {
+        window.location.href = data.paymentUrl; // redirect to MIS Pay
+      } else {
+        alert("Payment initiation failed");
+      }
+    };
 
     return (
       <Box sx={{ pt: 1 }}>
@@ -783,8 +783,8 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
-            // handleMisPay();
-            // return;
+            handleMisPay();
+            return;
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
