@@ -613,6 +613,7 @@ const CheckoutSummary = forwardRef(
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
           failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
         }),
       });
 
@@ -781,6 +782,8 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
+            handleMisPay();
+            return;
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
