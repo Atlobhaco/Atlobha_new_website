@@ -616,6 +616,7 @@ const CheckoutSummary = forwardRef(
           callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
         }),
       });
+	  
 
       const data = await res.json();
 
