@@ -600,6 +600,7 @@ const CheckoutSummary = forwardRef(
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
     const handleMisPay = async () => {
+		
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
