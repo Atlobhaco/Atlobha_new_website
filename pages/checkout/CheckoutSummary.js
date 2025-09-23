@@ -600,24 +600,35 @@ const CheckoutSummary = forwardRef(
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
     const handleMisPay = async () => {
-		
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        // body: JSON.stringify({
+        //   // send success failutre call bakc every thing from here
+        //   //   merchantId: merchanteRefrence,
+        //   orderId: merchanteRefrence + "_" + Date.now(),
+        //   purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay, // example
+        //   purchaseCurrency: "SAR", // or your currency
+        //   //   successUrl: `${
+        //   //     process.env.NEXT_PUBLIC_WEBSITE_URL
+        //   //   }/spareParts/confirmation/${null}?type=marketplace`,
+        //   //   failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        //   callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
+        //   lang: "ar",
+        //   version: "v1.1",
+        // }),
         body: JSON.stringify({
-          // send success failutre call bakc every thing from here
-          merchantId: merchanteRefrence,
-          orderId: merchanteRefrence + "_" + Date.now(),
-          amount: calculateReceiptResFromMainPage?.amount_to_pay, // example
-          currency: "SAR", // or your currency
-          successUrl: `${
-            process.env.NEXT_PUBLIC_WEBSITE_URL
-          }/spareParts/confirmation/${null}?type=marketplace`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
+          merchantId: "30fef134c3e5d2d61ade2113ae22107d1a671a37",
+          orderId: "425064_3013_17586244275872",
+          purchaseAmount: 195.5,
+          purchaseCurrency: "SAR",
+          callbackUri: "https://atlobha-new-website.vercel.app/api/payment/mispay/callback",
+          successUrl: "https://atlobha-new-website.vercel.app/success",
+          failureUrl: "https://atlobha-new-website.vercel.app/failure",
+          lang: "ar",
+          version: "v1.1",
         }),
       });
-	  
 
       const data = await res.json();
 

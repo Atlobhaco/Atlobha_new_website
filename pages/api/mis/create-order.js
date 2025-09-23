@@ -4,16 +4,27 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
   try {
-    const { orderId, amount, successUrl, failureUrl, callbackUri } = req.body;
+    const {
+      orderId,
+      purchaseAmount,
+      successUrl,
+      failureUrl,
+      callbackUri,
+      purchaseCurrency,
+      version,
+      lang,
+    } = req.body;
     const token = await getAccessToken();
 
     const payload = {
       orderId,
-      purchaseAmount: amount,
-      purchaseCurrency: "SAR",
-      successUrl,
-      failureUrl,
+      purchaseAmount: purchaseAmount,
+      purchaseCurrency: purchaseCurrency,
+      lang: lang,
+      version: version,
       callbackUri,
+      //   successUrl,
+      //   failureUrl,
     };
 
     const response = await fetch(
