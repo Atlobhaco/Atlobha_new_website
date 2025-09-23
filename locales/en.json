@@ -191,6 +191,7 @@
   "choose": "Choose",
   "ok": "Confirm",
   "numberEnteredBefore": "The number you entered is already registered with Atlobha",
+  "emailEnteredBefore": "The email you entered is already registered with Atlobha",
   "mergeTwoAccounts": "The accounts will now be merged. Are you sure?",
   "cannotMerge": "The accounts can not merged",
   "resendOtpAgain": "Resend OTP",

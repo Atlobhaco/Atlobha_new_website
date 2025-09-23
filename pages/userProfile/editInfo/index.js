@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import UserProfile from "..";
 import useLocalization from "@/config/hooks/useLocalization";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik } from "formik";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
@@ -16,6 +16,10 @@ import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
 import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
+import {
+  setEmailForMerge,
+  toggleMergeEmail,
+} from "@/redux/reducers/mergeEmailExistReducer";
 
 const flexBox = {
   display: "flex",
@@ -29,6 +33,7 @@ function EditInfo({
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
+  const dispatch = useDispatch();
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [editPayload, setEditPayload] = useState(false);
   const [changedField, setChangedField] = useState(false);
@@ -134,7 +139,19 @@ function EditInfo({
           setOtpView(true);
           return null;
         }
-        toast.error(err?.response?.data?.first_error || t.someThingWrong);
+        if (
+          err?.response?.data?.first_error?.includes("email_taken") &&
+          false
+        ) {
+          dispatch(toggleMergeEmail());
+          dispatch(setEmailForMerge(changedField["value"]));
+          setOtpView(false);
+          setMigrationStep(false);
+          setChangedField(false);
+          setOtpPayload(false);
+        } else {
+          toast.error(err?.response?.data?.first_error || t.someThingWrong);
+        }
       },
     });
 

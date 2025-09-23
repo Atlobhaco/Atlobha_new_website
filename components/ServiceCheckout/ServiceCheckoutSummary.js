@@ -30,6 +30,10 @@ import {
   riyalImgRed,
   servicePrice,
 } from "@/constants/helpers";
+import {
+  setPromoCodeAllData,
+  setPromoCodeForSpareParts,
+} from "@/redux/reducers/addSparePartsReducer";
 
 const ServiceCheckoutSummary = forwardRef(
   (
@@ -262,8 +266,17 @@ const ServiceCheckoutSummary = forwardRef(
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
         setOldAmountToPay(res?.amount_to_pay);
       },
-      onError: (err) =>
-        toast.error(err?.response?.data?.first_error || t.someThingWrong),
+      onError: (err) => {
+        // remove promo code in fixed service (free delivery)
+        // when come from another checkout saved before
+        if (err?.response?.data?.first_error?.includes("promo")) {
+          toast.error(t.canNotAddPromoForFixed);
+          dispatch(setPromoCodeForSpareParts({ data: "" }));
+          dispatch(setPromoCodeAllData({ data: null }));
+        } else {
+          toast.error(err?.response?.data?.first_error || t.someThingWrong);
+        }
+      },
     });
 
     const requestData = {
@@ -674,7 +687,8 @@ const ServiceCheckoutSummary = forwardRef(
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
             redirectToPayfort ||
-            !carAvailable
+            !carAvailable ||
+            !+calculateReceiptResFromMainPage?.amount_to_pay < 0
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay

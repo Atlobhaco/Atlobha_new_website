@@ -9,6 +9,7 @@ import quickSectionsProfile from "./quickSectionsProfile";
 import appGroups from "./appGroups";
 import selectedPaymentMethod from "./selectedPaymentMethod";
 import homeSections from "./homeSectionsReducer";
+import mergeEmailExist from "./mergeEmailExistReducer";
 // import yourReducer from "./yourReducer"; // Ensure the path is correct
 
 const rootReducer = combineReducers({
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   appGroups: appGroups,
   selectedPaymentMethod: selectedPaymentMethod,
   homeSectionsData: homeSections,
+  mergeEmailExist: mergeEmailExist,
 });
 
 export default rootReducer;
