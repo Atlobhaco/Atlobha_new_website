@@ -798,7 +798,10 @@ const ServiceCheckoutSummary = forwardRef(
                 callConfirmPricing();
                 return;
               }
-              if (!userDataProfile?.email || !userDataProfile?.name) {
+              if (
+                (!userDataProfile?.email || !userDataProfile?.name) &&
+                method !== PAYMENT_METHODS.mis
+              ) {
                 setOpenEditUserModal(true);
                 return;
               }
