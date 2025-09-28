@@ -27,6 +27,9 @@ function RedirectToCheckoutService({
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
+  const portableAreaId =
+    selectedAddress?.portable_service_area?.id ||
+    defaultAddress?.portable_service_area?.id;
 
   const handleCheckoutRedirection = () => {
     if (!isAuth()) {
@@ -153,9 +156,10 @@ function RedirectToCheckoutService({
           className="big-main-btn"
           onClick={() => handleCheckoutRedirection()}
           disabled={
-            !prod?.slots_disabled &&
-            ((tabValue === PORTABLE && !selectedPortableTime) ||
-              (tabValue === FIXED && !allStores?.length))
+            !portableAreaId ||
+            (!prod?.slots_disabled &&
+              ((tabValue === PORTABLE && !selectedPortableTime) ||
+                (tabValue === FIXED && !allStores?.length)))
           }
         />
       </Box>
