@@ -7,24 +7,30 @@ export default async function handler(req, res) {
     const {
       orderId,
       purchaseAmount,
-      successUrl,
-      failureUrl,
-      callbackUri,
       purchaseCurrency,
       version,
       lang,
+      totalPrice,
+      shippingAmount,
+      vat,
+      customerDetails,
+      orderDetails,
+      callbackUri,
     } = req.body;
     const token = await getAccessToken();
 
     const payload = {
       orderId,
-      purchaseAmount: purchaseAmount,
-      purchaseCurrency: purchaseCurrency,
-      lang: lang,
-      version: version,
+      totalPrice,
+      shippingAmount,
+      vat,
+      purchaseAmount,
+      purchaseCurrency,
+      lang,
+      version,
+      customerDetails,
+      orderDetails,
       callbackUri,
-      //   successUrl,
-      //   failureUrl,
     };
 
     const response = await fetch(

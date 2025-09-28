@@ -163,6 +163,13 @@ function SummaryOrder({
         handlePayWithTabby();
         return;
       }
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        handleMisPay();
+        return;
+      }
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
@@ -488,6 +495,51 @@ function SummaryOrder({
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                              MIS payment logic                             */
+  /* -------------------------------------------------------------------------- */
+  const handleMisPay = async () => {
+    const sourceItems = orderDetails?.parts?.length
+      ? orderDetails.parts
+      : orderDetails?.products || [];
+
+    const res = await fetch("/api/mis/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+
+      body: JSON.stringify({
+        orderId: merchanteRefrence,
+        totalPrice: orderDetails?.receipt?.amount_to_pay,
+        shippingAmount: "0",
+        vat: "0",
+        purchaseAmount: orderDetails?.receipt?.amount_to_pay,
+        purchaseCurrency: "SAR",
+        lang: locale,
+        version: "v1.1",
+        customerDetails: {
+          mobileNumber: userDataProfile?.phone,
+        },
+        orderDetails: {
+          items: sourceItems?.map((prod) => ({
+            nameArabic: prod?.name,
+            nameEnglish: prod?.product?.name,
+            quantity: prod?.quantity,
+            unitPrice: prod?.price?.toFixed(2),
+          })),
+        },
+        callbackUri: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data?.url) {
+      window.location.href = data.url; // redirect to MIS Pay
+    } else {
+      alert("Payment initiation failed");
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -722,7 +774,8 @@ function SummaryOrder({
                 handleApplePayPayment();
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara ||
-                selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby ||
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.mis
               ) {
                 if (
                   (!orderDetails?.user?.name && !userDataProfile?.name) ||

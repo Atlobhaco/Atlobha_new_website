@@ -26,6 +26,7 @@ import {
   servicePrice,
 } from "@/constants/helpers";
 import { useSelector } from "react-redux";
+import { decryptAES } from "@/lib/mispay";
 
 function Confirmation() {
   const router = useRouter();
@@ -177,6 +178,40 @@ function Confirmation() {
       </>
     );
   };
+  /* -------------------------------------------------------------------------- */
+  /*                   misPay callback handling after payment                   */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const enc = router?.query?._;
+    if (!enc) return;
+
+    try {
+      const secret = process.env.NEXT_PUBLIC_MIS_API_KEY;
+      const decrypted = decryptAES(
+        Buffer.from(enc, "base64").toString("utf8"),
+        secret
+      );
+
+      //   status code for mispay response
+      //   MP00 -> success
+      //   MP01 -> timeout
+      //   MP02 ->  Cancelled
+      //   MP03 -> refunded
+
+      const messages = {
+        MP01: t.paymentFailure,
+        MP02: t.paymentCancelled,
+        MP03: t.paymentCancelled,
+      };
+
+      if (messages[decrypted?.code]) {
+        toast.error(messages[decrypted.code]);
+        router.push("/");
+      }
+    } catch (e) {
+      console.error("Decrypt error:", e);
+    }
+  }, [router]);
 
   return (
     <div className={`${style["confirmation"]}`}>

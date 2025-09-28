@@ -168,7 +168,11 @@ const CheckoutSummary = forwardRef(
           selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
           +oldAmountToPay > 0
         ) {
-          handleMisPay();
+          if (userDataProfile?.phone?.length) {
+            handleMisPay();
+          } else {
+            setAddPhoneForTamara();
+          }
           return;
         }
 
@@ -603,37 +607,37 @@ const CheckoutSummary = forwardRef(
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // body: JSON.stringify({
-        //   // send success failutre call bakc every thing from here
-        //   //   merchantId: merchanteRefrence,
-        //   orderId: merchanteRefrence + "_" + Date.now(),
-        //   purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay, // example
-        //   purchaseCurrency: "SAR", // or your currency
-        //   //   successUrl: `${
-        //   //     process.env.NEXT_PUBLIC_WEBSITE_URL
-        //   //   }/spareParts/confirmation/${null}?type=marketplace`,
-        //   //   failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-        //   callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
-        //   lang: "ar",
-        //   version: "v1.1",
-        // }),
+
         body: JSON.stringify({
-          merchantId: "30fef134c3e5d2d61ade2113ae22107d1a671a37",
-          orderId: "425064_3013_17586244275872",
-          purchaseAmount: 195.5,
+          orderId: merchanteRefrence,
+          totalPrice: calculateReceiptResFromMainPage?.amount_to_pay,
+          shippingAmount: "0",
+          vat: "0",
+          purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay,
           purchaseCurrency: "SAR",
-          callbackUri: "https://atlobha-new-website.vercel.app/api/payment/mispay/callback",
-          successUrl: "https://atlobha-new-website.vercel.app/success",
-          failureUrl: "https://atlobha-new-website.vercel.app/failure",
-          lang: "ar",
+          lang: locale,
           version: "v1.1",
+          customerDetails: {
+            mobileNumber: userDataProfile?.phone,
+          },
+          orderDetails: {
+            items: basket?.map((prod) => ({
+              nameArabic: prod?.product?.name,
+              nameEnglish: prod?.product?.name,
+              quantity: prod?.quantity,
+              unitPrice: prod?.product?.price?.toFixed(2),
+            })),
+          },
+          callbackUri: `${
+            process.env.NEXT_PUBLIC_WEBSITE_URL
+          }/spareParts/confirmation/${null}?type=marketplace`,
         }),
       });
 
       const data = await res.json();
 
-      if (data?.paymentUrl) {
-        window.location.href = data.paymentUrl; // redirect to MIS Pay
+      if (data?.url) {
+        window.location.href = data.url; // redirect to MIS Pay
       } else {
         alert("Payment initiation failed");
       }
@@ -795,8 +799,6 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
-            handleMisPay();
-            return;
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
@@ -812,7 +814,8 @@ const CheckoutSummary = forwardRef(
               handleApplePayPayment();
             } else if (
               method === PAYMENT_METHODS.tamara ||
-              method === PAYMENT_METHODS.tabby
+              method === PAYMENT_METHODS.tabby ||
+              method === PAYMENT_METHODS.mis
             ) {
               if (!userDataProfile?.phone) {
                 callConfirmPricing();

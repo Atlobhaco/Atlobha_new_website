@@ -194,6 +194,18 @@ const ServiceCheckoutSummary = forwardRef(
           return;
         }
 
+        if (
+          selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+          +oldAmountToPay > 0
+        ) {
+          if (userDataProfile?.phone?.length) {
+            handleMisPay();
+          } else {
+            setAddPhoneForTamara();
+          }
+          return;
+        }
+
         router.push(
           `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`
         );
@@ -600,6 +612,55 @@ const ServiceCheckoutSummary = forwardRef(
         alert("Failed to create Tabby checkout.");
       }
     };
+    /* -------------------------------------------------------------------------- */
+    /*                              MIS payment logic                             */
+    /* -------------------------------------------------------------------------- */
+    const handleMisPay = async () => {
+      const res = await fetch("/api/mis/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({
+          orderId: merchanteRefrence,
+          totalPrice: calculateReceiptResFromMainPage?.amount_to_pay,
+          shippingAmount: "0",
+          vat: "0",
+          purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay,
+          purchaseCurrency: "SAR",
+          lang: locale,
+          version: "v1.1",
+          customerDetails: {
+            mobileNumber: userDataProfile?.phone,
+          },
+          orderDetails: {
+            items: [
+              {
+                nameArabic: checkoutServiceDetails?.serviceDetails?.name,
+                nameEnglish: checkoutServiceDetails?.serviceDetails?.name,
+                quantity: 1,
+                unitPrice: servicePrice({
+                  service: checkoutServiceDetails?.serviceDetails,
+                  userCar: selectedCar?.id ? selectedCar : defaultCar,
+                }),
+              },
+            ],
+          },
+          callbackUri: `${
+            process.env.NEXT_PUBLIC_WEBSITE_URL
+          }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
+            checkoutServiceDetails?.type
+          }`,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data?.url) {
+        window.location.href = data.url; // redirect to MIS Pay
+      } else {
+        alert("Payment initiation failed");
+      }
+    };
     return (
       <Box sx={{ pt: 1 }}>
         <Box sx={header}>{t.orderSummary}</Box>
@@ -730,7 +791,8 @@ const ServiceCheckoutSummary = forwardRef(
               handleApplePayPayment();
             } else if (
               method === PAYMENT_METHODS.tamara ||
-              method === PAYMENT_METHODS.tabby
+              method === PAYMENT_METHODS.tabby ||
+              method === PAYMENT_METHODS.mis
             ) {
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
