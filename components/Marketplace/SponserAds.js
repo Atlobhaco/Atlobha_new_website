@@ -12,12 +12,12 @@ function SponserAds({ sectionInfo }) {
       height={400}
       style={{
         borderRadius: "20px",
-        width: isMobile ? "100%" : "auto",
+        width: "100%",
         maxWidth: "100%",
         display: "block",
         margin: "auto",
         maxHeight: isMobile ? "100px" : "350px",
-        minHeight: isMobile ? "100px" : "350px",
+        minHeight: isMobile ? "100px" : "400px",
       }}
       onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")} // Fallback to default image
     />
