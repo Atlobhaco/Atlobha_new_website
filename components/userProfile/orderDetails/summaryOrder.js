@@ -653,7 +653,7 @@ function SummaryOrder({
       {/* rest to pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-        <Box sx={{ ...text, ...boldText }}>
+        <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
           {((calculateReceiptResFromMainPage?.amount_to_pay ??
             receipt?.amount_to_pay) === receipt?.amount_to_pay
             ? receipt?.amount_to_pay

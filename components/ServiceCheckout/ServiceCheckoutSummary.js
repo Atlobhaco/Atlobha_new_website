@@ -75,7 +75,7 @@ const ServiceCheckoutSummary = forwardRef(
     const [payFortForm, setPayfortForm] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
 
     const header = {
       color: "#232323",
@@ -152,7 +152,7 @@ const ServiceCheckoutSummary = forwardRef(
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
+            setFakeLoader(false);
           }, 6000);
           return;
         }
@@ -200,6 +200,9 @@ const ServiceCheckoutSummary = forwardRef(
         ) {
           if (userDataProfile?.phone?.length) {
             handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 6000);
           } else {
             setAddPhoneForTamara();
           }
@@ -214,7 +217,7 @@ const ServiceCheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -737,7 +740,7 @@ const ServiceCheckoutSummary = forwardRef(
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {calculateReceiptResFromMainPage?.amount_to_pay?.toFixed(2)}{" "}
             {riyalImgBlack()}
           </Box>
@@ -747,7 +750,7 @@ const ServiceCheckoutSummary = forwardRef(
             loadPayRequest ||
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
-            redirectToPayfort ||
+            fakeLoader ||
             !carAvailable ||
             !+calculateReceiptResFromMainPage?.amount_to_pay < 0
           }
@@ -763,7 +766,7 @@ const ServiceCheckoutSummary = forwardRef(
               : "payAndConfirm"
           }
           comAfterText={
-            redirectToPayfort || loadPayRequest || confirmPriceFetch ? (
+            fakeLoader || loadPayRequest || confirmPriceFetch ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -783,7 +786,7 @@ const ServiceCheckoutSummary = forwardRef(
             if (!userDataProfile?.phone) return setOpenAddMobile(true);
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -794,6 +797,9 @@ const ServiceCheckoutSummary = forwardRef(
               method === PAYMENT_METHODS.tabby ||
               method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;

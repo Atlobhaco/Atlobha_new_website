@@ -18,18 +18,32 @@ import { toast } from "react-toastify";
 import { useQueryClient } from "react-query";
 import ProductCardSkeleton from "@/components/cardSkeleton";
 import { useRouter } from "next/router";
+import DialogCentered from "@/components/DialogCentered";
+import PaymentMethodLimit from "@/components/PurchaseLimit/PaymentMethodLimit";
 
-function AddAvailablePayMethods({ orderDetails = {} }) {
+function AddAvailablePayMethods({
+  orderDetails = {},
+  tabbyMinLimit = 100,
+  tabbyMaxLimit = 3000,
+  misMinLimit = 145,
+  misMaxLimit = 7500,
+}) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { route } = router;
-
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
   const dispatch = useDispatch();
+  const [openHint, setOpenHint] = useState({
+    open: false,
+    selectedMethod: false,
+  });
+
+  const amountToPayEl = document && document?.getElementById("amount-to-pay");
+  const amountToPay = amountToPayEl?.textContent?.trim();
 
   const { data: availablePayments, isFetching } = useCustomQuery({
     name: [
@@ -59,6 +73,28 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
       queryClient.refetchQueries(["calculateReceiptForTotalPay"]); // ✅ Refetch by name
     }
   };
+
+  const handleSelectPayMethod = (payMethod, data) => {
+    if (appearOverlay(payMethod)) {
+      setOpenHint({
+        open: true,
+        selectedMethod: data,
+      });
+      return;
+    }
+    callCaluclateReceiptForApplePay(payMethod);
+    dispatch(setSelectedPayment({ data: data }));
+  };
+
+  const appearOverlay = (payMethod) => {
+    return (
+      (payMethod === PAYMENT_METHODS?.tabby &&
+        (+amountToPay < tabbyMinLimit || +amountToPay > tabbyMaxLimit)) ||
+      (payMethod === PAYMENT_METHODS?.mis &&
+        (+amountToPay < misMinLimit || +amountToPay > misMaxLimit))
+    );
+  };
+
   return (
     <Box
       sx={{
@@ -123,18 +159,17 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                   <SharedCheckbox
                     selectedId={selectedPaymentMethod?.id}
                     handleCheckboxChange={(data) => {
-                      callCaluclateReceiptForApplePay(pay?.key);
-                      dispatch(setSelectedPayment({ data: data }));
+                      handleSelectPayMethod(pay?.key, data);
                     }}
                     data={pay}
                   />
                   <Box
                     sx={{
                       cursor: "pointer",
+                      position: "relative",
                     }}
                     onClick={() => {
-                      callCaluclateReceiptForApplePay(pay?.key);
-                      dispatch(setSelectedPayment({ data: pay }));
+                      handleSelectPayMethod(pay?.key, pay);
                     }}
                   >
                     {availablePaymentMethodImages(
@@ -143,14 +178,16 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
                       },
                       isMobile
                     )}
+                    {appearOverlay(pay?.key) && (
+                      <Box className="overlay-payment-method"></Box>
+                    )}
                   </Box>
                   <Box
                     sx={{
                       cursor: "pointer",
                     }}
                     onClick={() => {
-                      callCaluclateReceiptForApplePay(pay?.key);
-                      dispatch(setSelectedPayment({ data: pay }));
+                      handleSelectPayMethod(pay?.key, pay);
                     }}
                   >
                     {availablePaymentMethodText(
@@ -163,6 +200,25 @@ function AddAvailablePayMethods({ orderDetails = {} }) {
               )
           )
       )}
+
+      <DialogCentered
+        title={false}
+        subtitle={false}
+        open={openHint?.open}
+        setOpen={() =>
+          setOpenHint({
+            open: false,
+            selectedMethod: false,
+          })
+        }
+        hasCloseIcon
+        content={
+          <PaymentMethodLimit
+            payMethodKey={openHint?.selectedMethod?.key}
+            setOpenHint={setOpenHint}
+          />
+        }
+      />
     </Box>
   );
 }

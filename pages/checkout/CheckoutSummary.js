@@ -44,7 +44,7 @@ const CheckoutSummary = forwardRef(
     const { voucherCode, allPromoCodeData } = useSelector(
       (state) => state.addSpareParts
     );
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const { basket } = useSelector((state) => state.basket);
     const { selectedPaymentMethod } = useSelector(
@@ -122,7 +122,7 @@ const CheckoutSummary = forwardRef(
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
+            setFakeLoader(false);
           }, 6000);
           return;
         }
@@ -170,6 +170,10 @@ const CheckoutSummary = forwardRef(
         ) {
           if (userDataProfile?.phone?.length) {
             handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 6000);
+            return;
           } else {
             setAddPhoneForTamara();
           }
@@ -183,7 +187,7 @@ const CheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -754,7 +758,7 @@ const CheckoutSummary = forwardRef(
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {((calculateReceiptResFromMainPage?.amount_to_pay ??
               receipt?.amount_to_pay) === receipt?.amount_to_pay
               ? receipt?.amount_to_pay
@@ -769,7 +773,7 @@ const CheckoutSummary = forwardRef(
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
             //   fetchReceipt ||
-            redirectToPayfort
+            fakeLoader
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
@@ -785,7 +789,7 @@ const CheckoutSummary = forwardRef(
           }
           // || fetchReceipt
           comAfterText={
-            confirmPriceFetch || redirectToPayfort || loadPayRequest ? (
+            confirmPriceFetch || fakeLoader || loadPayRequest ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -806,7 +810,7 @@ const CheckoutSummary = forwardRef(
             if (amount === 0) return callConfirmPricing();
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -817,6 +821,9 @@ const CheckoutSummary = forwardRef(
               method === PAYMENT_METHODS.tabby ||
               method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
