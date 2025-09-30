@@ -12,6 +12,8 @@ import ServiceAvailabilityWithCar from "./ServiceAvailabilityWithCar";
 import AddAvailablePayMethods from "../userProfile/orderDetails/addAvailablePayMethods";
 import PromoCodeMarket from "@/pages/checkout/PromoCodeMarket";
 import AtlobhaPlusHint from "../userProfile/atlobhaPlusHint";
+import Selections from "./checkoutFields/Selections";
+import FileUpload from "./checkoutFields/FileUpload";
 
 function ServiceCheckoutData({
   selectAddress,
@@ -21,6 +23,9 @@ function ServiceCheckoutData({
   carAvailable,
   promoCodeId,
   setPromoCodeId,
+  checkoutRes,
+  selectedFields,
+  setSelectedFields,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -79,6 +84,18 @@ function ServiceCheckoutData({
   return (
     <>
       {!carAvailable && <ServiceAvailabilityWithCar />}
+
+      {/* multi-select-checkout-field */}
+      {checkoutRes && checkoutRes["multi-select"]?.length && (
+        <>
+          <Selections
+            field={checkoutRes && checkoutRes["multi-select"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
       {/* address for service */}
       <OrderAddress
         orderDetails={{
@@ -137,8 +154,19 @@ function ServiceCheckoutData({
 
       {/* car for service */}
       <SelectedCarDetails userCar={userCar} />
-
       {renderDivider()}
+
+      {/* select file checkout field */}
+      {checkoutRes && checkoutRes["file"]?.length && (
+        <>
+          <FileUpload
+            field={checkoutRes && checkoutRes["file"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
 
       <AddAvailablePayMethods
         orderDetails={{

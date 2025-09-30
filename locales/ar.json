@@ -528,5 +528,6 @@
   "selectedServices": "الخدمات المختارة",
   "canNotAddPromoForFixed": "لا يمكن اضافة كود توصيل مجاني للخدمات المقدمة في مركز الخدمة",
   "phoneUsedForMerge": "رقم الهاتف مستخدم، يمكنك الدمج بعد تاكيد رقم الهاتف",
-  "serviceCategoriesSection": "اقسام الخدمات"
+  "serviceCategoriesSection": "اقسام الخدمات",
+  "uploadFile": "ارفع الملف"
 }

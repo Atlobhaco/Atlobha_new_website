@@ -4,7 +4,7 @@ import ServiceCheckoutData from "@/components/ServiceCheckout/ServiceCheckoutDat
 import ServiceCheckoutSummary from "@/components/ServiceCheckout/ServiceCheckoutSummary";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
-import { USERS } from "@/config/endPoints/endPoints";
+import { CHECKOUT_FIELDS, USERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
@@ -50,6 +50,7 @@ function CheckoutService() {
   const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
   const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
   const [checkoutServiceDetails, setCheckoutServiceDetails] = useState(false);
+  const [selectedFields, setSelectedFields] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -78,6 +79,24 @@ function CheckoutService() {
       );
     },
   });
+  const { data: checkoutRes } = useCustomQuery({
+    name: "getChekoutFields",
+    url: `/service/${checkoutServiceDetails?.serviceDetails?.id}${CHECKOUT_FIELDS}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: checkoutServiceDetails?.serviceDetails?.id ? true : false,
+    onSuccess: (res) => {
+      console.log("res-checkout", res);
+      //   const filtered = Object.entries(res).reduce((acc, [key, arr]) => {
+      //     const required = arr.filter((f) => f.is_required);
+      //     if (required.length > 0) {
+      //       acc[key] = required;
+      //     }
+      //     return acc;
+      //   }, {});
+      //   setSelectedFields(filtered);
+    },
+  });
 
   useEffect(() => {
     if (query?.serviceDetails) {
@@ -103,10 +122,11 @@ function CheckoutService() {
     ? true
     : checkoutServiceDetails?.serviceDetails?.service_models?.some(
         (c) =>
-          +c.model.id === +userCar.model.id &&
-          +c.model?.vehicle_brand?.id === +userCar.brand.id
+          +c.model.id === +userCar?.model?.id &&
+          +c.model?.vehicle_brand?.id === +userCar?.brand?.id &&
+          +userCar?.year >= +c.year_from &&
+          +userCar?.year <= +c.year_to
       );
-
   const triggerChildPayment = () => {
     tamaraRef.current?.triggerTamaraPayment();
   };
@@ -123,6 +143,9 @@ function CheckoutService() {
             carAvailable={carAvailable}
             promoCodeId={promoCodeId}
             setPromoCodeId={setPromoCodeId}
+            checkoutRes={checkoutRes}
+            selectedFields={selectedFields}
+            setSelectedFields={setSelectedFields}
           />
         </div>
         <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>

@@ -231,6 +231,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   };
   return !mobileScreen ? (
     <Box
+      id="navbar"
       className={`${style["navbar"]}`}
       sx={{
         background: returnNavbarBg(),
