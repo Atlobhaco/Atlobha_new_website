@@ -41,9 +41,15 @@ function AddAvailablePayMethods({
     open: false,
     selectedMethod: false,
   });
+  const [amountToPay, setAmountToPay] = useState(0);
 
-  const amountToPayEl = document && document?.getElementById("amount-to-pay");
-  const amountToPay = amountToPayEl?.textContent?.trim();
+  useEffect(() => {
+    if (document) {
+      const amountToPayEl =
+        document && document?.getElementById("amount-to-pay");
+      setAmountToPay(amountToPayEl?.textContent?.trim());
+    }
+  }, [document, document?.getElementById("amount-to-pay")?.textContent]);
 
   const { data: availablePayments, isFetching } = useCustomQuery({
     name: [
