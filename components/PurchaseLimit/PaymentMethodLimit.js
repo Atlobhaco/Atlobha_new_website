@@ -61,7 +61,8 @@ function PaymentMethodLimit({ payMethodKey, setOpenHint }) {
       {/* Button */}
       <SharedBtn
         text="okFine"
-        className="big-main-btn w-100"
+        className="big-main-btn"
+		customClass="w-100"
         onClick={() => setOpenHint({ open: false, selectedMethod: false })}
       />
     </Box>
