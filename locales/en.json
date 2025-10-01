@@ -535,5 +535,6 @@
   "canNotPayWithTabby": "Sorry, it is not possible to complete the purchase in installments using Tabby at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
   "canNotPayWithMis": "Sorry, it is not possible to complete the purchase in installments using mis at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
   "enjoyTabbyInstallment": "Enjoy comfortable installments with Tabby! You can pay your purchases in installments with a value ranging between 100 and 3000 Saudi riyals",
-  "enjoyMisInstallment": "Enjoy comfortable installments with mis! You can pay your purchases in installments with a value ranging between 145 and 7500 Saudi riyals"
+  "enjoyMisInstallment": "Enjoy comfortable installments with mis! You can pay your purchases in installments with a value ranging between 145 and 7500 Saudi riyals",
+  "emailIsRegistered": "Email is registered before will use as secondary one in pay the order only"
 }

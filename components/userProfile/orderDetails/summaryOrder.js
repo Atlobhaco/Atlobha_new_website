@@ -391,7 +391,9 @@ function SummaryOrder({
           last_name: "",
           phone_number: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
           email:
-            userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+            userDataProfile?.email ||
+            userDataProfile?.secondary_email ||
+            `${userDataProfile?.phone}@atlobha.com`,
         },
         items: sourceItems.map((prod) => ({
           reference_id: prod?.id,
@@ -432,7 +434,10 @@ function SummaryOrder({
     };
     const realBuyer = {
       phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
-      email: userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+      email:
+        userDataProfile?.email ||
+        userDataProfile?.secondary_email ||
+        `${userDataProfile?.phone}@atlobha.com`,
 
       name: userDataProfile?.name,
     };

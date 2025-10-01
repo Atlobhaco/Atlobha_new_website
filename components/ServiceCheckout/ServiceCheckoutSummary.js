@@ -498,7 +498,9 @@ const ServiceCheckoutSummary = forwardRef(
               phoneAddedForTamara ||
               userDataProfile?.phone?.replace(/^(\+?966)/, ""),
             email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+              userDataProfile?.email ||
+              userDataProfile?.secondary_email ||
+              `${userDataProfile?.phone}@atlobha.com`,
           },
           items: [
             {
@@ -543,7 +545,9 @@ const ServiceCheckoutSummary = forwardRef(
       const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
-          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+          userDataProfile?.email ||
+          userDataProfile?.secondary_email ||
+          `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
@@ -805,7 +809,9 @@ const ServiceCheckoutSummary = forwardRef(
                 return;
               }
               if (
-                (!userDataProfile?.email || !userDataProfile?.name) &&
+                ((!userDataProfile?.email &&
+                  !userDataProfile?.secondary_email) ||
+                  !userDataProfile?.name) &&
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);

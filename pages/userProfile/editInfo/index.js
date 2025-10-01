@@ -16,7 +16,7 @@ import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
 import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
-
+import { useRouter } from "next/router";
 
 const flexBox = {
   display: "flex",
@@ -31,6 +31,7 @@ function EditInfo({
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
+  const router = useRouter();
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [editPayload, setEditPayload] = useState(false);
   const [changedField, setChangedField] = useState(false);
@@ -44,6 +45,40 @@ function EditInfo({
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                        add secondary email for user                        */
+  /* -------------------------------------------------------------------------- */
+  const { refetch: callSecondaryEmail, isFetching: secondaryEmailLoad } =
+    useCustomQuery({
+      name: ["secondaryEmail", changedField?.type],
+      url: `${`${ME}/secondary-email`} `,
+      refetchOnWindowFocus: false,
+      method: "patch",
+      body: { email: changedField["value"], otp: otpPayload?.otp },
+      select: (res) => res?.data?.data,
+      enabled: false,
+      retry: 0,
+      onSuccess: (res) => {
+        setOpenEditUserModal(false);
+        setOtpView(false);
+        setChangedField(false);
+        setOtpPayload(false);
+        toast.success(t.canPayNow);
+      },
+      onError: (err) => {
+        toast.error(
+          err?.response?.data?.first_error ||
+            err?.response?.data?.message ||
+            t.someThingWrong
+        );
+        setChangedField(false);
+        setOtpPayload(false);
+      },
+    });
+
+  /* -------------------------------------------------------------------------- */
+  /*                     save user info after confirm fields                    */
+  /* -------------------------------------------------------------------------- */
   const { data, refetch: EditUserData } = useCustomQuery({
     name: ["editUserInfo", editPayload],
     url: `${USERS}/${userDataProfile?.id}`,
@@ -135,6 +170,17 @@ function EditInfo({
           setMigrationStep(true);
           setOtpView(true);
           return null;
+        }
+        // logic for secondary-email
+        // works only in checkout pages
+        if (
+          router?.pathname?.includes("checkout") &&
+          err?.response?.data?.first_error?.includes("email") &&
+          changedField?.type === "email"
+        ) {
+          toast.success(t.emailIsRegistered);
+          callSecondaryEmail();
+          return;
         }
         toast.error(err?.response?.data?.first_error || t.someThingWrong);
       },
