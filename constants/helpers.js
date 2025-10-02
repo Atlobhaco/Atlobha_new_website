@@ -253,6 +253,16 @@ export const availablePaymentMethodImages = (
           height={isMobile ? 26 : 38}
         />
       );
+    case PAYMENT_METHODS?.mis:
+      return (
+        <Image
+          loading="lazy"
+          src="/icons/payments/mispay.svg"
+          alt="tamara-pay"
+          width={isMobile ? 65 : 100}
+          height={isMobile ? 26 : 38}
+        />
+      );
     default:
       return orderDetails?.payment_method;
   }
@@ -337,6 +347,12 @@ export const availablePaymentMethodText = (
       return (
         <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
           {t.payMethods[`tamara`]}
+        </Box>
+      );
+    case PAYMENT_METHODS?.mis:
+      return (
+        <Box sx={{ fontSize: "12px", color: "#1C1C28", fontWeight: 700 }}>
+          {t.payMethods[`mis`]}
         </Box>
       );
     default:

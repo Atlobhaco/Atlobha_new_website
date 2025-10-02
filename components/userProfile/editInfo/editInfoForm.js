@@ -23,6 +23,7 @@ function EditInfoForm({
   otpLoad,
   changedField,
   hideSomeComponent = false,
+  isValid = true,
 }) {
   const { t } = useLocalization();
   const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -86,6 +87,7 @@ function EditInfoForm({
                   ? ""
                   : "common.confirm"
               }`}
+              id="confirm-btn-email"
               className="big-main-btn"
               customStyle={{ height: "42px" }}
               onClick={() => {
@@ -107,7 +109,7 @@ function EditInfoForm({
         <Box
           sx={{
             width:
-              values?.phone &&
+              values?.phone?.trim()?.length > 4 &&
               touched["phone"] &&
               !errors["phone"] &&
               userDataProfile?.phone !== values?.phone?.replace(/\s+/g, "")
@@ -128,7 +130,7 @@ function EditInfoForm({
             hintBelowInput={t.pleaseUseEnglishNum}
           />
         </Box>
-        {values?.phone &&
+        {values?.phone?.trim()?.length > 4 &&
           touched["phone"] &&
           !errors["phone"] &&
           userDataProfile?.phone !== values?.phone?.replace(/\s+/g, "") && (
@@ -138,6 +140,7 @@ function EditInfoForm({
                   ? ""
                   : "common.confirm"
               }`}
+              id="confirm-btn-phone"
               className="big-main-btn"
               customStyle={{ height: "42px" }}
               onClick={() => {
@@ -220,6 +223,12 @@ function EditInfoForm({
           className="big-main-btn"
           text="saveChanges"
           type="submit"
+          disabled={
+            !isValid || // ❌ has validation errors
+            (typeof window !== "undefined" &&
+              (document.getElementById("confirm-btn-phone") ||
+                document.getElementById("confirm-btn-email")))
+          }
           onClick={() => {
             handleSubmit();
           }}

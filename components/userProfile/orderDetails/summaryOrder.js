@@ -163,6 +163,13 @@ function SummaryOrder({
         handlePayWithTabby();
         return;
       }
+      if (
+        selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+        +calculateReceiptResFromMainPage?.amount_to_pay > 0
+      ) {
+        handleMisPay();
+        return;
+      }
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
@@ -384,7 +391,9 @@ function SummaryOrder({
           last_name: "",
           phone_number: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
           email:
-            userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+            userDataProfile?.email ||
+            userDataProfile?.secondary_email ||
+            `${userDataProfile?.phone}@atlobha.com`,
         },
         items: sourceItems.map((prod) => ({
           reference_id: prod?.id,
@@ -425,7 +434,10 @@ function SummaryOrder({
     };
     const realBuyer = {
       phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
-      email: userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+      email:
+        userDataProfile?.email ||
+        userDataProfile?.secondary_email ||
+        `${userDataProfile?.phone}@atlobha.com`,
 
       name: userDataProfile?.name,
     };
@@ -485,6 +497,51 @@ function SummaryOrder({
       window.location.href = checkoutUrl; // Open in same tab
     } else {
       alert("Failed to create Tabby checkout.");
+    }
+  };
+
+  /* -------------------------------------------------------------------------- */
+  /*                              MIS payment logic                             */
+  /* -------------------------------------------------------------------------- */
+  const handleMisPay = async () => {
+    const sourceItems = orderDetails?.parts?.length
+      ? orderDetails.parts
+      : orderDetails?.products || [];
+
+    const res = await fetch("/api/mis/create-order", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+
+      body: JSON.stringify({
+        orderId: merchanteRefrence,
+        totalPrice: orderDetails?.receipt?.amount_to_pay,
+        shippingAmount: "0",
+        vat: "0",
+        purchaseAmount: orderDetails?.receipt?.amount_to_pay,
+        purchaseCurrency: "SAR",
+        lang: locale,
+        version: "v1.1",
+        customerDetails: {
+          mobileNumber: userDataProfile?.phone,
+        },
+        orderDetails: {
+          items: sourceItems?.map((prod) => ({
+            nameArabic: prod?.name,
+            nameEnglish: prod?.product?.name,
+            quantity: prod?.quantity,
+            unitPrice: prod?.price?.toFixed(2),
+          })),
+        },
+        callbackUri: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
+      }),
+    });
+
+    const data = await res.json();
+
+    if (data?.url) {
+      window.location.href = data.url; // redirect to MIS Pay
+    } else {
+      alert("Payment initiation failed");
     }
   };
 
@@ -601,7 +658,7 @@ function SummaryOrder({
       {/* rest to pay */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-        <Box sx={{ ...text, ...boldText }}>
+        <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
           {((calculateReceiptResFromMainPage?.amount_to_pay ??
             receipt?.amount_to_pay) === receipt?.amount_to_pay
             ? receipt?.amount_to_pay
@@ -744,7 +801,8 @@ function SummaryOrder({
                 handleApplePayPayment();
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara ||
-                selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby ||
+                selectedPaymentMethod?.key === PAYMENT_METHODS?.mis
               ) {
                 if (
                   (!orderDetails?.user?.name && !userDataProfile?.name) ||

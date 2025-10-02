@@ -253,7 +253,8 @@
     "BANK-TRANSFER": "bank transfer",
     "TABBY": "tabby",
     "wallet": "atlobha wallet",
-    "tamara": "tamara"
+    "tamara": "tamara",
+    "mis": "mis pay"
   },
   "orderSummary": "order summary",
   "productsPrice": "products price",
@@ -529,5 +530,11 @@
   "selectedServices": "Selected service",
   "canNotAddPromoForFixed": "can not add coupon free delivery for services provided at the center",
   "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number",
-  "serviceCategoriesSection": "Services Categories"
+  "serviceCategoriesSection": "Services Categories",
+  "installmentBy": "Installment by",
+  "canNotPayWithTabby": "Sorry, it is not possible to complete the purchase in installments using Tabby at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
+  "canNotPayWithMis": "Sorry, it is not possible to complete the purchase in installments using mis at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
+  "enjoyTabbyInstallment": "Enjoy comfortable installments with Tabby! You can pay your purchases in installments with a value ranging between 100 and 3000 Saudi riyals",
+  "enjoyMisInstallment": "Enjoy comfortable installments with mis! You can pay your purchases in installments with a value ranging between 145 and 7500 Saudi riyals",
+  "emailIsRegistered": "Email is registered before will use as secondary one in pay the order only"
 }

@@ -10,16 +10,22 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import EditInfoForm from "../../../components/userProfile/editInfo/editInfoForm";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { EMAIL, ME, OTP, PHONE, USERS } from "@/config/endPoints/endPoints";
+import {
+  EMAIL,
+  ME,
+  OTP,
+  PHONE,
+  SECONDARY_EMAIL,
+  USERS,
+} from "@/config/endPoints/endPoints";
 import OtpView from "@/components/Login/otpView";
 import DialogCentered from "@/components/DialogCentered";
 import { toast } from "react-toastify";
 import moment from "moment";
 import MergeStep from "@/components/spareParts/migrationPhoneLogic/mergeStep";
-import {
-  setEmailForMerge,
-  toggleMergeEmail,
-} from "@/redux/reducers/mergeEmailExistReducer";
+import { useRouter } from "next/router";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
+import { useAuth } from "@/config/providers/AuthProvider";
 
 const flexBox = {
   display: "flex",
@@ -34,6 +40,8 @@ function EditInfo({
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { user } = useAuth();
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [editPayload, setEditPayload] = useState(false);
   const [changedField, setChangedField] = useState(false);
@@ -47,6 +55,58 @@ function EditInfo({
     padding: `0px ${isMobile ? "0px" : "90px"}`,
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                             get user data info                             */
+  /* -------------------------------------------------------------------------- */
+  const { refetch: callUserData } = useCustomQuery({
+    name: ["getProfileUserInfo"],
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
+
+  /* -------------------------------------------------------------------------- */
+  /*                        add secondary email for user                        */
+  /* -------------------------------------------------------------------------- */
+  const { refetch: callSecondaryEmail, isFetching: secondaryEmailLoad } =
+    useCustomQuery({
+      name: ["secondaryEmail", changedField?.type],
+      url: `${ME}${SECONDARY_EMAIL}`,
+      refetchOnWindowFocus: false,
+      method: "patch",
+      body: { email: changedField["value"], otp: otpPayload?.otp },
+      select: (res) => res?.data?.data,
+      enabled: false,
+      retry: 0,
+      onSuccess: (res) => {
+        setOpenEditUserModal(false);
+        setOtpView(false);
+        setChangedField(false);
+        setOtpPayload(false);
+        toast.success(t.canPayNow);
+      },
+      onError: (err) => {
+        toast.error(
+          err?.response?.data?.first_error ||
+            err?.response?.data?.message ||
+            t.someThingWrong
+        );
+        setChangedField(false);
+        setOtpPayload(false);
+      },
+    });
+
+  /* -------------------------------------------------------------------------- */
+  /*                     save user info after confirm fields                    */
+  /* -------------------------------------------------------------------------- */
   const { data, refetch: EditUserData } = useCustomQuery({
     name: ["editUserInfo", editPayload],
     url: `${USERS}/${userDataProfile?.id}`,
@@ -126,6 +186,7 @@ function EditInfo({
       retry: 0,
       enabled: false,
       onSuccess: (res) => {
+        callUserData();
         setOtpView(false);
         setMigrationStep(false);
         toast.success(t.confirmedSuccess);
@@ -139,19 +200,19 @@ function EditInfo({
           setOtpView(true);
           return null;
         }
+        // logic for secondary-email
+        // works only in checkout pages
         if (
-          err?.response?.data?.first_error?.includes("email_taken") &&
-          false
+          router?.pathname?.includes("checkout") &&
+          err?.response?.data?.first_error?.includes("email") &&
+          changedField?.type === "email"
         ) {
-          dispatch(toggleMergeEmail());
-          dispatch(setEmailForMerge(changedField["value"]));
-          setOtpView(false);
-          setMigrationStep(false);
-          setChangedField(false);
-          setOtpPayload(false);
-        } else {
-          toast.error(err?.response?.data?.first_error || t.someThingWrong);
+          toast.success(t.emailIsRegistered);
+          callSecondaryEmail();
+          return;
         }
+        toast.error(err?.response?.data?.first_error || t.someThingWrong);
+        setOtpView(false);
       },
     });
 
@@ -168,27 +229,32 @@ function EditInfo({
     birthdate: "",
     gender: "male",
   };
-
+  console.log("initialValues", initialValues);
   const validatePhoneNumber = (phone, countryCode) => {
-    const phoneNumber = parsePhoneNumberFromString(phone, countryCode);
-    return phoneNumber && phoneNumber.isValid();
+    if (phone?.trim()?.length > 4) {
+      const phoneNumber = parsePhoneNumberFromString(phone, countryCode);
+      return phoneNumber && phoneNumber.isValid();
+    } else {
+      return true;
+    }
   };
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required(t.required).min(4, t.minLength4),
     email: Yup.string()
-      .required(t.required)
       .email(t.invalidEmail)
       .matches(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         t.invalidEmail
       ),
-    phone: Yup.string()
-      .required(t.required)
-      .test("is-valid-phone", t.invalid_phone, function (value) {
+    phone: Yup.string().test(
+      "is-valid-phone",
+      t.invalid_phone,
+      function (value) {
         const { country } = this.parent;
         return validatePhoneNumber(value, country);
-      }),
+      }
+    ),
     birthdate: Yup.string()
       .test("is-not-future", t.invalidDate, (value) => {
         return value ? new Date(value) <= new Date() : true;
@@ -274,6 +340,7 @@ function EditInfo({
                 setFieldValue,
                 setFieldTouched,
                 handleSubmit,
+                isValid,
               }) => {
                 // Log errors to the console
                 // console.log("Formik values:", errors);
@@ -292,6 +359,7 @@ function EditInfo({
                     otpLoad={otpLoad}
                     changedField={changedField}
                     hideSomeComponent={hideSomeComponent}
+                    isValid={isValid}
                   />
                 );
               }}

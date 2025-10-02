@@ -1,21 +1,36 @@
-import { getAccessToken } from "../../../lib/mispay";
+import { getAccessToken } from "@/lib/mispay";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).end();
 
-  const { orderId, amount } = req.body;
-
   try {
+    const {
+      orderId,
+      purchaseAmount,
+      purchaseCurrency,
+      version,
+      lang,
+      totalPrice,
+      shippingAmount,
+      vat,
+      customerDetails,
+      orderDetails,
+      callbackUri,
+    } = req.body;
     const token = await getAccessToken();
 
-    // Build payload according to MIS Pay docs
     const payload = {
       orderId,
-      purchaseAmount: amount,
-      purchaseCurrency: "SAR",
-      lang: "ar",
-      version: "v1.1",
-      callbackUri: process.env.NEXT_PUBLIC_MIS_CALLBACK_URL,
+      totalPrice,
+      shippingAmount,
+      vat,
+      purchaseAmount,
+      purchaseCurrency,
+      lang,
+      version,
+      customerDetails,
+      orderDetails,
+      callbackUri,
     };
 
     const response = await fetch(
@@ -34,12 +49,13 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.result?.url) {
-      res.status(200).json({ url: data.result.url });
+      return res.status(200).json({ url: data.result.url });
     } else {
-      res.status(500).json({ error: "Failed to get checkout URL" });
+      return res
+        .status(500)
+        .json({ error: "Failed to get checkout URL", data });
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 }

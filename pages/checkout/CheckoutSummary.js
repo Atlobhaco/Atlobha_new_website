@@ -44,7 +44,7 @@ const CheckoutSummary = forwardRef(
     const { voucherCode, allPromoCodeData } = useSelector(
       (state) => state.addSpareParts
     );
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const { basket } = useSelector((state) => state.basket);
     const { selectedPaymentMethod } = useSelector(
@@ -122,7 +122,7 @@ const CheckoutSummary = forwardRef(
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
+            setFakeLoader(false);
           }, 6000);
           return;
         }
@@ -168,7 +168,15 @@ const CheckoutSummary = forwardRef(
           selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
           +oldAmountToPay > 0
         ) {
-          handleMisPay();
+          if (userDataProfile?.phone?.length) {
+            handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 6000);
+            return;
+          } else {
+            setAddPhoneForTamara();
+          }
           return;
         }
 
@@ -179,7 +187,7 @@ const CheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -498,7 +506,9 @@ const CheckoutSummary = forwardRef(
               phoneAddedForTamara ||
               userDataProfile?.phone?.replace(/^(\+?966)/, ""),
             email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+              userDataProfile?.email ||
+              userDataProfile?.secondary_email ||
+              `${userDataProfile?.phone}@atlobha.com`,
           },
           items: basket?.map((prod) => ({
             reference_id: prod?.id,
@@ -538,7 +548,9 @@ const CheckoutSummary = forwardRef(
       const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
-          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+          userDataProfile?.email ||
+          userDataProfile?.secondary_email ||
+          `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
@@ -609,23 +621,37 @@ const CheckoutSummary = forwardRef(
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+
         body: JSON.stringify({
-          // send success failutre call bakc every thing from here
-          merchantId: merchanteRefrence,
-          orderId: merchanteRefrence + "_" + Date.now(),
-          amount: calculateReceiptResFromMainPage?.amount_to_pay, // example
-          currency: "SAR", // or your currency
-          successUrl: `${
+          orderId: merchanteRefrence,
+          totalPrice: calculateReceiptResFromMainPage?.amount_to_pay,
+          shippingAmount: "0",
+          vat: "0",
+          purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay,
+          purchaseCurrency: "SAR",
+          lang: locale,
+          version: "v1.1",
+          customerDetails: {
+            mobileNumber: userDataProfile?.phone,
+          },
+          orderDetails: {
+            items: basket?.map((prod) => ({
+              nameArabic: prod?.product?.name,
+              nameEnglish: prod?.product?.name,
+              quantity: prod?.quantity,
+              unitPrice: prod?.product?.price?.toFixed(2),
+            })),
+          },
+          callbackUri: `${
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
         }),
       });
 
       const data = await res.json();
 
-      if (data?.paymentUrl) {
-        window.location.href = data.paymentUrl; // redirect to MIS Pay
+      if (data?.url) {
+        window.location.href = data.url; // redirect to MIS Pay
       } else {
         alert("Payment initiation failed");
       }
@@ -742,7 +768,7 @@ const CheckoutSummary = forwardRef(
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {((calculateReceiptResFromMainPage?.amount_to_pay ??
               receipt?.amount_to_pay) === receipt?.amount_to_pay
               ? receipt?.amount_to_pay
@@ -757,7 +783,7 @@ const CheckoutSummary = forwardRef(
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
             //   fetchReceipt ||
-            redirectToPayfort
+            fakeLoader
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
@@ -773,7 +799,7 @@ const CheckoutSummary = forwardRef(
           }
           // || fetchReceipt
           comAfterText={
-            confirmPriceFetch || redirectToPayfort || loadPayRequest ? (
+            confirmPriceFetch || fakeLoader || loadPayRequest ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -794,7 +820,7 @@ const CheckoutSummary = forwardRef(
             if (amount === 0) return callConfirmPricing();
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -802,13 +828,22 @@ const CheckoutSummary = forwardRef(
               handleApplePayPayment();
             } else if (
               method === PAYMENT_METHODS.tamara ||
-              method === PAYMENT_METHODS.tabby
+              method === PAYMENT_METHODS.tabby ||
+              method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
               }
-              if (!userDataProfile?.email || !userDataProfile?.name) {
+              if (
+                ((!userDataProfile?.email &&
+                  !userDataProfile?.secondary_email) ||
+                  !userDataProfile?.name) &&
+                method !== PAYMENT_METHODS.mis
+              ) {
                 setOpenEditUserModal(true);
                 return;
               }

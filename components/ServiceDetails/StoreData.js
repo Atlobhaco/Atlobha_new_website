@@ -44,8 +44,8 @@ function StoreData({
 
   const userHasAddress =
     selectedAddress?.id ||
-    defaultAddress?.id !== "currentLocation" ||
-    !defaultAddress?.id;
+    defaultAddress?.id === "currentLocation" ||
+    defaultAddress?.id;
 
   const buttonStyle = {
     background: "#FFD400",

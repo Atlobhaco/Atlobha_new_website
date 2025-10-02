@@ -75,7 +75,7 @@ const ServiceCheckoutSummary = forwardRef(
     const [payFortForm, setPayfortForm] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
 
     const header = {
       color: "#232323",
@@ -152,7 +152,7 @@ const ServiceCheckoutSummary = forwardRef(
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
+            setFakeLoader(false);
           }, 6000);
           return;
         }
@@ -194,6 +194,21 @@ const ServiceCheckoutSummary = forwardRef(
           return;
         }
 
+        if (
+          selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+          +oldAmountToPay > 0
+        ) {
+          if (userDataProfile?.phone?.length) {
+            handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 6000);
+          } else {
+            setAddPhoneForTamara();
+          }
+          return;
+        }
+
         router.push(
           `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`
         );
@@ -202,7 +217,7 @@ const ServiceCheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -483,7 +498,9 @@ const ServiceCheckoutSummary = forwardRef(
               phoneAddedForTamara ||
               userDataProfile?.phone?.replace(/^(\+?966)/, ""),
             email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+              userDataProfile?.email ||
+              userDataProfile?.secondary_email ||
+              `${userDataProfile?.phone}@atlobha.com`,
           },
           items: [
             {
@@ -528,7 +545,9 @@ const ServiceCheckoutSummary = forwardRef(
       const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
-          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+          userDataProfile?.email ||
+          userDataProfile?.secondary_email ||
+          `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
@@ -598,6 +617,55 @@ const ServiceCheckoutSummary = forwardRef(
         window.location.href = checkoutUrl; // Open in same tab
       } else {
         alert("Failed to create Tabby checkout.");
+      }
+    };
+    /* -------------------------------------------------------------------------- */
+    /*                              MIS payment logic                             */
+    /* -------------------------------------------------------------------------- */
+    const handleMisPay = async () => {
+      const res = await fetch("/api/mis/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+
+        body: JSON.stringify({
+          orderId: merchanteRefrence,
+          totalPrice: calculateReceiptResFromMainPage?.amount_to_pay,
+          shippingAmount: "0",
+          vat: "0",
+          purchaseAmount: calculateReceiptResFromMainPage?.amount_to_pay,
+          purchaseCurrency: "SAR",
+          lang: locale,
+          version: "v1.1",
+          customerDetails: {
+            mobileNumber: userDataProfile?.phone,
+          },
+          orderDetails: {
+            items: [
+              {
+                nameArabic: checkoutServiceDetails?.serviceDetails?.name,
+                nameEnglish: checkoutServiceDetails?.serviceDetails?.name,
+                quantity: 1,
+                unitPrice: servicePrice({
+                  service: checkoutServiceDetails?.serviceDetails,
+                  userCar: selectedCar?.id ? selectedCar : defaultCar,
+                }),
+              },
+            ],
+          },
+          callbackUri: `${
+            process.env.NEXT_PUBLIC_WEBSITE_URL
+          }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
+            checkoutServiceDetails?.type
+          }`,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data?.url) {
+        window.location.href = data.url; // redirect to MIS Pay
+      } else {
+        alert("Payment initiation failed");
       }
     };
     return (
@@ -676,7 +744,7 @@ const ServiceCheckoutSummary = forwardRef(
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {calculateReceiptResFromMainPage?.amount_to_pay?.toFixed(2)}{" "}
             {riyalImgBlack()}
           </Box>
@@ -686,7 +754,7 @@ const ServiceCheckoutSummary = forwardRef(
             loadPayRequest ||
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
-            redirectToPayfort ||
+            fakeLoader ||
             !carAvailable ||
             !+calculateReceiptResFromMainPage?.amount_to_pay < 0
           }
@@ -702,7 +770,7 @@ const ServiceCheckoutSummary = forwardRef(
               : "payAndConfirm"
           }
           comAfterText={
-            redirectToPayfort || loadPayRequest || confirmPriceFetch ? (
+            fakeLoader || loadPayRequest || confirmPriceFetch ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -722,7 +790,7 @@ const ServiceCheckoutSummary = forwardRef(
             if (!userDataProfile?.phone) return setOpenAddMobile(true);
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -730,13 +798,22 @@ const ServiceCheckoutSummary = forwardRef(
               handleApplePayPayment();
             } else if (
               method === PAYMENT_METHODS.tamara ||
-              method === PAYMENT_METHODS.tabby
+              method === PAYMENT_METHODS.tabby ||
+              method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
               }
-              if (!userDataProfile?.email || !userDataProfile?.name) {
+              if (
+                ((!userDataProfile?.email &&
+                  !userDataProfile?.secondary_email) ||
+                  !userDataProfile?.name) &&
+                method !== PAYMENT_METHODS.mis
+              ) {
                 setOpenEditUserModal(true);
                 return;
               }
