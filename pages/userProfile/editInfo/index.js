@@ -229,7 +229,7 @@ function EditInfo({
     birthdate: "",
     gender: "male",
   };
-  console.log("initialValues", initialValues);
+
   const validatePhoneNumber = (phone, countryCode) => {
     if (phone?.trim()?.length > 4) {
       const phoneNumber = parsePhoneNumberFromString(phone, countryCode);

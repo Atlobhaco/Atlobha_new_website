@@ -44,12 +44,30 @@ function AddAvailablePayMethods({
   const [amountToPay, setAmountToPay] = useState(0);
 
   useEffect(() => {
-    if (document) {
-      const amountToPayEl =
-        document && document?.getElementById("amount-to-pay");
-      setAmountToPay(amountToPayEl?.textContent?.trim());
-    }
-  }, [document, document?.getElementById("amount-to-pay")?.textContent]);
+    if (typeof window === "undefined") return;
+
+    const target = document.getElementById("amount-to-pay");
+    if (!target) return;
+
+    // Initial value
+    setAmountToPay(target.textContent?.trim() || "");
+
+    // Create MutationObserver
+    const observer = new MutationObserver(() => {
+      setAmountToPay(target.textContent?.trim() || "");
+    });
+
+    observer.observe(target, {
+      childList: true, // watch direct text changes
+      characterData: true, // watch text node changes
+      subtree: true, // watch all descendants
+    });
+
+    // Cleanup on unmount
+    return () => {
+      observer.disconnect();
+    };
+  });
 
   const { data: availablePayments, isFetching } = useCustomQuery({
     name: [
