@@ -103,8 +103,8 @@ function CheckoutService() {
     ? true
     : checkoutServiceDetails?.serviceDetails?.service_models?.some(
         (c) =>
-          +c.model.id === +userCar.model.id &&
-          +c.model?.vehicle_brand?.id === +userCar.brand.id
+          +c.model.id === +userCar?.model?.id &&
+          +c.model?.vehicle_brand?.id === +userCar?.brand?.id
       );
 
   const triggerChildPayment = () => {

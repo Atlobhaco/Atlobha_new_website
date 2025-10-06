@@ -33,6 +33,7 @@ import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import "react-inner-image-zoom/lib/styles.min.css";
 import { RouteProvider } from "@/config/providers/RouteTracker";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -136,6 +137,8 @@ const AppContent = ({ Component, pageProps }) => {
           <LogoLoader />
         </Box>
         <Layout>
+          {/* component to check failure for the payment methods */}
+          <PaymentFailChecker /> {/* runs once on app load */}
           <Component {...pageProps} />
         </Layout>
       </>

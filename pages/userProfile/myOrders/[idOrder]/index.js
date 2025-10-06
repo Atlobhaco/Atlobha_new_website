@@ -1,6 +1,6 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import UserProfile from "../..";
 import BreadCrumb from "@/components/BreadCrumb";
 import useCustomQuery from "@/config/network/Apiconfig";
@@ -22,6 +22,7 @@ function OrderDetails() {
   const { idOrder, type } = router.query;
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
+  const [rendered, setRendered] = useState(false);
 
   const renderUrlDependOnType = () => {
     switch (type) {
@@ -100,11 +101,15 @@ function OrderDetails() {
         return type;
     }
   };
+  //   to prevent hydration error
+  useEffect(() => {
+    setRendered(true);
+  }, []);
 
   return (
     <div className="container-fluid">
       <div className="row">
-        {!isMobile && (
+        {!isMobile && rendered && (
           <div className="col-md-4">
             <UserProfile />
           </div>

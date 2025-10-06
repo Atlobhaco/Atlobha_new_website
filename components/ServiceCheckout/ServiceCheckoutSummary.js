@@ -7,7 +7,12 @@ import {
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { PAYMENT_METHODS, PORTABLE, SERVICES } from "@/constants/enums";
+import {
+  MARKETPLACE,
+  PAYMENT_METHODS,
+  PORTABLE,
+  SERVICES,
+} from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import React, {
@@ -34,6 +39,7 @@ import {
   setPromoCodeAllData,
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
+import Cookies from "js-cookie";
 
 const ServiceCheckoutSummary = forwardRef(
   (
@@ -99,7 +105,6 @@ const ServiceCheckoutSummary = forwardRef(
       fontWeight: "700",
       color: "#232323",
     };
-
     const {
       data: confirmPriceRes,
       isFetching: confirmPriceFetch,
@@ -144,7 +149,7 @@ const ServiceCheckoutSummary = forwardRef(
               payment_reference: merchanteRefrence,
             },
       onSuccess: async (res) => {
-        sessionStorage.setItem("order_id_market", res?.id);
+        sessionStorage.setItem("created_order_id", res?.id);
         sessionStorage.setItem("service_type", checkoutServiceDetails?.type);
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -289,7 +294,11 @@ const ServiceCheckoutSummary = forwardRef(
           dispatch(setPromoCodeForSpareParts({ data: "" }));
           dispatch(setPromoCodeAllData({ data: null }));
         } else {
-          toast.error(err?.response?.data?.first_error || t.someThingWrong);
+          toast.error(
+            err?.response?.data?.first_error ||
+              err?.response?.data?.message ||
+              t.someThingWrong
+          );
         }
       },
     });
@@ -301,7 +310,7 @@ const ServiceCheckoutSummary = forwardRef(
       language: locale,
       currency: "SAR",
       customer_email: "userTest@example.com",
-      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true&serviceType=${checkoutServiceDetails?.type}`,
+      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true&serviceType=${checkoutServiceDetails?.type}&idService=${checkoutServiceDetails?.serviceDetails?.id}&type=${router?.query?.type}&portableService=${router?.query?.portableService}&secType=${router?.query?.secType}`,
     };
 
     requestData.merchant_reference = merchanteRefrence;
@@ -489,8 +498,8 @@ const ServiceCheckoutSummary = forwardRef(
           }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
             checkoutServiceDetails?.type
           }`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -598,8 +607,8 @@ const ServiceCheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
@@ -623,6 +632,15 @@ const ServiceCheckoutSummary = forwardRef(
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
     const handleMisPay = async () => {
+      Cookies.set(
+        "url_after_pay_failed",
+        `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+        {
+          expires: 1,
+          path: "/",
+        }
+      );
+
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

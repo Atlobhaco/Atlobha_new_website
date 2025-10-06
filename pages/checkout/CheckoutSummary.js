@@ -2,7 +2,7 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { PAYMENT_METHODS } from "@/constants/enums";
+import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
@@ -25,6 +25,7 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const CheckoutSummary = forwardRef(
   (
@@ -115,7 +116,14 @@ const CheckoutSummary = forwardRef(
         ref_num: null,
       },
       onSuccess: async (res) => {
-        sessionStorage.setItem("order_id_market", res?.id);
+        sessionStorage.setItem("created_order_id", res?.id);
+        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+        Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
+        Cookies.set("payment_method", selectedPaymentMethod?.key, {
+          expires: 1,
+          path: "/",
+        });
+
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
           +oldAmountToPay > 0
@@ -477,7 +485,8 @@ const CheckoutSummary = forwardRef(
       const res = await fetch("/api/tamara/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+        body: JSON.stringify(
+			{
           shipping_address: {
             city: selectAddress?.city?.name,
             country_code: selectAddress?.city?.country?.code,
@@ -491,8 +500,8 @@ const CheckoutSummary = forwardRef(
           successUrl: `${
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+		  cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+		  failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -589,8 +598,8 @@ const CheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=marketplace`,
