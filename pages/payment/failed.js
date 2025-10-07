@@ -15,7 +15,7 @@ function Failed() {
 
     setTimeout(() => {
       router.push(url_after_pay_failed || "/checkout");
-    }, 500);
+    }, 1000);
   }, []);
 
   return (
