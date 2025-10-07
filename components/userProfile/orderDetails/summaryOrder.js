@@ -67,7 +67,7 @@ function SummaryOrder({
     if (orderId && orderType && paytmentMethod) {
       Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
     }
-  }, []);
+  }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],

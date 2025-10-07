@@ -297,6 +297,7 @@ const CheckoutSummary = forwardRef(
         setPayfortForm(form);
       }
     }, []);
+	
     useEffect(() => {
       const orderId = Cookies.get("created_order_id");
       const orderType = Cookies.get("order_type");
