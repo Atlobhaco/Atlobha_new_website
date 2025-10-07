@@ -296,15 +296,16 @@ const CheckoutSummary = forwardRef(
         const form = window.document.createElement("form");
         setPayfortForm(form);
       }
-      //  if user come back browser from any payment gateway
+    }, []);
+    useEffect(() => {
       const orderId = Cookies.get("created_order_id");
       const orderType = Cookies.get("order_type");
       const paytmentMethod = Cookies.get("payment_method");
 
-      if (orderId && orderType && paytmentMethod) {
+      if (Cookies && orderId && orderType && paytmentMethod) {
         Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
       }
-    }, []);
+    }, [Cookies]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
