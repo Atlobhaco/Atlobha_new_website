@@ -686,7 +686,7 @@ const CheckoutSummary = forwardRef(
         )}
 
         {/* offers discount */}
-        {(calculateReceiptResFromMainPage?.offers_discount ??
+        {/* {(calculateReceiptResFromMainPage?.offers_discount ??
           receipt?.offers_discount) > 0 && (
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
@@ -700,7 +700,7 @@ const CheckoutSummary = forwardRef(
               {riyalImgRed()}
             </Box>
           </Box>
-        )}
+        )} */}
 
         {/* delivery fees */}
         <Box className="d-flex justify-content-between mb-2">

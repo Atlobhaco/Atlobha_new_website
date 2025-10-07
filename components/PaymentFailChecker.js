@@ -10,15 +10,15 @@ export default function PaymentFailChecker() {
   const hasRun = useRef(false);
 
   useEffect(() => {
-    if (hasRun.current) return; // prevent double execution
-    hasRun.current = true;
+    // if (hasRun.current) return; // prevent double execution
+    // hasRun.current = true;
 
     const paymentFailed = Cookies.get("payment_failed");
     const orderId = Cookies.get("created_order_id");
     const orderType = Cookies.get("order_type");
     const paytmentMethod = Cookies.get("payment_method");
     const url_after_pay_failed = Cookies.get("url_after_pay_failed");
-
+    console.log(paymentFailed, orderId);
     if (paymentFailed === "failed" && orderId) {
       fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
@@ -47,7 +47,7 @@ export default function PaymentFailChecker() {
           Cookies.remove("url_after_pay_failed");
         });
     }
-    hasRun.current = false;
+    // hasRun.current = false;
   }, []);
 
   return null;

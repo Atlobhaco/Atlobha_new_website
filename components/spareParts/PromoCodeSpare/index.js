@@ -1,7 +1,7 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setPromoCodeAllData,
@@ -24,6 +24,11 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
     (state) => state.addSpareParts
   );
   const [error, setError] = useState(false);
+
+  const params = new URLSearchParams({
+    name: "Micheal",
+    age: "25",
+  });
 
   const { refetch: checkPromo } = useCustomQuery({
     name: "checkPromoCode",
@@ -67,6 +72,15 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
       return promoCode || "";
     }
   };
+
+  // Cleanup: Reset promo code on unmount
+  useEffect(() => {
+    return () => {
+      dispatch(setPromoCodeAllData(null));
+      setPromoCodeId(false);
+      dispatch(setPromoCodeForSpareParts(null));
+    };
+  }, []);
 
   return (
     <Box
