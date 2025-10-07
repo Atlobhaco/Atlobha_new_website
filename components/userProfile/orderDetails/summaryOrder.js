@@ -171,7 +171,7 @@ function SummaryOrder({
         form.submit();
         setTimeout(() => {
           setRedirectToPayfort(false);
-        }, 8000);
+        }, 10000);
         return;
       }
       if (
@@ -201,7 +201,7 @@ function SummaryOrder({
         handleMisPay();
         setTimeout(() => {
           setRedirectToPayfort(false);
-        }, 8000);
+        }, 10000);
         return;
       }
       toast.success(t.successPayOrder);
