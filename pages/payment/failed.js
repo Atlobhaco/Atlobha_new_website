@@ -12,10 +12,7 @@ function Failed() {
   useEffect(() => {
     Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
     const url_after_pay_failed = Cookies.get("url_after_pay_failed");
-
-    setTimeout(() => {
-      router.push(url_after_pay_failed || "/checkout");
-    }, 1000);
+    router.push(url_after_pay_failed || "/checkout");
   }, []);
 
   return (

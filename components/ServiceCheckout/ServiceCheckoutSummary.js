@@ -287,6 +287,15 @@ const ServiceCheckoutSummary = forwardRef(
         setOldAmountToPay(res?.amount_to_pay);
       },
       onError: (err) => {
+        // redirect to service details if browser back from payment gateway
+        if (
+          err?.response?.data?.message?.includes("ServiceCenterSlot_not_found")
+        ) {
+          router?.push(
+            `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`
+          );
+          return;
+        }
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
         if (err?.response?.data?.first_error?.includes("promo")) {

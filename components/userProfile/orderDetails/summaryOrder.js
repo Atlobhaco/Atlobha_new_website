@@ -26,12 +26,13 @@ import {
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
 import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 import Cookies from "js-cookie";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -54,6 +55,19 @@ function SummaryOrder({
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
+
+  /* -------------------------------------------------------------------------- */
+  /*             if user come back browser from any payment gateway             */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const orderId = Cookies.get("created_order_id");
+    const orderType = Cookies.get("order_type");
+    const paytmentMethod = Cookies.get("payment_method");
+
+    if (orderId && orderType && paytmentMethod) {
+      Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+    }
+  }, []);
 
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],
@@ -214,7 +228,7 @@ function SummaryOrder({
     isFetching: fetchReceipt,
     refetch: callCalculateReceipt,
   } = useCustomQuery({
-    name: ["calculateReceiptForTotalPay"],
+    name: ["calculateReceiptForTotalPay", Cookies.get("payment_failed")],
     url: renderUrlForCaluclate(),
     refetchOnWindowFocus: false,
     enabled: false,
@@ -571,6 +585,7 @@ function SummaryOrder({
         padding: isMobile ? "8px 13px" : "8px 30px",
       }}
     >
+      <PaymentFailChecker />
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">

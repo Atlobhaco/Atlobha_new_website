@@ -26,6 +26,7 @@ import React, {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 const CheckoutSummary = forwardRef(
   (
@@ -215,6 +216,7 @@ const CheckoutSummary = forwardRef(
         voucherCode,
         selectAddress,
         allPromoCodeData,
+        Cookies.get("payment_failed"),
       ],
       url: "/marketplace/orders/calculate",
       refetchOnWindowFocus: true,
@@ -293,6 +295,14 @@ const CheckoutSummary = forwardRef(
       if (typeof window !== "undefined") {
         const form = window.document.createElement("form");
         setPayfortForm(form);
+      }
+      //  if user come back browser from any payment gateway
+      const orderId = Cookies.get("created_order_id");
+      const orderType = Cookies.get("order_type");
+      const paytmentMethod = Cookies.get("payment_method");
+
+      if (orderId && orderType && paytmentMethod) {
+        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
       }
     }, []);
 
@@ -485,8 +495,7 @@ const CheckoutSummary = forwardRef(
       const res = await fetch("/api/tamara/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-			{
+        body: JSON.stringify({
           shipping_address: {
             city: selectAddress?.city?.name,
             country_code: selectAddress?.city?.country?.code,
@@ -500,8 +509,8 @@ const CheckoutSummary = forwardRef(
           successUrl: `${
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
-		  cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
-		  failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -662,6 +671,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
