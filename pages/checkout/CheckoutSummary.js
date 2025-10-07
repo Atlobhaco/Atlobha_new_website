@@ -302,10 +302,10 @@ const CheckoutSummary = forwardRef(
       const orderType = Cookies.get("order_type");
       const paytmentMethod = Cookies.get("payment_method");
 
-      if (Cookies && orderId && orderType && paytmentMethod) {
+      if (orderId && orderType && paytmentMethod) {
         Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
       }
-    }, [Cookies]);
+    }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
