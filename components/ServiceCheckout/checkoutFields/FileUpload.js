@@ -1,60 +1,130 @@
-import React from "react";
+"use client";
+import React, { useRef } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import { Box, Typography } from "@mui/material";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import { Box, Typography, IconButton } from "@mui/material";
+import Image from "next/image";
 import style from "../../../pages/spareParts/confirmation/confirmation.module.scss";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import Image from "next/image";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 
-function FileUpload({ field, selectedFields, setSelectedFields }) {
+export default function FileUpload({
+  field,
+  selectedFields,
+  setSelectedFields,
+}) {
   const { isMobile } = useScreenSize();
   const { locale, t } = useLocalization();
 
-  const navbar =
-    typeof window !== "undefined" && document.getElementById("navbar");
-  const bgColor = navbar
-    ? window.getComputedStyle(navbar).backgroundColor
-    : "#E7F5FF";
+  // 🔹 Handle upload logic
+  const handleFileUpload = async (file, singleField) => {
+    if (!file) return;
 
-  // Store selection per field by its type or ID
-  const handleSelect = ({ checkoutFieldId, keyName, option }) => {
+    const isImage = file.type.startsWith("image/");
+    const endpoint = isImage ? "/files/image" : "/files/document";
+    const formData = new FormData();
+    formData.append("file", file);
+
+    // 🔸 Create temporary blob URL for instant preview
+    const tempUrl = URL.createObjectURL(file);
+
+    // 🔹 Add temporary entry immediately for instant preview
+    const keyName = singleField?.checkout_field?.type;
+    const checkoutFieldId = singleField?.checkout_field?.id;
     setSelectedFields((prev) => {
       const prevSelections = prev[keyName] || [];
-
-      // Check if this option is already selected for this checkoutFieldId
-      const alreadySelected = prevSelections.some(
-        (sel) => sel.checkoutFieldId === checkoutFieldId && sel.id === option.id
-      );
-
-      if (alreadySelected) {
-        // Remove it (toggle off)
-        return {
-          ...prev,
-          [keyName]: prevSelections.filter(
-            (sel) =>
-              !(sel.checkoutFieldId === checkoutFieldId && sel.id === option.id)
-          ),
-        };
-      }
-
-      // Otherwise: remove old selection for this field, then add new one
       const otherSelections = prevSelections.filter(
         (sel) => sel.checkoutFieldId !== checkoutFieldId
       );
 
       return {
         ...prev,
-        [keyName]: [...otherSelections, { checkoutFieldId, ...option }],
+        [keyName]: [
+          ...otherSelections,
+          {
+            checkoutFieldId,
+            fileName: file.name,
+            fileType: file.type,
+            fileUrl: tempUrl, // use blob until real URL returns
+            isTemp: true, // mark as temporary
+          },
+        ],
       };
+    });
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
+            "x-api-key": "w123",
+          },
+          body: formData,
+        }
+      );
+
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+
+      // 🔹 Replace temporary entry with backend URL
+      setSelectedFields((prev) => {
+        const prevSelections = prev[keyName] || [];
+        return {
+          ...prev,
+          [keyName]: prevSelections.map((sel) =>
+            sel.checkoutFieldId === checkoutFieldId
+              ? {
+                  ...sel,
+                  fileUrl: data?.data?.url || data?.url || tempUrl,
+                  isTemp: false,
+                }
+              : sel
+          ),
+        };
+      });
+    } catch (err) {
+      console.error("Upload error:", err);
+    }
+  };
+
+  // 🔹 Trigger file select
+  const triggerFileSelect = (singleField) => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "*/*";
+    input.onchange = (e) => handleFileUpload(e.target.files[0], singleField);
+    input.click();
+  };
+
+  // 🔹 Remove file
+  const handleRemoveFile = (singleField) => {
+    const keyName = singleField?.checkout_field?.type;
+    const checkoutFieldId = singleField?.checkout_field?.id;
+
+    setSelectedFields((prev) => {
+      const updated = { ...prev };
+      updated[keyName] = (updated[keyName] || []).filter(
+        (sel) => sel.checkoutFieldId !== checkoutFieldId
+      );
+      return updated;
     });
   };
 
   return (
     <>
       {field?.map((singleField) => {
+        const keyName = singleField?.checkout_field?.type;
+        const uploadedFile =
+          selectedFields?.[keyName]?.find(
+            (f) => f.checkoutFieldId === singleField?.checkout_field?.id
+          ) || null;
+
         return (
           <Box key={singleField?.id}>
+            {/* === Field title and upload button === */}
             <Box
               className={`${style["deliverySec"]} gap-0 align-items-center mb-1 border-bottom-0`}
             >
@@ -71,6 +141,7 @@ function FileUpload({ field, selectedFields, setSelectedFields }) {
                   width: "95%",
                   display: "flex",
                   justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
                 <Box className={`${style["deliverySec_address-holder"]}`}>
@@ -99,6 +170,7 @@ function FileUpload({ field, selectedFields, setSelectedFields }) {
                       textDecoration: "underline",
                     },
                   }}
+                  onClick={() => triggerFileSelect(singleField)}
                 >
                   <AddCircleOutlineIcon
                     style={{
@@ -108,22 +180,58 @@ function FileUpload({ field, selectedFields, setSelectedFields }) {
                       marginBottom: "4px",
                     }}
                   />
-                  <Box
-                    onClick={() => {
-                      // logic for upload file i  want to call the endpoint that is called media
-                    }}
-                    component="span"
-                  >
-                    {t.uploadFile}
-                  </Box>
+                  <Box component="span">{t.uploadFile}</Box>
                 </Box>
               </Box>
             </Box>
+
+            {/* === Uploaded file preview === */}
+            {uploadedFile && (
+              <Box
+                sx={{
+                  //   mt: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  px: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                {uploadedFile.fileType.startsWith("image/") ? (
+                  <img
+                    src={uploadedFile.fileUrl}
+                    alt={uploadedFile.fileName}
+                    width={90}
+                    height={70}
+                    style={{
+                      borderRadius: "8px",
+                      objectFit: "contain",
+                    }}
+                  />
+                ) : (
+                  <Typography
+                    sx={{
+                      fontSize: "18px",
+                      fontWeight: 500,
+                      color: "#333",
+                    }}
+                  >
+                    📄 {uploadedFile.fileName}
+                  </Typography>
+                )}
+
+                <IconButton
+                  color="error"
+                  size="small"
+                  onClick={() => handleRemoveFile(singleField)}
+                >
+                  <DeleteOutlineIcon />
+                </IconButton>
+              </Box>
+            )}
           </Box>
         );
       })}
     </>
   );
 }
-
-export default FileUpload;
