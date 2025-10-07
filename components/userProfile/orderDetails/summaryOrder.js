@@ -66,6 +66,7 @@ function SummaryOrder({
 
     if (orderId && orderType && paytmentMethod) {
       Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+      setRedirectToPayfort(false);
     }
   }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
@@ -170,7 +171,7 @@ function SummaryOrder({
         form.submit();
         setTimeout(() => {
           setRedirectToPayfort(false);
-        }, 6000);
+        }, 8000);
         return;
       }
       if (
@@ -200,7 +201,7 @@ function SummaryOrder({
         handleMisPay();
         setTimeout(() => {
           setRedirectToPayfort(false);
-        }, 6000);
+        }, 8000);
         return;
       }
       toast.success(t.successPayOrder);

@@ -158,7 +158,7 @@ const ServiceCheckoutSummary = forwardRef(
           payFortForm.submit();
           setTimeout(() => {
             setFakeLoader(false);
-          }, 6000);
+          }, 8000);
           return;
         }
         if (
@@ -207,7 +207,7 @@ const ServiceCheckoutSummary = forwardRef(
             handleMisPay();
             setTimeout(() => {
               setFakeLoader(false);
-            }, 6000);
+            }, 8000);
           } else {
             setAddPhoneForTamara();
           }
