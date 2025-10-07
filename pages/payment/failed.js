@@ -13,7 +13,9 @@ function Failed() {
     Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
     const url_after_pay_failed = Cookies.get("url_after_pay_failed");
 
-    router.push(url_after_pay_failed || "/checkout");
+    setTimeout(() => {
+      router.push(url_after_pay_failed || "/checkout");
+    }, 500);
   }, []);
 
   return (
