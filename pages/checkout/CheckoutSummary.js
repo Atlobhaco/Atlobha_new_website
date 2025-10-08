@@ -132,7 +132,7 @@ const CheckoutSummary = forwardRef(
           payFortForm.submit();
           setTimeout(() => {
             setFakeLoader(false);
-          }, 10000);
+          }, 15000);
           return;
         }
         if (
@@ -181,7 +181,7 @@ const CheckoutSummary = forwardRef(
             handleMisPay();
             setTimeout(() => {
               setFakeLoader(false);
-            }, 10000);
+            }, 15000);
             return;
           } else {
             setAddPhoneForTamara();
@@ -673,7 +673,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
-        <PaymentFailChecker />
+        {/* <PaymentFailChecker /> */}
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">

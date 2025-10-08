@@ -101,7 +101,7 @@ function OrdersList({ order, callOrders }) {
             <div>
               <OrderStatus status={order?.status} />
             </div>
-            {order?.status !== STATUS?.new && (
+            {
               <Box className={`${style["price"]}`}>
                 {/* can not find price before */}
                 {/* <span>{order?.receipt?.total_price}</span>{" "} */}
@@ -115,7 +115,7 @@ function OrdersList({ order, callOrders }) {
                   </Box>
                 )}
               </Box>
-            )}
+            }
           </div>
         </div>
       </div>
