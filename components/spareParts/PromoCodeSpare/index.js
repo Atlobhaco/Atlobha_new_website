@@ -14,7 +14,12 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { FIXED } from "@/constants/enums";
 
-function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
+function PromoCodeSpare({
+  promoCodeId,
+  setPromoCodeId,
+  customTitle = false,
+  query = {},
+}) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { type } = router.query;
@@ -25,14 +30,25 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
   );
   const [error, setError] = useState(false);
 
-  const params = new URLSearchParams({
-    name: "Micheal",
-    age: "25",
-  });
+  const urlWithParams = () => {
+    const params = new URLSearchParams();
 
+    // Loop through query object
+    Object.entries(query).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        // Append each array item separately
+        value.forEach((v) => params.append(`${key}[]`, v));
+      } else if (value !== undefined && value !== null) {
+        // Append normal key-value pairs
+        params.append(key, value);
+      }
+    });
+
+    return `${PROMO_CODES}/${promoCode}?${params.toString()}`;
+  };
   const { refetch: checkPromo } = useCustomQuery({
     name: "checkPromoCode",
-    url: `${PROMO_CODES}/${promoCode}`,
+    url: urlWithParams(),
     refetchOnWindowFocus: false,
     enabled: false,
     retry: 0,
@@ -75,12 +91,14 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
 
   // Cleanup: Reset promo code on unmount
   useEffect(() => {
-    return () => {
-      dispatch(setPromoCodeAllData(null));
-      setPromoCodeId(false);
-      dispatch(setPromoCodeForSpareParts(null));
-    };
-  }, []);
+    if (!router?.pathname?.includes("checkout")) {
+      return () => {
+        dispatch(setPromoCodeAllData(null));
+        setPromoCodeId(false);
+        dispatch(setPromoCodeForSpareParts(null));
+      };
+    }
+  }, [router]);
 
   return (
     <Box

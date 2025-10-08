@@ -14,7 +14,7 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
+function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
   const { t, locale } = useLocalization();
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -67,6 +67,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
               promoCodeId={promoCodeId}
               setPromoCodeId={setPromoCodeId}
               customTitle={t.couponDiscount}
+              query={query}
             />
           </Box>
         ) : (
@@ -166,6 +167,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId }) {
                 promoCodeId={promoCodeId}
                 setPromoCodeId={setPromoCodeId}
                 customTitle={t.couponDiscount}
+                query={query}
               />
             </Box>
             {/* <Box
