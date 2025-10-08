@@ -98,24 +98,24 @@ const AppContent = ({ Component, pageProps }) => {
   /* -------------------------------------------------------------------------- */
   /*           handle failure and cancel for tamara payment and tabby           */
   /* -------------------------------------------------------------------------- */
-  useEffect(() => {
-    if (orderId) {
-      if (paymentStatus === "canceled") {
-        toast.success(t.paymentCancelled);
-        router.push(router.pathname);
-        return;
-      }
-      if (paymentStatus === "declined") {
-        toast.error(t.paymentFailure);
-        router.push(router.pathname);
-        return;
-      }
-    } else if (payment_id && router.pathname == "/") {
-      toast.error(t.paymentFailure);
-      router.push(router.pathname);
-      return;
-    }
-  }, [router]);
+//   useEffect(() => {
+//     if (orderId) {
+//       if (paymentStatus === "canceled") {
+//         toast.success(t.paymentCancelled);
+//         router.push(router.pathname);
+//         return;
+//       }
+//       if (paymentStatus === "declined") {
+//         toast.error(t.paymentFailure);
+//         router.push(router.pathname);
+//         return;
+//       }
+//     } else if (payment_id && router.pathname == "/") {
+//       toast.error(t.paymentFailure);
+//       router.push(router.pathname);
+//       return;
+//     }
+//   }, [router]);
 
   return (
     <Provider store={store}>
