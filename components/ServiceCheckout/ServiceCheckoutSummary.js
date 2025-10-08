@@ -812,6 +812,7 @@ const ServiceCheckoutSummary = forwardRef(
           onClick={() => {
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
+            setFakeLoader(true);
 
             if (amount === 0) return callConfirmPricing();
             if (!userDataProfile?.phone) return setOpenAddMobile(true);

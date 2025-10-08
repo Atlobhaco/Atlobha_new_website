@@ -828,6 +828,7 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
+			setFakeLoader(true);
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
