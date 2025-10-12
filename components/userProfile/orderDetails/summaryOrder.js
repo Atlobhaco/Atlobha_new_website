@@ -66,7 +66,9 @@ function SummaryOrder({
 
     if (orderId && orderType && paytmentMethod) {
       Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-      setRedirectToPayfort(false);
+      setTimeout(() => {
+        setRedirectToPayfort(false);
+      }, 15000);
     }
   }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
@@ -169,9 +171,6 @@ function SummaryOrder({
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
       ) {
         form.submit();
-        setTimeout(() => {
-          setRedirectToPayfort(false);
-        }, 15000);
         return;
       }
       if (
@@ -199,11 +198,11 @@ function SummaryOrder({
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
       ) {
         handleMisPay();
-        setTimeout(() => {
-          setRedirectToPayfort(false);
-        }, 15000);
         return;
       }
+      setTimeout(() => {
+        setRedirectToPayfort(false);
+      }, 15000);
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },

@@ -75,3 +75,4 @@ export const SUGGESTIONS = "/suggestions";
 export const POPULAR_KEYWORD = "/popular-keywords";
 export const SECONDARY_EMAIL = "/secondary-email";
 export const PAYMENT_FAILED = "/payment-failed";
+export const PROMO_CODE = "/promo-code";

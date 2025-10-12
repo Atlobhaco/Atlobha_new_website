@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setDeleteUsedPromo,
   setPromoCodeAllData,
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
@@ -19,6 +20,7 @@ function PromoCodeSpare({
   setPromoCodeId,
   customTitle = false,
   query = {},
+  refetchAddPromo = () => {},
 }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -63,6 +65,9 @@ function PromoCodeSpare({
         setPromoCodeId(res?.id);
         setError(false);
         dispatch(setPromoCodeAllData({ data: res }));
+        setTimeout(() => {
+          refetchAddPromo();
+        }, 500);
       } else {
         toast.error(t.promoNotFound);
       }
@@ -192,6 +197,7 @@ function PromoCodeSpare({
                       setPromoCodeId(false);
                       dispatch(setPromoCodeForSpareParts({ data: null }));
                       dispatch(setPromoCodeAllData({ data: null }));
+                      dispatch(setDeleteUsedPromo());
                     } else {
                       if (promoCode?.length >= 1) {
                         checkPromo();

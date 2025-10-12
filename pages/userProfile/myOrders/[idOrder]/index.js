@@ -4,18 +4,24 @@ import React, { useEffect, useState } from "react";
 import UserProfile from "../..";
 import BreadCrumb from "@/components/BreadCrumb";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { ORDERSENUM } from "@/constants/enums";
+import { ORDERSENUM, STATUS } from "@/constants/enums";
 import {
   MAINTENANCE_RESERVATIONS,
   ORDERS,
   PORTABLE_MAINTENANCE_RESERVATIONS,
   SPARE_PARTS,
+  USERS,
+  VEHICLES,
 } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
 import { toast } from "react-toastify";
 import useLocalization from "@/config/hooks/useLocalization";
 import MarketplaceOrderDetails from "@/components/userProfile/orderDetails/marketplaceOrderDetails";
 import ServiceOrderDetails from "@/components/userProfile/orderDetails/serviceOrderDetails";
+import { useAuth } from "@/config/providers/AuthProvider";
+import { useDispatch } from "react-redux";
+import { setAllCars, setDefaultCar } from "@/redux/reducers/selectedCarReducer";
+import { setPromoCodeAllData } from "@/redux/reducers/addSparePartsReducer";
 
 function OrderDetails() {
   const router = useRouter();
@@ -23,6 +29,36 @@ function OrderDetails() {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const [rendered, setRendered] = useState(false);
+  const { user } = useAuth();
+  const dispatch = useDispatch();
+
+  const { refetch: callUserVehicles } = useCustomQuery({
+    name: "getVechiles",
+    url: `${USERS}/${user?.data?.user?.id}${VEHICLES}`,
+    refetchOnWindowFocus: false,
+    enabled: false,
+    select: (res) => {
+      let cars = res?.data?.data || [];
+
+      // If there’s only one car, force it as default
+      if (cars.length === 1) {
+        cars = cars.map((car, index) => ({
+          ...car,
+          is_default: true, // force this one to be default
+        }));
+      }
+
+      return cars;
+    },
+    onSuccess: (res) => {
+      const defaultCar = res?.find((d) => d?.is_default);
+      dispatch(setAllCars({ data: res }));
+      dispatch(setDefaultCar({ data: defaultCar }));
+    },
+    onError: () => {
+      dispatch(setAllCars({ data: [] }));
+    },
+  });
 
   const renderUrlDependOnType = () => {
     switch (type) {
@@ -49,6 +85,18 @@ function OrderDetails() {
     refetchOnWindowFocus: false,
     enabled: !!idOrder,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => {
+      // if there is promo code
+      // show it in desgin
+      if (
+        res?.promo_code &&
+        res?.status === STATUS?.priced &&
+        type === ORDERSENUM?.spareParts
+      ) {
+        dispatch(setPromoCodeAllData({ data: res?.promo_code }));
+      }
+      callUserVehicles();
+    },
     // onSuccess: (res) => {
     //   if (loadMoreClicked) {
     //     setOrders((prevOrders) => [...prevOrders, ...res?.data]);
