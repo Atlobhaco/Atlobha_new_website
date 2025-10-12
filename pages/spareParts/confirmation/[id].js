@@ -120,6 +120,11 @@ function Confirmation() {
     const dateStart = moment(data?.slot?.start);
     const today = moment();
 
+    // if it is order spare parts show message
+    if (!type) {
+      return t.dateLater;
+    }
+
     if (type === SERVICES) {
       if (dateStart.isSame(today, "day")) {
         return `${t.todayAtTime} ${dateStart.format("H:mm")}`;
