@@ -80,7 +80,7 @@ function OrderDetails() {
     isFetching: orderDetailsFetching,
     refetch: callSingleOrder,
   } = useCustomQuery({
-    name: ["singleOrderData", idOrder, type],
+    name: ["singleOrderData", idOrder, type, rendered],
     url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
     enabled: !!idOrder,

@@ -68,7 +68,7 @@ function SummaryOrder({
       Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
       setTimeout(() => {
         setRedirectToPayfort(false);
-      }, 10000);
+      }, 12000);
     }
   }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
@@ -202,7 +202,7 @@ function SummaryOrder({
       }
       setTimeout(() => {
         setRedirectToPayfort(false);
-      }, 10000);
+      }, 12000);
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
