@@ -1,4 +1,9 @@
-import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
+import {
+  CITY_SETTINGS,
+  ESTIMATED_DELIVERY,
+  LAT_LNG,
+  SETTINGS,
+} from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERSENUM, STATUS } from "@/constants/enums";
@@ -14,6 +19,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [LngLat, setLngLat] = useState();
+  const today = moment().locale("en").format("YYYY-MM-DD");
 
   const {
     query: { type, idOrder },
@@ -21,7 +27,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
 
   const { data: estimateRes } = useCustomQuery({
     name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng, idOrder],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}&date=${today}`,
     refetchOnWindowFocus: false,
     enabled: LngLat?.lat && LngLat?.lng ? true : false,
     select: (res) => res?.data?.data,
@@ -61,6 +67,7 @@ function DeliveryDateOrder({ orderDetails = {} }) {
       orderDetails?.estimated_packaging_date ||
       orderDetails?.estimated_delivery_date;
 
+    console.log("estimateRes", estimateRes);
     if (date)
       return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
 

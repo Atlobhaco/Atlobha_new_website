@@ -80,11 +80,12 @@ function OrderDetails() {
     isFetching: orderDetailsFetching,
     refetch: callSingleOrder,
   } = useCustomQuery({
-    name: ["singleOrderData"],
+    name: ["singleOrderData", idOrder, type],
     url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
     enabled: !!idOrder,
     select: (res) => res?.data?.data,
+    refetchOnMount: true,
     onSuccess: (res) => {
       // if there is promo code
       // show it in desgin
