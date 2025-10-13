@@ -519,12 +519,12 @@ export const addRemoveFromCartEngage = ({
   window.webengage.onReady(() => {
     webengage.track(actions(), {
       product_name: prod?.name || "",
-      product_image: prod?.image || "",
+      product_image: prod?.image || prod?.image?.url || "",
       product_id: prod?.id || "",
-      price: prod?.price || "",
+      price: +prod?.price || "",
       car_brand: prod?.brand?.name || "",
       car_model: prod?.model?.name || "",
-      car_year: prod?.year_from || "",
+      car_year: prod?.year_from || "1990",
       reference_number: prod?.ref_num || "",
       category: prod?.marketplace_category?.name || "",
       quantity: qty() || 0,
