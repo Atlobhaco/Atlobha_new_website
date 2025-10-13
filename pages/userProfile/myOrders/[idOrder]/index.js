@@ -86,6 +86,8 @@ function OrderDetails() {
     enabled: !!idOrder,
     select: (res) => res?.data?.data,
     refetchOnMount: true,
+    cacheTime: 0,
+    staleTime: 0,
     onSuccess: (res) => {
       // if there is promo code
       // show it in desgin
