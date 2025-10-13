@@ -19,7 +19,13 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [LngLat, setLngLat] = useState();
-  const today = moment().locale("en").format("YYYY-MM-DD");
+  const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
+  const nextDayForConfirmation = moment(
+    orderDetails?.confirmed_at || orderDetails?.created_at
+  )
+    .add(1, "day")
+    .locale("en")
+    .format("YYYY-MM-DD");
 
   const {
     query: { type, idOrder },
@@ -27,7 +33,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
 
   const { data: estimateRes } = useCustomQuery({
     name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng, idOrder],
-    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}&date=${today}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${LngLat?.lat}&longitude=${
+      LngLat?.lng
+    }&date=${nextDayForConfirmation || tomorrow}`,
     refetchOnWindowFocus: false,
     enabled: LngLat?.lat && LngLat?.lng ? true : false,
     select: (res) => res?.data?.data,
@@ -67,7 +75,6 @@ function DeliveryDateOrder({ orderDetails = {} }) {
       orderDetails?.estimated_packaging_date ||
       orderDetails?.estimated_delivery_date;
 
-    console.log("estimateRes", estimateRes);
     if (date)
       return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
 
