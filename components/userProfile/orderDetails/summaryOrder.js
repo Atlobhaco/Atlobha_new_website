@@ -70,7 +70,7 @@ function SummaryOrder({
         setRedirectToPayfort(false);
       }, 12000);
     }
-  }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
+  }, [Cookies.get("created_order_id"), Cookies.get("order_type"), idOrder]);
 
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],
