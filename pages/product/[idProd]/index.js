@@ -49,11 +49,11 @@ function ProductDetails() {
         webengage.track("PRODUCT_VIEWED", {
           product_id: data?.id || "",
           product_name: data?.name || "",
-          product_image: data?.image?.url || data?.image || "",
+          product_image: data?.image?.url || "",
           price: data?.price || "",
           car_brand: data?.brand?.name || "",
           car_model: data?.model?.name || "",
-          car_year: data?.year_from || Number("1990"),
+          car_year: Number(data?.year_from) || Number("1990"),
           reference_number: data?.ref_num || "",
           product_details: data?.desc || "",
           installation_available: true || "",
