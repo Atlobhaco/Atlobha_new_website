@@ -46,8 +46,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
 
   useEffect(() => {
     if (
-      !orderDetails?.estimated_packaging_date &&
-      !orderDetails?.estimated_delivery_date
+      (!orderDetails?.estimated_packaging_date &&
+        !orderDetails?.estimated_delivery_date) ||
+      orderDetails?.address
     ) {
       setLngLat({
         lng:
@@ -71,12 +72,12 @@ function DeliveryDateOrder({ orderDetails = {} }) {
     if (orderDetails?.status === STATUS?.new && !isMarketplaceType)
       return t.dateLater;
 
-    const date =
-      orderDetails?.estimated_packaging_date ||
-      orderDetails?.estimated_delivery_date;
+    // const date =
+    //   orderDetails?.estimated_packaging_date ||
+    //   orderDetails?.estimated_delivery_date;
 
-    if (date)
-      return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
+    // if (date)
+    //   return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
 
     return estimateRes?.estimated_delivery_date_from &&
       estimateRes?.estimated_delivery_date_to
