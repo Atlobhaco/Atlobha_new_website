@@ -34,6 +34,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import "react-inner-image-zoom/lib/styles.min.css";
 import * as gtag from "../config/googleAnalytics/gtag";
 import { RouteProvider } from "@/config/providers/RouteTracker";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 const theme = createTheme();
 const queryClient = new QueryClient();
@@ -112,24 +113,24 @@ const AppContent = ({ Component, pageProps }) => {
   /* -------------------------------------------------------------------------- */
   /*           handle failure and cancel for tamara payment and tabby           */
   /* -------------------------------------------------------------------------- */
-  useEffect(() => {
-    if (orderId) {
-      if (paymentStatus === "canceled") {
-        toast.success(t.paymentCancelled);
-        router.push(router.pathname);
-        return;
-      }
-      if (paymentStatus === "declined") {
-        toast.error(t.paymentFailure);
-        router.push(router.pathname);
-        return;
-      }
-    } else if (payment_id && router.pathname == "/") {
-      toast.error(t.paymentFailure);
-      router.push(router.pathname);
-      return;
-    }
-  }, [router]);
+//   useEffect(() => {
+//     if (orderId) {
+//       if (paymentStatus === "canceled") {
+//         toast.success(t.paymentCancelled);
+//         router.push(router.pathname);
+//         return;
+//       }
+//       if (paymentStatus === "declined") {
+//         toast.error(t.paymentFailure);
+//         router.push(router.pathname);
+//         return;
+//       }
+//     } else if (payment_id && router.pathname == "/") {
+//       toast.error(t.paymentFailure);
+//       router.push(router.pathname);
+//       return;
+//     }
+//   }, [router]);
 
   return (
     <Provider store={store}>
@@ -151,6 +152,8 @@ const AppContent = ({ Component, pageProps }) => {
           <LogoLoader />
         </Box>
         <Layout>
+          {/* component to check failure for the payment methods */}
+          <PaymentFailChecker /> {/* runs once on app load */}
           <Component {...pageProps} />
         </Layout>
       </>

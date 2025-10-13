@@ -17,15 +17,22 @@ import {
   riyalImgRed,
   servicePrice,
 } from "@/constants/helpers";
-import { ORDERSENUM, STATUS, PAYMENT_METHODS } from "@/constants/enums";
+import {
+  ORDERSENUM,
+  STATUS,
+  PAYMENT_METHODS,
+  SPAREPARTS,
+} from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
 import { setUserData } from "@/redux/reducers/quickSectionsProfile";
+import Cookies from "js-cookie";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -48,6 +55,22 @@ function SummaryOrder({
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
+
+  /* -------------------------------------------------------------------------- */
+  /*             if user come back browser from any payment gateway             */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const orderId = Cookies.get("created_order_id");
+    const orderType = Cookies.get("order_type");
+    const paytmentMethod = Cookies.get("payment_method");
+
+    if (orderId && orderType && paytmentMethod) {
+      Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+      setTimeout(() => {
+        setRedirectToPayfort(false);
+      }, 12000);
+    }
+  }, [Cookies.get("created_order_id"), Cookies.get("order_type"), idOrder]);
 
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],
@@ -133,14 +156,21 @@ function SummaryOrder({
       payment_reference: merchanteRefrence,
     },
     onSuccess: (res) => {
+      Cookies.set("created_order_id", idOrder, { expires: 1, path: "/" });
+      Cookies.set("order_type", SPAREPARTS, { expires: 1, path: "/" });
+      Cookies.set("payment_method", selectedPaymentMethod?.key, {
+        expires: 1,
+        path: "/",
+      });
+      Cookies.set("url_after_pay_failed", router?.asPath, {
+        expires: 1,
+        path: "/",
+      });
       if (
         selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
       ) {
         form.submit();
-        setTimeout(() => {
-          setRedirectToPayfort(false);
-        }, 6000);
         return;
       }
       if (
@@ -170,6 +200,9 @@ function SummaryOrder({
         handleMisPay();
         return;
       }
+      setTimeout(() => {
+        setRedirectToPayfort(false);
+      }, 12000);
       toast.success(t.successPayOrder);
       router.push(`/spareParts/confirmation/${res?.id}`);
     },
@@ -195,7 +228,7 @@ function SummaryOrder({
     isFetching: fetchReceipt,
     refetch: callCalculateReceipt,
   } = useCustomQuery({
-    name: ["calculateReceiptForTotalPay"],
+    name: ["calculateReceiptForTotalPay", Cookies.get("payment_failed")],
     url: renderUrlForCaluclate(),
     refetchOnWindowFocus: false,
     enabled: false,
@@ -384,8 +417,8 @@ function SummaryOrder({
         order_reference_id: merchanteRefrence,
         totalAmount: orderDetails?.receipt?.amount_to_pay,
         successUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
-        cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-        failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+        cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+        failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
         customer: {
           first_name: userDataProfile?.name,
           last_name: "",
@@ -482,8 +515,8 @@ function SummaryOrder({
         lang: locale,
         merchant_code: "Atolbha",
         merchant_urls: {
-          cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+          failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
           success: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/spareParts/confirmation/${idOrder}`,
         },
       }),
@@ -552,6 +585,7 @@ function SummaryOrder({
         padding: isMobile ? "8px 13px" : "8px 30px",
       }}
     >
+      <PaymentFailChecker />
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
@@ -791,8 +825,9 @@ function SummaryOrder({
               ) : null
             }
             onClick={() => {
+              setRedirectToPayfort(true);
+
               if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
-                setRedirectToPayfort(true);
                 callCalculateReceipt();
               } else if (
                 selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay

@@ -71,6 +71,7 @@ function RedirectToCheckoutService({
         ),
         type: tabValue,
         selectedStore: encodeURIComponent(JSON.stringify(selectedStore)),
+        portableService: router?.query?.portableService,
       },
     });
   };

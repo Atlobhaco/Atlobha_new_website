@@ -11,6 +11,7 @@ import AtlobhaPlusHint from "@/components/userProfile/atlobhaPlusHint";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function CheckoutData({
   selectAddress,
@@ -20,6 +21,7 @@ function CheckoutData({
 }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
+  const { basket } = useSelector((state) => state.basket);
 
   const { data: estimateRes, isLoading: loadDate } = useCustomQuery({
     name: ["deliveryDate", selectAddress?.lat, selectAddress?.lng],
@@ -140,6 +142,10 @@ function CheckoutData({
       <PromoCodeMarket
         promoCodeId={promoCodeId}
         setPromoCodeId={setPromoCodeId}
+        query={{
+          product_ids: basket?.map((d) => d?.product_id),
+          order_type: "marketplace-order",
+        }}
       />
       <AtlobhaPlusHint alwaysHorizontalDesgin={true} />
     </>

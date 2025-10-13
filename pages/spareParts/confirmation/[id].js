@@ -9,6 +9,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SharedBtn from "@/components/shared/SharedBtn";
 import useCustomQuery from "@/config/network/Apiconfig";
 import {
+  CART,
   ESTIMATED_DELIVERY,
   MAINTENANCE_RESERVATIONS,
   ORDERS,
@@ -25,11 +26,14 @@ import {
   riyalImgOrange,
   servicePrice,
 } from "@/constants/helpers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { decryptAES } from "@/lib/mispay";
+import { fetchCartAsync } from "@/redux/reducers/basketReducer";
+import Cookies from "js-cookie";
 
 function Confirmation() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const { isMobile } = useScreenSize();
@@ -38,6 +42,7 @@ function Confirmation() {
   const [orderId, setOrderId] = useState(null);
   const { id, type, serviceType } = router.query;
   const [serciceTypeFromStorage, setServiceType] = useState(false);
+  const [decrypted, setDecrypted] = useState(null);
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -63,7 +68,7 @@ function Confirmation() {
     if (typeof window !== "undefined") {
       const orderIdFromStorage =
         type === MARKETPLACE || type === SERVICES
-          ? sessionStorage.getItem("order_id_market")
+          ? sessionStorage.getItem("created_order_id")
           : null;
 
       const serviceType =
@@ -101,7 +106,7 @@ function Confirmation() {
           lat: res?.address?.lat,
         });
       }
-      sessionStorage.removeItem("order_id_market");
+      sessionStorage.removeItem("created_order_id");
       sessionStorage.removeItem("service_type");
     },
     onError: (err) => {
@@ -114,6 +119,11 @@ function Confirmation() {
 
     const dateStart = moment(data?.slot?.start);
     const today = moment();
+
+    // if it is order spare parts show message
+    if (!type) {
+      return t.dateLater;
+    }
 
     if (type === SERVICES) {
       if (dateStart.isSame(today, "day")) {
@@ -187,10 +197,21 @@ function Confirmation() {
 
     try {
       const secret = process.env.NEXT_PUBLIC_MIS_API_KEY;
-      const decrypted = decryptAES(
+      const dec = decryptAES(
         Buffer.from(enc, "base64").toString("utf8"),
         secret
       );
+      setDecrypted(dec);
+    } catch (e) {
+      console.error("Decrypt error:", e);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (decrypted && !router?.query?.serviceType) {
+      const url_after_pay_failed = Cookies.get("url_after_pay_failed");
+      const orderType = Cookies.get("order_type");
+      const orderFromCookie = Cookies.get("created_order_id");
 
       //   status code for mispay response
       //   MP00 -> success
@@ -203,15 +224,62 @@ function Confirmation() {
         MP02: t.paymentCancelled,
         MP03: t.paymentCancelled,
       };
-
+      // handle fail in marketplace or spareparts pay failed
       if (messages[decrypted?.code]) {
         toast.error(messages[decrypted.code]);
-        router.push("/");
+        fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/orders/${orderFromCookie}/payment-failed`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-api-key": "w123",
+              Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
+            },
+          }
+        )
+          .then((res) => {
+            if (!res.ok) throw new Error("Request failed");
+            console.log(
+              "Payment fail (success) status updated for order:",
+              orderId
+            );
+          })
+          .catch((err) => console.error(err))
+          .finally(() => {
+            Cookies.remove("created_order_id");
+            Cookies.remove("payment_failed");
+            Cookies.remove("order_type");
+            Cookies.remove("payment_method");
+          });
+        router.push(type === MARKETPLACE ? "/checkout" : url_after_pay_failed);
+        Cookies.remove("url_after_pay_failed");
       }
-    } catch (e) {
-      console.error("Decrypt error:", e);
     }
-  }, [router]);
+    // handle fail in service checkout MIS pay
+    if (decrypted && decrypted?.code !== "MP00" && router?.query?.serviceType) {
+      const url_after_pay_failed = Cookies.get("url_after_pay_failed");
+      router.push(url_after_pay_failed);
+      Cookies.remove("url_after_pay_failed");
+    } else if (decrypted && decrypted?.code === "MP00") {
+      Cookies.remove("url_after_pay_failed");
+    }
+  }, [decrypted]);
+
+  /* -------------------------------------------------------------------------- */
+  /*                    empty the cart after success payment                    */
+  /* -------------------------------------------------------------------------- */
+  useCustomQuery({
+    name: "empty-cart-after-success",
+    url: CART,
+    method: "delete",
+    refetchOnWindowFocus: false,
+    enabled:
+      type === MARKETPLACE && (!router?.query?._ || decrypted === "MP00"),
+    onSuccess: () => {
+      dispatch(fetchCartAsync());
+    },
+  });
 
   return (
     <div className={`${style["confirmation"]}`}>

@@ -31,7 +31,7 @@ function CheckoutService() {
   } = useRouter();
   const { isMobile } = useScreenSize();
   const { user } = useAuth();
-  const { t, locale } = useLocalization();
+  const { t } = useLocalization();
 
   const [selectAddress, setSelectAddress] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
@@ -103,8 +103,8 @@ function CheckoutService() {
     ? true
     : checkoutServiceDetails?.serviceDetails?.service_models?.some(
         (c) =>
-          +c.model.id === +userCar.model.id &&
-          +c.model?.vehicle_brand?.id === +userCar.brand.id
+          +c.model.id === +userCar?.model?.id &&
+          +c.model?.vehicle_brand?.id === +userCar?.brand?.id
       );
 
   const triggerChildPayment = () => {

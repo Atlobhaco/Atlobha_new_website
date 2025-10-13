@@ -2,7 +2,7 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { PAYMENT_METHODS } from "@/constants/enums";
+import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
@@ -25,6 +25,8 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 
 const CheckoutSummary = forwardRef(
   (
@@ -115,7 +117,14 @@ const CheckoutSummary = forwardRef(
         ref_num: null,
       },
       onSuccess: async (res) => {
-        sessionStorage.setItem("order_id_market", res?.id);
+        sessionStorage.setItem("created_order_id", res?.id);
+        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+        Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
+        Cookies.set("payment_method", selectedPaymentMethod?.key, {
+          expires: 1,
+          path: "/",
+        });
+
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
           +oldAmountToPay > 0
@@ -123,7 +132,7 @@ const CheckoutSummary = forwardRef(
           payFortForm.submit();
           setTimeout(() => {
             setFakeLoader(false);
-          }, 6000);
+          }, 12000);
           return;
         }
         if (
@@ -172,7 +181,7 @@ const CheckoutSummary = forwardRef(
             handleMisPay();
             setTimeout(() => {
               setFakeLoader(false);
-            }, 6000);
+            }, 12000);
             return;
           } else {
             setAddPhoneForTamara();
@@ -207,6 +216,7 @@ const CheckoutSummary = forwardRef(
         voucherCode,
         selectAddress,
         allPromoCodeData,
+        Cookies.get("payment_failed"),
       ],
       url: "/marketplace/orders/calculate",
       refetchOnWindowFocus: true,
@@ -287,6 +297,16 @@ const CheckoutSummary = forwardRef(
         setPayfortForm(form);
       }
     }, []);
+	
+    useEffect(() => {
+      const orderId = Cookies.get("created_order_id");
+      const orderType = Cookies.get("order_type");
+      const paytmentMethod = Cookies.get("payment_method");
+
+      if (orderId && orderType && paytmentMethod) {
+        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+      }
+    }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -497,8 +517,8 @@ const CheckoutSummary = forwardRef(
           successUrl: `${
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -595,8 +615,8 @@ const CheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=marketplace`,
@@ -659,6 +679,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
+        {/* <PaymentFailChecker /> */}
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
@@ -683,7 +704,7 @@ const CheckoutSummary = forwardRef(
         )}
 
         {/* offers discount */}
-        {(calculateReceiptResFromMainPage?.offers_discount ??
+        {/* {(calculateReceiptResFromMainPage?.offers_discount ??
           receipt?.offers_discount) > 0 && (
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
@@ -697,7 +718,7 @@ const CheckoutSummary = forwardRef(
               {riyalImgRed()}
             </Box>
           </Box>
-        )}
+        )} */}
 
         {/* delivery fees */}
         <Box className="d-flex justify-content-between mb-2">
@@ -813,6 +834,7 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
+			setFakeLoader(true);
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;

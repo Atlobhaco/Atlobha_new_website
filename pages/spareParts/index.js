@@ -65,6 +65,7 @@ function SpareParts() {
   const { selectedCar, defaultCar, allCars } = useSelector(
     (state) => state.selectedCar
   );
+  const userCar = selectedCar?.id ? selectedCar : defaultCar;
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -391,12 +392,20 @@ function SpareParts() {
               loadOrder={loadOrder}
               fetchMedia={fetchMedia}
             />
-            <div className="mt-4">
-              <PromoCodeSpare
-                promoCodeId={promoCodeId}
-                setPromoCodeId={setPromoCodeId}
-              />
-            </div>
+            {isAuth() && (
+              <div className="mt-4">
+                <PromoCodeSpare
+                  promoCodeId={promoCodeId}
+                  setPromoCodeId={setPromoCodeId}
+                  query={{
+                    brand_id: userCar?.brand?.id,
+                    model_id: userCar?.model?.id,
+                    year: userCar?.year,
+                    order_type: "spare-parts-order",
+                  }}
+                />
+              </div>
+            )}
             <div className="mt-4">
               <SharedTextArea
                 value={comment}

@@ -1,9 +1,10 @@
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setDeleteUsedPromo,
   setPromoCodeAllData,
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
@@ -14,7 +15,13 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { FIXED } from "@/constants/enums";
 
-function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
+function PromoCodeSpare({
+  promoCodeId,
+  setPromoCodeId,
+  customTitle = false,
+  query = {},
+  refetchAddPromo = () => {},
+}) {
   const dispatch = useDispatch();
   const router = useRouter();
   const { type } = router.query;
@@ -25,9 +32,25 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
   );
   const [error, setError] = useState(false);
 
+  const urlWithParams = () => {
+    const params = new URLSearchParams();
+
+    // Loop through query object
+    Object.entries(query).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        // Append each array item separately
+        value.forEach((v) => params.append(`${key}[]`, v));
+      } else if (value !== undefined && value !== null) {
+        // Append normal key-value pairs
+        params.append(key, value);
+      }
+    });
+
+    return `${PROMO_CODES}/${promoCode}?${params.toString()}`;
+  };
   const { refetch: checkPromo } = useCustomQuery({
     name: "checkPromoCode",
-    url: `${PROMO_CODES}/${promoCode}`,
+    url: urlWithParams(),
     refetchOnWindowFocus: false,
     enabled: false,
     retry: 0,
@@ -42,6 +65,9 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
         setPromoCodeId(res?.id);
         setError(false);
         dispatch(setPromoCodeAllData({ data: res }));
+        setTimeout(() => {
+          refetchAddPromo();
+        }, 500);
       } else {
         toast.error(t.promoNotFound);
       }
@@ -67,6 +93,17 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
       return promoCode || "";
     }
   };
+
+  // Cleanup: Reset promo code on unmount
+  useEffect(() => {
+    if (!router?.pathname?.includes("myOrders")) {
+      return () => {
+        dispatch(setPromoCodeAllData(null));
+        setPromoCodeId(false);
+        dispatch(setPromoCodeForSpareParts(null));
+      };
+    }
+  }, [router]);
 
   return (
     <Box
@@ -160,6 +197,7 @@ function PromoCodeSpare({ promoCodeId, setPromoCodeId, customTitle = false }) {
                       setPromoCodeId(false);
                       dispatch(setPromoCodeForSpareParts({ data: null }));
                       dispatch(setPromoCodeAllData({ data: null }));
+                      dispatch(setDeleteUsedPromo());
                     } else {
                       if (promoCode?.length >= 1) {
                         checkPromo();

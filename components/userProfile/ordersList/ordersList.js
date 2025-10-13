@@ -101,11 +101,14 @@ function OrdersList({ order, callOrders }) {
             <div>
               <OrderStatus status={order?.status} />
             </div>
-            {order?.status !== STATUS?.new && (
+            {
               <Box className={`${style["price"]}`}>
                 {/* can not find price before */}
                 {/* <span>{order?.receipt?.total_price}</span>{" "} */}
-                {order?.receipt?.total_price > 0 && (
+                {((order?.class === ORDERSENUM?.spareParts &&
+                  order?.status !== STATUS?.new) ||
+                  (order?.class !== ORDERSENUM?.spareParts &&
+                    order?.receipt?.total_price > 0)) && (
                   <Box
                     sx={{
                       color: order?.receipt?.total_price ? "#EE772F" : "red",
@@ -115,7 +118,7 @@ function OrdersList({ order, callOrders }) {
                   </Box>
                 )}
               </Box>
-            )}
+            }
           </div>
         </div>
       </div>

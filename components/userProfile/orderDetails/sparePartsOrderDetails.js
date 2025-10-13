@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import OrderNumCopyWhatsapp from "./orderNumCopyWhatsapp";
 import TrackOrder from "./trackOrder";
 import { toast } from "react-toastify";
@@ -22,6 +22,8 @@ import SummaryOrder from "./summaryOrder";
 import RateProductsSection from "./rateProductsSection";
 import AddAvailablePayMethods from "./addAvailablePayMethods";
 import { useRouter } from "next/router";
+import PromocodeSpareOrders from "./PromoCodeSpareOrders";
+import { useSelector } from "react-redux";
 
 function SparePartsOrderDetails({
   orderDetails = {},
@@ -44,7 +46,12 @@ function SparePartsOrderDetails({
 
   const { t } = useLocalization();
   const router = useRouter();
-  const { idOrder, type, status } = router.query;
+  const { idOrder, type } = router.query;
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+  const userCar = selectedCar?.id ? selectedCar : defaultCar;
+  const { voucherCode, allPromoCodeData, usePromoThenDeleteit } = useSelector(
+    (state) => state.addSpareParts
+  );
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -90,9 +97,9 @@ function SparePartsOrderDetails({
     isFetching: fetchReceipt,
     refetch: callCalculateReceipt,
   } = useCustomQuery({
-    name: ["calculateReceipt"],
+    name: "calculateReceipt",
     url: renderUrlDependOnType(),
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     enabled: STATUS?.priced === orderDetails?.status && idOrder ? true : false,
     method: "post",
     select: (res) => res?.data?.data,
@@ -100,6 +107,14 @@ function SparePartsOrderDetails({
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
+
+  useEffect(() => {
+    if (voucherCode || allPromoCodeData?.id || usePromoThenDeleteit) {
+      setTimeout(() => {
+        callCalculateReceipt();
+      }, 800);
+    }
+  }, [allPromoCodeData?.id, voucherCode]);
 
   useEffect(() => {
     if (orderDetails?.id && router?.asPath && window?.webengage) {
@@ -217,8 +232,7 @@ function SparePartsOrderDetails({
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
 
       {(orderDetails?.status === STATUS?.confirmed ||
-        orderDetails?.status === STATUS?.new ||
-        orderDetails?.status === STATUS?.priced) && (
+        orderDetails?.status === STATUS?.new) && (
         <>
           <DeliveryDateOrder orderDetails={orderDetails} />
           <Divider sx={{ background: "#EAECF0", mb: 2 }} />
@@ -234,7 +248,20 @@ function SparePartsOrderDetails({
       )}
 
       {orderDetails?.status === STATUS?.priced && (
-        <AddAvailablePayMethods orderDetails={orderDetails} />
+        <>
+          <AddAvailablePayMethods orderDetails={orderDetails} />
+          <PromocodeSpareOrders
+            promoCodeId={false}
+            setPromoCodeId={() => {}}
+            query={{
+              brand_id: userCar?.brand?.id,
+              model_id: userCar?.model?.id,
+              year: userCar?.year,
+              order_type: "spare-parts-order",
+            }}
+            idOrder={idOrder}
+          />
+        </>
       )}
 
       {(orderDetails?.status === STATUS?.confirmed ||
