@@ -519,12 +519,12 @@ export const addRemoveFromCartEngage = ({
   window.webengage.onReady(() => {
     webengage.track(actions(), {
       product_name: prod?.name || "",
-      product_image: prod?.image || prod?.image?.url || "",
+      product_image: prod?.image?.url || prod?.image || "",
       product_id: prod?.id || "",
-      price: +prod?.price || "",
+      price: Number(prod?.price) || "",
       car_brand: prod?.brand?.name || "",
       car_model: prod?.model?.name || "",
-      car_year: prod?.year_from || "1990",
+      car_year: +prod?.year_from || Number("1990"),
       reference_number: prod?.ref_num || "",
       category: prod?.marketplace_category?.name || "",
       quantity: qty() || 0,
@@ -555,8 +555,8 @@ export const latestUpdatedCart = (basket = []) => {
 
   window.webengage?.onReady(() => {
     webengage.track("CART_UPDATED", {
-      total: +totalOfBasket,
-      total_price: +totalOfBasket,
+      total: Number(+totalOfBasket),
+      total_price: Number(+totalOfBasket),
       number_of_products: activeItems.length,
       line_items: itemsMapping,
     });
@@ -597,7 +597,6 @@ export const hasAnyFilterValue = ({
 };
 
 export const updateQueryParams = ({ filters = {}, router }) => {
-  console.log("router", router?.query);
   const query = {
     ...router.query,
     savedQuerys: true,

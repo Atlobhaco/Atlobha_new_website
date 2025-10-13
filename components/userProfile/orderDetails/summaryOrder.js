@@ -724,7 +724,7 @@ function SummaryOrder({
                 webengage.track("ORDER_SPAREPARTS_REPRICE", {
                   car_brand: orderDetails?.vehicle?.brand?.name || "",
                   car_model: orderDetails?.vehicle?.model?.name || "",
-                  car_year: orderDetails?.vehicle?.year || "1990",
+                  car_year: orderDetails?.vehicle?.year || Number("1990"),
                   order_items:
                     orderDetails?.parts?.map((part) => ({
                       Part_Name_or_Number: part?.name || part?.id || "",

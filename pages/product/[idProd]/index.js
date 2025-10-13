@@ -49,14 +49,14 @@ function ProductDetails() {
         webengage.track("PRODUCT_VIEWED", {
           product_id: data?.id || "",
           product_name: data?.name || "",
-          product_image: data?.image || data?.image?.url || "",
+          product_image: data?.image?.url || data?.image || "",
           price: data?.price || "",
           car_brand: data?.brand?.name || "",
           car_model: data?.model?.name || "",
-          car_year: data?.year_from || "1990",
+          car_year: data?.year_from || Number("1990"),
           reference_number: data?.ref_num || "",
           product_details: data?.desc || "",
-          installation_available: false || "",
+          installation_available: true || "",
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
         });
