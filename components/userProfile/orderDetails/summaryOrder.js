@@ -585,7 +585,7 @@ function SummaryOrder({
         padding: isMobile ? "8px 13px" : "8px 30px",
       }}
     >
-      {/* <PaymentFailChecker /> */}
+      <PaymentFailChecker />
       <Box sx={header}>{t.orderSummary}</Box>
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
