@@ -468,7 +468,7 @@ const CheckoutSummary = forwardRef(
         }));
       window.webengage.onReady(() => {
         webengage.track("CART_CHECKOUT_CLICKED", {
-          total_price: total,
+          total_price: +total,
           number_of_products:
             basket?.filter((item) => item?.product?.is_active)?.length || 0,
           line_items: itemsMaping || [],

@@ -2,7 +2,10 @@ import { CART } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { addRemoveFromCartEngage, latestUpdatedCart } from "../../constants/helpers";
+import {
+  addRemoveFromCartEngage,
+  latestUpdatedCart,
+} from "../../constants/helpers";
 
 const BASE_URL = CART;
 const API_URL = `${process.env.NEXT_PUBLIC_API_BASE_URL}${BASE_URL}`;
@@ -83,9 +86,8 @@ export const addItemAsync = createAsyncThunk(
 
         await requestHandler("post", "", { products });
         dispatch(fetchCartAsync());
-
         addRemoveFromCartEngage({
-          prod: payload?.product,
+          prod: payload[0]?.product || payload?.product,
           action: "increment",
           productInsideBasket: {
             quantity: payload?.quantity - 1,

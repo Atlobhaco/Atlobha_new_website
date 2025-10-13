@@ -724,7 +724,7 @@ function SummaryOrder({
                 webengage.track("ORDER_SPAREPARTS_REPRICE", {
                   car_brand: orderDetails?.vehicle?.brand?.name || "",
                   car_model: orderDetails?.vehicle?.model?.name || "",
-                  car_year: orderDetails?.vehicle?.year || "",
+                  car_year: orderDetails?.vehicle?.year || "1990",
                   order_items:
                     orderDetails?.parts?.map((part) => ({
                       Part_Name_or_Number: part?.name || part?.id || "",
@@ -735,7 +735,11 @@ function SummaryOrder({
                   promo_code: orderDetails?.promo_code?.code || "",
                   comment: orderDetails?.notes || "",
                   order_number: orderDetails?.id || "",
-                  creation_date: orderDetails?.created_at || "",
+                  creation_date: orderDetails?.created_at
+                    ? new Date(
+                        orderDetails?.created_at?.replace(" ", "T") + "Z"
+                      )
+                    : new Date().toISOString(),
                   status: orderDetails?.status || "",
                   order_url: router?.asPath || "",
                   total_price:
