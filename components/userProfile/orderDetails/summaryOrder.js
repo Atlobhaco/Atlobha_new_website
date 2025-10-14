@@ -650,10 +650,10 @@ function SummaryOrder({
           {type === ORDERSENUM?.PORTABLE ? t.serviceFees : t.deliveryFees}
         </Box>
         <Box sx={text}>
-          {(calculateReceiptResFromMainPage?.delivery_fees ??
-            receipt?.delivery_fees) === receipt?.delivery_fees
-            ? receipt?.delivery_fees
-            : calculateReceiptResFromMainPage?.delivery_fees}{" "}
+          {(calculateReceiptResFromMainPage?.delivery_fees_with_tax ??
+            receipt?.delivery_fees_with_tax) === receipt?.delivery_fees_with_tax
+            ? receipt?.delivery_fees_with_tax
+            : calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
           {riyalImgBlack()}
         </Box>
       </Box>
@@ -686,7 +686,7 @@ function SummaryOrder({
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
           : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({receipt?.tax} {riyalImgBlack()})
+        ٪ {t.vatPercentage} ({receipt?.tax_without_delivery_fees_tax} {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}

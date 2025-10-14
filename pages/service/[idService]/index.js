@@ -13,17 +13,20 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import { FIXED, PORTABLE } from "@/constants/enums";
+import { servicePrice } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Tab, Tabs } from "@mui/material";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function ServiceDetails() {
   const { t } = useLocalization();
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const shownRef = useRef(false);
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const {
     query: { portableService, idService, servicePayFailed },
@@ -84,6 +87,26 @@ function ServiceDetails() {
           return setTabValue(FIXED);
         }
       }
+      window.webengage.onReady(() => {
+        webengage.track("SERVICE_VIEWED", {
+          serivce_id: data?.id?.toString() || "",
+          serivce_name: data?.name || "",
+          price:
+            Number(
+              servicePrice({
+                service: data,
+                userCar: selectedCar?.id ? selectedCar : defaultCar,
+              })
+            ) || "",
+          car_brand: data?.brand?.name || "",
+          car_model: data?.model?.name || "",
+          car_year: Number(data?.year_from) || Number("1990"),
+          reference_number: data?.id?.toString(),
+          service_details: data?.description || "",
+          service_url: `/service/${idService}` || "",
+          category: data?.category?.name || "",
+        });
+      });
     }
   }, [data]);
 

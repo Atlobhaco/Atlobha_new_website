@@ -259,7 +259,22 @@ function ServiceCategory() {
               ) : (
                 <>
                   {prodInfo?.data?.map((prod, index) => (
-                    <Box className="col-12 mb-3 px-0" key={prod?.id}>
+                    <Box
+                      className="col-12 mb-3 px-0"
+                      key={prod?.id}
+                      onClick={() =>
+                        window.webengage.onReady(() => {
+                          webengage.track("SERVICE_CATEGORY_VIEWED", {
+                            category_id: Number(idSerCat),
+                            category_name:
+                              allServiceCategory.find(
+                                (d) => +d.id === +idSerCat
+                              ) || "",
+                            category_url: router?.asPath || "",
+                          });
+                        })
+                      }
+                    >
                       <ServiceDataInfo product={prod} key={prod?.id} />
 
                       {index !== prodInfo?.data?.length - 1 && (

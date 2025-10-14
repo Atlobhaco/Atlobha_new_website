@@ -718,10 +718,10 @@ const CheckoutSummary = forwardRef(
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>{t.deliveryFees}</Box>
           <Box sx={text}>
-            {(calculateReceiptResFromMainPage?.delivery_fees ??
-              receipt?.delivery_fees) === receipt?.delivery_fees
-              ? receipt?.delivery_fees
-              : calculateReceiptResFromMainPage?.delivery_fees}{" "}
+            {(calculateReceiptResFromMainPage?.delivery_fees_with_tax ??
+              receipt?.delivery_fees_with_tax) === receipt?.delivery_fees_with_tax
+              ? receipt?.delivery_fees_with_tax
+              : calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
             {riyalImgBlack()}
           </Box>
         </Box>
@@ -758,9 +758,9 @@ const CheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax +
+                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
-                  +calculateReceiptResFromMainPage?.delivery_fees
+                  +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
               : (calculateReceiptResFromMainPage?.total_price ??
                   receipt?.total_price) === receipt?.total_price
@@ -776,7 +776,7 @@ const CheckoutSummary = forwardRef(
             receipt?.tax_percentage) === receipt?.tax_percentage
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
-          ٪ {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax || 0}{" "}
+          ٪ {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />

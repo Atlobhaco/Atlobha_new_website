@@ -309,7 +309,21 @@ function Category() {
               ) : (
                 <>
                   {prodInfo?.data?.map((prod) => (
-                    <Box className="col-md-4 col-4 mb-3 px-0">
+                    <Box
+                      className="col-md-4 col-4 mb-3 px-0"
+                      onClick={() =>
+                        window.webengage.onReady(() => {
+                          webengage.track("PRODUCT_CATEGORY_VIEWED", {
+                            category_id: Number(idCategory),
+                            category_name:
+                              allCategories.find(
+                                (d) => +d.id === +idCategory
+                              ) || "",
+                            category_url: router?.asPath || "",
+                          });
+                        })
+                      }
+                    >
                       <ProductCard product={prod} />
                     </Box>
                   ))}
