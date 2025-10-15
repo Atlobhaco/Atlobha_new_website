@@ -61,7 +61,7 @@ function ProductDetails() {
           product_url: `/product/${idProd}` || "",
           tags: data?.combined_tags?.map((d) => d?.name) || [],
           manufactrer_name: data?.manufacturer?.name?.toString() || "N/A",
-          manufactrer_id: data?.manufacturer?.id?.toString() || "N/A",
+          manufactrer_id: Number(data?.manufacturer?.id) || "N/A",
         });
       });
     }

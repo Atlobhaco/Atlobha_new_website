@@ -34,6 +34,7 @@ import EditUserInfoDialog from "@/components/editUserInfoDialog";
 import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
+import moment from "moment";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},

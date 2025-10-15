@@ -144,9 +144,12 @@ const CheckoutSummary = forwardRef(
               basket?.filter((item) => item?.product?.is_active)?.length
             ),
             checkout_url: router?.asPath || "N/A",
-            expected_delivery_date: moment
-              .unix(estimateRes.estimated_delivery_date_to)
-              .toISOString(),
+            expected_delivery_date: new Date(
+              moment
+                .unix(estimateRes.estimated_delivery_date_to)
+                .format("YYYY-MM-DD HH:mm:ss")
+                .replace(" ", "T") + "Z"
+            ),
             shipping_address: selectAddress?.address?.toString() || "N/A",
             payment_method: selectedPaymentMethod?.Key || "N/A",
             promo_code: allPromoCodeData?.code?.toString() || "N/A",
