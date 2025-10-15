@@ -89,13 +89,13 @@ function Search() {
         ...filters,
       };
       localStorage.setItem("globalSearch", JSON.stringify(globalSearchData));
-    //   filterCategoriesEngage({
-    //     brand: filters?.brand?.toString(),
-    //     model: filters?.model?.toString(),
-    //     year: Number(filters?.year),
-    //     category: filters?.category?.toString(),
-    //     sub_category: idSub?.toString(),
-    //   });
+      filterCategoriesEngage({
+        brand: filters?.brand?.toString(),
+        model: filters?.model?.toString(),
+        year: Number(filters?.year),
+        category: filters?.category?.toString(),
+        sub_category: idSub?.toString(),
+      });
     }
   }, [filters, canSavefilters, keyword]);
 
