@@ -555,7 +555,7 @@ export const latestUpdatedCart = (basket = []) => {
 
   window.webengage?.onReady(() => {
     webengage.track("CART_UPDATED", {
-    //   total: Number(+totalOfBasket),
+      //   total: Number(+totalOfBasket),
       total_price: Number(+totalOfBasket),
       number_of_products: activeItems.length,
       line_items: itemsMapping,
@@ -587,8 +587,6 @@ export const filterCategoriesEngage = ({
   category,
   sub_category,
 }) => {
-  if (!window.webengage) return;
-
   window.webengage.onReady(() => {
     webengage.track("FILTER_APPLIED", {
       car_brand: brand || "N/A",
