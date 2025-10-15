@@ -166,6 +166,19 @@ function ServiceCategory() {
     }
   }, [idSerCat, allServiceCategory, router]);
 
+  useEffect(() => {
+    if (window?.webengage && idSerCatallServiceCategory?.length) {
+      window.webengage.onReady(() => {
+        webengage.track("SERVICE_CATEGORY_VIEWED", {
+          category_id: Number(idSerCat),
+          category_name:
+            allServiceCategory.find((d) => +d.id === +idSerCat)?.name || "N/A",
+          category_url: router?.asPath || "",
+        });
+      });
+    }
+  }, [idSerCat, allServiceCategory]);
+
   return (
     <Box>
       <MetaTags title={"serviceCategory"} content={"serviceCategory"} />
