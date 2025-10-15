@@ -183,7 +183,12 @@ function SummaryOrder({
           total_price: Number(orderDetails?.receip?.total_price),
           number_of_products: Number(orderDetails?.parts?.length),
           checkout_url: router?.asPath || "N/A",
-          expected_delivery_date: moment().add(2, "days").toISOString(),
+          expected_delivery_date: new Date(
+            moment()
+              .add(2, "days")
+              .format("YYYY-MM-DD HH:mm:ss")
+              .replace(" ", "T") + "Z"
+          ),
           shipping_address: orderDetails?.address?.address?.toString() || "N/A",
           payment_method: selectedPaymentMethod?.Key || "N/A",
           promo_code:

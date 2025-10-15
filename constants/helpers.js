@@ -519,7 +519,7 @@ export const addRemoveFromCartEngage = ({
   window.webengage.onReady(() => {
     webengage.track(actions(), {
       product_name: prod?.name || "",
-      product_image: prod?.image?.url || prod?.image || "",
+      product_image: prod?.image?.url || "N/A",
       product_id: prod?.id || "",
       price: Number(prod?.price) || "",
       car_brand: prod?.brand?.name || "",
@@ -555,7 +555,7 @@ export const latestUpdatedCart = (basket = []) => {
 
   window.webengage?.onReady(() => {
     webengage.track("CART_UPDATED", {
-      total: Number(+totalOfBasket),
+    //   total: Number(+totalOfBasket),
       total_price: Number(+totalOfBasket),
       number_of_products: activeItems.length,
       line_items: itemsMapping,
