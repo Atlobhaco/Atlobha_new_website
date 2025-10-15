@@ -591,7 +591,7 @@ export const filterCategoriesEngage = ({
     webengage.track("FILTER_APPLIED", {
       car_brand: brand || "N/A",
       car_model: model || "N/A",
-      car_year: year || null,
+      car_year: year || 0,
       category: category || "N/A",
       sub_category: sub_category || "N/A",
     });
