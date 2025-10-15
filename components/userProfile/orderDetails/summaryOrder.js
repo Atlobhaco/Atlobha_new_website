@@ -13,6 +13,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import {
   generateSignature,
   generateSignatureApplePay,
+  payInitiateEngage,
   riyalImgBlack,
   riyalImgRed,
   servicePrice,
@@ -55,6 +56,7 @@ function SummaryOrder({
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const { allPromoCodeData } = useSelector((state) => state.addSpareParts);
 
   /* -------------------------------------------------------------------------- */
   /*             if user come back browser from any payment gateway             */
@@ -166,6 +168,31 @@ function SummaryOrder({
         expires: 1,
         path: "/",
       });
+
+      if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.cash) {
+        payInitiateEngage({
+          order_items:
+            orderDetails?.parts?.map((d) => ({
+              id: d?.id,
+              quantity: d?.quantity || 0,
+              image: d?.product?.image || "N/A",
+              name: d?.name || "N/A",
+              price: d?.total_price || 0,
+            })) || [],
+          total_price: Number(orderDetails?.receip?.total_price),
+          number_of_products: Number(orderDetails?.parts?.length),
+          checkout_url: router?.asPath || "N/A",
+          expected_delivery_date: moment().add(2, "days").toISOString(),
+          shipping_address: orderDetails?.address?.address?.toString() || "N/A",
+          payment_method: selectedPaymentMethod?.Key || "N/A",
+          promo_code:
+            allPromoCodeData?.code?.toString() ||
+            orderDetails?.promo_code?.code?.toString() ||
+            "N/A",
+          comment: "N/A",
+        });
+      }
+
       if (
         selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
         +calculateReceiptResFromMainPage?.amount_to_pay > 0
@@ -686,7 +713,8 @@ function SummaryOrder({
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
           : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({receipt?.tax_without_delivery_fees_tax} {riyalImgBlack()})
+        ٪ {t.vatPercentage} ({receipt?.tax_without_delivery_fees_tax}{" "}
+        {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}

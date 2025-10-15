@@ -105,7 +105,7 @@ function PackageOffers({ sectionInfo }) {
                   query: {
                     name: featured?.name,
                     desc: featured?.desc,
-                    tags: featured?.tags?.[0]?.name_ar,
+                    tags: featured?.combined_tags?.[0]?.name_ar,
                     category: featured?.marketplace_category?.name,
                     subCategory: featured?.marketplace_subcategory?.name,
                     model: featured?.model?.name,

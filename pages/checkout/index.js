@@ -14,10 +14,12 @@ import EnterPhoneNumber from "@/components/EnterPhoneNumber";
 import EditInfo from "../userProfile/editInfo";
 import { Box } from "@mui/material";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { USERS } from "@/config/endPoints/endPoints";
+import { CITY_SETTINGS, LAT_LNG, USERS } from "@/config/endPoints/endPoints";
 import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 import useCustomQuery from "@/config/network/Apiconfig";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
+import { toast } from "react-toastify";
+import moment from "moment";
 
 function Checkout() {
   const tamaraRef = useRef();
@@ -41,6 +43,7 @@ function Checkout() {
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const dispatch = useDispatch();
   const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
+  const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -71,6 +74,17 @@ function Checkout() {
   const triggerChildPayment = () => {
     tamaraRef.current?.triggerTamaraPayment();
   };
+
+  const { data: estimateRes, isLoading: loadDate } = useCustomQuery({
+    name: ["deliveryDate", selectAddress?.lat, selectAddress?.lng],
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${selectAddress?.lat}&longitude=${selectAddress?.lng}&date=${tomorrow}`,
+    refetchOnWindowFocus: false,
+    enabled: selectAddress?.lat || selectAddress?.lng ? true : false,
+    select: (res) => res?.data?.data,
+    onError: (err) => {
+      toast.error(err?.response?.data?.first_error);
+    },
+  });
 
   return (
     <div className="container">
@@ -103,6 +117,8 @@ function Checkout() {
                 handleChangeAddress={handleChangeAddress}
                 promoCodeId={promoCodeId}
                 setPromoCodeId={setPromoCodeId}
+                loadDate={loadDate}
+                estimateRes={estimateRes}
               />
             </div>
             <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
@@ -115,6 +131,7 @@ function Checkout() {
                   phoneAddedForTamara={phoneAddedForTamara}
                   ref={tamaraRef}
                   setOpenEditUserModal={setOpenEditUserModal}
+                  estimateRes={estimateRes}
                 />
               )}
             </div>

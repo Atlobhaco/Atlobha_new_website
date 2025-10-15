@@ -269,7 +269,7 @@ function ServiceCategory() {
                             category_name:
                               allServiceCategory.find(
                                 (d) => +d.id === +idSerCat
-                              ) || "",
+                              )?.name || "",
                             category_url: router?.asPath || "",
                           });
                         })

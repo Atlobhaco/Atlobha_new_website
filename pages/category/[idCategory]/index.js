@@ -316,9 +316,8 @@ function Category() {
                           webengage.track("PRODUCT_CATEGORY_VIEWED", {
                             category_id: Number(idCategory),
                             category_name:
-                              allCategories.find(
-                                (d) => +d.id === +idCategory
-                              ) || "",
+                              allCategories.find((d) => +d.id === +idCategory)
+                                ?.name || "",
                             category_url: router?.asPath || "",
                           });
                         })

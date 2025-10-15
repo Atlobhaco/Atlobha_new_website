@@ -105,6 +105,7 @@ function ServiceDetails() {
           service_details: data?.description || "",
           service_url: `/service/${idService}` || "",
           category: data?.category?.name || "",
+          tags: data?.combined_tags?.map((d) => d?.name) || [],
         });
       });
     }

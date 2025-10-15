@@ -46,6 +46,7 @@ export const authSlice = createSlice({
       }
       window.location.reload();
       webengage.user.logout();
+      webengage.track("USER_LOGOUT");
     },
     setUser: (state, action) => {
       state.user = action.payload;

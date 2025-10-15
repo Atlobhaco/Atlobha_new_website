@@ -564,6 +564,72 @@ export const latestUpdatedCart = (basket = []) => {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                     atlobha partners clicked webengage                     */
+/* -------------------------------------------------------------------------- */
+
+export const partnerClickedWebengage = (name, id) => {
+  window.webengage?.onReady(() => {
+    webengage.track("ATLOBHA_PARTNER_CLICKED", {
+      partner_name: name,
+      partner_id: id,
+    });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                       filter applied in category page                      */
+/* -------------------------------------------------------------------------- */
+
+export const filterCategoriesEngage = ({
+  brand,
+  model,
+  year,
+  category,
+  sub_category,
+}) => {
+  if (!window.webengage) return;
+
+  window.webengage.onReady(() => {
+    webengage.track("FILTER_APPLIED", {
+      car_brand: brand || "N/A",
+      car_model: model || "N/A",
+      car_year: year || null,
+      category: category || "N/A",
+      sub_category: sub_category || "N/A",
+    });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
+/*                       payment initiated confirm order                      */
+/* -------------------------------------------------------------------------- */
+export const payInitiateEngage = ({
+  order_items,
+  total_price,
+  number_of_products,
+  checkout_url,
+  expected_delivery_date,
+  shipping_address,
+  payment_method,
+  promo_code,
+  comment,
+}) => {
+  window.webengage.onReady(() => {
+    webengage.track("PAYMENT_INITIATED", {
+      order_items: order_items || [],
+      total_price: total_price || 0,
+      number_of_products: number_of_products || 1,
+      checkout_url: checkout_url,
+      expected_delivery_date: expected_delivery_date,
+      shipping_address: shipping_address,
+      payment_method: payment_method,
+      promo_code: promo_code,
+      comment: comment,
+    });
+  });
+};
+
+/* -------------------------------------------------------------------------- */
 /*                      check if object filters has value                     */
 /* -------------------------------------------------------------------------- */
 export const hasAnyFilterValue = ({
