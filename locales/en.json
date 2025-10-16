@@ -531,5 +531,6 @@
   "canNotAddPromoForFixed": "can not add coupon free delivery for services provided at the center",
   "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number",
   "serviceCategoriesSection": "Services Categories",
-  "uploadFile": "upload file"
+  "uploadFile": "upload file",
+  "clickToAddDeliveryAddress": "Click here to add delivery address"
 }

@@ -14,6 +14,8 @@ import PromoCodeMarket from "@/pages/checkout/PromoCodeMarket";
 import AtlobhaPlusHint from "../userProfile/atlobhaPlusHint";
 import Selections from "./checkoutFields/Selections";
 import FileUpload from "./checkoutFields/FileUpload";
+import AddComment from "./checkoutFields/AddComment";
+import CheckoutServiceDeliveryAddress from "./CheckoutServiceDeliveryAddress";
 
 function ServiceCheckoutData({
   selectAddress,
@@ -26,6 +28,8 @@ function ServiceCheckoutData({
   checkoutRes,
   selectedFields,
   setSelectedFields,
+  handleChangeDeliveryAddress,
+  selectDeliveryAddress,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -81,6 +85,7 @@ function ServiceCheckoutData({
       />
     );
   };
+
   return (
     <>
       {!carAvailable && <ServiceAvailabilityWithCar />}
@@ -96,6 +101,19 @@ function ServiceCheckoutData({
           {renderDivider()}
         </>
       )}
+
+      {/* delivery address for service */}
+      <CheckoutServiceDeliveryAddress
+        orderDetails={{
+          address: selectDeliveryAddress,
+          status: "new",
+        }}
+        handleChangeAddress={handleChangeDeliveryAddress}
+        customtitle={t.deliveryAddress}
+        // hideArrow={true}
+      />
+      {renderDivider()}
+
       {/* address for service */}
       <OrderAddress
         orderDetails={{
@@ -161,6 +179,17 @@ function ServiceCheckoutData({
         <>
           <FileUpload
             field={checkoutRes && checkoutRes["file"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
+      {/* multi-select-checkout-field */}
+      {checkoutRes && checkoutRes["text"]?.length && (
+        <>
+          <AddComment
+            field={checkoutRes && checkoutRes["text"]}
             setSelectedFields={setSelectedFields}
             selectedFields={selectedFields}
           />

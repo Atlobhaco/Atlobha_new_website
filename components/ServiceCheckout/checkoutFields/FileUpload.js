@@ -2,7 +2,6 @@
 import React, { useRef } from "react";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import { Box, Typography, IconButton } from "@mui/material";
 import Image from "next/image";
 import style from "../../../pages/spareParts/confirmation/confirmation.module.scss";
@@ -80,6 +79,7 @@ export default function FileUpload({
                   ...sel,
                   fileUrl: data?.data?.url || data?.url || tempUrl,
                   isTemp: false,
+                  fileId: data?.id,
                 }
               : sel
           ),
@@ -198,16 +198,26 @@ export default function FileUpload({
                 }}
               >
                 {uploadedFile.fileType.startsWith("image/") ? (
-                  <img
-                    src={uploadedFile.fileUrl}
-                    alt={uploadedFile.fileName}
-                    width={90}
-                    height={70}
-                    style={{
-                      borderRadius: "8px",
-                      objectFit: "contain",
-                    }}
-                  />
+                  <Box>
+                    <img
+                      src={uploadedFile.fileUrl}
+                      alt={uploadedFile.fileName}
+                      width={isMobile ? 50 : 90}
+                      height={isMobile ? 50 : 70}
+                      style={{
+                        borderRadius: "8px",
+                        objectFit: "contain",
+                        marginInlineEnd: "10px",
+                      }}
+                    />
+                    <span
+                      style={{
+                        fontSize: "10px",
+                      }}
+                    >
+                      {uploadedFile.fileName}
+                    </span>
+                  </Box>
                 ) : (
                   <Typography
                     sx={{
@@ -221,11 +231,16 @@ export default function FileUpload({
                 )}
 
                 <IconButton
-                  color="error"
+                  color="default"
                   size="small"
                   onClick={() => handleRemoveFile(singleField)}
                 >
-                  <DeleteOutlineIcon />
+                  <Image
+                    alt="delete"
+                    src="/icons/x-close.svg"
+                    width={isMobile ? "10" : "20"}
+                    height={isMobile ? "10" : "20"}
+                  />
                 </IconButton>
               </Box>
             )}

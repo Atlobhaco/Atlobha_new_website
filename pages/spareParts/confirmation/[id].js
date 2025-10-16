@@ -112,6 +112,7 @@ function Confirmation() {
   const deliveryDate = () => {
     if (!data) return null;
 
+    if (!data?.slot?.start) return "";
     const dateStart = moment(data?.slot?.start);
     const today = moment();
 

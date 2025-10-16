@@ -34,6 +34,7 @@ function CheckoutService() {
   const { t, locale } = useLocalization();
 
   const [selectAddress, setSelectAddress] = useState(false);
+  const [selectDeliveryAddress, setSelectDeliveryAddress] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -86,7 +87,6 @@ function CheckoutService() {
     select: (res) => res?.data?.data,
     enabled: checkoutServiceDetails?.serviceDetails?.id ? true : false,
     onSuccess: (res) => {
-      console.log("res-checkout", res);
       //   const filtered = Object.entries(res).reduce((acc, [key, arr]) => {
       //     const required = arr.filter((f) => f.is_required);
       //     if (required.length > 0) {
@@ -131,6 +131,40 @@ function CheckoutService() {
     tamaraRef.current?.triggerTamaraPayment();
   };
 
+  const allRequiredUploaded = (() => {
+    if (!checkoutRes) return false;
+
+    // Generic function to check required fields
+    const checkRequired = (typeKey) => {
+      const fields = checkoutRes[typeKey] || [];
+      const selected = selectedFields?.[typeKey] || [];
+
+      return fields
+        .filter((f) => f.is_required) // only required fields
+        .every((req) => {
+          if (typeKey === "text") {
+            // Text: must have non-empty value
+            const textValue = selected.find(
+              (s) => s.checkoutFieldId === req.checkout_field.id
+            )?.value;
+            return textValue && textValue.trim() !== "";
+          } else {
+            // file or multi-select with multiple values (if ever)
+            return selected.some(
+              (s) => s.checkoutFieldId === req.checkout_field.id
+            );
+          }
+        });
+    };
+
+    const allRequiredFile = checkRequired("file");
+    const allRequiredMultiSelect = checkRequired("multi-select"); // single value only
+    const allRequiredText = checkRequired("text");
+
+    return allRequiredFile && allRequiredMultiSelect && allRequiredText;
+  })();
+
+  console.log("selectedFields", selectedFields);
   return (
     <div className="container">
       <div className="row">
@@ -146,6 +180,10 @@ function CheckoutService() {
             checkoutRes={checkoutRes}
             selectedFields={selectedFields}
             setSelectedFields={setSelectedFields}
+            handleChangeDeliveryAddress={(data) =>
+              setSelectDeliveryAddress(data)
+            }
+            selectDeliveryAddress={selectDeliveryAddress}
           />
         </div>
         <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
@@ -159,6 +197,10 @@ function CheckoutService() {
             phoneAddedForTamara={phoneAddedForTamara}
             ref={tamaraRef}
             carAvailable={carAvailable}
+            allRequiredUploaded={allRequiredUploaded}
+            selectDeliveryAddress={selectDeliveryAddress}
+            selectedFields={selectedFields}
+            checkoutRes={checkoutRes}
           />
         </div>
       </div>

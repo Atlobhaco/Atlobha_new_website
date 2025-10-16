@@ -44,7 +44,7 @@ export function addAddressQuery({
   returnDefaultValues = () => {},
 }) {
   return useCustomQuery({
-    name: "setDefaultAddress",
+    name:[ `setDefaultAddress${body?.name}`],
     url: `${USERS}/${user?.data?.user?.id}${ADDRESSES}`,
     refetchOnWindowFocus: false,
     enabled: false,

@@ -121,7 +121,7 @@ function Selections({ field, selectedFields, setSelectedFields }) {
                         key={option.id}
                         onClick={() =>
                           handleSelect({
-                            checkoutFieldId: singleField?.id,
+                            checkoutFieldId: singleField?.checkout_field?.id,
                             keyName: singleField?.checkout_field?.type,
                             option,
                           })

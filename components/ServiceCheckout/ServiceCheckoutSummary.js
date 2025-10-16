@@ -46,6 +46,10 @@ const ServiceCheckoutSummary = forwardRef(
       userCar,
       checkoutServiceDetails,
       carAvailable,
+      allRequiredUploaded,
+      selectDeliveryAddress,
+      selectedFields,
+      checkoutRes,
     },
     ref
   ) => {
@@ -100,6 +104,43 @@ const ServiceCheckoutSummary = forwardRef(
       color: "#232323",
     };
 
+    function prepareCheckoutFields() {
+      const result = [];
+
+      // Handle text fields
+      if (selectedFields["text"]) {
+        selectedFields["text"].forEach((item) => {
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            text: item.value, // assuming your text field has .value
+          });
+        });
+      }
+
+      // Handle file fields
+      if (selectedFields["file"]) {
+        selectedFields["file"].forEach((item) => {
+          console.log("item", item);
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            file_id: item.fileId, // you’ll get file_id after upload
+          });
+        });
+      }
+
+      // Handle multi-select fields
+      if (selectedFields["multi-select"]) {
+        selectedFields["multi-select"].forEach((item) => {
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            selected_option_ids: [item.id],
+          });
+        });
+      }
+
+      return result;
+    }
+    // console.log("prepareCheckoutFields", prepareCheckoutFields());
     const {
       data: confirmPriceRes,
       isFetching: confirmPriceFetch,
@@ -129,6 +170,8 @@ const ServiceCheckoutSummary = forwardRef(
               vehicle_id: userCar?.id,
               service_center_id: checkoutServiceDetails?.selectedStore?.id,
               promo_code_id: allPromoCodeData?.id || null,
+              checkout_fields: prepareCheckoutFields(),
+              dropoff_address_id: selectDeliveryAddress?.id,
             }
           : {
               promo_code_id: allPromoCodeData?.id || null,
@@ -142,6 +185,8 @@ const ServiceCheckoutSummary = forwardRef(
                 checkoutServiceDetails?.selectedStore?.next_available_slot?.id,
               stc_payment_confirm: "e30=",
               payment_reference: merchanteRefrence,
+              checkout_fields: prepareCheckoutFields(),
+              dropoff_address_id: selectDeliveryAddress?.id,
             },
       onSuccess: async (res) => {
         sessionStorage.setItem("order_id_market", res?.id);
@@ -749,7 +794,9 @@ const ServiceCheckoutSummary = forwardRef(
             confirmPriceFetch ||
             redirectToPayfort ||
             !carAvailable ||
-            !+calculateReceiptResFromMainPage?.amount_to_pay < 0
+            !+calculateReceiptResFromMainPage?.amount_to_pay < 0 ||
+            (!allRequiredUploaded && checkoutRes?.length) ||
+            !selectDeliveryAddress
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
