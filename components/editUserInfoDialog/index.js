@@ -15,6 +15,7 @@ function EditUserInfoDialog({ openEditUserModal, setOpenEditUserModal }) {
       hasCloseIcon
       content={
         <EditInfo
+          key={openEditUserModal ? "open" : "closed"}
           hideSomeComponent={true}
           setOpenEditUserModal={setOpenEditUserModal}
         />

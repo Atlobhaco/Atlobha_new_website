@@ -52,7 +52,7 @@ function VoucherCode({
     onError: (err) => {
       if (err?.status) {
         setError(true);
-        toast.error(t.voucherNotFound);
+        toast.error(err?.response?.data?.message || t.voucherNotFound);
       }
     },
   });

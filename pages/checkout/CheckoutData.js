@@ -8,29 +8,19 @@ import Image from "next/image";
 import React, { useState } from "react";
 import PromoCodeMarket from "./PromoCodeMarket";
 import AtlobhaPlusHint from "@/components/userProfile/atlobhaPlusHint";
-import useCustomQuery from "@/config/network/Apiconfig";
-import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 function CheckoutData({
   selectAddress,
   handleChangeAddress,
   promoCodeId,
   setPromoCodeId,
+  estimateRes,
+  loadDate,
 }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
-
-  const { data: estimateRes, isLoading: loadDate } = useCustomQuery({
-    name: ["deliveryDate", selectAddress?.lat, selectAddress?.lng],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${selectAddress?.lat}&longitude=${selectAddress?.lng}`,
-    refetchOnWindowFocus: false,
-    enabled: selectAddress?.lat || selectAddress?.lng ? true : false,
-    select: (res) => res?.data?.data,
-    onError: (err) => {
-      toast.error(err?.response?.data?.first_error);
-    },
-  });
+  const { basket } = useSelector((state) => state.basket);
 
   const deliveryDate = () => {
     return estimateRes?.estimated_delivery_date_from &&
@@ -140,6 +130,10 @@ function CheckoutData({
       <PromoCodeMarket
         promoCodeId={promoCodeId}
         setPromoCodeId={setPromoCodeId}
+        query={{
+          product_ids: basket?.map((d) => d?.product_id),
+          order_type: "marketplace-order",
+        }}
       />
       <AtlobhaPlusHint alwaysHorizontalDesgin={true} />
     </>

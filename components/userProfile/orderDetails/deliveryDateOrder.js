@@ -1,4 +1,9 @@
-import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
+import {
+  CITY_SETTINGS,
+  ESTIMATED_DELIVERY,
+  LAT_LNG,
+  SETTINGS,
+} from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { ORDERSENUM, STATUS } from "@/constants/enums";
@@ -14,6 +19,13 @@ function DeliveryDateOrder({ orderDetails = {} }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const [LngLat, setLngLat] = useState();
+  const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
+  const nextDayForConfirmation = moment(
+    orderDetails?.confirmed_at || orderDetails?.created_at
+  )
+    .add(1, "day")
+    .locale("en")
+    .format("YYYY-MM-DD");
 
   const {
     query: { type, idOrder },
@@ -21,7 +33,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
 
   const { data: estimateRes } = useCustomQuery({
     name: ["getEstimateDeliveryForOrder", LngLat?.lat, LngLat?.lng, idOrder],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${LngLat?.lat}&longitude=${LngLat?.lng}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${LngLat?.lat}&longitude=${
+      LngLat?.lng
+    }&date=${nextDayForConfirmation || tomorrow}`,
     refetchOnWindowFocus: false,
     enabled: LngLat?.lat && LngLat?.lng ? true : false,
     select: (res) => res?.data?.data,
@@ -32,8 +46,9 @@ function DeliveryDateOrder({ orderDetails = {} }) {
 
   useEffect(() => {
     if (
-      !orderDetails?.estimated_packaging_date &&
-      !orderDetails?.estimated_delivery_date
+      (!orderDetails?.estimated_packaging_date &&
+        !orderDetails?.estimated_delivery_date) ||
+      orderDetails?.address
     ) {
       setLngLat({
         lng:
@@ -57,12 +72,12 @@ function DeliveryDateOrder({ orderDetails = {} }) {
     if (orderDetails?.status === STATUS?.new && !isMarketplaceType)
       return t.dateLater;
 
-    const date =
-      orderDetails?.estimated_packaging_date ||
-      orderDetails?.estimated_delivery_date;
+    // const date =
+    //   orderDetails?.estimated_packaging_date ||
+    //   orderDetails?.estimated_delivery_date;
 
-    if (date)
-      return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
+    // if (date)
+    //   return `${t.deliveryFrom} ${moment(date).format("dddd, D MMMM YYYY")}`;
 
     return estimateRes?.estimated_delivery_date_from &&
       estimateRes?.estimated_delivery_date_to

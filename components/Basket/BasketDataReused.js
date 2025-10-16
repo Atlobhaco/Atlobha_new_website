@@ -67,7 +67,7 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                       query: {
                         name: data?.product?.name,
                         desc: data?.product?.desc,
-                        tags: data?.product?.tags?.[0]?.name_ar,
+                        tags: data?.product?.combined_tags?.[0]?.name_ar,
                         category: data?.product?.marketplace_category?.name,
                         subCategory:
                           data?.product?.marketplace_subcategory?.name,

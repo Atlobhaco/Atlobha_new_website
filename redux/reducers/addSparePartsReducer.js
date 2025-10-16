@@ -12,6 +12,7 @@ const initialState = {
   voucherCode: null,
   allPromoCodeData: null,
   allvoucherCodeData: null,
+  usePromoThenDeleteit: false,
 };
 
 // Thunk to fetch data from the endpoint
@@ -56,6 +57,10 @@ export const addSparePartsReducer = createSlice({
     },
     setPromoCodeAllData: (state, action) => {
       state.allPromoCodeData = action.payload?.data || null;
+      state.usePromoThenDeleteit = false;
+    },
+    setDeleteUsedPromo: (state, action) => {
+      state.usePromoThenDeleteit = true;
     },
     setVoucher: (state, action) => {
       state.voucherCode = action.payload?.data || null;
@@ -132,6 +137,7 @@ export const {
   setVoucher,
   setPromoCodeAllData,
   setVoucherAllData,
+  setDeleteUsedPromo,
 } = addSparePartsReducer.actions;
 
 export default addSparePartsReducer.reducer;

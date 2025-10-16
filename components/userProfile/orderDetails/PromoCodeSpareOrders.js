@@ -2,25 +2,22 @@ import DialogCentered from "@/components/DialogCentered";
 import SharedBtn from "@/components/shared/SharedBtn";
 import PromoCodeSpare from "@/components/spareParts/PromoCodeSpare";
 import VoucherCode from "@/components/spareParts/VoucherCode";
+import { ORDERS, PROMO_CODE, SPARE_PARTS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
-import { riyalImgBlack, riyalImgOrange } from "@/constants/helpers";
+import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
-import {
-  setPromoCodeForSpareParts,
-  setVoucher,
-} from "@/redux/reducers/addSparePartsReducer";
 import { Box } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
-function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
+function PromocodeSpareOrders({ promoCodeId, setPromoCodeId, query, idOrder }) {
   const { t, locale } = useLocalization();
-  const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
   const [openAddCoupon, setOpenAddCoupon] = useState(false);
   const [openAddVoucher, setOpenAddVoucher] = useState(false);
-  const { promoCode, voucherCode, allPromoCodeData } = useSelector(
+  const { voucherCode, allPromoCodeData, usePromoThenDeleteit } = useSelector(
     (state) => state.addSpareParts
   );
   const [canAddVoucher, setCanAddVoucher] = useState(false);
@@ -31,6 +28,42 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
     fontSize: isMobile ? "14px" : "15px",
     fontWeight: "500",
   };
+
+  const {
+    data,
+    isFetching: orderDetailsFetching,
+    refetch: refetchAddPromo,
+  } = useCustomQuery({
+    name: ["savePromoToOrder"],
+    url: `${SPARE_PARTS}${ORDERS}/${idOrder}${PROMO_CODE}`,
+    refetchOnWindowFocus: false,
+    method: "patch",
+    body: {
+      promo_code_id: allPromoCodeData?.id,
+    },
+    enabled: false,
+    select: (res) => res?.data?.data,
+    onSuccess: () => {},
+    onError: (err) => {
+      toast.error(t.someThingWrong);
+    },
+  });
+
+  const { data: da } = useCustomQuery({
+    name: ["deletePromoToOrder", allPromoCodeData],
+    url: `${SPARE_PARTS}${ORDERS}/${idOrder}${PROMO_CODE}`,
+    refetchOnWindowFocus: false,
+    method: "delete",
+    body: {
+      promo_code_id: allPromoCodeData?.id,
+    },
+    enabled: usePromoThenDeleteit ? true : false,
+    select: (res) => res?.data?.data,
+    onSuccess: () => {},
+    onError: (err) => {
+      toast.error(t.someThingWrong);
+    },
+  });
 
   return (
     <Box sx={{ padding: "16px 13px" }}>
@@ -68,6 +101,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
               setPromoCodeId={setPromoCodeId}
               customTitle={t.couponDiscount}
               query={query}
+              refetchAddPromo={refetchAddPromo}
             />
           </Box>
         ) : (
@@ -106,19 +140,6 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
               setInputValVoucher={setInputValVoucher}
               inputValVoucher={inputValVoucher}
             />
-            {/* <Box
-              sx={{
-                mx: 2,
-                color: "#EB3C24",
-                fontWeight: "500",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                dispatch(setVoucher({ data: null }));
-              }}
-            >
-              Delete
-            </Box> */}
           </Box>
         ) : (
           <>
@@ -168,40 +189,9 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
                 setPromoCodeId={setPromoCodeId}
                 customTitle={t.couponDiscount}
                 query={query}
+                refetchAddPromo={refetchAddPromo}
               />
             </Box>
-            {/* <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-                borderTop: !isMobile && "1px solid rgba(24, 24, 27, 0.06)",
-                width: "100%",
-                justifyContent: "flex-end",
-                pt: !isMobile && 3,
-              }}
-            >
-              <SharedBtn
-                type="submit"
-                text="common.add"
-                className="big-main-btn"
-                customClass={`${isMobile ? "w-50" : "w-25"}`}
-                onClick={() => {
-                  setOpenAddCoupon(false);
-                }}
-                disabled={!promoCodeId}
-              />
-
-              <SharedBtn
-                text="common.cancel"
-                className="outline-btn"
-                customClass={`${isMobile ? "w-50" : "w-25"}`}
-                onClick={() => {
-                  setOpenAddCoupon(false);
-                  setPromoCodeId(null);
-                  dispatch(setPromoCodeForSpareParts({ data: null }));
-                }}
-              />
-            </Box> */}
           </>
         }
       />
@@ -238,43 +228,6 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
                 inputValVoucher={inputValVoucher}
               />
             </Box>
-            {/* <Box
-              sx={{
-                display: "flex",
-                gap: "10px",
-                borderTop: !isMobile && "1px solid rgba(24, 24, 27, 0.06)",
-                width: "100%",
-                justifyContent: "flex-end",
-                pt: !isMobile && 3,
-              }}
-            >
-              <SharedBtn
-                type="submit"
-                text="common.add"
-                className="big-main-btn"
-                customClass={`${isMobile ? "w-50" : "w-25"}`}
-                onClick={() => {
-                  if (canAddVoucher) {
-                    dispatch(setVoucher({ data: canAddVoucher }));
-                  }
-                  setInputValVoucher(null);
-                  setOpenAddVoucher(false);
-                }}
-                disabled={!canAddVoucher}
-              />
-
-              <SharedBtn
-                text="common.cancel"
-                className="outline-btn"
-                customClass={`${isMobile ? "w-50" : "w-25"}`}
-                onClick={() => {
-                  dispatch(setVoucher({ data: null }));
-                  setOpenAddVoucher(false);
-                  setOpenAddVoucher(false);
-                  setInputValVoucher(null);
-                }}
-              /> 
-            </Box> */}
           </>
         }
       />
@@ -282,4 +235,4 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
   );
 }
 
-export default PromoCodeMarket;
+export default PromocodeSpareOrders;

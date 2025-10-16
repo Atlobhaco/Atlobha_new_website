@@ -208,6 +208,13 @@ function ServiceCheckoutData({
       <PromoCodeMarket
         promoCodeId={promoCodeId}
         setPromoCodeId={setPromoCodeId}
+        query={{
+          order_type: "service",
+          service_id: checkoutServiceDetails?.serviceDetails?.id,
+		  brand_id: userCar?.brand?.id,
+		  model_id: userCar?.model?.id,
+		  year: userCar?.year,
+        }}
       />
       <Divider sx={{ background: "#F6F6F6", mb: 2, height: "5px" }} />
 

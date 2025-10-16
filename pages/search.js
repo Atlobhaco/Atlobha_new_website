@@ -4,7 +4,11 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import ProductCard from "@/components/shared/ProductCard";
 import { MARKETPLACE, PRODUCTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
+import {
+  filterCategoriesEngage,
+  getFilterParams,
+  hasAnyFilterValue,
+} from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider } from "@mui/material";
 import { useRouter } from "next/router";
@@ -23,7 +27,7 @@ import ServiceDataInfo from "./serviceCategory/[idSerCat]/ServiceDataInfo";
 function Search() {
   const router = useRouter();
   const {
-    query: { keyword, type, secType },
+    query: { keyword, type, secType, idSub },
   } = useRouter();
   const { prevRoute } = useRouteTracker();
 
@@ -85,6 +89,13 @@ function Search() {
         ...filters,
       };
       localStorage.setItem("globalSearch", JSON.stringify(globalSearchData));
+      filterCategoriesEngage({
+        brand: filters?.brand?.toString(),
+        model: filters?.model?.toString(),
+        year: Number(filters?.year),
+        category: filters?.category?.toString(),
+        sub_category: idSub?.toString(),
+      });
     }
   }, [filters, canSavefilters, keyword]);
 
@@ -241,6 +252,11 @@ function Search() {
                         <div
                           className="col-md-4 col-4 mb-3 px-0 d-flex justify-content-center"
                           key={prod?.id}
+                          onClick={() =>
+                            window.webengage.onReady(() => {
+                              webengage.track("SEARCH_PRODUCTS_CLICKED");
+                            })
+                          }
                         >
                           <ProductCard product={prod} />
                         </div>

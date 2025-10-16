@@ -7,7 +7,12 @@ import {
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { PAYMENT_METHODS, PORTABLE, SERVICES } from "@/constants/enums";
+import {
+  MARKETPLACE,
+  PAYMENT_METHODS,
+  PORTABLE,
+  SERVICES,
+} from "@/constants/enums";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import React, {
@@ -34,6 +39,7 @@ import {
   setPromoCodeAllData,
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
+import Cookies from "js-cookie";
 
 const ServiceCheckoutSummary = forwardRef(
   (
@@ -79,7 +85,7 @@ const ServiceCheckoutSummary = forwardRef(
     const [payFortForm, setPayfortForm] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
 
     const header = {
       color: "#232323",
@@ -140,7 +146,7 @@ const ServiceCheckoutSummary = forwardRef(
 
       return result;
     }
-    // console.log("prepareCheckoutFields", prepareCheckoutFields());
+
     const {
       data: confirmPriceRes,
       isFetching: confirmPriceFetch,
@@ -189,7 +195,7 @@ const ServiceCheckoutSummary = forwardRef(
               dropoff_address_id: selectDeliveryAddress?.id,
             },
       onSuccess: async (res) => {
-        sessionStorage.setItem("order_id_market", res?.id);
+        sessionStorage.setItem("created_order_id", res?.id);
         sessionStorage.setItem("service_type", checkoutServiceDetails?.type);
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -197,8 +203,8 @@ const ServiceCheckoutSummary = forwardRef(
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
-          }, 6000);
+            setFakeLoader(false);
+          }, 12000);
           return;
         }
         if (
@@ -245,6 +251,9 @@ const ServiceCheckoutSummary = forwardRef(
         ) {
           if (userDataProfile?.phone?.length) {
             handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 12000);
           } else {
             setAddPhoneForTamara();
           }
@@ -259,7 +268,7 @@ const ServiceCheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -324,6 +333,15 @@ const ServiceCheckoutSummary = forwardRef(
         setOldAmountToPay(res?.amount_to_pay);
       },
       onError: (err) => {
+        // redirect to service details if browser back from payment gateway
+        if (
+          err?.response?.data?.message?.includes("ServiceCenterSlot_not_found")
+        ) {
+          router?.push(
+            `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`
+          );
+          return;
+        }
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
         if (err?.response?.data?.first_error?.includes("promo")) {
@@ -331,7 +349,11 @@ const ServiceCheckoutSummary = forwardRef(
           dispatch(setPromoCodeForSpareParts({ data: "" }));
           dispatch(setPromoCodeAllData({ data: null }));
         } else {
-          toast.error(err?.response?.data?.first_error || t.someThingWrong);
+          toast.error(
+            err?.response?.data?.first_error ||
+              err?.response?.data?.message ||
+              t.someThingWrong
+          );
         }
       },
     });
@@ -343,7 +365,7 @@ const ServiceCheckoutSummary = forwardRef(
       language: locale,
       currency: "SAR",
       customer_email: "userTest@example.com",
-      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true&serviceType=${checkoutServiceDetails?.type}`,
+      return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL_SERVICE}?order_id=${confirmPriceRes?.id}&service=true&serviceType=${checkoutServiceDetails?.type}&idService=${checkoutServiceDetails?.serviceDetails?.id}&type=${router?.query?.type}&portableService=${router?.query?.portableService}&secType=${router?.query?.secType}`,
     };
 
     requestData.merchant_reference = merchanteRefrence;
@@ -531,8 +553,8 @@ const ServiceCheckoutSummary = forwardRef(
           }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
             checkoutServiceDetails?.type
           }`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -540,7 +562,9 @@ const ServiceCheckoutSummary = forwardRef(
               phoneAddedForTamara ||
               userDataProfile?.phone?.replace(/^(\+?966)/, ""),
             email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+              userDataProfile?.email ||
+              userDataProfile?.secondary_email ||
+              `${userDataProfile?.phone}@atlobha.com`,
           },
           items: [
             {
@@ -585,7 +609,9 @@ const ServiceCheckoutSummary = forwardRef(
       const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
-          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+          userDataProfile?.email ||
+          userDataProfile?.secondary_email ||
+          `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
@@ -636,8 +662,8 @@ const ServiceCheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
@@ -661,6 +687,15 @@ const ServiceCheckoutSummary = forwardRef(
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
     const handleMisPay = async () => {
+      Cookies.set(
+        "url_after_pay_failed",
+        `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+        {
+          expires: 1,
+          path: "/",
+        }
+      );
+
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -706,6 +741,7 @@ const ServiceCheckoutSummary = forwardRef(
         alert("Payment initiation failed");
       }
     };
+
     return (
       <Box sx={{ pt: 1 }}>
         <Box sx={header}>{t.orderSummary}</Box>
@@ -734,7 +770,8 @@ const ServiceCheckoutSummary = forwardRef(
               : t.deliveryFees}
           </Box>
           <Box sx={text}>
-            {calculateReceiptResFromMainPage?.delivery_fees} {riyalImgBlack()}
+            {calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
+            {riyalImgBlack()}
           </Box>
         </Box>
         {/* pay from wallet balance */}
@@ -762,9 +799,9 @@ const ServiceCheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax +
+                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
-                  +calculateReceiptResFromMainPage?.delivery_fees
+                  +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
               : calculateReceiptResFromMainPage?.total_price}{" "}
             {riyalImgBlack()}
@@ -774,7 +811,8 @@ const ServiceCheckoutSummary = forwardRef(
         <Box sx={vat}>
           {t.include}{" "}
           {(calculateReceiptResFromMainPage?.tax_percentage || 0) * 100}٪{" "}
-          {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax || 0}{" "}
+          {t.vatPercentage} (
+          {calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
 
@@ -782,7 +820,7 @@ const ServiceCheckoutSummary = forwardRef(
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {calculateReceiptResFromMainPage?.amount_to_pay?.toFixed(2)}{" "}
             {riyalImgBlack()}
           </Box>
@@ -792,10 +830,11 @@ const ServiceCheckoutSummary = forwardRef(
             loadPayRequest ||
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
-            redirectToPayfort ||
+            fakeLoader ||
             !carAvailable ||
             !+calculateReceiptResFromMainPage?.amount_to_pay < 0 ||
-            (!allRequiredUploaded && checkoutRes?.length) ||
+            (!allRequiredUploaded &&
+              Object.keys(checkoutRes || {}).length > 0) ||
             !selectDeliveryAddress
           }
           className={`${
@@ -810,7 +849,7 @@ const ServiceCheckoutSummary = forwardRef(
               : "payAndConfirm"
           }
           comAfterText={
-            redirectToPayfort || loadPayRequest || confirmPriceFetch ? (
+            fakeLoader || loadPayRequest || confirmPriceFetch ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -825,12 +864,13 @@ const ServiceCheckoutSummary = forwardRef(
           onClick={() => {
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
+            setFakeLoader(true);
 
             if (amount === 0) return callConfirmPricing();
             if (!userDataProfile?.phone) return setOpenAddMobile(true);
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -841,12 +881,17 @@ const ServiceCheckoutSummary = forwardRef(
               method === PAYMENT_METHODS.tabby ||
               method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
               }
               if (
-                (!userDataProfile?.email || !userDataProfile?.name) &&
+                ((!userDataProfile?.email &&
+                  !userDataProfile?.secondary_email) ||
+                  !userDataProfile?.name) &&
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);

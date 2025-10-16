@@ -58,7 +58,9 @@ export function addAddressQuery({
       returnDefaultValues();
     },
     onError: (err) => {
-      toast.error(err?.response?.data?.first_error);
+      toast.error(
+        err?.response?.data?.first_error || err?.response?.data?.message
+      );
     },
   });
 }

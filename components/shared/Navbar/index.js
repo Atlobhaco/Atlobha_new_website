@@ -27,6 +27,7 @@ import BlurText from "../BlurText";
 import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import ContentForBasket from "./ContentForBasketPopup";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
+import Link from "next/link";
 
 const firstPartStyle = {
   display: "flex",
@@ -278,7 +279,31 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
         <div style={secondPartStyle}>
           <LanguageSwitcher />
 
-          {!isMobile && (
+          {isMobile ? (
+            <Link
+              onClick={() =>
+                window.webengage.onReady(() => {
+                  webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+                    event_status: true,
+                  });
+                })
+              }
+              href="https://wa.me/966502670094"
+              target="_blank"
+            >
+              <Image
+                alt="whatsapp"
+                src="/icons/social/whats.svg"
+                width={25}
+                height={25}
+                className="cursor-pointer"
+                loading="lazy"
+                style={{
+                  marginInlineStart: "4px",
+                }}
+              />
+            </Link>
+          ) : (
             <>
               <IconInsideCircle
                 hasText={false}

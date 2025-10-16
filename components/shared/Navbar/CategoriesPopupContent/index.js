@@ -142,7 +142,7 @@ function CategoriesPopupcontent({
       }, 500);
       setTimeout(() => {
         setFakeLoaderAppear(false);
-      }, 1500);
+      }, 2000);
       dispatch(setAllGroups(res));
     },
     onError: () => {

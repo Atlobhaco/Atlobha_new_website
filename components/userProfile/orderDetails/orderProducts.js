@@ -191,53 +191,67 @@ function OrderProducts({
             ))
           : (orderDetails?.parts || orderDetails?.products)?.map((part) => (
               <div
-                className={`${style["details-parts"]} justify-content-between`}
+                className={`${style["details-parts"]} justify-content-between w-100`}
                 key={part?.id}
               >
-                <div className="d-flex gap-2">
-                  <Box
-                    sx={imgHolderStyle}
-                    className={`${style["details-parts_imgHolder"]}`}
-                  >
-                    <Image
-                      loading="lazy"
-                      onError={(e) =>
-                        (e.target.srcset = "/imgs/no-img-holder.svg")
-                      }
-                      src={
-                        part?.image ||
-                        part?.thumbnail?.url ||
-                        "/imgs/no-img-holder.svg"
-                      }
-                      width={isMobile ? 50 : 61}
-                      height={isMobile ? 50 : 61}
-                      alt="spare-part"
-                      onClick={() =>
-                        setLargeImage(
-                          part?.image
-                            ? part?.image
-                            : part?.thumbnail?.url
-                            ? part?.thumbnail?.url
-                            : false
-                        )
-                      } // Open modal on click
-                    />
-                  </Box>
-                  <div
-                    className={`${style["details-parts_details"]} justify-content-end`}
-                  >
-                    <div className={`${style["details-parts_details-name"]}`}>
-                      {part?.name}
-                    </div>
-                    {(part?.quantity || part?.description) && (
-                      <div
-                        className={style["details-parts_details-second-qty"]}
-                      >
-                        {part?.quantity && `${part.quantity} ${t.piece}`}
-                        {part?.description && part.description}
+                <div className="d-flex gap-2 justify-content-between w-100">
+                  <Box className="d-flex gap-2 ">
+                    <Box
+                      sx={imgHolderStyle}
+                      className={`${style["details-parts_imgHolder"]}`}
+                    >
+                      <Image
+                        loading="lazy"
+                        onError={(e) =>
+                          (e.target.srcset = "/imgs/no-img-holder.svg")
+                        }
+                        src={
+                          part?.image ||
+                          part?.thumbnail?.url ||
+                          "/imgs/no-img-holder.svg"
+                        }
+                        width={isMobile ? 50 : 61}
+                        height={isMobile ? 50 : 61}
+                        alt="spare-part"
+                        onClick={() =>
+                          setLargeImage(
+                            part?.image
+                              ? part?.image
+                              : part?.thumbnail?.url
+                              ? part?.thumbnail?.url
+                              : false
+                          )
+                        } // Open modal on click
+                      />
+                    </Box>
+                    <div
+                      className={`${style["details-parts_details"]} justify-content-end`}
+                    >
+                      <div className={`${style["details-parts_details-name"]}`}>
+                        {part?.name}
                       </div>
-                    )}
-                  </div>
+                      {(part?.quantity || part?.description) && (
+                        <div
+                          className={style["details-parts_details-second-qty"]}
+                        >
+                          {part?.quantity && `${part.quantity} ${t.piece}`}
+                          {part?.description && part.description}
+                        </div>
+                      )}
+                    </div>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flex: "1",
+                      justifyContent: "flex-end",
+                      color: "#EE772F",
+                      fontSize: isMobile ? "14px" : "16px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {part?.total_price || part?.price} {riyalImgOrange()}
+                  </Box>{" "}
                 </div>
                 {orderDetails?.status !== STATUS?.new &&
                 type === ORDERSENUM?.marketplace ? (

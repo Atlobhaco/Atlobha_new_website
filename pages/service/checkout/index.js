@@ -31,7 +31,7 @@ function CheckoutService() {
   } = useRouter();
   const { isMobile } = useScreenSize();
   const { user } = useAuth();
-  const { t, locale } = useLocalization();
+  const { t } = useLocalization();
 
   const [selectAddress, setSelectAddress] = useState(false);
   const [selectDeliveryAddress, setSelectDeliveryAddress] = useState(false);

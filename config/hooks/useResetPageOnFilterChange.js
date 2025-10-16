@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import isEqual from "lodash/isEqual"; // Optional: for deep compare
 import { useRouter } from "next/router";
+import { filterCategoriesEngage } from "@/constants/helpers";
 
 const useResetPageOnFilterChange = (filters, setPage, deepCompare = false) => {
   const prevFiltersRef = useRef(filters);
@@ -10,6 +11,15 @@ const useResetPageOnFilterChange = (filters, setPage, deepCompare = false) => {
   currentQuery.current_active_page = 1;
 
   useEffect(() => {
+    if (filters) {
+      filterCategoriesEngage({
+        brand: filters?.brand_id?.toString(),
+        model: filters?.model_id?.toString(),
+        year: Number(filters?.year),
+        category: filters?.category_id?.toString(),
+        sub_category: router.query?.idSub?.toString(),
+      });
+    }
     const filtersChanged = deepCompare
       ? !isEqual(prevFiltersRef.current, filters)
       : JSON.stringify(prevFiltersRef.current) !== JSON.stringify(filters);

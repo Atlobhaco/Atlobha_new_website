@@ -2,10 +2,11 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { PAYMENT_METHODS } from "@/constants/enums";
+import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
+  payInitiateEngage,
   riyalImgBlack,
   riyalImgRed,
   useArrayChangeDetector,
@@ -25,6 +26,9 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import PaymentFailChecker from "@/components/PaymentFailChecker";
+import moment from "moment";
 
 const CheckoutSummary = forwardRef(
   (
@@ -35,6 +39,7 @@ const CheckoutSummary = forwardRef(
       setAddPhoneForTamara,
       phoneAddedForTamara,
       setOpenEditUserModal,
+      estimateRes,
     },
     ref
   ) => {
@@ -44,7 +49,7 @@ const CheckoutSummary = forwardRef(
     const { voucherCode, allPromoCodeData } = useSelector(
       (state) => state.addSpareParts
     );
-    const [redirectToPayfort, setRedirectToPayfort] = useState(false);
+    const [fakeLoader, setFakeLoader] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const { basket } = useSelector((state) => state.basket);
     const { selectedPaymentMethod } = useSelector(
@@ -115,15 +120,51 @@ const CheckoutSummary = forwardRef(
         ref_num: null,
       },
       onSuccess: async (res) => {
-        sessionStorage.setItem("order_id_market", res?.id);
+        sessionStorage.setItem("created_order_id", res?.id);
+        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+        Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
+        Cookies.set("payment_method", selectedPaymentMethod?.key, {
+          expires: 1,
+          path: "/",
+        });
+
+        if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.cash) {
+          payInitiateEngage({
+            order_items: basket
+              ?.filter((item) => item?.product?.is_active)
+              ?.map((d) => ({
+                id: d?.id,
+                quantity: d?.quantity || 0,
+                image: d?.product?.image?.url || "N/A",
+                name: d?.product?.name || "N/A",
+                price: d?.product?.price || "N/A",
+              })),
+            total_price: Number(calculateReceiptResFromMainPage?.total_price),
+            number_of_products: Number(
+              basket?.filter((item) => item?.product?.is_active)?.length
+            ),
+            checkout_url: router?.asPath || "N/A",
+            expected_delivery_date: new Date(
+              moment
+                .unix(estimateRes.estimated_delivery_date_to)
+                .format("YYYY-MM-DD HH:mm:ss")
+                .replace(" ", "T") + "Z"
+            ),
+            shipping_address: selectAddress?.address?.toString() || "N/A",
+            payment_method: selectedPaymentMethod?.Key || "N/A",
+            promo_code: allPromoCodeData?.code?.toString() || "N/A",
+            comment: "N/A",
+          });
+        }
+
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
           +oldAmountToPay > 0
         ) {
           payFortForm.submit();
           setTimeout(() => {
-            setRedirectToPayfort(false);
-          }, 6000);
+            setFakeLoader(false);
+          }, 12000);
           return;
         }
         if (
@@ -170,6 +211,10 @@ const CheckoutSummary = forwardRef(
         ) {
           if (userDataProfile?.phone?.length) {
             handleMisPay();
+            setTimeout(() => {
+              setFakeLoader(false);
+            }, 12000);
+            return;
           } else {
             setAddPhoneForTamara();
           }
@@ -183,7 +228,7 @@ const CheckoutSummary = forwardRef(
         }, 1000);
       },
       onError: (err) => {
-        setRedirectToPayfort(false);
+        setFakeLoader(false);
         if (err?.response?.data?.error?.includes("phone")) {
           setOpenAddMobile(true);
         }
@@ -203,6 +248,7 @@ const CheckoutSummary = forwardRef(
         voucherCode,
         selectAddress,
         allPromoCodeData,
+        Cookies.get("payment_failed"),
       ],
       url: "/marketplace/orders/calculate",
       refetchOnWindowFocus: true,
@@ -283,6 +329,16 @@ const CheckoutSummary = forwardRef(
         setPayfortForm(form);
       }
     }, []);
+
+    useEffect(() => {
+      const orderId = Cookies.get("created_order_id");
+      const orderType = Cookies.get("order_type");
+      const paytmentMethod = Cookies.get("payment_method");
+
+      if (orderId && orderType && paytmentMethod) {
+        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+      }
+    }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -444,7 +500,7 @@ const CheckoutSummary = forwardRef(
         }));
       window.webengage.onReady(() => {
         webengage.track("CART_CHECKOUT_CLICKED", {
-          total_price: total,
+          total_price: +total,
           number_of_products:
             basket?.filter((item) => item?.product?.is_active)?.length || 0,
           line_items: itemsMaping || [],
@@ -487,8 +543,8 @@ const CheckoutSummary = forwardRef(
           successUrl: `${
             process.env.NEXT_PUBLIC_WEBSITE_URL
           }/spareParts/confirmation/${null}?type=marketplace`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -496,7 +552,9 @@ const CheckoutSummary = forwardRef(
               phoneAddedForTamara ||
               userDataProfile?.phone?.replace(/^(\+?966)/, ""),
             email:
-              userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+              userDataProfile?.email ||
+              userDataProfile?.secondary_email ||
+              `${userDataProfile?.phone}@atlobha.com`,
           },
           items: basket?.map((prod) => ({
             reference_id: prod?.id,
@@ -536,7 +594,9 @@ const CheckoutSummary = forwardRef(
       const realBuyer = {
         phone: userDataProfile?.phone?.replace(/^(\+?966)/, ""),
         email:
-          userDataProfile?.email || `${userDataProfile?.phone}@atlobha.com`,
+          userDataProfile?.email ||
+          userDataProfile?.secondary_email ||
+          `${userDataProfile?.phone}@atlobha.com`,
 
         name: userDataProfile?.name,
       };
@@ -581,8 +641,8 @@ const CheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/payment/failed`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=marketplace`,
@@ -645,6 +705,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
+        {/* <PaymentFailChecker /> */}
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
@@ -669,7 +730,7 @@ const CheckoutSummary = forwardRef(
         )}
 
         {/* offers discount */}
-        {(calculateReceiptResFromMainPage?.offers_discount ??
+        {/* {(calculateReceiptResFromMainPage?.offers_discount ??
           receipt?.offers_discount) > 0 && (
           <Box className="d-flex justify-content-between mb-2">
             <Box sx={{ ...text, color: "#EB3C24" }}>{t.additionaldiscount}</Box>
@@ -683,16 +744,17 @@ const CheckoutSummary = forwardRef(
               {riyalImgRed()}
             </Box>
           </Box>
-        )}
+        )} */}
 
         {/* delivery fees */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>{t.deliveryFees}</Box>
           <Box sx={text}>
-            {(calculateReceiptResFromMainPage?.delivery_fees ??
-              receipt?.delivery_fees) === receipt?.delivery_fees
-              ? receipt?.delivery_fees
-              : calculateReceiptResFromMainPage?.delivery_fees}{" "}
+            {(calculateReceiptResFromMainPage?.delivery_fees_with_tax ??
+              receipt?.delivery_fees_with_tax) ===
+            receipt?.delivery_fees_with_tax
+              ? receipt?.delivery_fees_with_tax
+              : calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
             {riyalImgBlack()}
           </Box>
         </Box>
@@ -729,9 +791,9 @@ const CheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax +
+                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
-                  +calculateReceiptResFromMainPage?.delivery_fees
+                  +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
               : (calculateReceiptResFromMainPage?.total_price ??
                   receipt?.total_price) === receipt?.total_price
@@ -747,14 +809,15 @@ const CheckoutSummary = forwardRef(
             receipt?.tax_percentage) === receipt?.tax_percentage
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
-          ٪ {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax || 0}{" "}
+          ٪ {t.vatPercentage} (
+          {calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />
         {/* rest to pay */}
         <Box className="d-flex justify-content-between mb-2">
           <Box sx={{ ...text, ...boldText }}>{t.remainingtotal}</Box>
-          <Box sx={{ ...text, ...boldText }}>
+          <Box sx={{ ...text, ...boldText }} id="amount-to-pay">
             {((calculateReceiptResFromMainPage?.amount_to_pay ??
               receipt?.amount_to_pay) === receipt?.amount_to_pay
               ? receipt?.amount_to_pay
@@ -769,7 +832,7 @@ const CheckoutSummary = forwardRef(
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
             //   fetchReceipt ||
-            redirectToPayfort
+            fakeLoader
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
@@ -785,7 +848,7 @@ const CheckoutSummary = forwardRef(
           }
           // || fetchReceipt
           comAfterText={
-            confirmPriceFetch || redirectToPayfort || loadPayRequest ? (
+            confirmPriceFetch || fakeLoader || loadPayRequest ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -799,6 +862,7 @@ const CheckoutSummary = forwardRef(
           }
           onClick={() => {
             handleWebengageCheckoutClicked();
+            setFakeLoader(true);
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;
             const method = selectedPaymentMethod?.key;
@@ -806,7 +870,7 @@ const CheckoutSummary = forwardRef(
             if (amount === 0) return callConfirmPricing();
 
             if (method === PAYMENT_METHODS.credit) {
-              setRedirectToPayfort(true);
+              setFakeLoader(true);
             } else if (
               method === PAYMENT_METHODS.applePay &&
               userDataProfile?.phone?.length
@@ -817,12 +881,17 @@ const CheckoutSummary = forwardRef(
               method === PAYMENT_METHODS.tabby ||
               method === PAYMENT_METHODS.mis
             ) {
+              if (method === PAYMENT_METHODS.mis) {
+                setFakeLoader(true);
+              }
               if (!userDataProfile?.phone) {
                 callConfirmPricing();
                 return;
               }
               if (
-                (!userDataProfile?.email || !userDataProfile?.name) &&
+                ((!userDataProfile?.email &&
+                  !userDataProfile?.secondary_email) ||
+                  !userDataProfile?.name) &&
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);

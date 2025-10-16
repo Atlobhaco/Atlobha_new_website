@@ -13,24 +13,29 @@ import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import { FIXED, PORTABLE } from "@/constants/enums";
+import { servicePrice } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Tab, Tabs } from "@mui/material";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 function ServiceDetails() {
   const { t } = useLocalization();
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
+  const shownRef = useRef(false);
+  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const {
-    query: { portableService, idService },
+    query: { portableService, idService, servicePayFailed },
   } = useRouter();
+  const router = useRouter();
 
   const { isMobile } = useScreenSize();
   const [cityDelivery, setCityDelivery] = useState(14);
-  const [tabValue, setTabValue] = React.useState(PORTABLE);
+  const [tabValue, setTabValue] = React.useState(false);
   const [selectNewDate, setSelectNewDate] = useState(dayjs());
   const [selectedStore, setSelectedStore] = useState(false);
   const [selectedStoreTime, setSelectedStoreTime] = useState(false);
@@ -82,8 +87,49 @@ function ServiceDetails() {
           return setTabValue(FIXED);
         }
       }
+      window.webengage.onReady(() => {
+        webengage.track("SERVICE_VIEWED", {
+          serivce_id: data?.id?.toString() || "",
+          serivce_name: data?.name || "",
+          price:
+            Number(
+              servicePrice({
+                service: data,
+                userCar: selectedCar?.id ? selectedCar : defaultCar,
+              })
+            ) || "",
+          car_brand: data?.brand?.name || "",
+          car_model: data?.model?.name || "",
+          car_year: Number(data?.year_from) || Number("1990"),
+          reference_number: data?.id?.toString(),
+          service_details: data?.description || "",
+          service_url: `/service/${idService}` || "",
+          category: data?.category?.name || "",
+          tags: data?.combined_tags?.map((d) => d?.name) || [],
+        });
+      });
     }
   }, [data]);
+
+  //   check if the checkout service failed in pay then do the logic
+  useEffect(() => {
+    if (router.query.servicePayFailed === "true" && !shownRef.current) {
+      shownRef.current = true; // ✅ prevent duplicate
+      toast.error(t.paymentCancelled);
+
+      const updatedQuery = { ...router.query };
+      delete updatedQuery.servicePayFailed;
+
+      router.replace(
+        { pathname: router.pathname, query: updatedQuery },
+        undefined,
+        { shallow: true }
+      );
+      setTimeout(() => {
+        shownRef.current = false;
+      }, 2000);
+    }
+  }, [router.query.servicePayFailed]);
 
   return (
     <Box>
