@@ -49,16 +49,19 @@ function ProductDetails() {
         webengage.track("PRODUCT_VIEWED", {
           product_id: data?.id || "",
           product_name: data?.name || "",
-          product_image: data?.image || "",
+          product_image: data?.image?.url || "",
           price: data?.price || "",
           car_brand: data?.brand?.name || "",
           car_model: data?.model?.name || "",
-          car_year: data?.year_from || "",
+          car_year: Number(data?.year_from) || Number("1990"),
           reference_number: data?.ref_num || "",
           product_details: data?.desc || "",
-          installation_available: false || "",
+          installation_available: true || "",
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
+          tags: data?.combined_tags?.map((d) => d?.name) || [],
+          manufactrer_name: data?.manufacturer?.name?.toString() || "N/A",
+          manufactrer_id: Number(data?.manufacturer?.id) || 0,
         });
         window.gtag("event", "PRODUCT_VIEWED", {
           product_id: data?.id || "",

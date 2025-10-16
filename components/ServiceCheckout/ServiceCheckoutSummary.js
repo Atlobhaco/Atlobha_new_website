@@ -723,7 +723,7 @@ const ServiceCheckoutSummary = forwardRef(
               : t.deliveryFees}
           </Box>
           <Box sx={text}>
-            {calculateReceiptResFromMainPage?.delivery_fees} {riyalImgBlack()}
+            {calculateReceiptResFromMainPage?.delivery_fees_with_tax} {riyalImgBlack()}
           </Box>
         </Box>
         {/* pay from wallet balance */}
@@ -751,9 +751,9 @@ const ServiceCheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax +
+                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
-                  +calculateReceiptResFromMainPage?.delivery_fees
+                  +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
               : calculateReceiptResFromMainPage?.total_price}{" "}
             {riyalImgBlack()}
@@ -763,7 +763,7 @@ const ServiceCheckoutSummary = forwardRef(
         <Box sx={vat}>
           {t.include}{" "}
           {(calculateReceiptResFromMainPage?.tax_percentage || 0) * 100}٪{" "}
-          {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax || 0}{" "}
+          {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
 

@@ -17,7 +17,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
-  const today = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
+  const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
   //   set address for user
   const {
     data: citiesRes,
@@ -69,7 +69,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
       cityInfo?.longitude,
       isAuth(),
     ],
-    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}&date=${today}`,
+    url: `${CITY_SETTINGS}${LAT_LNG}?latitude=${cityInfo?.latitude}&longitude=${cityInfo?.longitude}&date=${tomorrow}`,
     refetchOnWindowFocus: false,
     enabled: cityInfo?.latitude && cityInfo?.longitude ? true : false,
     select: (res) => res?.data?.data,

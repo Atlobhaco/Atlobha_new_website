@@ -96,7 +96,10 @@ function PromoCodeSpare({
 
   // Cleanup: Reset promo code on unmount
   useEffect(() => {
-    if (!router?.pathname?.includes("myOrders")) {
+    if (
+      !router?.pathname?.includes("myOrders") &&
+      !router?.pathname?.includes("checkout")
+    ) {
       return () => {
         dispatch(setPromoCodeAllData(null));
         setPromoCodeId(false);

@@ -105,7 +105,7 @@ function ManufactureShell({ sectionInfo }) {
           query: {
             name: prod?.name,
             desc: prod?.desc,
-            tags: prod?.tags?.[0]?.name_ar,
+            tags: prod?.combined_tags?.[0]?.name_ar,
             category: prod?.marketplace_category?.name,
             subCategory: prod?.marketplace_subcategory?.name,
             model: prod?.model?.name,
@@ -120,6 +120,12 @@ function ManufactureShell({ sectionInfo }) {
   );
 
   const redirectToManufacturePage = () => {
+    window.webengage.onReady(() => {
+      webengage.track("HIGHLIGHTED_MANUFACTRER_VIEWED", {
+        manufactrer_name: `${sectionInfo?.manufacturer?.name_ar}`,
+        manufactrer_url: `/manufacture/${sectionInfo?.manufacturer?.id}`,
+      });
+    });
     router.push({
       pathname: `/manufacture/${sectionInfo?.manufacturer?.id}`,
       query: {

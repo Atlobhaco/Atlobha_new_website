@@ -72,7 +72,7 @@ function Packages() {
                         query: {
                           name: pack?.name,
                           desc: pack?.desc,
-                          tags: pack?.tags?.[0]?.name_ar,
+                          tags: pack?.combined_tags?.[0]?.name_ar,
                           category: pack?.marketplace_category?.name,
                           subCategory: pack?.marketplace_subcategory?.name,
                           model: pack?.model?.name,

@@ -8,9 +8,6 @@ import Image from "next/image";
 import React, { useState } from "react";
 import PromoCodeMarket from "./PromoCodeMarket";
 import AtlobhaPlusHint from "@/components/userProfile/atlobhaPlusHint";
-import useCustomQuery from "@/config/network/Apiconfig";
-import { ESTIMATED_DELIVERY, SETTINGS } from "@/config/endPoints/endPoints";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 function CheckoutData({
@@ -18,21 +15,12 @@ function CheckoutData({
   handleChangeAddress,
   promoCodeId,
   setPromoCodeId,
+  estimateRes,
+  loadDate,
 }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const { basket } = useSelector((state) => state.basket);
-
-  const { data: estimateRes, isLoading: loadDate } = useCustomQuery({
-    name: ["deliveryDate", selectAddress?.lat, selectAddress?.lng],
-    url: `${SETTINGS}${ESTIMATED_DELIVERY}?latitude=${selectAddress?.lat}&longitude=${selectAddress?.lng}`,
-    refetchOnWindowFocus: false,
-    enabled: selectAddress?.lat || selectAddress?.lng ? true : false,
-    select: (res) => res?.data?.data,
-    onError: (err) => {
-      toast.error(err?.response?.data?.first_error);
-    },
-  });
 
   const deliveryDate = () => {
     return estimateRes?.estimated_delivery_date_from &&
