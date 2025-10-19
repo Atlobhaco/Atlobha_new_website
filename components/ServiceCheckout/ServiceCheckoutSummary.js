@@ -126,7 +126,6 @@ const ServiceCheckoutSummary = forwardRef(
       // Handle file fields
       if (selectedFields["file"]) {
         selectedFields["file"].forEach((item) => {
-          console.log("item", item);
           result.push({
             checkout_field_id: item.checkoutFieldId,
             file_id: item.fileId, // you’ll get file_id after upload

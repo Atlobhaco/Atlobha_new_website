@@ -532,7 +532,7 @@
   "phoneUsedForMerge": "The phone number is already in use, you can merge after verifying the phone number",
   "serviceCategoriesSection": "Services Categories",
   "uploadFile": "upload file",
-  "clickToAddDeliveryAddress": "Click here to add delivery address",
+  "clickToAddDeliveryAddress": "Click to add delivery address",
   "installmentBy": "Installment by",
   "canNotPayWithTabby": "Sorry, it is not possible to complete the purchase in installments using Tabby at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
   "canNotPayWithMis": "Sorry, it is not possible to complete the purchase in installments using mis at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",

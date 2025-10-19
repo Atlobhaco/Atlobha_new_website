@@ -88,9 +88,6 @@ function FormNewCar({
           setFieldValue,
           setFieldTouched,
         }) => {
-          // Log errors to the console
-          //   console.log("Formik values:", values);
-
           return (
             <Form>
               <div className="row">

@@ -84,9 +84,7 @@ const AddNewAddressFromNavbar = forwardRef(
       try {
         const currentLocation = await getUserCurrentLocation();
         setLocation(currentLocation);
-      } catch (err) {
-        // console.log(err);
-      }
+      } catch (err) {}
     };
 
     const { refetch: callUserAddresses } = usersAddressesQuery({

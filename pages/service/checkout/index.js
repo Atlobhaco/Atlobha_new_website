@@ -164,7 +164,6 @@ function CheckoutService() {
     return allRequiredFile && allRequiredMultiSelect && allRequiredText;
   })();
 
-  console.log("selectedFields", selectedFields);
   return (
     <div className="container">
       <div className="row">

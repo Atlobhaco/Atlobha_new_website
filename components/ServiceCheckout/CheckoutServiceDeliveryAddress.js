@@ -150,7 +150,7 @@ function CheckoutServiceDeliveryAddress({
                 borderRadius: "4px",
                 marginBottom: "2px",
                 color: "#6AAE39",
-                fontSize: isMobile ? "10px" : "15px",
+                fontSize: isMobile ? "14px" : "18px",
                 fontWeight: "500",
               }}
             >
