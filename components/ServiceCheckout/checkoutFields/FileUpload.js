@@ -184,7 +184,9 @@ export default function FileUpload({
                         textDecoration: "underline",
                       },
                     }}
-                    onClick={() => triggerFileSelect(singleField)}
+                    onClick={() =>
+                      !isUploading && triggerFileSelect(singleField)
+                    }
                   >
                     <AddCircleOutlineIcon
                       style={{
