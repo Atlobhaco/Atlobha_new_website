@@ -212,6 +212,9 @@ function OrderProducts({
                         }
                         width={isMobile ? 50 : 61}
                         height={isMobile ? 50 : 61}
+                        style={{
+                          minWidth: "60px",
+                        }}
                         alt="spare-part"
                         onClick={() =>
                           setLargeImage(

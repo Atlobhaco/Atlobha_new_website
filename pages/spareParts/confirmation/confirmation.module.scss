@@ -175,12 +175,14 @@
     gap: 10px;
     margin-bottom: 20px;
     &_imgHolder {
-      border-radius: "20px";
-      overflow: "hidden";
-      width: "62px";
-      height: "62px";
-      background: "#E6E6E6";
-      display: "flex";
+      border-radius: 20px;
+      overflow: hidden;
+      width: 62px;
+      height: 62px;
+      background: #e6e6e6;
+      display: flex;
+      min-width: 62px;
+      min-height: 62px;
     }
     &_details {
       display: flex;
@@ -231,7 +233,7 @@
       }
       &-second-qty {
         display: flex;
-        height: 38px;
+        min-height: 38px;
         align-items: center;
         background: #fff;
         color: #6b7280;
