@@ -58,6 +58,7 @@
   "mainPage": "Main page",
   "homePage": "Home",
   "userProfile": "Profile",
+  "walletTransactions": "Wallet transactions",
   "carList": "List of cars",
   "noCarFound": "You haven't added any cars yet.",
   "addOwnCar": "Add your car now to start ordering with ease!",
@@ -538,5 +539,8 @@
   "canNotPayWithMis": "Sorry, it is not possible to complete the purchase in installments using mis at this time. You can edit your basket to fit this range or choose a different payment method such as full payment or credit card",
   "enjoyTabbyInstallment": "Enjoy comfortable installments with Tabby! You can pay your purchases in installments with a value ranging between 100 and 3000 Saudi riyals",
   "enjoyMisInstallment": "Enjoy comfortable installments with mis! You can pay your purchases in installments with a value ranging between 145 and 7500 Saudi riyals",
-  "emailIsRegistered": "Email is registered before will use as secondary one in pay the order only"
+  "emailIsRegistered": "Email is registered before will use as secondary one in pay the order only",
+  "availableBalance": "Available balance",
+  "walletInfo": "You can use the Ask for It balance in any of the services or products available in the application, as it is automatically deducted from the balance in your account without the need for any additional action from you.",
+  "addBalance": "Add balance"
 }
