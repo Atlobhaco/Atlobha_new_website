@@ -16,6 +16,9 @@ import moment from "moment";
 import WillCallLater from "@/components/ServiceDetails/WillCallLater";
 import Image from "next/image";
 import { openInGoogleMaps } from "@/constants/helpers";
+import OrderFieldMultiSelect from "./orderFieldMultiSelect";
+import OrderDetailsFiles from "./orderDetailsFiles";
+import OrderDetailsText from "./orderDetailsText";
 
 function ServiceOrderDetails({
   orderDetails = {},
@@ -95,22 +98,28 @@ function ServiceOrderDetails({
     if (orderDetails?.service?.slots_disabled) {
       return <WillCallLater />;
     }
+
     const startFrom = orderDetails?.slot?.start;
     const endAt = orderDetails?.slot?.end;
-    const dateStart = moment(orderDetails?.slot?.start);
+    const dateStart = moment(startFrom);
     const today = moment();
 
-    return `${
-      dateStart.isSame(today, "day")
-        ? `${t.todayAtTime} ${dateStart.format("H:mm a")}`
-        : startFrom === endAt
-        ? `${moment(startFrom).format("h:mm a")}`
-        : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
-            "h:mm a"
-          )} (${dateStart.format(
-            locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
-          )})`
-    }`;
+    // Check if the slot date is today
+    if (dateStart.isSame(today, "day") && false) {
+      // Today
+      return `${t.todayAtTime} ${dateStart.format("h:mm a")}`;
+    } else {
+      // Not today → format like 10-10-2025 (4:00 pm - 5:00 pm)
+      const dateStr = dateStart.format("DD-MM-YYYY");
+      const timeRange =
+        startFrom === endAt
+          ? moment(startFrom).format("h:mm a")
+          : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
+              "h:mm a"
+            )}`;
+
+      return `${dateStr} (${timeRange})`;
+    }
   };
 
   const returnAddresstitleDependType = () => {
@@ -144,14 +153,29 @@ function ServiceOrderDetails({
         <RateProductsSection orderDetails={orderDetails} />
       )}
 
+      {/* show multi-select option if found */}
+      {orderDetails?.checkout_fields?.some(
+        (item) => item.type === "multi-select"
+      ) && (
+        <>
+          <OrderFieldMultiSelect
+            checkoutField={orderDetails?.checkout_fields?.find(
+              (item) => item.type === "multi-select"
+            )}
+          />
+          {returnDivider()}
+        </>
+      )}
+
       {/* show product image and price */}
       <OrderProducts
         orderDetails={{ ...orderDetails, products: [orderDetails?.service] }}
         callSingleOrder={callSingleOrder}
         orderDetailsFetching={orderDetailsFetching}
       />
+      {returnDivider()}
 
-      {/* show delivery address for order */}
+      {/* show  address for order */}
       <OrderAddress
         orderDetails={{
           ...orderDetails,
@@ -161,6 +185,20 @@ function ServiceOrderDetails({
         customtitle={returnAddresstitleDependType()}
         hideArrow={true}
       />
+      {returnDivider()}
+
+      {/* show delivery address for order */}
+      {orderDetails?.dropoff_address?.id && (
+        <OrderAddress
+          orderDetails={{
+            ...orderDetails,
+            address: orderDetails?.dropoff_address,
+          }}
+          callSingleOrder={callSingleOrder}
+          customtitle={t.deliveryAddress}
+          hideArrow={true}
+        />
+      )}
       {/* show store location and calling */}
       {type === ORDERSENUM?.maintenance && (
         <Box
@@ -218,6 +256,28 @@ function ServiceOrderDetails({
       )}
 
       {returnDivider()}
+
+      {/* show files if found */}
+      {orderDetails?.checkout_fields?.some((item) => item.type === "file") && (
+        <OrderDetailsFiles
+          fields={orderDetails?.checkout_fields?.filter(
+            (item) => item.type === "file"
+          )}
+          divider={returnDivider}
+        />
+      )}
+
+      {/* show comment if found */}
+      {orderDetails?.checkout_fields?.some((item) => item.type === "text") && (
+        <>
+          <OrderDetailsText
+            fields={orderDetails?.checkout_fields?.filter(
+              (item) => item.type === "text"
+            )}
+          />
+          {returnDivider()}
+        </>
+      )}
 
       {/* time for service */}
       <Box
