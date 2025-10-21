@@ -113,6 +113,9 @@ function CheckoutService() {
         ),
         type: type,
         selectedStore: JSON.parse(decodeURIComponent(selectedStore || {})),
+        requires_dropoff_address: JSON.parse(
+          decodeURIComponent(serviceDetails || {})
+        )?.requires_dropoff_address,
       });
     }
   }, [query?.serviceDetails]);

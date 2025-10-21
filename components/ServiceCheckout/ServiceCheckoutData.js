@@ -103,16 +103,20 @@ function ServiceCheckoutData({
       )}
 
       {/* delivery address for service */}
-      <CheckoutServiceDeliveryAddress
-        orderDetails={{
-          address: selectDeliveryAddress,
-          status: "new",
-        }}
-        handleChangeAddress={handleChangeDeliveryAddress}
-        customtitle={t.deliveryAddress}
-        // hideArrow={true}
-      />
-      {renderDivider()}
+      {checkoutServiceDetails?.requires_dropoff_address && (
+        <>
+          <CheckoutServiceDeliveryAddress
+            orderDetails={{
+              address: selectDeliveryAddress,
+              status: "new",
+            }}
+            handleChangeAddress={handleChangeDeliveryAddress}
+            customtitle={t.deliveryAddress}
+            // hideArrow={true}
+          />
+          {renderDivider()}
+        </>
+      )}
 
       {/* address for service */}
       <OrderAddress
@@ -211,9 +215,9 @@ function ServiceCheckoutData({
         query={{
           order_type: "service",
           service_id: checkoutServiceDetails?.serviceDetails?.id,
-		  brand_id: userCar?.brand?.id,
-		  model_id: userCar?.model?.id,
-		  year: userCar?.year,
+          brand_id: userCar?.brand?.id,
+          model_id: userCar?.model?.id,
+          year: userCar?.year,
         }}
       />
       <Divider sx={{ background: "#F6F6F6", mb: 2, height: "5px" }} />

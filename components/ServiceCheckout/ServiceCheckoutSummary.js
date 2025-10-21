@@ -834,7 +834,8 @@ const ServiceCheckoutSummary = forwardRef(
             !+calculateReceiptResFromMainPage?.amount_to_pay < 0 ||
             (!allRequiredUploaded &&
               Object.keys(checkoutRes || {}).length > 0) ||
-            !selectDeliveryAddress
+            (checkoutServiceDetails?.requires_dropoff_address &&
+              !selectDeliveryAddress)
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
