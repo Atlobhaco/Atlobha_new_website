@@ -75,7 +75,7 @@ function WalletTransactions() {
             <BreadCrumb />
           </div>
           <div
-            className="row mb-3"
+            className="row mb-3 mt-3"
             style={{
               backgroundImage: isMobile ? "url('/imgs/bg-balance.png')" : false,
               backgroundSize: "contain",
