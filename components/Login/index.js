@@ -224,7 +224,8 @@ function Login({
               <Box sx={{ mt: 2, position: "relative" }}>
                 {true ? (
                   <SharedTextField
-                    id={id}
+                    // id={id}
+                    id="loginField"
                     customPadding={`${
                       formik?.values?.phone?.length && !textInput
                         ? "0px 55px"
@@ -272,7 +273,8 @@ function Login({
               </Box>
               <Box sx={{ mt: 4 }}>
                 <SharedBtn
-                  id={customIDLogin}
+                  //   id={customIDLogin}
+                  id="loginSubmit"
                   disabled={!formik.isValid || registerLoad || otpLoad}
                   text={registerLoad || otpLoad ? null : "continue"}
                   className="black-btn"
