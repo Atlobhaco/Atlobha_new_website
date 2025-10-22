@@ -28,6 +28,7 @@ import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
 import ContentForBasket from "./ContentForBasketPopup";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Link from "next/link";
+import { setUserData } from "@/redux/reducers/quickSectionsProfile";
 
 const firstPartStyle = {
   display: "flex",
@@ -85,7 +86,24 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     height: "fit-content",
   };
 
+  const { data, refetch: callUserDetails } = useCustomQuery({
+    name: "userInfoForNavbar",
+    url: `${USERS}/${user?.data?.user?.id}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    staleTime: 5 * 60 * 1000,
+    enabled: user?.data?.user?.id ? true : false,
+    onSuccess: (res) => {
+      dispatch(
+        setUserData({
+          data: res,
+        })
+      );
+    },
+  });
+
   const handleMenu = (event) => {
+    callUserDetails();
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -99,22 +117,12 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
     setAnchorElBasket(null);
   };
 
-  const { data } = useCustomQuery({
-    name: "userInfoForNavbar",
-    url: `${USERS}/${user?.data?.user?.id}`,
-    refetchOnWindowFocus: false,
-    select: (res) => res?.data?.data,
-    staleTime: 5 * 60 * 1000,
-    enabled: user?.data?.user?.id ? true : false,
-  });
-
   const menuUserIcon = [
     ...(isAuth()
       ? [
           {
             component: <UserBalanceHolder data={data} removeStyle />,
             onClick: () => {
-              router.push(isMobile ? "/userProfile" : "/userProfile/editInfo");
               handleClose();
             },
           },

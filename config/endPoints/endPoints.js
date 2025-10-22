@@ -77,3 +77,4 @@ export const CHECKOUT_FIELDS = "/checkout-fields";
 export const SECONDARY_EMAIL = "/secondary-email";
 export const PAYMENT_FAILED = "/payment-failed";
 export const PROMO_CODE = "/promo-code";
+export const WALLET_TRANSACTIONS = "/wallet-transactions";

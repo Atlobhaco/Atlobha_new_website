@@ -463,6 +463,18 @@ export const riyalImgGrey = (width, height) => {
     />
   );
 };
+
+export const riyalImgGreen = (width, height) => {
+  return (
+    <Image
+      loading="lazy"
+      src="/icons/riyal-green.svg"
+      width={width || 20}
+      height={height || 20}
+      alt="riyal-grey"
+    />
+  );
+};
 /* -------------------------------------------------------------------------- */
 /*                check if there is any change happen in array                */
 /* -------------------------------------------------------------------------- */

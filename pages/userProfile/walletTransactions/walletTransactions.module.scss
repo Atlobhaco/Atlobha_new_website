@@ -1,0 +1,40 @@
+@import "../../../styles/mixins.scss";
+
+.filter {
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  height: 45px;
+  padding: 4px;
+  display: flex;
+  gap: 10px;
+  @include mobile-screen-style {
+    height: 36px;
+  }
+  p {
+    padding: 0px 15px;
+    width: fit-content;
+    min-width: 100px;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+    padding-top: 5px;
+    &.selected {
+      color: white !important;
+      background-color: black;
+      border-radius: 8px;
+    }
+  }
+}
+
+.transaction {
+  border-bottom: 3px solid #f2f2f2;
+  width: 50%;
+  padding: 10px;
+  margin: auto;
+  color: #374151;
+  font-weight: 500;
+  font-size: 14px;
+  @include mobile-screen-style {
+    width: 100%;
+  }
+}

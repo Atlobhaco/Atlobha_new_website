@@ -105,6 +105,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
               canAddVoucher={canAddVoucher}
               setInputValVoucher={setInputValVoucher}
               inputValVoucher={inputValVoucher}
+              dialogOpen={openAddVoucher}
             />
             {/* <Box
               sx={{
@@ -223,7 +224,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
                 color: "#0F172A",
                 mt: isMobile ? 2 : 4,
                 mb: 1,
-                mx: 2,
+                mx: isMobile ? 0 : 2,
               }}
             >
               {t.availablePurchase}
@@ -236,6 +237,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
                 canAddVoucher={canAddVoucher}
                 setInputValVoucher={setInputValVoucher}
                 inputValVoucher={inputValVoucher}
+                dialogOpen={openAddVoucher}
               />
             </Box>
             {/* <Box

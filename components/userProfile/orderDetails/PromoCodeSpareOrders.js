@@ -139,6 +139,7 @@ function PromocodeSpareOrders({ promoCodeId, setPromoCodeId, query, idOrder }) {
               canAddVoucher={canAddVoucher}
               setInputValVoucher={setInputValVoucher}
               inputValVoucher={inputValVoucher}
+              dialogOpen={openAddVoucher}
             />
           </Box>
         ) : (
@@ -213,7 +214,7 @@ function PromocodeSpareOrders({ promoCodeId, setPromoCodeId, query, idOrder }) {
                 color: "#0F172A",
                 mt: isMobile ? 2 : 4,
                 mb: 1,
-                mx: 2,
+                mx: isMobile ? 0 : 2,
               }}
             >
               {t.availablePurchase}
@@ -226,6 +227,7 @@ function PromocodeSpareOrders({ promoCodeId, setPromoCodeId, query, idOrder }) {
                 canAddVoucher={canAddVoucher}
                 setInputValVoucher={setInputValVoucher}
                 inputValVoucher={inputValVoucher}
+                dialogOpen={openAddVoucher}
               />
             </Box>
           </>
