@@ -127,7 +127,7 @@ function OtpView({
           <SharedTextField
             inputMode="numeric" // 👈 this makes mobile keyboard show numbers
             pattern="[0-9]*"
-            id="optField"
+            id={customIDOtpField}
             placeholder={null}
             label={false}
             imgIcon={false}
