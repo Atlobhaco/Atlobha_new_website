@@ -71,7 +71,7 @@ function ShowTransactions({ transactions, isFetching, setPage }) {
                 label: t.amount,
                 value: renderAmountForType(tx?.type, tx?.amount),
               },
-              { label: t.transNum, value: tx?.id ? `#${tx.id}` : "-" },
+              { label: t.transNum, value: tx?.order_id ? `#${tx.order_id}` : "-" },
               {
                 label: t.transDate,
                 value: tx?.created_at
