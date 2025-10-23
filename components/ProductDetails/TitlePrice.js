@@ -81,11 +81,9 @@ function TitlePrice({ prod }) {
             }}
             onClick={() => {
               router.push(
-                `/products/?tagId=${tag?.id}&tagName=${
-                  tag?.name_ar
-                }&tagNameEn=${tag?.name_en}&tagColor=${encodeURIComponent(
-                  tag?.color
-                )}`
+                `/products/?tagId=${tag?.id}&tagName=${tag?.name}&tagNameEn=${
+                  tag?.name
+                }&tagColor=${encodeURIComponent(tag?.color)}`
               );
             }}
           >

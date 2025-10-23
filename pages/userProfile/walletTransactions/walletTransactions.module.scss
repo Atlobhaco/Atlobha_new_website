@@ -7,8 +7,10 @@
   padding: 4px;
   display: flex;
   gap: 10px;
+  width: fit-content;
   @include mobile-screen-style {
     height: 36px;
+    margin: auto;
   }
   p {
     padding: 0px 15px;

@@ -2,7 +2,6 @@ import { Box, Typography } from "@mui/material";
 import React from "react";
 import style from "./walletTransactions.module.scss";
 import moment from "moment";
-import "moment/locale/ar";
 import useLocalization from "@/config/hooks/useLocalization";
 import { riyalImgGreen, riyalImgRed } from "@/constants/helpers";
 import Image from "next/image";
@@ -10,7 +9,6 @@ import PaginateComponent from "@/components/Pagination";
 
 function ShowTransactions({ transactions, isFetching, setPage }) {
   const { t } = useLocalization();
-  moment.locale("ar");
 
   const renderOperationText = (operation, type) => {
     const commonRow = (left, right) => (
@@ -71,7 +69,10 @@ function ShowTransactions({ transactions, isFetching, setPage }) {
                 label: t.amount,
                 value: renderAmountForType(tx?.type, tx?.amount),
               },
-              { label: t.transNum, value: tx?.order_id ? `#${tx.order_id}` : "-" },
+              {
+                label: t.transNum,
+                value: tx?.order_id ? `#${tx.order_id}` : "-",
+              },
               {
                 label: t.transDate,
                 value: tx?.created_at
