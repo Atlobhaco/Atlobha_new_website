@@ -5,9 +5,12 @@ export default function handler(req, res) {
     acc[key] = rest.join("="); // join everything back
     return acc;
   }, {});
-
   //  failure or cancel for marketplace or spare parts
-  if (req?.body?.status === "00" || req?.body?.status === "13") {
+  if (
+    req?.body?.status === "00" ||
+    req?.body?.status === "13" ||
+    req?.body?.status === "10"
+  ) {
     res.setHeader(
       "Set-Cookie",
       "payment_failed=failed; Path=/; Max-Age=86400; SameSite=Lax"

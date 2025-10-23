@@ -342,9 +342,6 @@ function EditInfo({
                 handleSubmit,
                 isValid,
               }) => {
-                // Log errors to the console
-                // console.log("Formik values:", errors);
-
                 return (
                   <EditInfoForm
                     handleChange={handleChange}

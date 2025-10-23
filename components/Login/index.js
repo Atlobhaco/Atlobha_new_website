@@ -115,7 +115,6 @@ function Login({
       formik.setErrors({});
       setTextInput(!isNumeric);
       if (isNumeric) {
-        // console.log("value", value);
         formik.setFieldValue("phone", value);
       } else {
         formik.setFieldValue("text_input", value);

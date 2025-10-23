@@ -99,7 +99,7 @@ function AddAvailablePayMethods({
   };
 
   const handleSelectPayMethod = (payMethod, data) => {
-    if (appearOverlay(payMethod)) {
+    if (appearOverlay(payMethod, data)) {
       setOpenHint({
         open: true,
         selectedMethod: data,
@@ -110,13 +110,14 @@ function AddAvailablePayMethods({
     dispatch(setSelectedPayment({ data: data }));
   };
 
-  const appearOverlay = (payMethod) => {
-    return (
-      (payMethod === PAYMENT_METHODS?.tabby &&
-        (+amountToPay < tabbyMinLimit || +amountToPay > tabbyMaxLimit)) ||
-      (payMethod === PAYMENT_METHODS?.mis &&
-        (+amountToPay < misMinLimit || +amountToPay > misMaxLimit))
-    );
+  const appearOverlay = (payMethod, data) => {
+    const { tabby, mis } = PAYMENT_METHODS;
+    const isTargetMethod = payMethod === tabby || payMethod === mis;
+    const outOfRange =
+      +amountToPay < data?.payment_value_min ||
+      +amountToPay > data?.payment_value_max;
+
+    return isTargetMethod && outOfRange;
   };
 
   return (
@@ -201,7 +202,7 @@ function AddAvailablePayMethods({
                       },
                       isMobile
                     )}
-                    {appearOverlay(pay?.key) && (
+                    {appearOverlay(pay?.key, pay) && (
                       <Box className="overlay-payment-method"></Box>
                     )}
                   </Box>

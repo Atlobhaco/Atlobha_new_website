@@ -21,6 +21,9 @@ function UserBalanceHolder({ data, removeStyle = false }) {
           padding: removeStyle ? "10px  0px" : "20px",
         }}
         className={`${style["holder"]}`}
+        onClick={() => {
+          router.push("/userProfile/editInfo");
+        }}
       >
         <div className={`${style["info"]}`}>
           <Image
@@ -50,6 +53,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
           borderTopRightRadius: removeStyle ? "10px" : "unset",
         }}
         className={`${style["balance"]}`}
+        onClick={() => router.push("/userProfile/walletTransactions")}
       >
         <div className={`${style["text"]}`}>
           <Image

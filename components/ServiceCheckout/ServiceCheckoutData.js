@@ -12,6 +12,10 @@ import ServiceAvailabilityWithCar from "./ServiceAvailabilityWithCar";
 import AddAvailablePayMethods from "../userProfile/orderDetails/addAvailablePayMethods";
 import PromoCodeMarket from "@/pages/checkout/PromoCodeMarket";
 import AtlobhaPlusHint from "../userProfile/atlobhaPlusHint";
+import Selections from "./checkoutFields/Selections";
+import FileUpload from "./checkoutFields/FileUpload";
+import AddComment from "./checkoutFields/AddComment";
+import CheckoutServiceDeliveryAddress from "./CheckoutServiceDeliveryAddress";
 
 function ServiceCheckoutData({
   selectAddress,
@@ -21,6 +25,11 @@ function ServiceCheckoutData({
   carAvailable,
   promoCodeId,
   setPromoCodeId,
+  checkoutRes,
+  selectedFields,
+  setSelectedFields,
+  handleChangeDeliveryAddress,
+  selectDeliveryAddress,
 }) {
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -76,9 +85,39 @@ function ServiceCheckoutData({
       />
     );
   };
+
   return (
     <>
       {!carAvailable && <ServiceAvailabilityWithCar />}
+
+      {/* multi-select-checkout-field */}
+      {checkoutRes && checkoutRes["multi-select"]?.length && (
+        <>
+          <Selections
+            field={checkoutRes && checkoutRes["multi-select"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
+
+      {/* delivery address for service */}
+      {checkoutServiceDetails?.requires_dropoff_address && (
+        <>
+          <CheckoutServiceDeliveryAddress
+            orderDetails={{
+              address: selectDeliveryAddress,
+              status: "new",
+            }}
+            handleChangeAddress={handleChangeDeliveryAddress}
+            customtitle={t.deliveryAddress}
+            // hideArrow={true}
+          />
+          {renderDivider()}
+        </>
+      )}
+
       {/* address for service */}
       <OrderAddress
         orderDetails={{
@@ -137,8 +176,30 @@ function ServiceCheckoutData({
 
       {/* car for service */}
       <SelectedCarDetails userCar={userCar} />
-
       {renderDivider()}
+
+      {/* select file checkout field */}
+      {checkoutRes && checkoutRes["file"]?.length && (
+        <>
+          <FileUpload
+            field={checkoutRes && checkoutRes["file"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
+      {/* multi-select-checkout-field */}
+      {checkoutRes && checkoutRes["text"]?.length && (
+        <>
+          <AddComment
+            field={checkoutRes && checkoutRes["text"]}
+            setSelectedFields={setSelectedFields}
+            selectedFields={selectedFields}
+          />
+          {renderDivider()}
+        </>
+      )}
 
       <AddAvailablePayMethods
         orderDetails={{
@@ -154,9 +215,9 @@ function ServiceCheckoutData({
         query={{
           order_type: "service",
           service_id: checkoutServiceDetails?.serviceDetails?.id,
-		  brand_id: userCar?.brand?.id,
-		  model_id: userCar?.model?.id,
-		  year: userCar?.year,
+          brand_id: userCar?.brand?.id,
+          model_id: userCar?.model?.id,
+          year: userCar?.year,
         }}
       />
       <Divider sx={{ background: "#F6F6F6", mb: 2, height: "5px" }} />

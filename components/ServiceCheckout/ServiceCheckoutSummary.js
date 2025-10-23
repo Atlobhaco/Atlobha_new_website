@@ -52,6 +52,10 @@ const ServiceCheckoutSummary = forwardRef(
       userCar,
       checkoutServiceDetails,
       carAvailable,
+      allRequiredUploaded,
+      selectDeliveryAddress,
+      selectedFields,
+      checkoutRes,
     },
     ref
   ) => {
@@ -105,6 +109,43 @@ const ServiceCheckoutSummary = forwardRef(
       fontWeight: "700",
       color: "#232323",
     };
+
+    function prepareCheckoutFields() {
+      const result = [];
+
+      // Handle text fields
+      if (selectedFields["text"]) {
+        selectedFields["text"].forEach((item) => {
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            text: item.value, // assuming your text field has .value
+          });
+        });
+      }
+
+      // Handle file fields
+      if (selectedFields["file"]) {
+        selectedFields["file"].forEach((item) => {
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            file_id: item.fileId, // you’ll get file_id after upload
+          });
+        });
+      }
+
+      // Handle multi-select fields
+      if (selectedFields["multi-select"]) {
+        selectedFields["multi-select"].forEach((item) => {
+          result.push({
+            checkout_field_id: item.checkoutFieldId,
+            selected_option_ids: [item.id],
+          });
+        });
+      }
+
+      return result;
+    }
+
     const {
       data: confirmPriceRes,
       isFetching: confirmPriceFetch,
@@ -134,6 +175,8 @@ const ServiceCheckoutSummary = forwardRef(
               vehicle_id: userCar?.id,
               service_center_id: checkoutServiceDetails?.selectedStore?.id,
               promo_code_id: allPromoCodeData?.id || null,
+              checkout_fields: prepareCheckoutFields(),
+              dropoff_address_id: selectDeliveryAddress?.id,
             }
           : {
               promo_code_id: allPromoCodeData?.id || null,
@@ -147,6 +190,8 @@ const ServiceCheckoutSummary = forwardRef(
                 checkoutServiceDetails?.selectedStore?.next_available_slot?.id,
               stc_payment_confirm: "e30=",
               payment_reference: merchanteRefrence,
+              checkout_fields: prepareCheckoutFields(),
+              dropoff_address_id: selectDeliveryAddress?.id,
             },
       onSuccess: async (res) => {
         sessionStorage.setItem("created_order_id", res?.id);
@@ -695,6 +740,7 @@ const ServiceCheckoutSummary = forwardRef(
         alert("Payment initiation failed");
       }
     };
+
     return (
       <Box sx={{ pt: 1 }}>
         <Box sx={header}>{t.orderSummary}</Box>
@@ -723,7 +769,8 @@ const ServiceCheckoutSummary = forwardRef(
               : t.deliveryFees}
           </Box>
           <Box sx={text}>
-            {calculateReceiptResFromMainPage?.delivery_fees_with_tax} {riyalImgBlack()}
+            {calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
+            {riyalImgBlack()}
           </Box>
         </Box>
         {/* pay from wallet balance */}
@@ -763,7 +810,8 @@ const ServiceCheckoutSummary = forwardRef(
         <Box sx={vat}>
           {t.include}{" "}
           {(calculateReceiptResFromMainPage?.tax_percentage || 0) * 100}٪{" "}
-          {t.vatPercentage} ({calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
+          {t.vatPercentage} (
+          {calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
 
@@ -783,7 +831,11 @@ const ServiceCheckoutSummary = forwardRef(
             confirmPriceFetch ||
             fakeLoader ||
             !carAvailable ||
-            !+calculateReceiptResFromMainPage?.amount_to_pay < 0
+            !+calculateReceiptResFromMainPage?.amount_to_pay < 0 ||
+            (!allRequiredUploaded &&
+              Object.keys(checkoutRes || {}).length > 0) ||
+            (checkoutServiceDetails?.requires_dropoff_address &&
+              !selectDeliveryAddress)
           }
           className={`${
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay

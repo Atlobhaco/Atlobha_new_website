@@ -212,6 +212,9 @@ function OrderProducts({
                         }
                         width={isMobile ? 50 : 61}
                         height={isMobile ? 50 : 61}
+                        style={{
+                          minWidth: "60px",
+                        }}
                         alt="spare-part"
                         onClick={() =>
                           setLargeImage(
@@ -240,7 +243,7 @@ function OrderProducts({
                       )}
                     </div>
                   </Box>
-                  <Box
+                  {/* <Box
                     sx={{
                       display: "flex",
                       flex: "1",
@@ -251,15 +254,17 @@ function OrderProducts({
                     }}
                   >
                     {part?.total_price || part?.price} {riyalImgOrange()}
-                  </Box>{" "}
+                  </Box>{" "} */}
                 </div>
-                {orderDetails?.status !== STATUS?.new &&
-                type === ORDERSENUM?.marketplace ? (
+                {type === ORDERSENUM?.marketplace ||
+                type === ORDERSENUM?.spareParts ? (
                   <div
                     style={{
                       color: "#EE772F",
                       fontWeight: "500",
                       fontSize: isMobile ? "14px" : "16px",
+                      display: "flex",
+                      gap: "4px",
                     }}
                   >
                     {part?.total_price || part?.price} {riyalImgOrange()}
@@ -271,6 +276,8 @@ function OrderProducts({
                       color: "#EE772F",
                       fontWeight: "500",
                       fontSize: isMobile ? "14px" : "16px",
+                      display: "flex",
+                      gap: "4px",
                     }}
                   >
                     {servicePrice({

@@ -4,7 +4,7 @@ import ServiceCheckoutData from "@/components/ServiceCheckout/ServiceCheckoutDat
 import ServiceCheckoutSummary from "@/components/ServiceCheckout/ServiceCheckoutSummary";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
 import MigrationPhoneLogic from "@/components/spareParts/migrationPhoneLogic";
-import { USERS } from "@/config/endPoints/endPoints";
+import { CHECKOUT_FIELDS, USERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useAuth } from "@/config/providers/AuthProvider";
@@ -34,6 +34,7 @@ function CheckoutService() {
   const { t } = useLocalization();
 
   const [selectAddress, setSelectAddress] = useState(false);
+  const [selectDeliveryAddress, setSelectDeliveryAddress] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -50,6 +51,7 @@ function CheckoutService() {
   const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
   const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
   const [checkoutServiceDetails, setCheckoutServiceDetails] = useState(false);
+  const [selectedFields, setSelectedFields] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -78,6 +80,23 @@ function CheckoutService() {
       );
     },
   });
+  const { data: checkoutRes } = useCustomQuery({
+    name: "getChekoutFields",
+    url: `/service/${checkoutServiceDetails?.serviceDetails?.id}${CHECKOUT_FIELDS}`,
+    refetchOnWindowFocus: false,
+    select: (res) => res?.data?.data,
+    enabled: checkoutServiceDetails?.serviceDetails?.id ? true : false,
+    onSuccess: (res) => {
+      //   const filtered = Object.entries(res).reduce((acc, [key, arr]) => {
+      //     const required = arr.filter((f) => f.is_required);
+      //     if (required.length > 0) {
+      //       acc[key] = required;
+      //     }
+      //     return acc;
+      //   }, {});
+      //   setSelectedFields(filtered);
+    },
+  });
 
   useEffect(() => {
     if (query?.serviceDetails) {
@@ -94,6 +113,9 @@ function CheckoutService() {
         ),
         type: type,
         selectedStore: JSON.parse(decodeURIComponent(selectedStore || {})),
+        requires_dropoff_address: JSON.parse(
+          decodeURIComponent(serviceDetails || {})
+        )?.requires_dropoff_address,
       });
     }
   }, [query?.serviceDetails]);
@@ -104,12 +126,46 @@ function CheckoutService() {
     : checkoutServiceDetails?.serviceDetails?.service_models?.some(
         (c) =>
           +c.model.id === +userCar?.model?.id &&
-          +c.model?.vehicle_brand?.id === +userCar?.brand?.id
+          +c.model?.vehicle_brand?.id === +userCar?.brand?.id &&
+          +userCar?.year >= +c.year_from &&
+          +userCar?.year <= +c.year_to
       );
-
   const triggerChildPayment = () => {
     tamaraRef.current?.triggerTamaraPayment();
   };
+
+  const allRequiredUploaded = (() => {
+    if (!checkoutRes) return false;
+
+    // Generic function to check required fields
+    const checkRequired = (typeKey) => {
+      const fields = checkoutRes[typeKey] || [];
+      const selected = selectedFields?.[typeKey] || [];
+
+      return fields
+        .filter((f) => f.is_required) // only required fields
+        .every((req) => {
+          if (typeKey === "text") {
+            // Text: must have non-empty value
+            const textValue = selected.find(
+              (s) => s.checkoutFieldId === req.checkout_field.id
+            )?.value;
+            return textValue && textValue.trim() !== "";
+          } else {
+            // file or multi-select with multiple values (if ever)
+            return selected.some(
+              (s) => s.checkoutFieldId === req.checkout_field.id
+            );
+          }
+        });
+    };
+
+    const allRequiredFile = checkRequired("file");
+    const allRequiredMultiSelect = checkRequired("multi-select"); // single value only
+    const allRequiredText = checkRequired("text");
+
+    return allRequiredFile && allRequiredMultiSelect && allRequiredText;
+  })();
 
   return (
     <div className="container">
@@ -123,6 +179,13 @@ function CheckoutService() {
             carAvailable={carAvailable}
             promoCodeId={promoCodeId}
             setPromoCodeId={setPromoCodeId}
+            checkoutRes={checkoutRes}
+            selectedFields={selectedFields}
+            setSelectedFields={setSelectedFields}
+            handleChangeDeliveryAddress={(data) =>
+              setSelectDeliveryAddress(data)
+            }
+            selectDeliveryAddress={selectDeliveryAddress}
           />
         </div>
         <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
@@ -136,6 +199,10 @@ function CheckoutService() {
             phoneAddedForTamara={phoneAddedForTamara}
             ref={tamaraRef}
             carAvailable={carAvailable}
+            allRequiredUploaded={allRequiredUploaded}
+            selectDeliveryAddress={selectDeliveryAddress}
+            selectedFields={selectedFields}
+            checkoutRes={checkoutRes}
           />
         </div>
       </div>

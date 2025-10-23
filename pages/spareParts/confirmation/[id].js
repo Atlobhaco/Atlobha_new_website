@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { decryptAES } from "@/lib/mispay";
 import { fetchCartAsync } from "@/redux/reducers/basketReducer";
 import Cookies from "js-cookie";
+import WillCallLater from "@/components/ServiceDetails/WillCallLater";
 
 function Confirmation() {
   const router = useRouter();
@@ -126,6 +127,7 @@ function Confirmation() {
     }
 
     if (type === SERVICES) {
+      if (data?.service?.slots_disabled) return <WillCallLater />;
       if (dateStart.isSame(today, "day")) {
         return `${t.todayAtTime} ${dateStart.format("H:mm")}`;
       } else {
@@ -389,7 +391,11 @@ function Confirmation() {
             <div className={`${style["details-parts_imgHolder"]}`}>
               <Image
                 loading="lazy"
-                src={part?.image || "/imgs/no-img-holder.svg"}
+                src={
+                  part?.image ||
+                  part?.thumbnail?.url ||
+                  "/imgs/no-img-holder.svg"
+                }
                 width={isMobile ? 50 : 70}
                 height={isMobile ? 50 : 70}
                 alt={part?.quantity || 1}

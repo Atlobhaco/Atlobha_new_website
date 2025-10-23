@@ -30,6 +30,8 @@ function SharedTextField({
   id = "",
   disabled = false,
   customHeight = false,
+  inputMode = "text", // can be "numeric", "decimal", "tel", "email", etc.
+  pattern = null, // optional
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -84,6 +86,10 @@ function SharedTextField({
         fullWidth
         disabled={disabled}
         placeholder={placeholder} // Add a placeholder instead of a label
+        inputProps={{
+          inputMode: inputMode,
+          pattern: pattern,
+        }}
         InputProps={{
           endAdornment: (
             <InputAdornment

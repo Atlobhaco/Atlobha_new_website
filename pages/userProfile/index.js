@@ -228,7 +228,7 @@ function UserProfile({ recallUserData = false }) {
       src: <Wallet />,
       title: t.myCards,
       num: 0,
-      path: "wallet",
+      path: "cards",
       activeSrc: <CardActive />,
     },
     {
@@ -275,7 +275,7 @@ function UserProfile({ recallUserData = false }) {
               src: <Wallet />,
               title: t.myCards,
               num: 0,
-              path: "wallet",
+              path: "cards",
               activeSrc: <CardActive />,
             },
             {

@@ -8,7 +8,9 @@ import {
 } from "@/redux/reducers/addSparePartsReducer";
 import { Box, InputAdornment, TextField } from "@mui/material";
 import Image from "next/image";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -18,7 +20,10 @@ function VoucherCode({
   canAddVoucher = false,
   setInputValVoucher = () => {},
   inputValVoucher = false,
+  dialogOpen = false,
 }) {
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const [error, setError] = useState(false);
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
@@ -45,6 +50,12 @@ function VoucherCode({
             data: { amount: res?.amount, name: inputValVoucher },
           })
         );
+        queryClient.refetchQueries("userInfoForNavbar");
+        queryClient.refetchQueries({
+          queryKey: ["getProfileInfo"],
+          exact: false,
+        });
+        toast.success(`${t.addSuccess} ${res?.amount} ${t.toWalletBalance}`);
       } else {
         toast.error(t.voucherNotFound);
       }
@@ -66,6 +77,23 @@ function VoucherCode({
       return inputValVoucher || "";
     }
   };
+
+  // Cleanup: Reset voucher on unmount
+  useEffect(() => {
+    if (!dialogOpen) {
+      return () => {
+        setError(false);
+        setCanAddVoucher(null);
+        dispatch(setVoucher({ data: null }));
+        dispatch(
+          setVoucherAllData({
+            data: null,
+          })
+        );
+        setInputValVoucher(false);
+      };
+    }
+  }, [router, dialogOpen]);
 
   return (
     <Box
@@ -137,8 +165,6 @@ function VoucherCode({
                     if (error) {
                       setError(false);
                       setInputValVoucher(false);
-                      //   dispatch(setVoucher({ data: null }));
-                      //   setCanAddVoucher(false);
                     } else {
                       if (inputValVoucher?.length >= 1) {
                         checkVoucher();
