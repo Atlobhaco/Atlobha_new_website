@@ -211,16 +211,16 @@ export default function Home() {
                 </div>
               </div>
             );
-          case "segments":
-            return (
-              <div className="container" key={item?.id}>
-                <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
-                    <FindMoreSegments sectionInfo={item} />
-                  </div>
-                </div>
-              </div>
-            );
+        //   case "segments":
+        //     return (
+        //       <div className="container" key={item?.id}>
+        //         <div className="row">
+        //           <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
+        //             <FindMoreSegments sectionInfo={item} />
+        //           </div>
+        //         </div>
+        //       </div>
+        //     );
           case "marketplace-category":
             return (
               <div className="container" key={item?.id}>
