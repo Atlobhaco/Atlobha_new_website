@@ -34,7 +34,7 @@ export default function PaginateComponent({ meta, setPage, isLoading }) {
       <Pagination
         boundaryCount={1}
         siblingCount={1}
-        count={meta?.last_page || 100}
+        count={meta?.last_page || 1}
         page={meta?.current_page || 1}
         defaultPage={meta?.current_page || 1}
         onChange={(_, p) => updatePageQuery(p)}

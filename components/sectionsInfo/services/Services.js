@@ -182,9 +182,11 @@ function Services() {
                     <div className="row">
                       <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
                         <StaticDynamicSections
-                          sectionInfo={sections?.find(
-                            (d) => d?.type === "static-dynamic-section"
-                          )}
+                          sectionInfo={
+                            sections?.find(
+                              (d) => d?.type === "static-dynamic-section"
+                            ) || t.serviceCategories
+                          }
                         />
                       </div>
                     </div>

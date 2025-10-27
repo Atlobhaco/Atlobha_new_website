@@ -22,6 +22,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 import Head from "next/head";
 import CategoriesServices from "@/components/sectionsInfo/services/CategoriesServices";
 import SponserAds from "@/components/Marketplace/SponserAds";
+import FindMoreSegments from "@/components/Marketplace/FindMoreSegments";
 
 export default function Home() {
   // useBranch user for deep  links
@@ -206,6 +207,16 @@ export default function Home() {
                 <div className="row">
                   <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
                     <PackageOffers sectionInfo={item} />
+                  </div>
+                </div>
+              </div>
+            );
+          case "segments":
+            return (
+              <div className="container" key={item?.id}>
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
+                    <FindMoreSegments sectionInfo={item} />
                   </div>
                 </div>
               </div>

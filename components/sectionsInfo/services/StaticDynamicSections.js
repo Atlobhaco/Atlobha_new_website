@@ -42,9 +42,10 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
         ),
     },
   ];
+
   return (
     <div className="row">
-      <HeaderSection title={sectionInfo?.title} />
+      <HeaderSection title={sectionInfo?.title || t.serviceCategories} />
       {sectionsData?.map((info) => (
         <div className={`col-6 mt-3 ${isMobile && "px-1"}`}>
           <Box

@@ -37,6 +37,7 @@ function CategoryFilter({
         <h3
           style={{
             color: colorHeaders,
+            marginTop: "16px",
           }}
         >
           {t.category}
