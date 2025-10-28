@@ -33,8 +33,6 @@ export default function FileUpload({
 
   // 🔹 Handle upload logic
   const handleFileUpload = async (file, singleField) => {
-    console.log(file);
-    toast.success("يا مسهل الحال");
     if (!file) return;
 
     const isImage = file.type.startsWith("image/");
@@ -105,17 +103,38 @@ export default function FileUpload({
 
   // 🔹 Trigger file select
   const triggerFileSelect = (singleField) => {
+    // Create and configure the file input
     const input = document.createElement("input");
     input.type = "file";
     input.accept = "*/*";
-    setTimeout(() => {
-      input.onchange = (e) => {
-        setTimeout(() => {
-          handleFileUpload(e.target.files[0], singleField);
-        }, 500);
-      };
+
+    // ✅ Attach the onchange handler before click
+    // input.onchange = (e) => {
+    //   const file = e.target.files[0];
+    //   if (file) {
+    //     handleFileUpload(file, singleField);
+    //   }
+    //   // ✅ Reset input value so selecting same file again will fire onchange
+    //   e.target.value = "";
+    // };
+
+    input.onchange = (e) => {
+      console.log("File input change event triggered", e);
+      const file = e.target.files[0];
+      if (file) handleFileUpload(file, singleField);
+    };
+
+    // ✅ Append temporarily to DOM to ensure Safari registers it
+    document.body.appendChild(input);
+
+    // ✅ Use requestAnimationFrame instead of setTimeout for Safari stability
+    requestAnimationFrame(() => {
       input.click();
-    }, 500);
+      // Cleanup after interaction
+      setTimeout(() => {
+        document.body.removeChild(input);
+      }, 1000);
+    });
   };
 
   // 🔹 Remove file
