@@ -58,14 +58,20 @@ function CategoriesProducts({ sectionInfo }) {
         flexDirection: "column",
       }}
     >
-      <HeaderSection
-        showArrow={true}
-        subtitle={t.showAll}
-        title={sectionInfo?.title}
-        onClick={() =>
-          router.push(`/category/${sectionInfo?.marketplace_category?.id}`)
-        }
-      />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection
+          showArrow={true}
+          subtitle={t.showAll}
+          title={sectionInfo?.title}
+          onClick={() =>
+            router.push(`/category/${sectionInfo?.marketplace_category?.id}`)
+          }
+        />
+      </Box>
       <Box
         sx={{
           display: "flex",

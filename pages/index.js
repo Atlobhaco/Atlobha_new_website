@@ -158,7 +158,7 @@ export default function Home() {
             return (
               <div className="container mb-3">
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3  px-0" : "mt-5"}`}>
                     <SponserAds sectionInfo={item} />
                   </div>
                 </div>
@@ -183,7 +183,7 @@ export default function Home() {
               return (
                 <div className="container" key={item?.id}>
                   <div className="row">
-                    <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                    <div className={`col-12 ${isMobile ? "mt-3  px-0" : "mt-5"}`}>
                       <CategoriesMarketplace sectionInfo={item} />
                     </div>
                   </div>
@@ -195,7 +195,7 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                     <BoughtAgain sectionInfo={item} />
                   </div>
                 </div>
@@ -205,27 +205,29 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
+                  <div
+                    className={`col-12 ${isMobile ? "mt-3 mb-1 px-0" : "mt-5"}`}
+                  >
                     <PackageOffers sectionInfo={item} />
                   </div>
                 </div>
               </div>
             );
-        //   case "segments":
-        //     return (
-        //       <div className="container" key={item?.id}>
-        //         <div className="row">
-        //           <div className={`col-12 ${isMobile ? "mt-3 mb-1" : "mt-5"}`}>
-        //             <FindMoreSegments sectionInfo={item} />
-        //           </div>
-        //         </div>
-        //       </div>
-        //     );
+          case "segments":
+            return (
+              <div className="container" key={item?.id}>
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3 mb-1 px-0" : "mt-5"}`}>
+                    <FindMoreSegments sectionInfo={item} />
+                  </div>
+                </div>
+              </div>
+            );
           case "marketplace-category":
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                     <CategoriesProducts sectionInfo={item} />
                   </div>{" "}
                 </div>
@@ -241,7 +243,7 @@ export default function Home() {
                 <>
                   <div className="container" key={item?.id}>
                     <div className="row">
-                      <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                      <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                         <CategoriesServices sectionInfo={item} />
                       </div>
                     </div>
@@ -256,7 +258,7 @@ export default function Home() {
               <div className={`${isMobile ? "" : "container"}`} key={item?.id}>
                 <div className={`${isMobile ? "" : "row"}`}>
                   <div
-                    className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}
+                    className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}
                     key={item?.id}
                   >
                     <ManufactureShell sectionInfo={item} />
@@ -278,7 +280,7 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                     <AtlobhaPartners sectionInfo={item} />
                   </div>
                 </div>

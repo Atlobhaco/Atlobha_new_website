@@ -176,7 +176,7 @@ function ManufactureShell({ sectionInfo }) {
       <Box
         sx={{
           width: isMobile ? "100%" : "98%",
-          padding: isMobile ? "0px 10px" : "",
+          padding: isMobile ? "0px" : "",
         }}
       >
         <Slider {...settings}>

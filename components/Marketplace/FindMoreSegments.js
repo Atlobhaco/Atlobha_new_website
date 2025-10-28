@@ -81,6 +81,7 @@ function FindMoreSegments({ sectionInfo }) {
         display: "flex",
         gap: isMobile ? "10px" : "25px",
         flexDirection: "column",
+        mb: 2,
       }}
     >
       <HeaderSection title={sectionInfo?.title} />
@@ -93,13 +94,11 @@ function FindMoreSegments({ sectionInfo }) {
                 // router.push(
                 //   `/products/?segmentID=${product?.id}&noFilterAtStart=true`
                 // );
-				router.push(
-					`/products/?segmentID=${product?.id}`
-				  );
+                router.push(`/products/?segmentID=${product?.id}`);
               }
             }}
             sx={{
-              width: isMobile ? "99% !important" : "95% !important",
+              width: isMobile ? "100% !important" : "95% !important",
               height: isMobile ? "180px" : "500px",
               cursor: "pointer",
               display: "flex !important",

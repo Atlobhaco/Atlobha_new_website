@@ -55,7 +55,13 @@ export default function CategoriesServices({ sectionInfo }) {
         mb: 2,
       }}
     >
-      <HeaderSection title={sectionInfo?.title} />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
       <Box
         sx={{
           display: "flex",

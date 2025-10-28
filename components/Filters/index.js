@@ -19,6 +19,7 @@ function Filters({
   },
   setFilters = () => {},
   showHideFilters = {},
+  hasDefaultValues = true,
 }) {
   const colorHeaders = "black";
   const { isMobile } = useScreenSize();
@@ -77,6 +78,7 @@ function Filters({
         yearId={yearId}
         setYearId={setYearId}
         colorHeaders={colorHeaders}
+		hasDefaultValues={hasDefaultValues}
       />
 
       {/* <ToogleProductsOffer

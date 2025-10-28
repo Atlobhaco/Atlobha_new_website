@@ -40,7 +40,13 @@ function CategoriesMarketplace({ sectionInfo }) {
         flexDirection: "column",
       }}
     >
-      <HeaderSection title={sectionInfo?.title} />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
       <Box
         sx={{
           display: "flex",

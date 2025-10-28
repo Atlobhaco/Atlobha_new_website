@@ -108,6 +108,7 @@ function AtlobhaPartners({ sectionInfo }) {
                 gap: 2, // space between the 3 items
                 justifyContent: "center",
                 direction: locale === "en" ? "rtl" : "ltr",
+                minHeight: isMobile ? "180px" : "auto",
               }}
             >
               {group.map((part, subIndex) => (
@@ -117,12 +118,12 @@ function AtlobhaPartners({ sectionInfo }) {
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    height: isMobile ? "52px" : "100px",
+                    height: isMobile ? "70px" : "100px",
                     mb: isMobile ? 1 : 3,
                     // mx: isMobile ? 0 : 1,
                     cursor: "pointer",
-                    width: "85%",
-                    margin: isMobile ? "8px auto 8px auto" : 1,
+                    width: isMobile ? "100%" : "85%",
+                    margin: isMobile ? "8px 2px 8px 2px" : 1,
                   }}
                   onClick={() => {
                     if (!isDragging) {
@@ -155,6 +156,7 @@ function AtlobhaPartners({ sectionInfo }) {
                         ? "0px 0px 0px 20px"
                         : "0px 20px 0px 0px",
                       width: isMobile ? "calc(100% / 1.5)" : "calc(100% / 2)",
+                      minHeight: isMobile ? "60px" : "auto",
                     }}
                   >
                     <Box

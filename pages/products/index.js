@@ -64,7 +64,7 @@ function Products() {
     refetchOnWindowFocus: false,
     select: (res) => res?.data,
     onSuccess: (res) => {
-      const element = document.getElementById("all-products");
+      const element = document.getElementById("all-segment-products");
       if (element) {
         const y = element.getBoundingClientRect().top + window.pageYOffset - 80;
         window.scrollTo({ top: y, behavior: "smooth" });
@@ -73,30 +73,6 @@ function Products() {
     },
   });
 
-  useEffect(() => {
-    if (selectedCar?.id || defaultCar?.id) {
-      if (router?.query?.savedQuerys !== "true" && router.isReady) {
-        setFilters({
-          brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
-          model_id: defaultCar?.model?.id || selectedCar?.model?.id,
-          year: defaultCar?.year || selectedCar?.year,
-          has_active_offer: false,
-        });
-        // updateQueryParams({
-        //   filters: {
-        //     ...filters,
-        //     brand_id: defaultCar?.brand?.id || selectedCar?.brand?.id,
-        //     model_id: defaultCar?.model?.id || selectedCar?.model?.id,
-        //     year: defaultCar?.year || selectedCar?.year,
-        //     has_active_offer: false,
-        //   },
-        //   router: router,
-        // });
-      }
-    }
-  }, [defaultCar, selectedCar, router.isReady]);
-  //   console.log("router", router?.query);
-
   //  reset page  into default if the filters chaged its value
   useResetPageOnFilterChange(filters, setPage);
 
@@ -104,12 +80,16 @@ function Products() {
     <div>
       <div
         className={`container ${isMobile ? "mt-3" : "mt-5"}`}
-        id="all-products"
+        id="all-segment-products"
       >
         <div className="row mt-1">
           {!isMobile && (
             <div className={`col-md-3`}>
-              <Filters filters={filters} setFilters={setFilters} />
+              <Filters
+                filters={filters}
+                setFilters={setFilters}
+                hasDefaultValues={segmentID ? false : true}
+              />
             </div>
           )}
           <div className={`${isMobile ? "col-12" : "col-9"}`}>
@@ -160,7 +140,7 @@ function Products() {
                 <div className="container">
                   <div className="row">
                     {[...Array(8)].map((_, i) => (
-                      <div className="col-md-3 col-4">
+                      <div className="col-4">
                         <ProductCardSkeleton
                           key={i}
                           height={isMobile ? "200px" : "440px"}
@@ -173,7 +153,7 @@ function Products() {
                 <>
                   {allProducts?.map((prod) => (
                     <div
-                      className="col-md-3 col-4 mb-3 d-flex justify-content-center"
+                      className="col-4 mb-3 d-flex justify-content-center px-0"
                       key={prod?.id}
                     >
                       <ProductCard product={prod} />
@@ -197,7 +177,7 @@ function Products() {
           </div>
         </div>
 
-        <div className="col-12 d-flex justify-content-center mt-5">
+        <div className="col-12 d-flex justify-content-center">
           {!!allProducts?.length && (
             <PaginateComponent
               meta={productsResult?.meta}
@@ -215,7 +195,13 @@ function Products() {
         open={openFiltersModal}
         setOpen={setOpenfiltersModal}
         hasCloseIcon
-        content={<Filters filters={tempFilters} setFilters={setTempfilters} />}
+        content={
+          <Filters
+            filters={tempFilters}
+            setFilters={setTempfilters}
+            hasDefaultValues={segmentID ? false : true}
+          />
+        }
         renderCustomBtns={
           <Box
             sx={{

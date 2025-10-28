@@ -88,12 +88,18 @@ function PackageOffers({ sectionInfo }) {
         flexDirection: "column",
       }}
     >
-      <HeaderSection
-        showArrow={true}
-        subtitle={t.showAll}
-        title={sectionInfo?.title}
-        onClick={() => router.push("/packages")}
-      />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection
+          showArrow={true}
+          subtitle={t.showAll}
+          title={sectionInfo?.title}
+          onClick={() => router.push("/packages")}
+        />
+      </Box>
       <Slider {...settings}>
         {featuredProducts?.data?.map((featured) => (
           <Box
@@ -117,7 +123,7 @@ function PackageOffers({ sectionInfo }) {
               }
             }}
             sx={{
-              width: isMobile ? "99% !important" : "95% !important",
+              width: isMobile ? "100% !important" : "95% !important",
               height: isMobile ? "180px" : "500px",
               cursor: "pointer",
               display: "flex !important",
