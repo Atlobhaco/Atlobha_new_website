@@ -68,7 +68,8 @@ function AtlobhaPartners({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          dots: false,
+          slidesToShow: 1.5,
           slidesToScroll: 1,
         },
       },
@@ -123,7 +124,7 @@ function AtlobhaPartners({ sectionInfo }) {
                     mb: isMobile ? 1 : 3,
                     // mx: isMobile ? 0 : 1,
                     cursor: "pointer",
-                    width: isMobile ? "100%" : "85%",
+                    width: isMobile ? "100%" : "99%",
                     margin: isMobile ? "8px 2px 8px 2px" : 1,
                   }}
                   onClick={() => {

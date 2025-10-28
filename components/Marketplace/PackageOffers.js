@@ -71,8 +71,9 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 2,
+          dots: false,
+          slidesToShow: 2.5,
+          slidesToScroll: 1,
         },
       },
     ],

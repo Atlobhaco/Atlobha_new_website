@@ -38,7 +38,7 @@ function FindMoreSegments({ sectionInfo }) {
 
   var settings = {
     dots: true,
-    infinite: +productsWithTags?.data?.length > 1,
+    infinite: false,
     slidesToShow: 4,
     slidesToScroll: +productsWithTags?.data?.length > 5 ? 2 : 1,
     // autoplay: true,
@@ -66,8 +66,9 @@ function FindMoreSegments({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 2,
+          dots: false,
+          slidesToShow: 2.5,
+          slidesToScroll: 1,
         },
       },
     ],
