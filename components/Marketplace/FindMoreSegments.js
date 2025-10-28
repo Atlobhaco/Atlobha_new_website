@@ -68,7 +68,7 @@ function FindMoreSegments({ sectionInfo }) {
         settings: {
           dots: false,
           slidesToShow: 2.5,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
     ],

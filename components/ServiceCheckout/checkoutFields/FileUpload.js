@@ -17,6 +17,18 @@ export default function FileUpload({
   const { isMobile } = useScreenSize();
   const { locale, t } = useLocalization();
   const [uploadingIds, setUploadingIds] = useState([]); // Track uploading fields
+  const [debug, setDebug] = useState(true); // enable/disable overlay
+  const [debugInfo, setDebugInfo] = useState([]);
+
+  const logDebug = (message, data = null) => {
+    const entry = {
+      time: new Date().toLocaleTimeString(),
+      message,
+      data,
+    };
+    setDebugInfo((prev) => [...prev.slice(-20), entry]); // keep last 20 logs
+    console.log("[DEBUG]", message, data); // still log to console
+  };
 
   // Allowed types
   const allowedImageTypes = [
@@ -55,7 +67,8 @@ export default function FileUpload({
 
     // 🔹 Mark field as uploading
     setUploadingIds((prev) => [...prev, checkoutFieldId]);
-
+    logDebug("File selected", { fileName: file?.name, type: file?.type });
+    logDebug("Uploading to", endpoint);
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`,
@@ -68,9 +81,11 @@ export default function FileUpload({
           body: formData,
         }
       );
+      logDebug("Response status", res.status);
 
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
+      logDebug("Upload success", data);
 
       // 🔹 Save uploaded file
       setSelectedFields((prev) => {
@@ -94,6 +109,7 @@ export default function FileUpload({
         };
       });
     } catch (err) {
+      logDebug("Upload error", err.message);
       console.error("Upload error:", err);
       toast.error(t.someThingWrong);
     } finally {
@@ -125,6 +141,56 @@ export default function FileUpload({
 
   return (
     <>
+      {debug && (
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 10,
+            right: 10,
+            width: "300px",
+            maxHeight: "300px",
+            overflowY: "auto",
+            backgroundColor: "rgba(0,0,0,0.8)",
+            color: "#0f0",
+            fontSize: "12px",
+            padding: "10px",
+            borderRadius: "8px",
+            zIndex: 9999,
+            fontFamily: "monospace",
+          }}
+        >
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <strong>Debug Overlay</strong>
+            <button
+              style={{
+                background: "transparent",
+                color: "#fff",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => setDebug(false)}
+            >
+              ✕
+            </button>
+          </Box>
+          {debugInfo.map((log, i) => (
+            <Box
+              key={i}
+              sx={{ borderBottom: "1px solid #333", marginTop: "4px" }}
+            >
+              <div>
+                {log.time} - {log.message}
+              </div>
+              {log.data && (
+                <pre style={{ whiteSpace: "pre-wrap", margin: 0 }}>
+                  {JSON.stringify(log.data, null, 2)}
+                </pre>
+              )}
+            </Box>
+          ))}
+        </Box>
+      )}
+
       {field?.map((singleField, index) => {
         const keyName = singleField?.checkout_field?.type;
         const uploadedFile =
