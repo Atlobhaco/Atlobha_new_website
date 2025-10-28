@@ -93,6 +93,7 @@ function AtlobhaPartners({ sectionInfo }) {
           fontSize: isMobile ? sectionInfo?.customFont || "20px" : "30px",
           textAlign: sectionInfo?.textAlign || "start",
           color: sectionInfo?.textColor || "inherit",
+          px: isMobile ? 1 : "unset",
         }}
       >
         {sectionInfo?.title}

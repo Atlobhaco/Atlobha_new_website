@@ -45,11 +45,13 @@ function RecentlyViewed({ sectionInfo }) {
         flexDirection: "column",
       }}
     >
-      <HeaderSection
-        // showArrow={true}
-        // subtitle={t.showAll}
-        title={sectionInfo?.title}
-      />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
       <Box
         sx={{
           display: "flex",

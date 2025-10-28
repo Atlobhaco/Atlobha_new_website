@@ -84,7 +84,14 @@ function FindMoreSegments({ sectionInfo }) {
         mb: 2,
       }}
     >
-      <HeaderSection title={sectionInfo?.title} />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
+
       <Slider {...settings}>
         {productsWithTags?.data?.map((product) => (
           <Box
