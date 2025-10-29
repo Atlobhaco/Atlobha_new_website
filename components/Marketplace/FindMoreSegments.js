@@ -71,7 +71,7 @@ function FindMoreSegments({ sectionInfo }) {
         breakpoint: 480,
         settings: {
           dots: false,
-          slidesToShow: 2,
+          slidesToShow: 2.5,
           slidesToScroll: 2,
         },
       },
