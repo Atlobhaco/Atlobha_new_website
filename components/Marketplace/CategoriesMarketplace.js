@@ -6,10 +6,12 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { CATEGORY, MARKETPLACE } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAllCategories } from "@/redux/reducers/CategoriesServiceCategories";
 
 function CategoriesMarketplace({ sectionInfo }) {
   const { isMobile } = useScreenSize();
+  const dispatch = useDispatch();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -30,6 +32,7 @@ function CategoriesMarketplace({ sectionInfo }) {
         (defaultAddress?.lat || selectedAddress?.lat)) ||
       (sectionInfo?.is_active && !sectionInfo?.requires_authentication),
     select: (res) => res?.data?.data,
+    onSuccess: (res) => dispatch(setAllCategories(res)),
   });
 
   return !sectionInfo?.is_active || !categories?.length ? null : (
@@ -40,7 +43,13 @@ function CategoriesMarketplace({ sectionInfo }) {
         flexDirection: "column",
       }}
     >
-      <HeaderSection title={sectionInfo?.title} />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
       <Box
         sx={{
           display: "flex",

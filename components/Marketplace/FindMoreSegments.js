@@ -3,30 +3,25 @@ import React, { useState } from "react";
 import HeaderSection from "../HeaderSection";
 import useLocalization from "@/config/hooks/useLocalization";
 import Slider from "react-slick";
-import { MARKETPLACE, PRODUCTS } from "@/config/endPoints/endPoints";
+import { MARKETPLACE, PRODUCTS, SEGMENTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
-function PackageOffers({ sectionInfo }) {
+function FindMoreSegments({ sectionInfo }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
 
   const returnUrlDependOnCar = () => {
-    if (selectedCar?.model?.id || defaultCar?.model?.id) {
-      return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1&model_id=${
-        selectedCar?.model?.id || defaultCar?.model?.id
-      }`;
-    }
-    return `${MARKETPLACE}${PRODUCTS}?page=${1}&per_page=${10}&is_featured=1`;
+    return `${SEGMENTS}`;
   };
 
-  const { data: featuredProducts } = useCustomQuery({
+  const { data: productsWithTags } = useCustomQuery({
     name: [
       `featured-products-${sectionInfo?.id}`,
       sectionInfo?.is_active,
@@ -43,9 +38,13 @@ function PackageOffers({ sectionInfo }) {
 
   var settings = {
     dots: true,
-    infinite: +featuredProducts?.data?.length > 1,
+    infinite: false,
     slidesToShow: 4,
-    slidesToScroll: +featuredProducts?.data?.length > 5 ? 2 : 1,
+    slidesToScroll: +productsWithTags?.data?.length > 5 ? 2 : 1,
+    initialSlide:
+      locale === "ar"
+        ? Math.max(Math.ceil(productsWithTags?.data.length), 0)
+        : 0, // 👈 start at last "page"
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
@@ -64,8 +63,8 @@ function PackageOffers({ sectionInfo }) {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: +featuredProducts?.data?.length > 1 ? 2 : 1,
-          slidesToScroll: +featuredProducts?.data?.length > 1 ? 2 : 1,
+          slidesToShow: +productsWithTags?.data?.length > 1 ? 2 : 1,
+          slidesToScroll: +productsWithTags?.data?.length > 1 ? 2 : 1,
         },
       },
       {
@@ -73,7 +72,7 @@ function PackageOffers({ sectionInfo }) {
         settings: {
           dots: false,
           slidesToShow: 2.5,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
     ],
@@ -81,12 +80,13 @@ function PackageOffers({ sectionInfo }) {
     afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
   };
 
-  return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (
+  return !sectionInfo?.is_active || !productsWithTags?.data?.length ? null : (
     <Box
       sx={{
         display: "flex",
         gap: isMobile ? "10px" : "25px",
         flexDirection: "column",
+        mb: 2,
       }}
     >
       <Box
@@ -94,57 +94,42 @@ function PackageOffers({ sectionInfo }) {
           px: isMobile ? 1 : "unset",
         }}
       >
-        <HeaderSection
-          showArrow={true}
-          subtitle={t.showAll}
-          title={sectionInfo?.title}
-          onClick={() => router.push("/packages")}
-        />
+        <HeaderSection title={sectionInfo?.title} />
       </Box>
+
       <Slider {...settings}>
-        {featuredProducts?.data?.map((featured) => (
+        {productsWithTags?.data?.map((product) => (
           <Box
-            key={featured?.id}
+            key={product?.id}
             onClick={() => {
               if (!isDragging) {
-                router.push({
-                  pathname: `/product/${featured?.id}`,
-                  query: {
-                    name: featured?.name,
-                    desc: featured?.desc,
-                    tags: featured?.combined_tags?.[0]?.name_ar,
-                    category: featured?.marketplace_category?.name,
-                    subCategory: featured?.marketplace_subcategory?.name,
-                    model: featured?.model?.name,
-                    num: featured?.ref_num,
-                    price: featured?.price,
-                    img: featured?.image,
-                  },
-                });
+                router.push(`/products/?segmentID=${product?.id}`);
               }
             }}
             sx={{
               width: isMobile ? "100% !important" : "95% !important",
-              height: isMobile ? "180px" : "500px",
+              height: isMobile ? "210px" : "500px",
               cursor: "pointer",
               display: "flex !important",
               margin: "auto",
-              //   background:'yellow'
             }}
           >
             <Box
               sx={{
-                backgroundImage: `url('${featured?.featured_image?.url}')`,
+                backgroundImage: `url('${product?.background_image_url}')`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
                 backgroundSize: "cover",
                 height: "100%",
                 width: isMobile
-                  ? "95%"
-                  : +featuredProducts?.data?.length === 1
+                  ? "97%"
+                  : +productsWithTags?.data?.length === 1
                   ? "280px"
                   : "99%",
                 borderRadius: "10px",
+                backgroundColor: `${
+                  !product?.background_image_url ? "grey" : "unset"
+                }`,
               }}
             ></Box>
           </Box>
@@ -154,4 +139,4 @@ function PackageOffers({ sectionInfo }) {
   );
 }
 
-export default PackageOffers;
+export default FindMoreSegments;

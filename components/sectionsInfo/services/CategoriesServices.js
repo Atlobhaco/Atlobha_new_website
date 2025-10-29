@@ -4,7 +4,7 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { SERVICE_CATEGORIES } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import HeaderSection from "@/components/HeaderSection";
 import CategoryData from "@/components/Categories/CategoryData";
 import { useRouter } from "next/router";
@@ -12,10 +12,12 @@ import DialogCentered from "@/components/DialogCentered";
 import StaticDynamicSections from "./StaticDynamicSections";
 import useLocalization from "@/config/hooks/useLocalization";
 import { SERVICES } from "@/constants/enums";
+import { setAllServiceCategories } from "@/redux/reducers/CategoriesServiceCategories";
 
 export default function CategoriesServices({ sectionInfo }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
+  const dispatch = useDispatch();
   const router = useRouter();
   const [openStaticDynamic, setOpenStaticDynamic] = useState(false);
   const [selectedCatIdForRouting, setSelectedCatIdForRouting] = useState(false);
@@ -42,6 +44,7 @@ export default function CategoriesServices({ sectionInfo }) {
     refetchOnWindowFocus: false,
     enabled: authEnabled,
     select: (res) => res?.data?.data,
+    onSuccess: (res) => dispatch(setAllServiceCategories(res)),
   });
 
   if (!sectionInfo?.is_active || !categories?.length) return null;
@@ -55,7 +58,13 @@ export default function CategoriesServices({ sectionInfo }) {
         mb: 2,
       }}
     >
-      <HeaderSection title={sectionInfo?.title} />
+      <Box
+        sx={{
+          px: isMobile ? 1 : "unset",
+        }}
+      >
+        <HeaderSection title={sectionInfo?.title} />
+      </Box>
       <Box
         sx={{
           display: "flex",

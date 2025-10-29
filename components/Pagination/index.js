@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Pagination, PaginationItem, CircularProgress } from "@mui/material";
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -8,6 +8,7 @@ export default function PaginateComponent({ meta, setPage, isLoading }) {
   const { locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const router = useRouter();
+  const [savedMeta, setSavedMeta] = useState(false);
 
   const formatNumber = (n) =>
     new Intl.NumberFormat(locale === "ar" ? "ar-EG" : "en-US").format(n);
@@ -29,14 +30,20 @@ export default function PaginateComponent({ meta, setPage, isLoading }) {
     if (router.pathname.includes("search") && page) updatePageQuery(page);
   }, [router.query.current_active_page]);
 
+  useEffect(() => {
+    if (meta?.current_page) {
+      setSavedMeta(meta);
+    }
+  }, [meta]);
+
   return (
     <div className="position-relative">
       <Pagination
         boundaryCount={1}
         siblingCount={1}
-        count={meta?.last_page || 100}
-        page={meta?.current_page || 1}
-        defaultPage={meta?.current_page || 1}
+        count={savedMeta?.last_page || 1}
+        page={savedMeta?.current_page || 1}
+        defaultPage={savedMeta?.current_page || 1}
         onChange={(_, p) => updatePageQuery(p)}
         disabled={isLoading}
         renderItem={(item) => (
@@ -63,7 +70,7 @@ export default function PaginateComponent({ meta, setPage, isLoading }) {
             color: "#6B7280",
             fontSize: isMobile ? "12px" : "14px",
             fontWeight: 500,
-            margin: isMobile ? '0.7px' : "1px",
+            margin: isMobile ? "0.7px" : "1px",
             ...(isMobile && { minWidth: "25px", height: "25px" }),
             "&.Mui-selected": {
               backgroundColor: "#FFCE21",

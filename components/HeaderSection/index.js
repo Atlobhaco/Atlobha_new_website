@@ -7,7 +7,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 
 function HeaderSection({
   arrowPath = "/icons/arrow-left.svg",
-  title = "اشتر مرة اخري !",
+  title = "العنوان",
   subtitle = false,
   showArrow = false,
   onClick = () => {},

@@ -33,7 +33,8 @@ const useResetPageOnFilterChange = (filters, setPage, deepCompare = false) => {
         undefined,
         { shallow: true } // Don't reload the page, just update URL
       );
-      //   setPage(1);
+      setPage(1);
+      //   maybe need to comment
       prevFiltersRef.current = filters;
     }
   }, [filters, setPage, deepCompare]);

@@ -16,7 +16,7 @@ export default function FileUpload({
 }) {
   const { isMobile } = useScreenSize();
   const { locale, t } = useLocalization();
-  const [uploadingIds, setUploadingIds] = useState([]); // Track uploading fields
+  const [uploadingIds, setUploadingIds] = useState([]);
 
   // Allowed types
   const allowedImageTypes = [
@@ -50,10 +50,8 @@ export default function FileUpload({
     formData.append("file", file);
     const keyName = singleField?.checkout_field?.type;
     const checkoutFieldId = singleField?.checkout_field?.id;
-
     const tempUrl = URL.createObjectURL(file);
 
-    // 🔹 Mark field as uploading
     setUploadingIds((prev) => [...prev, checkoutFieldId]);
 
     try {
@@ -72,7 +70,6 @@ export default function FileUpload({
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
 
-      // 🔹 Save uploaded file
       setSelectedFields((prev) => {
         const prevSelections = prev[keyName] || [];
         const otherSelections = prevSelections.filter(
@@ -101,15 +98,6 @@ export default function FileUpload({
     }
   };
 
-  // 🔹 Trigger file select
-  const triggerFileSelect = (singleField) => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = "*/*";
-    input.onchange = (e) => handleFileUpload(e.target.files[0], singleField);
-    input.click();
-  };
-
   // 🔹 Remove file
   const handleRemoveFile = (singleField) => {
     const keyName = singleField?.checkout_field?.type;
@@ -125,7 +113,7 @@ export default function FileUpload({
 
   return (
     <>
-      {field?.map((singleField, index) => {
+      {field?.map((singleField) => {
         const keyName = singleField?.checkout_field?.type;
         const uploadedFile =
           selectedFields?.[keyName]?.find(
@@ -170,9 +158,10 @@ export default function FileUpload({
                   </Typography>
                 </Box>
 
+                {/* === File Input instead of Box === */}
                 {!uploadedFile && (
-                  <Box
-                    sx={{
+                  <label
+                    style={{
                       fontSize: isMobile ? "12px" : "16px",
                       fontWeight: "500",
                       color: "#1FB256",
@@ -180,13 +169,8 @@ export default function FileUpload({
                       alignItems: "center",
                       gap: isMobile ? "3px" : "6px",
                       cursor: "pointer",
-                      "&:hover": {
-                        textDecoration: "underline",
-                      },
+                      textDecoration: "underline",
                     }}
-                    onClick={() =>
-                      !isUploading && triggerFileSelect(singleField)
-                    }
                   >
                     <AddCircleOutlineIcon
                       style={{
@@ -197,7 +181,20 @@ export default function FileUpload({
                       }}
                     />
                     <Box component="span">{t.uploadFile}</Box>
-                  </Box>
+
+                    {/* Hidden File Input */}
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf,.doc,.docx"
+                      style={{ display: "none" }}
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleFileUpload(file, singleField);
+                        // Reset input to allow re-upload of same file
+                        e.target.value = "";
+                      }}
+                    />
+                  </label>
                 )}
               </Box>
             </Box>
@@ -236,11 +233,7 @@ export default function FileUpload({
                             marginInlineEnd: "10px",
                           }}
                         />
-                        <span
-                          style={{
-                            fontSize: "10px",
-                          }}
-                        >
+                        <span style={{ fontSize: "10px" }}>
                           {uploadedFile.fileName}
                         </span>
                       </Box>
@@ -255,7 +248,6 @@ export default function FileUpload({
                         📄 {uploadedFile.fileName}
                       </Typography>
                     )}
-
                     <IconButton
                       color="default"
                       size="small"

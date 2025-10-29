@@ -26,6 +26,7 @@ function CarFilters({
   yearId,
   setYearId,
   colorHeaders,
+  hasDefaultValues = true,
 }) {
   const dispatch = useDispatch();
   const { t } = useLocalization();
@@ -36,27 +37,7 @@ function CarFilters({
 
   // Sync initial brand/model from filters, selectedCar, or defaultCar
   useEffect(() => {
-    const resolvedBrandId =
-      filters?.brand_id ||
-      selectedCar?.brand?.id ||
-      defaultCar?.brand?.id ||
-      "";
-    const resolvedModelId =
-      filters?.model_id ||
-      selectedCar?.model?.id ||
-      defaultCar?.model?.id ||
-      "";
-    const resolvedYear =
-      filters?.year || selectedCar?.year || defaultCar?.year || "";
-
-    setBrandId(isMobile ? filters?.brand_id : resolvedBrandId);
-    setModelId(isMobile ? filters?.model_id : resolvedModelId);
-    setYearId(isMobile ? filters?.year : resolvedYear);
-  }, [selectedCar, defaultCar]);
-
-  //   sync only in mobile screen
-  useEffect(() => {
-    if (isMobile) {
+    if (hasDefaultValues) {
       const resolvedBrandId =
         filters?.brand_id ||
         selectedCar?.brand?.id ||
@@ -74,7 +55,29 @@ function CarFilters({
       setModelId(isMobile ? filters?.model_id : resolvedModelId);
       setYearId(isMobile ? filters?.year : resolvedYear);
     }
-  }, [selectedCar, defaultCar, isMobile, filters]);
+  }, [selectedCar, defaultCar, hasDefaultValues]);
+
+  //   sync only in mobile screen
+  useEffect(() => {
+    if ((isMobile, hasDefaultValues)) {
+      const resolvedBrandId =
+        filters?.brand_id ||
+        selectedCar?.brand?.id ||
+        defaultCar?.brand?.id ||
+        "";
+      const resolvedModelId =
+        filters?.model_id ||
+        selectedCar?.model?.id ||
+        defaultCar?.model?.id ||
+        "";
+      const resolvedYear =
+        filters?.year || selectedCar?.year || defaultCar?.year || "";
+
+      setBrandId(isMobile ? filters?.brand_id : resolvedBrandId);
+      setModelId(isMobile ? filters?.model_id : resolvedModelId);
+      setYearId(isMobile ? filters?.year : resolvedYear);
+    }
+  }, [selectedCar, defaultCar, isMobile, filters, hasDefaultValues]);
 
   // API hooks
   const { refetch: callModels } = useModelsQuery({

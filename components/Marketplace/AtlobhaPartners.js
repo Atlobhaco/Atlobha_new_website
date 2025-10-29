@@ -26,7 +26,7 @@ function AtlobhaPartners({ sectionInfo }) {
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data,
-    onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
+    onSuccess: (res) => setData(res?.data),
   });
 
   var settings = {
@@ -68,7 +68,8 @@ function AtlobhaPartners({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          dots: false,
+          slidesToShow: 1.5,
           slidesToScroll: 1,
         },
       },
@@ -93,6 +94,7 @@ function AtlobhaPartners({ sectionInfo }) {
           fontSize: isMobile ? sectionInfo?.customFont || "20px" : "30px",
           textAlign: sectionInfo?.textAlign || "start",
           color: sectionInfo?.textColor || "inherit",
+          px: isMobile ? 1 : "unset",
         }}
       >
         {sectionInfo?.title}
@@ -108,6 +110,7 @@ function AtlobhaPartners({ sectionInfo }) {
                 gap: 2, // space between the 3 items
                 justifyContent: "center",
                 direction: locale === "en" ? "rtl" : "ltr",
+                minHeight: isMobile ? "180px" : "auto",
               }}
             >
               {group.map((part, subIndex) => (
@@ -117,12 +120,12 @@ function AtlobhaPartners({ sectionInfo }) {
                     display: "flex",
                     justifyContent: "flex-end",
                     alignItems: "center",
-                    height: isMobile ? "52px" : "100px",
+                    height: isMobile ? "70px" : "100px",
                     mb: isMobile ? 1 : 3,
                     // mx: isMobile ? 0 : 1,
                     cursor: "pointer",
-                    width: "85%",
-                    margin: isMobile ? "8px auto 8px auto" : 1,
+                    width: isMobile ? "100%" : "99%",
+                    margin: isMobile ? "8px 2px 8px 2px" : 1,
                   }}
                   onClick={() => {
                     if (!isDragging) {
@@ -155,6 +158,7 @@ function AtlobhaPartners({ sectionInfo }) {
                         ? "0px 0px 0px 20px"
                         : "0px 20px 0px 0px",
                       width: isMobile ? "calc(100% / 1.5)" : "calc(100% / 2)",
+                      minHeight: isMobile ? "60px" : "auto",
                     }}
                   >
                     <Box
