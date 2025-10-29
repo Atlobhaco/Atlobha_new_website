@@ -53,7 +53,7 @@ function ManufactureShell({ sectionInfo }) {
 
   var settings = {
     dots: false,
-    infinite: +manufactureProducts?.data?.length > 1,
+    infinite: false,
     slidesToShow:
       +manufactureProducts?.data?.length > 4
         ? 4
@@ -62,6 +62,12 @@ function ManufactureShell({ sectionInfo }) {
       +manufactureProducts?.data?.length > 4
         ? 2
         : +manufactureProducts?.data?.length,
+    initialSlide:
+      locale === "ar"
+        ? isMobile
+          ? Math.max(Math.ceil(manufactureProducts?.data.length), 0)
+          : manufactureProducts?.data?.length - 4
+        : 0, // 👈 start at last "page", // 👈 start at last "page
     // autoplay: true,
     // touchThreshold: 10,
     // speed: 8000,

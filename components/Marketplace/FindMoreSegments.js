@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 function FindMoreSegments({ sectionInfo }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
@@ -41,6 +41,10 @@ function FindMoreSegments({ sectionInfo }) {
     infinite: false,
     slidesToShow: 4,
     slidesToScroll: +productsWithTags?.data?.length > 5 ? 2 : 1,
+    initialSlide:
+      locale === "ar"
+        ? Math.max(Math.ceil(productsWithTags?.data.length), 0)
+        : 0, // 👈 start at last "page"
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
@@ -67,7 +71,7 @@ function FindMoreSegments({ sectionInfo }) {
         breakpoint: 480,
         settings: {
           dots: false,
-          slidesToShow: 2.5,
+          slidesToShow: 2,
           slidesToScroll: 2,
         },
       },
@@ -99,9 +103,6 @@ function FindMoreSegments({ sectionInfo }) {
             key={product?.id}
             onClick={() => {
               if (!isDragging) {
-                // router.push(
-                //   `/products/?segmentID=${product?.id}&noFilterAtStart=true`
-                // );
                 router.push(`/products/?segmentID=${product?.id}`);
               }
             }}
