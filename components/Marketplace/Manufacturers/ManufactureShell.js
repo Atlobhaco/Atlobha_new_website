@@ -87,7 +87,7 @@ function ManufactureShell({ sectionInfo }) {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3 : 1,
+          slidesToShow: +manufactureProducts?.data?.length > 1 ? 3.2 : 1,
           slidesToScroll: +manufactureProducts?.data?.length > 1 ? 3 : 1,
         },
       },

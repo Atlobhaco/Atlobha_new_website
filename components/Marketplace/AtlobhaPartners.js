@@ -26,7 +26,7 @@ function AtlobhaPartners({ sectionInfo }) {
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data,
-    onSuccess: (res) => setData(res?.data?.filter((d) => d?.is_active)),
+    onSuccess: (res) => setData(res?.data),
   });
 
   var settings = {

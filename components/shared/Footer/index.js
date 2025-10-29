@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./Footer.module.scss";
 import { Box, Divider } from "@mui/material";
 import { useRouter } from "next/router";
@@ -8,17 +8,29 @@ import Link from "next/link";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/config/providers/AuthProvider";
-import { MARKETPLACE, SPAREPARTS } from "@/constants/enums";
+import { MARKETPLACE, SERVICES, SPAREPARTS } from "@/constants/enums";
 import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { toast } from "react-toastify";
 import useCustomQuery from "@/config/network/Apiconfig";
+import DialogCentered from "@/components/DialogCentered";
+import StaticDynamicSections from "@/components/sectionsInfo/services/StaticDynamicSections";
 
 function Footer() {
   const router = useRouter();
   const { t, locale } = useLocalization();
   const { isMobile } = useScreenSize();
   const { allGroups } = useSelector((state) => state.appGroups);
+  const { allCategories, allServiceCategories } = useSelector(
+    (state) => state.categoriesServiceCategories
+  );
+  const [openStaticDynamic, setOpenStaticDynamic] = useState(false);
+  const [selectedCatIdForRouting, setSelectedCatIdForRouting] = useState(false);
+  const sectiontitle = allGroups
+    ?.map((data) => data?.sections)
+    ?.flat()
+    ?.find((sec) => sec?.type === SERVICES)?.title;
+
   const { user } = useAuth();
   const dispatch = useDispatch();
 
@@ -35,52 +47,6 @@ function Footer() {
       toast.error(t.someThingWrong);
     },
   });
-
-  const storeSections = [
-    {
-      id: 1,
-      text: t.sparePart,
-      link: "/spareParts",
-    },
-    {
-      id: 2,
-      text: t.accessories,
-      link: "/category/10",
-    },
-    {
-      id: 3,
-      text: t.oils,
-      link: "",
-    },
-    {
-      id: 4,
-      text: t.carCare,
-      link: "",
-    },
-    {
-      id: 5,
-      text: t.washing,
-      link: "",
-    },
-  ];
-
-  const serviceSections = [
-    {
-      id: 1,
-      text: t.tiresBatteries,
-      link: "",
-    },
-    {
-      id: 2,
-      text: t.washAndCare,
-      link: "",
-    },
-    {
-      id: 3,
-      text: t.replaceRepair,
-      link: "",
-    },
-  ];
 
   const handleAppSectionRedirection = (section) => {
     if (section?.type === SPAREPARTS || section?.type === MARKETPLACE) {
@@ -114,9 +80,12 @@ function Footer() {
         <div className={`col-12 col-md-3`}>
           <div className={`${style["footer-header"]}`}>{t.storeSections}</div>
           <ul className={`${style["footer-links"]}`}>
-            {storeSections?.map((data) => (
-              <li key={data?.id} onClick={() => router.push(data?.link)}>
-                {data?.text}
+            {allCategories?.slice(0, 5)?.map((data) => (
+              <li
+                key={data?.id}
+                onClick={() => router.push(`/category/${data?.id}`)}
+              >
+                {data?.name}
               </li>
             ))}
           </ul>
@@ -124,8 +93,25 @@ function Footer() {
         <div className={`col-12 col-md-3`}>
           <div className={`${style["footer-header"]}`}>{t.serviceSections}</div>
           <ul className={`${style["footer-links"]}`}>
-            {serviceSections?.map((data) => (
-              <li key={data?.id}>{data?.text}</li>
+            {allServiceCategories?.slice(0, 5)?.map((data) => (
+              <li
+                key={data?.id}
+                onClick={() => {
+                  const hasPortable = data?.portable_services_count > 0;
+                  const hasStore = data?.store_services_count > 0;
+
+                  if (hasPortable && hasStore) {
+                    setOpenStaticDynamic(true);
+                    setSelectedCatIdForRouting(data?.id);
+                  } else {
+                    router.push(
+                      `/serviceCategory/${data?.id}?secTitle=${sectiontitle}&secType=${SERVICES}&portableService=${hasPortable}`
+                    );
+                  }
+                }}
+              >
+                {data?.name}
+              </li>
             ))}
           </ul>
         </div>
@@ -379,6 +365,22 @@ function Footer() {
           />
         </div>
       </div>
+      {/* choose portable or fixed when click on service */}
+      <DialogCentered
+        title={false}
+        subtitle={false}
+        open={openStaticDynamic}
+        setOpen={setOpenStaticDynamic}
+        hasCloseIcon
+        actionsWhenClose={() => setSelectedCatIdForRouting(false)}
+        content={
+          <StaticDynamicSections
+            sectionInfo={{ title: t.serviceCategories }}
+            selectedId={selectedCatIdForRouting}
+            setOpenStaticDynamic={setOpenStaticDynamic}
+          />
+        }
+      />
     </footer>
   );
 }

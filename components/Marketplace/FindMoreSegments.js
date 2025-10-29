@@ -107,7 +107,7 @@ function FindMoreSegments({ sectionInfo }) {
             }}
             sx={{
               width: isMobile ? "100% !important" : "95% !important",
-              height: isMobile ? "180px" : "500px",
+              height: isMobile ? "210px" : "500px",
               cursor: "pointer",
               display: "flex !important",
               margin: "auto",
@@ -121,7 +121,7 @@ function FindMoreSegments({ sectionInfo }) {
                 backgroundSize: "cover",
                 height: "100%",
                 width: isMobile
-                  ? "95%"
+                  ? "97%"
                   : +productsWithTags?.data?.length === 1
                   ? "280px"
                   : "99%",

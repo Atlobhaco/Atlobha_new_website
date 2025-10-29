@@ -8,7 +8,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useSelector } from "react-redux";
 
-function StaticDynamicSections({ sectionInfo, selectedId = false }) {
+function StaticDynamicSections({
+  sectionInfo,
+  selectedId = false,
+  setOpenStaticDynamic = () => {},
+}) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   const router = useRouter();
@@ -23,23 +27,31 @@ function StaticDynamicSections({ sectionInfo, selectedId = false }) {
       imgSrc: "/imgs/dynamic-car-service.svg",
       title: t.portableServices,
       subTitle: t.deliverAtDoor,
-      redirect: () =>
+      redirect: () => {
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle || sectiontitle
           }&secType=${SERVICES}&portableService=true`
-        ),
+        );
+        setTimeout(() => {
+          setOpenStaticDynamic(false);
+        }, 500);
+      },
     },
     {
       imgSrc: "/imgs/static-car-service.svg",
       title: t.fixedServices,
       subTitle: t.approvedCenters,
-      redirect: () =>
+      redirect: () => {
         router.push(
           `/serviceCategory/${selectedId || "first-id"}?secTitle=${
             router?.query?.secTitle || sectiontitle
           }&secType=${SERVICES}&portableService=false`
-        ),
+        );
+        setTimeout(() => {
+          setOpenStaticDynamic(false);
+        }, 500);
+      },
     },
   ];
 
