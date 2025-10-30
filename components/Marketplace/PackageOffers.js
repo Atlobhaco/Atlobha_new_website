@@ -43,7 +43,7 @@ function PackageOffers({ sectionInfo }) {
 
   var settings = {
     dots: true,
-    infinite: +featuredProducts?.data?.length > 1,
+    infinite: false,
     slidesToShow: 4,
     slidesToScroll: +featuredProducts?.data?.length > 5 ? 2 : 1,
     // autoplay: true,

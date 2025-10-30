@@ -150,7 +150,7 @@ export default function Home() {
             return (
               <div className="container mb-3">
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                     <MainCarousel sectionInfo={item} />
                   </div>
                 </div>
