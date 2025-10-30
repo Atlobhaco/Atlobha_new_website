@@ -31,6 +31,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const { t, locale } = useLocalization();
   const { allGroups } = useSelector((state) => state.appGroups);
+  const [hasAds, setHasAds] = useState(false);
   const { allhomeSections, sectionsSeo } = useSelector(
     (state) => state.homeSectionsData
   );
@@ -145,10 +146,16 @@ export default function Home() {
             );
           case "ads":
             return (
-              <div className="container mb-3">
+              <div
+                key={item?.id}
+                className="container mb-3"
+                style={{
+                  display: hasAds ? "block" : "none",
+                }}
+              >
                 <div className="row">
                   <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
-                    <MainCarousel sectionInfo={item} />
+                    <MainCarousel sectionInfo={item} setHasAds={setHasAds} />
                   </div>
                 </div>
               </div>
@@ -183,7 +190,9 @@ export default function Home() {
               return (
                 <div className="container" key={item?.id}>
                   <div className="row">
-                    <div className={`col-12 ${isMobile ? "mt-3  px-0" : "mt-5"}`}>
+                    <div
+                      className={`col-12 ${isMobile ? "mt-3  px-0" : "mt-5"}`}
+                    >
                       <CategoriesMarketplace sectionInfo={item} />
                     </div>
                   </div>
@@ -206,7 +215,7 @@ export default function Home() {
               <div className="container" key={item?.id}>
                 <div className="row">
                   <div
-                    className={`col-12 ${isMobile ? "mt-3 mb-1 px-0" : "mt-5"}`}
+                    className={`col-12 ${isMobile ? "mt-4 mb-1 px-0" : "mt-5"}`}
                   >
                     <PackageOffers sectionInfo={item} />
                   </div>
@@ -217,7 +226,9 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3 mb-1 px-0" : "mt-5"}`}>
+                  <div
+                    className={`col-12 ${isMobile ? "mt-3 mb-1 px-0" : "mt-5"}`}
+                  >
                     <FindMoreSegments sectionInfo={item} />
                   </div>
                 </div>
@@ -243,7 +254,9 @@ export default function Home() {
                 <>
                   <div className="container" key={item?.id}>
                     <div className="row">
-                      <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
+                      <div
+                        className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}
+                      >
                         <CategoriesServices sectionInfo={item} />
                       </div>
                     </div>
