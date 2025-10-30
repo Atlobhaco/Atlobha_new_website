@@ -73,7 +73,7 @@ function PackageOffers({ sectionInfo }) {
         settings: {
           dots: false,
           slidesToShow: 2.5,
-          slidesToScroll: 1,
+          slidesToScroll: 2,
         },
       },
     ],
@@ -125,7 +125,7 @@ function PackageOffers({ sectionInfo }) {
             }}
             sx={{
               width: isMobile ? "100% !important" : "95% !important",
-              height: isMobile ? "180px" : "500px",
+              height: isMobile ? "210px" : "500px",
               cursor: "pointer",
               display: "flex !important",
               margin: "auto",
