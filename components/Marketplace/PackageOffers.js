@@ -12,7 +12,7 @@ import { useSelector } from "react-redux";
 
 function PackageOffers({ sectionInfo }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
@@ -46,6 +46,10 @@ function PackageOffers({ sectionInfo }) {
     infinite: false,
     slidesToShow: 4,
     slidesToScroll: +featuredProducts?.data?.length > 5 ? 2 : 1,
+    initialSlide:
+      locale === "ar"
+        ? Math.max(Math.ceil(featuredProducts?.data.length), 0)
+        : 0, // 👈 start at last "page"
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
