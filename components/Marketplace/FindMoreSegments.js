@@ -43,8 +43,10 @@ function FindMoreSegments({ sectionInfo }) {
     slidesToScroll: +productsWithTags?.data?.length > 5 ? 2 : 1,
     initialSlide:
       locale === "ar"
-        ? Math.max(Math.ceil(productsWithTags?.data.length), 0)
-        : 0, // 👈 start at last "page"
+        ? isMobile
+          ? Math.max(Math.ceil(productsWithTags?.data.length), 0)
+          : productsWithTags?.data?.length - 4
+        : 0,
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,

@@ -48,8 +48,10 @@ function PackageOffers({ sectionInfo }) {
     slidesToScroll: +featuredProducts?.data?.length > 5 ? 2 : 1,
     initialSlide:
       locale === "ar"
-        ? Math.max(Math.ceil(featuredProducts?.data.length), 0)
-        : 0, // 👈 start at last "page"
+        ? isMobile
+          ? Math.max(Math.ceil(featuredProducts?.data.length), 0)
+          : featuredProducts?.data?.length - 4
+        : 0,
     // autoplay: true,
     // rtl: locale === "ar",
     // touchThreshold: 10,
