@@ -140,7 +140,7 @@ export default function Home() {
             return (
               <div className="container" key={item?.id}>
                 <div className="row">
-                  <div className={`col-12 ${isMobile ? "mt-3" : "mt-5"}`}>
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
                     <QuickLinks sectionInfo={item} />
                   </div>
                 </div>

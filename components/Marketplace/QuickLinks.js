@@ -54,8 +54,8 @@ function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
           <Box
             sx={{
               background: "white",
-              width: isMobile ? "48px" : "88px",
-              height: isMobile ? "48px" : "88px",
+              width: isMobile ? "53px" : "88px",
+              height: isMobile ? "53px" : "88px",
               borderRadius: "50%",
               display: "flex",
               alignItems: "center",
