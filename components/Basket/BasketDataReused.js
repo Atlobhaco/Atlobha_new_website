@@ -93,6 +93,8 @@ function BasketDataReused({ handleCloseBasket = () => {} }) {
                       borderRadius: "8px",
                       margin: "auto",
                       objectFit: "contain",
+                      minWidth: isMobile ? 55 : 200,
+                      height: isMobile ? 55 : 200,
                     }}
                     loading="lazy"
                   />{" "}

@@ -22,9 +22,10 @@ function ServiceStoreSelections({
   setUserConfirmStoreDate,
   userConfirmStoreDate,
   setSelectNewDate,
+  workWithProduct = false,
 }) {
   const { isMobile } = useScreenSize();
-  const { t, locale } = useLocalization();
+  const { t } = useLocalization();
   const { selectedAddress, defaultAddress } = useSelector(
     (state) => state.selectedAddress
   );
@@ -34,9 +35,11 @@ function ServiceStoreSelections({
 
   const { data: stores, isFetching } = useCustomQuery({
     name: ["storeCenters", lat, lng],
-    url: `${SERVICE_CENTERS}?service_id=${prod?.id}&latitude=${lat}&longitude=${lng}`,
+    url: `${SERVICE_CENTERS}?${workWithProduct ? "product_id" : "service_id"}=${
+      prod?.id
+    }&latitude=${lat}&longitude=${lng}`,
     refetchOnWindowFocus: false,
-    enabled: !!lng,
+    enabled: !!lng && !!prod?.id,
     select: (res) => res?.data?.data,
     onError: (err) => {
       toast.error(t.someThingWrong);
@@ -50,15 +53,22 @@ function ServiceStoreSelections({
   });
 
   return (
-    <>
-      <Divider
-        sx={{
-          background: "#EAECF0",
-          my: 1,
-          height: "5px",
-          borderBottomWidth: "0px",
-        }}
-      />
+    <Box
+      sx={{
+        maxHeight: workWithProduct && "60vh",
+        overflow: workWithProduct && "auto",
+      }}
+    >
+      {!workWithProduct && (
+        <Divider
+          sx={{
+            background: "#EAECF0",
+            my: 1,
+            height: "5px",
+            borderBottomWidth: "0px",
+          }}
+        />
+      )}
 
       <Box
         sx={{
@@ -68,7 +78,7 @@ function ServiceStoreSelections({
           mb: 1,
         }}
       >
-        {isMobile && stores?.length > 1
+        {(isMobile || workWithProduct) && stores?.length > 1
           ? t.nearestCenter
           : t.chooseTestDriveLocation}
       </Box>
@@ -76,11 +86,11 @@ function ServiceStoreSelections({
       {stores?.length ? (
         <Box
           sx={{
-            display: isMobile ? "block" : "flex",
+            display: isMobile || workWithProduct ? "block" : "flex",
             gap: "15px",
             overflow: "auto  hidden",
             pb: 1,
-            mx: isMobile ? 0 : 2,
+            mx: isMobile || workWithProduct ? 0 : 2,
           }}
         >
           {stores
@@ -100,24 +110,27 @@ function ServiceStoreSelections({
                 setSelectedStoreTime={setSelectedStoreTime}
                 setUserConfirmStoreDate={setUserConfirmStoreDate}
                 setSelectNewDate={setSelectNewDate}
+                workWithProduct={workWithProduct}
               />
             ))}
           <Box
             sx={{
               color: "#1C1C28",
-              fontSize: isMobile ? "18px" : "27px",
+              fontSize: isMobile || workWithProduct ? "18px" : "27px",
               fontWeight: "700",
               mb: 1,
               mt: 1,
             }}
           >
-            {isMobile && stores?.length > 1 && t.chooseTestDriveLocation}
+            {(isMobile || workWithProduct) &&
+              stores?.length > 1 &&
+              t.chooseTestDriveLocation}
           </Box>
           {stores
             ?.filter((d, index) => index > 0)
             ?.map((store) => (
               // show single store data
-              <Box sx={{ mb: isMobile ? 1 : 0 }}>
+              <Box sx={{ mb: isMobile || workWithProduct ? 1 : 0 }}>
                 <StoreData
                   store={store}
                   selectedStore={selectedStore}
@@ -131,6 +144,7 @@ function ServiceStoreSelections({
                   setSelectedStoreTime={setSelectedStoreTime}
                   setUserConfirmStoreDate={setUserConfirmStoreDate}
                   setSelectNewDate={setSelectNewDate}
+                  workWithProduct={workWithProduct}
                 />
               </Box>
             ))}
@@ -157,7 +171,7 @@ function ServiceStoreSelections({
           {!isFetching && t.noResultsFound}
         </Box>
       )}
-    </>
+    </Box>
   );
 }
 

@@ -103,7 +103,9 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
   });
 
   const handleMenu = (event) => {
-    callUserDetails();
+    if (isAuth()) {
+      callUserDetails();
+    }
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {

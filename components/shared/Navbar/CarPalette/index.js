@@ -189,9 +189,9 @@ function CarPalette() {
                 sx={{
                   display: "flex",
                   justifyContent: "space-around",
-                  width: "80%",
+                  width: "70%",
                   margin: "auto",
-				  flexDirection:'row-reverse'
+                  flexDirection: locale === "ar" ? "row-reverse" : "row",
                 }}
               >
                 {(selectedCar?.year?.toString() || defaultCar?.year?.toString())

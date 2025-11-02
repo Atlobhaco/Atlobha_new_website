@@ -559,5 +559,7 @@
   "transDate": "تاريخ العملية",
   "balanceAfterTrans": "الرصيد بعد العملية",
   "addSuccess": "تم اضافة",
-  "toWalletBalance": "ريال الي رصيدك ف المحفظة"
+  "toWalletBalance": "ريال الي رصيدك ف المحفظة",
+  "InstallmentAtCenter": "متاح تركيب هذه القطعة لدي احد مراكز الخدمة المعتمدة بدلا من شحنها",
+  "chooseServiceCenter": "اختر المركز"
 }
