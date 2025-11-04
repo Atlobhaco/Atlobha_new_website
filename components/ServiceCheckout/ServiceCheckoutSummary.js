@@ -40,6 +40,7 @@ import {
   setPromoCodeForSpareParts,
 } from "@/redux/reducers/addSparePartsReducer";
 import Cookies from "js-cookie";
+import AccordionWalletBalance from "../shared/AccordionWalletBalance";
 
 const ServiceCheckoutSummary = forwardRef(
   (
@@ -773,14 +774,15 @@ const ServiceCheckoutSummary = forwardRef(
             {riyalImgBlack()}
           </Box>
         </Box>
+		
         {/* pay from wallet balance */}
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={text}>{t.payFromBlanace}</Box>
-          <Box sx={text}>
-            {calculateReceiptResFromMainPage?.wallet_payment_value}{" "}
-            {riyalImgBlack()}
-          </Box>
-        </Box>
+        <AccordionWalletBalance
+          title={t.payFromBlanace}
+          riyalImg={riyalImgBlack}
+          textStyle={text}
+          receipt={{}}
+          receiptRes={calculateReceiptResFromMainPage}
+        />
         {/* offers discount */}
         {calculateReceiptResFromMainPage?.offers_discount > 0 && (
           <Box className="d-flex justify-content-between mb-2">

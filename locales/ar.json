@@ -561,5 +561,7 @@
   "addSuccess": "تم اضافة",
   "toWalletBalance": "ريال الي رصيدك ف المحفظة",
   "InstallmentAtCenter": "متاح تركيب هذه القطعة لدي احد مراكز الخدمة المعتمدة بدلا من شحنها",
-  "chooseServiceCenter": "اختر المركز"
+  "chooseServiceCenter": "اختر المركز",
+  "walletBalance": "رصيد المحفظة",
+  "cashbackBalance": "رصيد الكاش باك"
 }
