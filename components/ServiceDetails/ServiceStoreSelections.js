@@ -1,7 +1,7 @@
 import { SERVICE_CENTERS } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
 import useCustomQuery from "@/config/network/Apiconfig";
-import { Box, Divider } from "@mui/material";
+import { Box, Divider, CircularProgress } from "@mui/material";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -41,7 +41,7 @@ function ServiceStoreSelections({
     refetchOnWindowFocus: false,
     enabled: !!lng && !!prod?.id,
     select: (res) => res?.data?.data,
-    onError: (err) => {
+    onError: () => {
       toast.error(t.someThingWrong);
     },
     onSuccess: (res) => {
@@ -83,21 +83,33 @@ function ServiceStoreSelections({
           : t.chooseTestDriveLocation}
       </Box>
 
-      {stores?.length ? (
+      {/* ✅ Show loader when fetching */}
+      {isFetching && workWithProduct ? (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "150px",
+          }}
+        >
+          <CircularProgress color="inherit" />
+        </Box>
+      ) : stores?.length ? (
         <Box
           sx={{
             display: isMobile || workWithProduct ? "block" : "flex",
             gap: "15px",
-            overflow: "auto  hidden",
+            overflow: "auto hidden",
             pb: 1,
             mx: isMobile || workWithProduct ? 0 : 2,
           }}
         >
           {stores
-            ?.filter((d, index) => index === 0)
+            ?.filter((_, index) => index === 0)
             ?.map((store) => (
-              // show single store data
               <StoreData
+                key={store.id}
                 store={store}
                 selectedStore={selectedStore}
                 setSelectedStore={setSelectedStore}
@@ -113,6 +125,7 @@ function ServiceStoreSelections({
                 workWithProduct={workWithProduct}
               />
             ))}
+
           <Box
             sx={{
               color: "#1C1C28",
@@ -126,11 +139,14 @@ function ServiceStoreSelections({
               stores?.length > 1 &&
               t.chooseTestDriveLocation}
           </Box>
+
           {stores
-            ?.filter((d, index) => index > 0)
+            ?.filter((_, index) => index > 0)
             ?.map((store) => (
-              // show single store data
-              <Box sx={{ mb: isMobile || workWithProduct ? 1 : 0 }}>
+              <Box
+                key={store.id}
+                sx={{ mb: isMobile || workWithProduct ? 1 : 0 }}
+              >
                 <StoreData
                   store={store}
                   selectedStore={selectedStore}
@@ -148,7 +164,7 @@ function ServiceStoreSelections({
                 />
               </Box>
             ))}
-          {/* choose another time logic for store */}
+
           <AvailabletimeForServiceFixed
             selectNewDate={selectNewDate}
             handleDateChange={handleDateChange}

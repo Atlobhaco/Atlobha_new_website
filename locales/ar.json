@@ -563,5 +563,7 @@
   "InstallmentAtCenter": "متاح تركيب هذه القطعة لدي احد مراكز الخدمة المعتمدة بدلا من شحنها",
   "chooseServiceCenter": "اختر المركز",
   "walletBalance": "رصيد المحفظة",
-  "cashbackBalance": "رصيد الكاش باك"
+  "cashbackBalance": "رصيد الكاش باك",
+  "mandatoryInstall": "التركيب اجباري",
+  "showServiceCenters": "تصفح مراكز الخدمة"
 }

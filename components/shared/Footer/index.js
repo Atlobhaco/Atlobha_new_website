@@ -9,12 +9,21 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/config/providers/AuthProvider";
 import { MARKETPLACE, SERVICES, SPAREPARTS } from "@/constants/enums";
-import { APP_SECTIONS_GROUPS } from "@/config/endPoints/endPoints";
+import {
+  APP_SECTIONS_GROUPS,
+  CATEGORY,
+  SERVICE_CATEGORIES,
+  MARKETPLACE as Market,
+} from "@/config/endPoints/endPoints";
 import { setAllGroups } from "@/redux/reducers/appGroups";
 import { toast } from "react-toastify";
 import useCustomQuery from "@/config/network/Apiconfig";
 import DialogCentered from "@/components/DialogCentered";
 import StaticDynamicSections from "@/components/sectionsInfo/services/StaticDynamicSections";
+import {
+  setAllCategories,
+  setAllServiceCategories,
+} from "@/redux/reducers/CategoriesServiceCategories";
 
 function Footer() {
   const router = useRouter();
@@ -24,12 +33,21 @@ function Footer() {
   const { allCategories, allServiceCategories } = useSelector(
     (state) => state.categoriesServiceCategories
   );
+  const { selectedAddress, defaultAddress } = useSelector(
+    (s) => s.selectedAddress
+  );
+  const { selectedCar, defaultCar } = useSelector((s) => s.selectedCar);
+
   const [openStaticDynamic, setOpenStaticDynamic] = useState(false);
   const [selectedCatIdForRouting, setSelectedCatIdForRouting] = useState(false);
   const sectiontitle = allGroups
     ?.map((data) => data?.sections)
     ?.flat()
     ?.find((sec) => sec?.type === SERVICES)?.title;
+
+  const lat = selectedAddress?.lat || defaultAddress?.lat || 24.7136;
+  const lng = selectedAddress?.lng || defaultAddress?.lng || 46.6753;
+  const modelId = selectedCar?.model?.id || defaultCar?.model?.id || "";
 
   const { user } = useAuth();
   const dispatch = useDispatch();
@@ -46,6 +64,24 @@ function Footer() {
     onError: () => {
       toast.error(t.someThingWrong);
     },
+  });
+
+  useCustomQuery({
+    name: [`services-categories-for-footer`, lat, lng, modelId],
+    url: `${SERVICE_CATEGORIES}?lat=${lat}&lng=${lng}&model_id=${modelId}`,
+    refetchOnWindowFocus: false,
+    enabled: lat && lng && !allServiceCategories?.length ? true : false,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => dispatch(setAllServiceCategories(res)),
+  });
+
+  useCustomQuery({
+    name: [`marketplace-categories-for-footer`, lat, lng, modelId],
+    url: `${Market}${CATEGORY}?lat=${lat}&lng=${lng}&model_id=${modelId}`,
+    refetchOnWindowFocus: false,
+    enabled: lat && lng && !allCategories?.length ? true : false,
+    select: (res) => res?.data?.data,
+    onSuccess: (res) => dispatch(setAllCategories(res)),
   });
 
   const handleAppSectionRedirection = (section) => {

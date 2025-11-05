@@ -9,14 +9,25 @@ import ServiceStoreSelections from "../ServiceDetails/ServiceStoreSelections";
 import Login from "../Login";
 import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 
-function ServiceCenterInstallment({ prod }) {
+function ServiceCenterInstallment({
+  prod,
+  hideTitleDesign = false,
+  open, // ✅ optional: control from parent
+  setOpen, // ✅ optional: control from parent
+  triggerFromParent = false, // ✅ if true, parent handles open/close
+  setActiveServiceCenter = () => {},
+}) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
-  const [openServiceCenter, setOpenServiceCenter] = useState(false);
+
+  // Local state only used if parent does NOT control it
+  const [internalOpen, setInternalOpen] = useState(false);
+  const actualOpen = triggerFromParent ? open : internalOpen;
+  const actualSetOpen = triggerFromParent ? setOpen : setInternalOpen;
 
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
-  const boxStle = {
+  const boxStyle = {
     borderBottom: "0.5px solid #1FB256",
     borderTop: "0.5px solid #1FB256",
     background: "#E9FAEF",
@@ -30,57 +41,48 @@ function ServiceCenterInstallment({ prod }) {
 
   return (
     <>
-      <Box sx={boxStle} onClick={() => setOpenServiceCenter(true)}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <ErrorIcon
-            sx={{
-              color: "#1FB256",
-              marginInlineEnd: "4px",
+      {!hideTitleDesign && (
+        <Box sx={boxStyle} onClick={() => actualSetOpen(true)}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ErrorIcon sx={{ color: "#1FB256", marginInlineEnd: "4px" }} />
+            <Box sx={{ pt: isMobile ? 0 : 1 }}>{t.InstallmentAtCenter}</Box>
+          </Box>
+          <Image
+            alt="img"
+            src={"/icons/green-left-arrow.svg"}
+            width={isMobile ? 18 : 28}
+            height={isMobile ? 18 : 15}
+            loading="lazy"
+            style={{
+              transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
             }}
           />
-          <Box sx={{ pt: isMobile ? 0 : 1 }}>{t.InstallmentAtCenter}</Box>
         </Box>
-        <Image
-          alt="img"
-          src={"/icons/green-left-arrow.svg"}
-          width={isMobile ? 18 : 28}
-          height={isMobile ? 18 : 15}
-          loading="lazy"
-          style={{
-            transform: locale === "ar" ? "rotate(0deg)" : "rotate(180deg)",
-          }}
-        />
-      </Box>
+      )}
 
       <DialogCentered
         title={null}
         subtitle={false}
-        open={openServiceCenter}
-        setOpen={setOpenServiceCenter}
+        open={actualOpen}
+        setOpen={actualSetOpen}
         hasCloseIcon
+        actionsWhenClose={() => setActiveServiceCenter(null)}
         content={
-          <>
-            <ServiceStoreSelections
-              prod={prod}
-              selectNewDate={null}
-              handleDateChange={() => {}}
-              selectedStore={null}
-              setSelectedStore={() => {}}
-              selectedStoreTime={null}
-              setSelectedStoreTime={() => {}}
-              setOpenLogin={setOpenLogin}
-              setAllStores={() => {}}
-              setUserConfirmStoreDate={() => {}}
-              userConfirmStoreDate={false}
-              setSelectNewDate={() => {}}
-              workWithProduct={true}
-            />
-          </>
+          <ServiceStoreSelections
+            prod={prod}
+            selectNewDate={null}
+            handleDateChange={() => {}}
+            selectedStore={null}
+            setSelectedStore={() => {}}
+            selectedStoreTime={null}
+            setSelectedStoreTime={() => {}}
+            setOpenLogin={setOpenLogin}
+            setAllStores={() => {}}
+            setUserConfirmStoreDate={() => {}}
+            userConfirmStoreDate={false}
+            setSelectNewDate={() => {}}
+            workWithProduct={true}
+          />
         }
       />
 
