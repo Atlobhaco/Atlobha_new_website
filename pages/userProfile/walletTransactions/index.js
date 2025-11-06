@@ -148,7 +148,7 @@ function WalletTransactions() {
                           PaperProps={{
                             sx: {
                               borderRadius: "10px",
-                              minWidth: 350,
+                              width: isMobile ? "100%" : 350,
                               boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
                               left: "10px",
                             },
