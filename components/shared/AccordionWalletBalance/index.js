@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import useLocalization from "@/config/hooks/useLocalization";
+import useScreenSize from "@/constants/screenSize/useScreenSize";
 
 const AccordionWalletBalance = ({
   title, // e.g. t.payFromBlanace
@@ -18,6 +19,7 @@ const AccordionWalletBalance = ({
 }) => {
   const { t } = useLocalization();
   const [expanded, setExpanded] = useState(false);
+  const { isMobile } = useScreenSize();
 
   // ✅ Helper to safely pick value from either object
   const pickValue = (key) =>
@@ -107,6 +109,7 @@ const AccordionWalletBalance = ({
           background: "#dfdfdf",
           borderRadius: "8px",
           marginBottom: "10px",
+          fontSize: isMobile ? "12px" : "inherit",
         }}
       >
         <Box
