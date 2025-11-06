@@ -23,7 +23,7 @@ function BasketItemImage({ data, handleRedirectToProdDetails }) {
           maxHeight: "100%",
           borderRadius: "8px",
           margin: "auto",
-          objectFit: "contain",
+          objectFit: "cover",
           minWidth: isMobile ? 55 : 55,
           height: isMobile ? 55 : 55,
         }}
