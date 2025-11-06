@@ -9,7 +9,13 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import BreadCrumb from "@/components/BreadCrumb";
 import { useSelector } from "react-redux";
 import useLocalization from "@/config/hooks/useLocalization";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Typography,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { riyalImgOrange } from "@/constants/helpers";
 import SharedBtn from "@/components/shared/SharedBtn";
 import style from "./walletTransactions.module.scss";
@@ -22,7 +28,7 @@ import AddBalanceVoucher from "./AddBalanceVoucher";
 
 function WalletTransactions() {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { userDataProfile } = useSelector((state) => state.quickSection);
   const [filterBy, setFilterBy] = useState("");
   const [page, setPage] = useState(1);
@@ -62,6 +68,15 @@ function WalletTransactions() {
   };
   const handleOpenAddVoucher = () => setOpenAddVoucher(true);
 
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -91,15 +106,106 @@ function WalletTransactions() {
                 <div className={`${isMobile ? "w-100" : "w-50"}`}>
                   <Box className="d-flex justify-content-between align-items-center">
                     <Box>
-                      <Box
-                        sx={{
-                          color: "#374151",
-                          fontWeight: "700",
-                          fontSize: isMobile ? "16px" : "18px",
-                        }}
-                      >
-                        {t.availableBalance}
-                      </Box>
+                      <>
+                        <Box
+                          onClick={handleOpen}
+                          sx={{
+                            color: "#374151",
+                            fontWeight: 700,
+                            fontSize: isMobile ? "16px" : "18px",
+                            cursor: "pointer",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "6px",
+                          }}
+                        >
+                          {t.availableBalance}
+                          <Box
+                            component="span"
+                            sx={{
+                              fontSize: "18px",
+                              transform: anchorEl
+                                ? "rotateX(180deg)"
+                                : "rotateX(0deg)",
+                            }}
+                          >
+                            ▼
+                          </Box>
+                        </Box>
+
+                        <Menu
+                          anchorEl={anchorEl}
+                          open={Boolean(anchorEl)}
+                          onClose={handleClose}
+                          anchorOrigin={{
+                            vertical: "bottom", // "top", "center", or "bottom"
+                            horizontal: locale === "ar" ? "left" : "right", // "left", "center", or "right"
+                          }}
+                          transformOrigin={{
+                            vertical: "top", // where the menu attaches from
+                            horizontal: "center",
+                          }}
+                          PaperProps={{
+                            sx: {
+                              borderRadius: "10px",
+                              minWidth: 350,
+                              boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
+                              left: "10px",
+                            },
+                          }}
+                        >
+                          <Box
+                            onClick={handleClose}
+                            sx={{
+                              p: 1,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                width: "100%",
+                              }}
+                            >
+                              <Box>{t.cashbackBalance}</Box>
+                              <Box
+                                sx={{
+                                  color: "#EE772F",
+                                }}
+                              >
+                                {userDataProfile?.cashback_balance}{" "}
+                                {riyalImgOrange()}
+                              </Box>
+                            </Box>
+                          </Box>
+                          <Box
+                            onClick={handleClose}
+                            sx={{
+                              p: 1,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                                width: "100%",
+                              }}
+                            >
+                              <Box>{t.walletBalance}</Box>
+                              <Box
+                                sx={{
+                                  color: "#EE772F",
+                                }}
+                              >
+                                {userDataProfile?.remaining_wallet_balance}{" "}
+                                {riyalImgOrange()}
+                              </Box>{" "}
+                            </Box>{" "}
+                          </Box>
+                        </Menu>
+                      </>
                       <Box
                         sx={{
                           fontSize: isMobile ? "29px" : "36px",
