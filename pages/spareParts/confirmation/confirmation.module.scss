@@ -179,10 +179,11 @@
       overflow: hidden;
       width: 62px;
       height: 62px;
-      background: #e6e6e6;
       display: flex;
       min-width: 62px;
       min-height: 62px;
+      align-items: center;
+      justify-content: center;
     }
     &_details {
       display: flex;

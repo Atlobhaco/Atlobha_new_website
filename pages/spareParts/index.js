@@ -20,7 +20,8 @@ import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
 import Login from "@/components/Login";
 import { isAuth } from "@/config/hooks/isAuth";
 import {
-  MEDIA,
+  FILES,
+  IMAGE,
   ORDERS,
   SPARE_PARTS,
   USERS,
@@ -39,6 +40,7 @@ import LimitedSupportCar from "@/components/LimitedSupportCar/LimitedSupportCar"
 import LimitedCarDontShowAgain from "@/components/LimitedSupportCar/LimitedCarDontShowAgain";
 import { SPAREPARTS } from "@/constants/enums";
 import Head from "next/head";
+import axios from "axios";
 
 const style = {
   marginTop: "32px",
@@ -55,6 +57,7 @@ function SpareParts() {
   const { selectedParts, isLoading } = useSelector(
     (state) => state.addSpareParts
   );
+  const [fetchMedia, setFetchMedia] = useState(false);
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
   const [promoCodeId, setPromoCodeId] = useState(false);
   const [comment, setComment] = useState("");
@@ -164,7 +167,9 @@ function SpareParts() {
         : selectedParts
       )?.map((part) => ({
         ...part,
-        image_path: part?.imgPathForBe || part?.image_path || "",
+        image_path: part?.image_id || part?.image_id || part?.image_path || "",
+        image_id: part?.image_id || part?.image_id || part?.image_path || "",
+        imgBase64: "",
       })),
       promo_code: {
         id: promoCodeId,
@@ -192,44 +197,46 @@ function SpareParts() {
     },
   });
 
-  const {
-    data: mediaRes,
-    refetch: callUploadMedia,
-    isFetching: fetchMedia,
-  } = useCustomQuery({
-    name: ["uploadMediaForSpareParts"],
-    url: `${SPARE_PARTS}${ORDERS}${MEDIA}`,
-    refetchOnWindowFocus: false,
-    method: "post",
-    body: formDataImagesUploader,
-    enabled: false,
-    retry: 0,
-    select: (res) => res?.data?.data,
-    onSuccess: (res) => {
-      const indexThatWillMerge = selectedParts
-        ?.map((d, index) => (!d?.imgPathForBe && d?.imgSrc ? index : null))
-        .filter((index) => index !== null);
+  //   const {
+  //     data: mediaRes,
+  //     refetch: callUploadMedia,
+  //     isFetching: fetchMedia,
+  //   } = useCustomQuery({
+  //     name: ["uploadMediaForSpareParts"],
+  //     url: `${FILES}${IMAGE}`,
+  //     refetchOnWindowFocus: false,
+  //     method: "post",
+  //     body: formDataImagesUploader,
+  //     enabled: false,
+  //     retry: 0,
+  //     select: (res) => res?.data,
+  //     onSuccess: (res) => {
+  //       console.log("res", res);
+  //       const indexThatWillMerge = selectedParts
+  //         ?.map((d, index) => (!d?.image_id && d?.imgSrc ? index : null))
+  //         .filter((index) => index !== null);
 
-      setFinalPartsAfterImageUpload(
-        selectedParts.map((part, index) => {
-          if (indexThatWillMerge.includes(index)) {
-            const mergedData = res[indexThatWillMerge.indexOf(index)]; // Find corresponding data from anotherArray
-            return {
-              ...part,
-              image_path: part?.imgPathForBe || mergedData?.image || "",
-            };
-          }
-          return {
-            ...part,
-            image_path: part?.imgPathForBe || "",
-          };
-        })
-      );
-    },
-    onError: (err) => {
-      toast.error(t.someThingWrong);
-    },
-  });
+  //       // Adjust merging to handle { id: number } response per image
+  //       setFinalPartsAfterImageUpload(
+  //         selectedParts.map((part, index) => {
+  //           if (indexThatWillMerge.includes(index)) {
+  //             const mergedData = res[indexThatWillMerge.indexOf(index)];
+  //             return {
+  //               ...part,
+  //               image_id: mergedData?.id || "", // use returned id instead of image_path
+  //             };
+  //           }
+  //           return {
+  //             ...part,
+  //             image_id: "",
+  //           };
+  //         })
+  //       );
+  //     },
+  //     onError: (err) => {
+  //       toast.error(t.someThingWrong);
+  //     },
+  //   });
 
   const handleRequestSparePart = () => {
     if (!isAuth()) {
@@ -263,24 +270,72 @@ function SpareParts() {
         return;
       }
     }
-    const checkImgForBe = selectedParts?.some(
-      (d) => !d?.imgPathForBe && d?.imgSrc
-    );
+    const checkImgForBe = selectedParts?.some((d) => !d?.image_id && d?.imgSrc);
     const imgWithoutPathBe = selectedParts?.filter(
-      (d) => !d?.imgPathForBe && d?.imgSrc
+      (d) => !d?.image_id && d?.imgSrc
     );
 
     if (checkImgForBe) {
-      // Ensure this logic is inside an async function
       (async () => {
-        imgWithoutPathBe?.forEach((part, index) => {
-          formDataImagesUploader.append(`media[${index}]`, part.imgFile); // Append files with keys like media[0], media[1], etc.
-        });
-
         try {
-          const response = await callUploadMedia(); // Await the endpoint call
+          setFetchMedia(true); // start loader
+
+          const uploadedResponses = [];
+
+          for (const [index, part] of imgWithoutPathBe.entries()) {
+            const formData = new FormData();
+            formData.append("file", part.imgFile);
+
+            const { data } = await axios.post(
+              `${process.env.NEXT_PUBLIC_API_BASE_URL}${FILES}${IMAGE}`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                  "x-api-key": "w123",
+                  Authorization: `Bearer ${localStorage?.getItem(
+                    "access_token"
+                  )}`,
+                },
+              }
+            );
+
+            // ✅ store both id and index for correct mapping later
+            uploadedResponses.push({
+              id: data?.id,
+              index,
+            });
+          }
+
+          console.log("Uploaded responses:", uploadedResponses);
+
+          // Merge uploaded ids into finalPartsAfterImageUpload
+          const indexThatWillMerge = selectedParts
+            ?.map((d, index) => (!d?.image_id && d?.imgSrc ? index : null))
+            .filter((index) => index !== null);
+
+          setFinalPartsAfterImageUpload(
+            selectedParts.map((part, index) => {
+              if (true) {
+                const uploadedItem = uploadedResponses.find(
+                  (u) => u.index === indexThatWillMerge.indexOf(index)
+                );
+                return {
+                  ...part,
+                  image_id: uploadedResponses[index]?.id || "",
+                };
+              }
+              return {
+                ...part,
+                image_id: "",
+              };
+            })
+          );
         } catch (error) {
-          //   console.error("Error uploading media:", error);
+          console.error("Error uploading media:", error);
+          toast.error(t.someThingWrong);
+        } finally {
+          setFetchMedia(false); // stop loader
         }
       })();
     } else {

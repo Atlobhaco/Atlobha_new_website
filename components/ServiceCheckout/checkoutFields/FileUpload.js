@@ -8,6 +8,7 @@ import style from "../../../pages/spareParts/confirmation/confirmation.module.sc
 import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { toast } from "react-toastify";
+import { DOCUMENT, FILES, IMAGE } from "@/config/endPoints/endPoints";
 
 export default function FileUpload({
   field,
@@ -45,7 +46,7 @@ export default function FileUpload({
       return;
     }
 
-    const endpoint = isImage ? "/files/image" : "/files/document";
+    const endpoint = isImage ? `${FILES}${IMAGE}` : `${FILES}${DOCUMENT}`;
     const formData = new FormData();
     formData.append("file", file);
     const keyName = singleField?.checkout_field?.type;
