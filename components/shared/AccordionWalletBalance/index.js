@@ -121,7 +121,7 @@ const AccordionWalletBalance = ({
         >
           <Box>{t.walletBalance}</Box>
           <Box>
-            {pickValue("wallet_balance")} {riyalImg && riyalImg()}
+            {pickValue("wallet_payment_value")} {riyalImg && riyalImg()}
           </Box>
         </Box>
 
@@ -134,7 +134,7 @@ const AccordionWalletBalance = ({
         >
           <Box>{t.cashbackBalance}</Box>
           <Box>
-            {pickValue("cashback_balance")} {riyalImg && riyalImg()}
+            {pickValue("cashback_payment_value")} {riyalImg && riyalImg()}
           </Box>
         </Box>
       </AccordionDetails>

@@ -791,7 +791,7 @@ const CheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
+                  +calculateReceiptResFromMainPage?.subtotal_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
                   +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
@@ -810,7 +810,7 @@ const CheckoutSummary = forwardRef(
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
           ٪ {t.vatPercentage} (
-          {calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
+          {calculateReceiptResFromMainPage?.subtotal_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />

@@ -717,7 +717,7 @@ function SummaryOrder({
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
           : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({receipt?.tax_without_delivery_fees_tax}{" "}
+        ٪ {t.vatPercentage} ({receipt?.subtotal_tax}{" "}
         {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
