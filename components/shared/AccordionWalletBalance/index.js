@@ -27,8 +27,8 @@ const AccordionWalletBalance = ({
       ? receipt?.[key]
       : receiptRes?.[key];
 
-  // ✅ Hide component if wallet_payment_value is 0, null, or undefined
-  const walletPaymentValue = pickValue("wallet_payment_value");
+  // ✅ Hide component if cashback_and_wallet_payment_value is 0, null, or undefinedg
+  const walletPaymentValue = pickValue("cashback_and_wallet_payment_value");
   if (!walletPaymentValue || Number(walletPaymentValue) === 0) return null;
 
   return (

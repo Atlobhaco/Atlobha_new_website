@@ -199,7 +199,7 @@ function WalletTransactions() {
                                   color: "#EE772F",
                                 }}
                               >
-                                {userDataProfile?.remaining_wallet_balance}{" "}
+                                {userDataProfile?.wallet_balance}{" "}
                                 {riyalImgOrange()}
                               </Box>{" "}
                             </Box>{" "}
@@ -213,7 +213,7 @@ function WalletTransactions() {
                           color: "#EE772F",
                         }}
                       >
-                        {userDataProfile?.wallet_balance} {riyalImgOrange()}
+                        {userDataProfile?.cashback_and_wallet_balance} {riyalImgOrange()}
                       </Box>{" "}
                     </Box>
                     {isMobile && (
