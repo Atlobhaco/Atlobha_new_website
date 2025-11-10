@@ -624,7 +624,9 @@ function SummaryOrder({
       {/* products price */}
       <Box className="d-flex justify-content-between mb-2">
         <Box sx={text}>{t.priceWithoutVat}</Box>
-        {type === ORDERSENUM?.PORTABLE || type === ORDERSENUM?.maintenance ? (
+        {type === ORDERSENUM?.PORTABLE ||
+        type === ORDERSENUM?.maintenance ||
+        type === ORDERSENUM?.spareParts ? (
           <Box sx={text}>
             {receipt?.subtotal}
             {riyalImgBlack()}
@@ -717,8 +719,7 @@ function SummaryOrder({
           receipt?.tax_percentage) === receipt?.tax_percentage
           ? receipt?.tax_percentage
           : calculateReceiptResFromMainPage?.tax_percentage) * 100}
-        ٪ {t.vatPercentage} ({receipt?.subtotal_tax}{" "}
-        {riyalImgBlack()})
+        ٪ {t.vatPercentage} ({receipt?.subtotal_tax} {riyalImgBlack()})
       </Box>
       <Divider sx={{ background: "#EAECF0", mb: 2 }} />
       {/* rest to pay */}
