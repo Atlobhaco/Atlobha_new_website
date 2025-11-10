@@ -147,7 +147,8 @@
   "addresses": "Addresses",
   "showAndEditProfile": "View and edit profile",
   "balanceProfile": "Account balance on Atlobha",
-  "tellFriends": "Tell friennds",
+  "tellFriends": "Tell friends",
+  "giftCard": "Voucher card",
   "rateAtlobha": "Rate atlobha",
   "favouriteAtlobha": "Favourites",
   "winPoints": "Earn 250 point",
@@ -561,5 +562,11 @@
   "transDate": "Transaction date",
   "balanceAfterTrans": "Balance after transaction",
   "addSuccess": "Added",
-  "toWalletBalance": "SAR to your wallet balance"
+  "toWalletBalance": "SAR to your wallet balance",
+  "InstallmentAtCenter": "It is possible to install this part at one of service centers instead of shipping it",
+  "chooseServiceCenter": "Choose service center",
+  "walletBalance": "wallet balance",
+  "cashbackBalance": "Cashback balance",
+  "mandatoryInstall": "Installation is mandatory",
+  "showServiceCenters": "Show service centers"
 }

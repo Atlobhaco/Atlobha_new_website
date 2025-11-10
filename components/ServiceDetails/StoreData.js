@@ -32,6 +32,7 @@ function StoreData({
   setSelectedStoreTime,
   setUserConfirmStoreDate,
   setSelectNewDate,
+  workWithProduct = false,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -168,7 +169,7 @@ function StoreData({
                   minHeight: "42px",
                 }}
               >
-                {store?.address}
+                {store?.address || "- -"}
               </Box>
             </Box>
           </Box>
@@ -222,79 +223,82 @@ function StoreData({
           </Button>{" "}
         </Box>
       </Box>
-      <Box
-        sx={{
-          borderTop: "1px solid #F0F0F0",
-          padding: isMobile ? "8px 1px 0 1px" : "12px 19px 0 19px",
-        }}
-      >
+
+      {!workWithProduct && (
         <Box
           sx={{
-            color: "#1C1C28",
-            fontSize: isMobile ? "12px" : "14px",
-            fontWeight: "700",
-            mb: 1,
+            borderTop: "1px solid #F0F0F0",
+            padding: isMobile ? "8px 1px 0 1px" : "12px 19px 0 19px",
           }}
         >
-          {t.chooseTime}
-        </Box>
+          <Box
+            sx={{
+              color: "#1C1C28",
+              fontSize: isMobile ? "12px" : "14px",
+              fontWeight: "700",
+              mb: 1,
+            }}
+          >
+            {t.chooseTime}
+          </Box>
 
-        {isAuth() ? (
-          prod?.slots_disabled ? (
-            !userHasAddress ? (
-              <UserHasNoAddress />
+          {isAuth() ? (
+            prod?.slots_disabled ? (
+              !userHasAddress ? (
+                <UserHasNoAddress />
+              ) : (
+                <WillCallLater />
+              )
             ) : (
-              <WillCallLater />
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: isMobile ? "5px" : "15px",
+                }}
+              >
+                <Box
+                  sx={{
+                    background: "#232323",
+                    borderRadius: "8px",
+                    padding: isMobile ? "6px 4px" : "7px 12px",
+                    color: "white",
+                    fontSize: isMobile ? "12px" : "14px",
+                    fontWeight: "500",
+                    minWidth: "fit-content",
+                  }}
+                >
+                  {selectedStoreTime && selectedStore?.id === store?.id
+                    ? `${formatSelectedUserDate(userConfirmStoreDate)} ${moment(
+                        selectedStoreTime?.start
+                      ).format("h:mm")} -
+					  ${moment(selectedStoreTime?.end).format("h:mm")}`
+                    : formatSlotDate(store?.next_available_slot?.start)}
+                </Box>
+                <Box
+                  sx={{
+                    minWidth: "fit-content",
+                    cursor: "pointer",
+                    fontSize: isMobile ? "11px" : "14px",
+                  }}
+                  onClick={(e) => {
+                    e?.stopPropagation();
+                    e?.preventDefault();
+                    setSelectedStore(store);
+                    setOpenAppointments(true);
+                  }}
+                >
+                  {t.chooseAnotherTime}
+                  <ArrowDropDownIcon />
+                </Box>
+              </Box>
             )
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: isMobile ? "5px" : "15px",
-              }}
-            >
-              <Box
-                sx={{
-                  background: "#232323",
-                  borderRadius: "8px",
-                  padding: isMobile ? "6px 4px" : "7px 12px",
-                  color: "white",
-                  fontSize: isMobile ? "12px" : "14px",
-                  fontWeight: "500",
-                  minWidth: "fit-content",
-                }}
-              >
-                {selectedStoreTime && selectedStore?.id === store?.id
-                  ? `${formatSelectedUserDate(userConfirmStoreDate)} ${moment(
-                      selectedStoreTime?.start
-                    ).format("h:mm")} -
-                  ${moment(selectedStoreTime?.end).format("h:mm")}`
-                  : formatSlotDate(store?.next_available_slot?.start)}
-              </Box>
-              <Box
-                sx={{
-                  minWidth: "fit-content",
-                  cursor: "pointer",
-                  fontSize: isMobile ? "11px" : "14px",
-                }}
-                onClick={(e) => {
-                  e?.stopPropagation();
-                  e?.preventDefault();
-                  setSelectedStore(store);
-                  setOpenAppointments(true);
-                }}
-              >
-                {t.chooseAnotherTime}
-                <ArrowDropDownIcon />
-              </Box>
-            </Box>
-          )
-        ) : (
-          <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
-        )}
-      </Box>
+            <LoginFirstToShowTimes setOpenLogin={setOpenLogin} />
+          )}
+        </Box>
+      )}
     </Box>
   );
 }

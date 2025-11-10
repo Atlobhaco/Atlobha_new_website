@@ -68,7 +68,7 @@ function UserBalanceHolder({ data, removeStyle = false }) {
           />
           <Box sx={{ mt: 1 }}>{t.balanceProfile}</Box>
           <span>
-            {data?.wallet_balance || 0} {riyalImgBlack()}
+            {data?.cashback_and_wallet_balance || 0} {riyalImgBlack()}
           </span>
         </div>
         <Image

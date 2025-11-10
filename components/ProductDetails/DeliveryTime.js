@@ -121,6 +121,7 @@ function DeliveryTime({ prod, cityDelivery, setCityDelivery }) {
           sx={{
             fontSize: isMobile ? "15px" : "18px",
             fontWeight: "700",
+            marginInlineEnd: "4px",
           }}
         >
           {renderDeliveryDate()}

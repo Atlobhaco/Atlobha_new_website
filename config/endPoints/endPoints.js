@@ -79,3 +79,6 @@ export const PAYMENT_FAILED = "/payment-failed";
 export const PROMO_CODE = "/promo-code";
 export const WALLET_TRANSACTIONS = "/wallet-transactions";
 export const SEGMENTS = "/segments";
+export const FILES = "/files";
+export const IMAGE = "/image";
+export const DOCUMENT = "/document";

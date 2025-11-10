@@ -29,6 +29,7 @@ import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
+import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
 
 const CheckoutSummary = forwardRef(
   (
@@ -764,17 +765,16 @@ const CheckoutSummary = forwardRef(
             {riyalImgBlack()}
           </Box>
         </Box>
+
         {/* pay from wallet balance */}
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={text}>{t.payFromBlanace}</Box>
-          <Box sx={text}>
-            {(calculateReceiptResFromMainPage?.wallet_payment_value ??
-              receipt?.wallet_payment_value) === receipt?.wallet_payment_value
-              ? receipt?.wallet_payment_value
-              : calculateReceiptResFromMainPage?.wallet_payment_value}{" "}
-            {riyalImgBlack()}
-          </Box>
-        </Box>
+        <AccordionWalletBalance
+          title={t.payFromBlanace}
+          riyalImg={riyalImgBlack}
+          textStyle={text}
+          receipt={receipt}
+          receiptRes={calculateReceiptResFromMainPage}
+        />
+
         {/* offers discount */}
         {calculateReceiptResFromMainPage?.offers_discount > 0 && (
           <Box className="d-flex justify-content-between mb-2">
@@ -797,7 +797,7 @@ const CheckoutSummary = forwardRef(
           <Box sx={text}>
             {+calculateReceiptResFromMainPage?.discount > 0
               ? (
-                  +calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax +
+                  +calculateReceiptResFromMainPage?.subtotal_tax +
                   +calculateReceiptResFromMainPage?.subtotal +
                   +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
@@ -816,7 +816,7 @@ const CheckoutSummary = forwardRef(
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
           ٪ {t.vatPercentage} (
-          {calculateReceiptResFromMainPage?.tax_without_delivery_fees_tax || 0}{" "}
+          {calculateReceiptResFromMainPage?.subtotal_tax || 0}{" "}
           {riyalImgBlack()})
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />

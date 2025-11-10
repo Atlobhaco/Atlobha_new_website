@@ -18,6 +18,7 @@ import useLocalization from "@/config/hooks/useLocalization";
 import Head from "next/head";
 import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttributes";
 import ProdImages from "@/components/ProductDetails/ProdImages";
+import ServiceCenterInstallment from "@/components/ProductDetails/ServiceCenterInstallment";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -129,6 +130,13 @@ function ProductDetails() {
               <Box sx={{ mb: 2 }}>
                 <TitlePrice prod={data} />
               </Box>
+
+              {data?.marketplace_category?.installed_in_service_center && (
+                <Box sx={{ mb: 2 }}>
+                  <ServiceCenterInstallment prod={data} />
+                </Box>
+              )}
+
               <Box sx={{ mb: 2 }}>
                 <DeliveryTime
                   prod={data}

@@ -1,4 +1,4 @@
-import { MEDIA, ORDERS, SPARE_PARTS } from "@/config/endPoints/endPoints";
+import { FILES, IMAGE } from "@/config/endPoints/endPoints";
 import { isAuth } from "@/config/hooks/isAuth";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -22,9 +22,9 @@ export const fetchPartDetails = createAsyncThunk(
     try {
       if (part.imgFile && isAuth()) {
         const formData = new FormData();
-        formData.append("media[0]", part.imgFile);
+        formData.append("file", part.imgFile);
         const response = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}${SPARE_PARTS}${ORDERS}${MEDIA}`,
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}${FILES}${IMAGE}`,
           formData,
           {
             headers: {
@@ -34,9 +34,10 @@ export const fetchPartDetails = createAsyncThunk(
             },
           }
         );
-        return { ...part, imgPathForBe: response.data?.data[0]?.image };
+        // image_id check for this key
+        return { ...part, image_id: response.data?.id };
       } else {
-        return { ...part, imgPathForBe: null };
+        return { ...part, image_id: null };
       }
       // Merge incoming part with response data
     } catch (error) {

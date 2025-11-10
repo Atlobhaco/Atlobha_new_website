@@ -147,6 +147,7 @@
   "showAndEditProfile": "اظهر وعدل ملفك الشخصي",
   "balanceProfile": "رصيد حسابي علي اطلبها",
   "tellFriends": "أخبر أصدقاءك",
+  "giftCard": "بطاقات الهدايا",
   "rateAtlobha": "قيم اطلبها",
   "favouriteAtlobha": "قائمة المفضلة",
   "winPoints": "اكسب 250 نقطة",
@@ -559,5 +560,11 @@
   "transDate": "تاريخ العملية",
   "balanceAfterTrans": "الرصيد بعد العملية",
   "addSuccess": "تم اضافة",
-  "toWalletBalance": "ريال الي رصيدك ف المحفظة"
+  "toWalletBalance": "ريال الي رصيدك ف المحفظة",
+  "InstallmentAtCenter": "متاح تركيب هذه القطعة لدي احد مراكز الخدمة المعتمدة بدلا من شحنها",
+  "chooseServiceCenter": "اختر المركز",
+  "walletBalance": "رصيد المحفظة",
+  "cashbackBalance": "رصيد الكاش باك",
+  "mandatoryInstall": "التركيب اجباري",
+  "showServiceCenters": "تصفح مراكز الخدمة"
 }

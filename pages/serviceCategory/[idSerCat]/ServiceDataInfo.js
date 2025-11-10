@@ -110,6 +110,7 @@ function ServiceDataInfo({ product, key }) {
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 2,
+                marginInlineEnd: "20px",
               }}
             >
               {product?.description || product?.desc}
