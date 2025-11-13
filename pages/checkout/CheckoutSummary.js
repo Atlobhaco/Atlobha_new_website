@@ -335,7 +335,14 @@ const CheckoutSummary = forwardRef(
       setLoadPayRequest(false);
       setFakeLoader(false);
       return () => clearInterval(interval);
-    }, []);
+    }, [
+      Cookies.get("created_order_id"),
+      Cookies.get("order_type"),
+      isMobile,
+      router,
+      calculateReceiptResFromMainPage,
+      router.isReady,
+    ]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -709,7 +716,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
-        <PaymentFailChecker />
+        {/* <PaymentFailChecker /> */}
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
