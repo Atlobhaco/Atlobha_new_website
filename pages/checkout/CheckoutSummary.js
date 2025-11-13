@@ -30,6 +30,7 @@ import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
+import { ORDERS, PAYMENT_FAILED } from "@/config/endPoints/endPoints";
 
 const CheckoutSummary = forwardRef(
   (
@@ -268,13 +269,39 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
+        const paymentFailed = Cookies.get("payment_failed");
         const orderId = Cookies.get("created_order_id");
-        const orderType = Cookies.get("order_type");
-        const paymentMethod = Cookies.get("payment_method");
-        if (orderId && orderType && paymentMethod) {
-          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-          setLoadPayRequest(false);
-          setFakeLoader(false);
+		const orderType = Cookies.get("order_type");
+
+        if (paymentFailed === "failed" && orderId) {
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": "w123",
+                Authorization: `Bearer ${localStorage?.getItem(
+                  "access_token"
+                )}`,
+              },
+            }
+          )
+            .then((res) => {
+              if (!res.ok) throw new Error("Request failed");
+              console.log(
+                "Payment fail (success) status updated for order:",
+                orderId
+              );
+            })
+            .catch((err) => console.error(err))
+            .finally(() => {
+              Cookies.remove("created_order_id");
+              Cookies.remove("payment_failed");
+              Cookies.remove("order_type");
+              Cookies.remove("payment_method");
+              Cookies.remove("url_after_pay_failed");
+            });
         }
 
         if (+res?.amount_to_pay === 0) {
