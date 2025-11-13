@@ -327,11 +327,13 @@ const CheckoutSummary = forwardRef(
         if (orderId && orderType && paymentMethod) {
           Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           setLoadPayRequest(false);
+          setFakeLoader(false);
           clearInterval(interval);
         }
       }, 1000);
 
       setLoadPayRequest(false);
+      setFakeLoader(false);
       return () => clearInterval(interval);
     }, []);
 
@@ -707,7 +709,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
-        <PaymentFailChecker />
+        {/* <PaymentFailChecker /> */}
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
@@ -897,6 +899,7 @@ const CheckoutSummary = forwardRef(
               ) {
                 setOpenEditUserModal(true);
                 setFakeLoader(false);
+                setLoadPayRequest(false);
                 return;
               }
             }
