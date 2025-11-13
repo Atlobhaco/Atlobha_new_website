@@ -362,7 +362,9 @@ const CheckoutSummary = forwardRef(
         const orderType = Cookies.get("order_type");
         const paymentMethod = Cookies.get("payment_method");
         if (orderId && orderType && paymentMethod) {
-          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setTimeout(() => {
+            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          }, 1000);
           setLoadPayRequest(false);
           setFakeLoader(false);
           clearInterval(interval);
