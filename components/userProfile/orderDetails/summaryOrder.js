@@ -297,6 +297,7 @@ function SummaryOrder({
     isMobile,
     router,
     calculateReceipt,
+    router.isReady,
   ]);
 
   const requestData = {
@@ -367,11 +368,15 @@ function SummaryOrder({
           }
         );
 
-        if (!response.ok) throw new Error("Merchant validation failed");
+        if (!response.ok) {
+          setRedirectToPayfort(false);
+          throw new Error("Merchant validation failed");
+        }
 
         const merchantSession = await response.json();
         session.completeMerchantValidation(merchantSession);
       } catch (error) {
+        setRedirectToPayfort(false);
         console.error("Merchant validation error:", error);
         session.abort();
       }
