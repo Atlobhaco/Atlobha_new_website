@@ -324,7 +324,6 @@ const CheckoutSummary = forwardRef(
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
         const paymentMethod = Cookies.get("payment_method");
-        alert("before");
         if (orderId && orderType && paymentMethod) {
           alert("after");
           Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
