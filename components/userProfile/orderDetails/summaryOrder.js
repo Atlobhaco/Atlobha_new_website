@@ -60,28 +60,6 @@ function SummaryOrder({
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const { allPromoCodeData } = useSelector((state) => state.addSpareParts);
 
-  /* -------------------------------------------------------------------------- */
-  /*             if user come back browser from any payment gateway             */
-  /* -------------------------------------------------------------------------- */
-  useEffect(() => {
-    const orderId = Cookies.get("created_order_id");
-    const orderType = Cookies.get("order_type");
-    const paytmentMethod = Cookies.get("payment_method");
-
-    if (orderId && orderType && paytmentMethod) {
-      Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-      setTimeout(() => {
-        setRedirectToPayfort(false);
-      }, 12000);
-    }
-  }, [
-    Cookies.get("created_order_id"),
-    Cookies.get("order_type"),
-    idOrder,
-    isMobile,
-    router,
-  ]);
-
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],
     url: `${USERS}/${user?.data?.user?.id}`,
@@ -297,6 +275,30 @@ function SummaryOrder({
       toast.error(err?.response?.data?.first_error || t.someThingWrong);
     },
   });
+
+  /* -------------------------------------------------------------------------- */
+  /*             if user come back browser from any payment gateway             */
+  /* -------------------------------------------------------------------------- */
+  useEffect(() => {
+    const orderId = Cookies.get("created_order_id");
+    const orderType = Cookies.get("order_type");
+    const paytmentMethod = Cookies.get("payment_method");
+
+    if (orderId && orderType && paytmentMethod) {
+      Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+      setTimeout(() => {
+        setRedirectToPayfort(false);
+      }, 12000);
+    }
+  }, [
+    Cookies.get("created_order_id"),
+    Cookies.get("order_type"),
+    idOrder,
+    isMobile,
+    router,
+    calculateReceipt,
+  ]);
+
   const requestData = {
     command: "PURCHASE",
     access_code: process.env.NEXT_PUBLIC_PAYFORT_ACCESS,
@@ -420,12 +422,14 @@ function SummaryOrder({
 
         if (!response.ok || result.error) {
           console.log(error in res, result.error);
+          setRedirectToPayfort(false);
           throw new Error(result.error || "Payment failed");
         }
 
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         router.push(`/spareParts/confirmation/${idOrder}`);
       } catch (error) {
+        setRedirectToPayfort(false);
         alert(`Payment failed: ${error.message}`);
         session.completePayment(ApplePaySession.STATUS_FAILURE);
       }
