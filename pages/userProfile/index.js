@@ -24,6 +24,7 @@ import CarActive from "../../public/icons/active-car-new.svg";
 import AddressActive from "../../public/icons/active-address-new.svg";
 import OrderActive from "../../public/icons/active-order-new.svg";
 import CardActive from "../../public/icons/cards-active-new.svg";
+import YellowCard from "../../public/icons/yellow-card.svg";
 import YellowGift from "../../public/icons/yellow-gift.svg";
 import Rate from "../../public/icons/rate.svg";
 import Favourite from "../../public/icons/favourite.svg";
@@ -57,30 +58,36 @@ function UserProfile({ recallUserData = false }) {
     ...(isAuth()
       ? [
           {
-            iconSrc: <YellowGift />,
-            text: t.tellFriends,
-            hint: t.winPoints,
-            //   onClick: () => alert("clicked"),
+            iconSrc: <YellowCard />,
+            text: t.giftCard,
+            onClick: () => router.push("/userProfile/gift"),
             path: "",
           },
-          {
-            iconSrc: <Rate />,
-            text: t.rateAtlobha,
-            //   onClick: () => alert("clicked"),
-            path: "",
-          },
-          {
-            iconSrc: <Favourite />,
-            text: t.favouriteAtlobha,
-            //   onClick: () => alert("clicked"),
-            path: "",
-          },
-          {
-            iconSrc: <Savety />,
-            text: t.safety,
-            //   onClick: () => alert("clicked"),
-            path: "",
-          },
+          //   {
+          //     iconSrc: <YellowGift />,
+          //     text: t.tellFriends,
+          //     hint: t.winPoints,
+          //     //   onClick: () => alert("clicked"),
+          //     path: "",
+          //   },
+          //   {
+          //     iconSrc: <Rate />,
+          //     text: t.rateAtlobha,
+          //     //   onClick: () => alert("clicked"),
+          //     path: "",
+          //   },
+          //   {
+          //     iconSrc: <Favourite />,
+          //     text: t.favouriteAtlobha,
+          //     //   onClick: () => alert("clicked"),
+          //     path: "",
+          //   },
+          //   {
+          //     iconSrc: <Savety />,
+          //     text: t.safety,
+          //     //   onClick: () => alert("clicked"),
+          //     path: "",
+          //   },
           {
             iconSrc: <HelpCenter />,
             text: t.helpCenter,

@@ -82,3 +82,5 @@ export const SEGMENTS = "/segments";
 export const FILES = "/files";
 export const IMAGE = "/image";
 export const DOCUMENT = "/document";
+export const VOUCHER_TEMPLATES = "/voucher-templates";
+export const VOUCHER_PURCHASE = "/voucher-purchases";

@@ -56,7 +56,7 @@ function SharedPhoneInput({
         disabled={disabled}
         ref={inputRef}
         style={{
-          height: "44px",
+          height: "40px",
         }}
         buttonStyle={{ display: "none" }}
         searchNotFound={t.no_results_title}

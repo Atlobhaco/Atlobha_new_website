@@ -338,8 +338,18 @@ const CheckoutSummary = forwardRef(
 
       if (orderId && orderType && paytmentMethod) {
         Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+        setTimeout(() => {
+          setLoadPayRequest(false);
+        }, 12000);
       }
-    }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
+    }, [
+      Cookies.get("created_order_id"),
+      Cookies.get("order_type"),
+      isMobile,
+      router,
+      calculateReceiptResFromMainPage,
+      router.isReady,
+    ]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -412,6 +422,7 @@ const CheckoutSummary = forwardRef(
           const merchantSession = await response.json();
           session.completeMerchantValidation(merchantSession);
         } catch (error) {
+          setLoadPayRequest(false);
           console.error("Merchant validation error:", error);
           session.abort();
         }
@@ -462,6 +473,7 @@ const CheckoutSummary = forwardRef(
           const result = await response.json();
 
           if (!response.ok || result.error) {
+            setLoadPayRequest(false);
             console.log(error in res, result.error);
             throw new Error(result.error || "Payment failed");
           }
@@ -469,11 +481,16 @@ const CheckoutSummary = forwardRef(
           session.completePayment(ApplePaySession.STATUS_SUCCESS);
           router.push(`/spareParts/confirmation/null?type=marketplace`);
         } catch (error) {
+          setLoadPayRequest(false);
           alert(`Payment failed: ${error.message}`);
           session.completePayment(ApplePaySession.STATUS_FAILURE);
         }
       };
-
+      session.oncancel = (event) => {
+        alert("Payment cancelled by user.");
+        setLoadPayRequest(false);
+        console.log("Apple Pay cancelled:", event);
+      };
       session.begin();
     };
 
@@ -810,8 +827,8 @@ const CheckoutSummary = forwardRef(
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
           ٪ {t.vatPercentage} (
-          {calculateReceiptResFromMainPage?.subtotal_tax || 0}{" "}
-          {riyalImgBlack()})
+          {calculateReceiptResFromMainPage?.subtotal_tax || 0} {riyalImgBlack()}
+          )
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />
         {/* rest to pay */}

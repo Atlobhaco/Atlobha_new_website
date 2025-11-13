@@ -439,6 +439,11 @@ function SummaryOrder({
         session.completePayment(ApplePaySession.STATUS_FAILURE);
       }
     };
+    session.oncancel = (event) => {
+      alert("Payment cancelled by user.");
+      setRedirectToPayfort(false);
+      console.log("Apple Pay cancelled:", event);
+    };
 
     session.begin();
   };
