@@ -332,24 +332,20 @@ const CheckoutSummary = forwardRef(
     }, []);
 
     useEffect(() => {
-      const orderId = Cookies.get("created_order_id");
-      const orderType = Cookies.get("order_type");
-      const paytmentMethod = Cookies.get("payment_method");
+      const interval = setInterval(() => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method");
 
-      if (orderId && orderType && paytmentMethod) {
-        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-        setTimeout(() => {
+        if (orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           setLoadPayRequest(false);
-        }, 12000);
-      }
-    }, [
-      Cookies.get("created_order_id"),
-      Cookies.get("order_type"),
-      isMobile,
-      router,
-      calculateReceiptResFromMainPage,
-      router.isReady,
-    ]);
+          clearInterval(interval);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }, []);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -912,6 +908,7 @@ const CheckoutSummary = forwardRef(
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);
+                setFakeLoader(false);
                 return;
               }
             }
