@@ -74,7 +74,13 @@ function SummaryOrder({
         setRedirectToPayfort(false);
       }, 12000);
     }
-  }, [Cookies.get("created_order_id"), Cookies.get("order_type"), idOrder]);
+  }, [
+    Cookies.get("created_order_id"),
+    Cookies.get("order_type"),
+    idOrder,
+    isMobile,
+    router,
+  ]);
 
   useCustomQuery({
     name: ["getUserInfoForOrder", openEditUserModal],
