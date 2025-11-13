@@ -268,6 +268,15 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method");
+        if (orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setLoadPayRequest(false);
+          setFakeLoader(false);
+        }
+
         if (+res?.amount_to_pay === 0) {
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
         }
@@ -331,9 +340,6 @@ const CheckoutSummary = forwardRef(
           clearInterval(interval);
         }
       }, 1000);
-
-      setLoadPayRequest(false);
-      setFakeLoader(false);
       return () => clearInterval(interval);
     }, [
       Cookies.get("created_order_id"),
