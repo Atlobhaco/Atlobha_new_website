@@ -271,7 +271,7 @@ const CheckoutSummary = forwardRef(
       onSuccess: (res) => {
         const paymentFailed = Cookies.get("payment_failed");
         const orderId = Cookies.get("created_order_id");
-		const orderType = Cookies.get("order_type");
+        const orderType = Cookies.get("order_type");
 
         if (paymentFailed === "failed" && orderId) {
           fetch(
@@ -301,6 +301,7 @@ const CheckoutSummary = forwardRef(
               Cookies.remove("order_type");
               Cookies.remove("payment_method");
               Cookies.remove("url_after_pay_failed");
+              callCalculateReceipt();
             });
         }
 
