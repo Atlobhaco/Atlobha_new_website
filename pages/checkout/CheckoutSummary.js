@@ -268,18 +268,6 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        //   check if amount to pay changed before pay
-        //   if (+res?.amount_to_pay !== +oldAmountToPay) {
-        //     toast.error(`${t.remainingtotal} ${t.beChanged}`);
-        //     return;
-        //   }
-        //   if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.applePay) {
-        //     if (+res?.amount_to_pay > 0) {
-        //       callConfirmPricing();
-        //     } else {
-        //       callConfirmPricing();
-        //     }
-        //   }
         if (+res?.amount_to_pay === 0) {
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
         }
@@ -336,8 +324,9 @@ const CheckoutSummary = forwardRef(
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
         const paymentMethod = Cookies.get("payment_method");
-
+        alert("before");
         if (orderId && orderType && paymentMethod) {
+          alert("after");
           Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           setLoadPayRequest(false);
           clearInterval(interval);
@@ -719,7 +708,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
-        {/* <PaymentFailChecker /> */}
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
