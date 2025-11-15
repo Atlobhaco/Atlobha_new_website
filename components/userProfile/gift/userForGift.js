@@ -44,7 +44,9 @@ function UserForGift({
       setTouched({ phone: false, name: false, email: false });
 
       // Revalidate form after autofill
-      await validateForm();
+      setTimeout(() => {
+        validateForm();
+      }, 500);
     } else {
       setFieldValue("name", "");
       setFieldValue("email", "");

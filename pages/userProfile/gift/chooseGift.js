@@ -86,7 +86,7 @@ function ChooseGift() {
         // validatePhoneNumber should now check the full number including remaining digits
         return validatePhoneNumber(value, country);
       }),
-    comment: Yup.string().notRequired(),
+    comment: Yup.string().nullable().notRequired(),
   });
 
   const handlePhoneInputChange = (e, setFieldValue) => {
