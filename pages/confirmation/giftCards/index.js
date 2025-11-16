@@ -13,6 +13,8 @@ import { Box } from "@mui/material";
 import SharedBtn from "@/components/shared/SharedBtn";
 import { useRouter } from "next/router";
 import { decryptAES } from "@/lib/mispay";
+import ShowGiftDetails from "@/components/userProfile/gift/showGiftDetails";
+import ShowGiftSummary from "@/components/userProfile/gift/showGiftSummary";
 
 function GiftCardsConfirmation() {
   const router = useRouter();
@@ -36,18 +38,6 @@ function GiftCardsConfirmation() {
       }
     };
   }, []);
-
-  const header = {
-    color: "#232323",
-    fontSize: isMobile ? "16px" : "22px",
-    fontWeight: "700",
-    mb: 1,
-  };
-  const text = {
-    color: "#232323",
-    fontSize: isMobile ? "12px" : "15px",
-    fontWeight: "500",
-  };
 
   const handleCopy = (id) => {
     navigator.clipboard.writeText(id).then(
@@ -143,64 +133,9 @@ function GiftCardsConfirmation() {
         </div>
       </div>
 
-      <div className={`${style["details"]}`}>
-        <div className={`${style["details-header"]}`}>
-          <Image
-            loading="lazy"
-            src="/icons/brakes-yellow.svg"
-            alt="alert"
-            width={24}
-            height={24}
-          />
-          {t.orderData}
-        </div>
-        <div className={`${style["details-parts"]}`}>
-          <div
-            className={`${style["details-parts_imgHolder"]}`}
-            style={{
-              width: "100px",
-            }}
-          >
-            <Image
-              loading="lazy"
-              src={
-                giftCardDetails?.selectedGift?.url || "/imgs/no-img-holder.svg"
-              }
-              width={isMobile ? 50 : 70}
-              height={isMobile ? 50 : 70}
-              alt={1}
-              onError={(e) => (e.target.srcset = "/imgs/no-prod-img.svg")} // Fallback to default image
-              style={{
-                width: "100%",
-              }}
-            />
-          </div>
-          <div className={`${style["details-parts_details"]}`}>
-            <div className={`${style["details-parts_details-name"]}`}>
-              بطاقة هدايا - {giftCardDetails?.price} {riyalImgBlack()}
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShowGiftDetails giftCardDetails={giftCardDetails} />
 
-      <Box
-        sx={{
-          width: isMobile ? "100%" : "50%",
-          mb: 5,
-        }}
-      >
-        <Box sx={header}>{t.orderSummary}</Box>
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={text}>{t.giftCardValue}</Box>
-          <Box sx={text}>
-            {giftCardDetails?.price} {riyalImgBlack()}
-          </Box>
-        </Box>
-        <Box className="d-flex justify-content-between mb-2">
-          <Box sx={text}>{t.quantity}</Box>
-          <Box sx={text}>1</Box>
-        </Box>
-      </Box>
+      <ShowGiftSummary giftCardDetails={giftCardDetails} />
 
       <div className="d-flex justify-content-center">
         <SharedBtn
