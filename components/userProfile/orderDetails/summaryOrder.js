@@ -440,7 +440,6 @@ function SummaryOrder({
       }
     };
     session.oncancel = (event) => {
-      alert("Payment cancelled by user.");
       setRedirectToPayfort(false);
       console.log("Apple Pay cancelled:", event);
     };

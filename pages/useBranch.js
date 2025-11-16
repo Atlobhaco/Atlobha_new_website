@@ -3,6 +3,7 @@ import { checkApplePayAvailability } from "@/constants/helpers";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { SERVICES } from "../constants/enums";
 
 const defaultProps = {
   $link_title: "",
@@ -37,6 +38,10 @@ const arrayForRedirect = [
   {
     ...defaultProps,
     $deeplink_path: "MarketplaceCategory",
+  },
+  {
+    ...defaultProps,
+    $deeplink_path: "Service",
   },
   {
     ...defaultProps,
@@ -163,7 +168,17 @@ const useBranch = () => {
         ) {
           router.push(`/category/${branchData?.data_parsed?.id}`);
         }
-        // redirect to marketplace category
+        // redirect to service details
+        if (redirectItemOrderDetails?.$deeplink_path === "Service") {
+          router.push(
+            `/service/${
+              branchData?.data_parsed?.id
+            }/?portableService=no-info&secType=${SERVICES}&name=${
+              branchData?.data_parsed?.$og_title || ""
+            }`
+          );
+        }
+        // redirect to marketplace category with sub
         if (
           redirectItemOrderDetails?.$deeplink_path === "MarketplaceSubcategory"
         ) {
