@@ -11,7 +11,6 @@ export const ORDERSENUM = {
   spareParts: "SparePartsOrder",
   maintenance: "MaintenanceReservation",
   PORTABLE: "PortableMaintenanceReservation",
-  gift: "VoucherPurchase",
   estimation: "EstimationRequest",
   //   midEast: "MideastOrder",
   //   majdou: "MajdouieMaintenanceReservation",

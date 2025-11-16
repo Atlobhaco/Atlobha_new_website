@@ -38,12 +38,18 @@ function OrderActions({
               </div> */}
             </div>
           );
-        } else if (order?.class === ORDERSENUM?.gift) {
-          return null;
         } else {
           return (
             <div className={`${style["new"]}`}>
               <div className={`${style["title"]}`}>{t.waitForPricing}</div>
+              {/* <div className={`${style["text"]}`}>
+                <SharedBtn
+                  text="cancelOrder"
+                  className="outline-btn"
+                  id="cancelOrder"
+                  customClass={`${style["btn-style"]}`}
+                />
+              </div> */}
             </div>
           );
         }

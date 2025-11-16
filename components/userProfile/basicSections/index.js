@@ -47,7 +47,6 @@ function BasicSections({
     justifyContent: "center",
     fontSize: isMobile ? "12px" : "14px",
     marginTop: "1px",
-    fontWeight: "bold",
   };
 
   return (

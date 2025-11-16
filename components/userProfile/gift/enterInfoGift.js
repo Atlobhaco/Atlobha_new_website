@@ -163,8 +163,6 @@ function EnterInfoGift({
           }}
         >
           <input
-            inputMode="numeric" // 👈 this makes mobile keyboard show numbers
-            pattern="[0-9]*"
             type="text"
             placeholder={t.anotherValue}
             className="custom-input"
