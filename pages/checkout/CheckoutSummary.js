@@ -301,6 +301,8 @@ const CheckoutSummary = forwardRef(
               Cookies.remove("order_type");
               Cookies.remove("payment_method");
               Cookies.remove("url_after_pay_failed");
+              setFakeLoader(false);
+              setLoadPayRequest(false);
               callCalculateReceipt();
             });
         }
@@ -365,8 +367,6 @@ const CheckoutSummary = forwardRef(
           setTimeout(() => {
             Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           }, 1000);
-          setLoadPayRequest(false);
-          setFakeLoader(false);
           clearInterval(interval);
         }
       }, 1000);
