@@ -148,8 +148,8 @@
   "showAndEditProfile": "View and edit profile",
   "balanceProfile": "Account balance on Atlobha",
   "tellFriends": "Tell friends",
-  "giftCard": "Voucher card",
-  "gift": "Voucher card",
+  "giftCard": "gift card",
+  "gift": "gift card",
   "rateAtlobha": "Rate atlobha",
   "favouriteAtlobha": "Favourites",
   "winPoints": "Earn 250 point",
@@ -228,7 +228,8 @@
     "SparePartsOrder": "Spare parts Pricing",
     "EstimationRequest": "Taqdeer",
     "MaintenanceReservation": "Fixed service",
-    "PortableMaintenanceReservation": "Portable service"
+    "PortableMaintenanceReservation": "Portable service",
+    "VoucherPurchase": "Gift cards"
   },
   "[idOrder]": "Orders details",
   "orderedAt": "Ordered at",

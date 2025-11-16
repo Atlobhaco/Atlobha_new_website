@@ -227,7 +227,8 @@
     "SparePartsOrder": "تسعير قطع غيار السيارات",
     "EstimationRequest": "تقدير",
     "MaintenanceReservation": "خدمة ثابتة",
-    "PortableMaintenanceReservation": "خدمة متنقلة"
+    "PortableMaintenanceReservation": "خدمة متنقلة",
+    "VoucherPurchase": "بطاقات الهدايا"
   },
   "[idOrder]": "تفاصيل الطلب",
   "orderedAt": "تم الطلب في",

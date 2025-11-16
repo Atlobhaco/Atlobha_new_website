@@ -65,6 +65,8 @@ function OrdersList({ order, callOrders }) {
         return t.maintenance;
       case ORDERSENUM?.PORTABLE:
         return t.portable;
+		case ORDERSENUM?.gift:
+        return t.gift;
       default:
         return "";
     }

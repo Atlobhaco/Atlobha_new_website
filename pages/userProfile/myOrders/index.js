@@ -178,7 +178,7 @@ function MyOrders() {
                 fontSize="14px"
                 arrayData={[
                   { id: "all", name: t.showAll },
-                  ...orderEnumArray()?.filter((d, index) => index <= 3),
+                  ...orderEnumArray()?.filter((d, index) => index <= 4),
                 ]}
                 handleClick={(data) => {
                   setPage(1);
