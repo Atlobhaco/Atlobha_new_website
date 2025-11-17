@@ -516,7 +516,9 @@ const CheckoutSummary = forwardRef(
         }
       };
       session.oncancel = (event) => {
+        alert("payment cancelled by user");
         setLoadPayRequest(false);
+        setFakeLoader(false);
         console.log("Apple Pay cancelled:", event);
       };
       session.begin();
