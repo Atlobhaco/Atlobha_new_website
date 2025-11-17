@@ -365,6 +365,12 @@ export default function BuyGift({
       }
     };
 
+    session.oncancel = (event) => {
+      alert(t.paymentCancelled);
+      setLoadPayRequest(false);
+      setFakeLoader(false);
+      console.log("Apple Pay cancelled:", event);
+    };
     session.begin();
   };
 
@@ -586,6 +592,7 @@ export default function BuyGift({
         >
           <AddAvailablePayMethods
             orderDetails={{ address: orderAddress, status: "new" }}
+            hidePayment={[PAYMENT_METHODS.cash]}
           />
         </Box>
       </div>

@@ -440,6 +440,7 @@ function SummaryOrder({
       }
     };
     session.oncancel = (event) => {
+      alert(t.paymentCancelled);
       setRedirectToPayfort(false);
       console.log("Apple Pay cancelled:", event);
     };
@@ -454,7 +455,6 @@ function SummaryOrder({
     const sourceItems = orderDetails?.parts?.length
       ? orderDetails.parts
       : orderDetails?.products || [];
-    // setLoadPayRequest(true);
     const res = await fetch("/api/tamara/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
