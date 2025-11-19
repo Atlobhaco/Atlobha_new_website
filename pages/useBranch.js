@@ -28,6 +28,12 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $link_title: "Gifts",
+    routeToRedirect: "/userProfile/gift",
+    mustAuthenticated: true,
+  },
+  {
+    ...defaultProps,
     $deeplink_path: "SparePartsOrder",
     mustAuthenticated: true,
   },
@@ -222,3 +228,5 @@ const useBranch = () => {
 
   return branchData;
 };
+
+export default useBranch;
