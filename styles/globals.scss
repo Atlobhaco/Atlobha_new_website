@@ -243,7 +243,7 @@ a {
   border-radius: 10px;
   input[type="tel"] {
     min-height: 100%;
-    height: 44px !important;
+    height: 40px !important;
     min-width: 100% !important;
     border-radius: 10px !important;
     border: 1px solid #d1d5db;
@@ -251,6 +251,9 @@ a {
     &:focus {
       box-shadow: unset !important;
       border: 1px solid $primary;
+    }
+    &:disabled {
+      color: grey;
     }
   }
   .flag-dropdown,
@@ -757,6 +760,8 @@ textarea {
   }
   .MuiPickersCalendarHeader-root {
     padding: 0px !important;
+    width: 96% !important;
+    margin: auto !important;
   }
   .MuiPickersArrowSwitcher-root {
     width: 100% !important;
@@ -772,4 +777,22 @@ textarea {
   margin: auto;
   border-radius: 8px;
   top: 0px;
+}
+
+.custom-input {
+  border: 1px solid #f0f0f0;
+  padding: 5px 10px;
+  height: 30px;
+  width: 150px;
+  border-radius: 8px;
+  font-size: 15px !important;
+  background-color: white !important;
+  color: black !important;
+  &::placeholder {
+    color: #429df8;
+  }
+  &:focus {
+    border: 1px solid #ffd400;
+    outline: none; /* optional, removes the default blue outline */
+  }
 }

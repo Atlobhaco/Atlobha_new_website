@@ -116,7 +116,9 @@ function MergeStep({
         })
       );
       toast.success(
-        !route?.includes(`/checkout`) ? t.canMakeSparePartReq : t.canAddOrder
+        !route?.includes(`/checkout`) && !route?.includes("chooseGift")
+          ? t.canMakeSparePartReq
+          : t.canAddOrder
       );
     },
   });

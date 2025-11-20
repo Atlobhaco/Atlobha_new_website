@@ -1,6 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
-import useBranch from "./useBranch";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useDispatch, useSelector } from "react-redux";
 import { APP_SECTIONS, HOME_SECTIONS } from "@/config/endPoints/endPoints";
@@ -23,6 +22,7 @@ import Head from "next/head";
 import CategoriesServices from "@/components/sectionsInfo/services/CategoriesServices";
 import SponserAds from "@/components/Marketplace/SponserAds";
 import FindMoreSegments from "@/components/Marketplace/FindMoreSegments";
+import useBranch from "./useBranch";
 
 export default function Home() {
   // useBranch user for deep  links

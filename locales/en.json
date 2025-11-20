@@ -148,7 +148,8 @@
   "showAndEditProfile": "View and edit profile",
   "balanceProfile": "Account balance on Atlobha",
   "tellFriends": "Tell friends",
-  "giftCard": "Voucher card",
+  "giftCard": "gift card",
+  "gift": "gift card",
   "rateAtlobha": "Rate atlobha",
   "favouriteAtlobha": "Favourites",
   "winPoints": "Earn 250 point",
@@ -227,7 +228,8 @@
     "SparePartsOrder": "Spare parts Pricing",
     "EstimationRequest": "Taqdeer",
     "MaintenanceReservation": "Fixed service",
-    "PortableMaintenanceReservation": "Portable service"
+    "PortableMaintenanceReservation": "Portable service",
+    "VoucherPurchase": "Gift cards"
   },
   "[idOrder]": "Orders details",
   "orderedAt": "Ordered at",
@@ -568,5 +570,21 @@
   "walletBalance": "wallet balance",
   "cashbackBalance": "Cashback balance",
   "mandatoryInstall": "Installation is mandatory",
-  "showServiceCenters": "Show service centers"
+  "showServiceCenters": "Show service centers",
+  "oneCardIsEnough": "One card… for every need on the road.",
+  "voucherAtlobhaForAll": "The “Order It” card includes services, maintenance, and spare parts - all with ease.",
+  "buyVoucher": "Buy gift card",
+  "replaceVoucher": "Replace gift card",
+  "chooseGift": "Choose card",
+  "valuesGiftCard": "Gift card value (SAR)",
+  "deliveryDetails": "Delivery details",
+  "buyForSelf": "Buy for myself",
+  "addMessage": "Add message",
+  "giftCards": "Gift cards",
+  "youCanCheckTerms": "You can review the usage instructions and the terms and conditions before completing the purchase.",
+  "continueBuying": "continue buying",
+  "giftCardValue": "gift value",
+  "quantity": "quantity",
+  "anotherValue": "another value",
+  "orderData": "order data"
 }

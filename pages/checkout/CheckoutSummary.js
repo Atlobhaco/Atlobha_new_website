@@ -30,6 +30,7 @@ import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
+import { ORDERS, PAYMENT_FAILED } from "@/config/endPoints/endPoints";
 
 const CheckoutSummary = forwardRef(
   (
@@ -268,18 +269,44 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        //   check if amount to pay changed before pay
-        //   if (+res?.amount_to_pay !== +oldAmountToPay) {
-        //     toast.error(`${t.remainingtotal} ${t.beChanged}`);
-        //     return;
-        //   }
-        //   if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.applePay) {
-        //     if (+res?.amount_to_pay > 0) {
-        //       callConfirmPricing();
-        //     } else {
-        //       callConfirmPricing();
-        //     }
-        //   }
+        const paymentFailed = Cookies.get("payment_failed");
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+
+        if (paymentFailed === "failed" && orderId) {
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": "w123",
+                Authorization: `Bearer ${localStorage?.getItem(
+                  "access_token"
+                )}`,
+              },
+            }
+          )
+            .then((res) => {
+              if (!res.ok) throw new Error("Request failed");
+              console.log(
+                "Payment fail (success) status updated for order:",
+                orderId
+              );
+            })
+            .catch((err) => console.error(err))
+            .finally(() => {
+              Cookies.remove("created_order_id");
+              Cookies.remove("payment_failed");
+              Cookies.remove("order_type");
+              Cookies.remove("payment_method");
+              Cookies.remove("url_after_pay_failed");
+              setFakeLoader(false);
+              setLoadPayRequest(false);
+              callCalculateReceipt();
+            });
+        }
+
         if (+res?.amount_to_pay === 0) {
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
         }
@@ -332,14 +359,26 @@ const CheckoutSummary = forwardRef(
     }, []);
 
     useEffect(() => {
-      const orderId = Cookies.get("created_order_id");
-      const orderType = Cookies.get("order_type");
-      const paytmentMethod = Cookies.get("payment_method");
-
-      if (orderId && orderType && paytmentMethod) {
-        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-      }
-    }, [Cookies.get("created_order_id"), Cookies.get("order_type")]);
+      const interval = setInterval(() => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method");
+        if (orderId && orderType && paymentMethod) {
+          setTimeout(() => {
+            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          }, 1000);
+          clearInterval(interval);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [
+      Cookies.get("created_order_id"),
+      Cookies.get("order_type"),
+      isMobile,
+      router,
+      calculateReceiptResFromMainPage,
+      router.isReady,
+    ]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -412,6 +451,7 @@ const CheckoutSummary = forwardRef(
           const merchantSession = await response.json();
           session.completeMerchantValidation(merchantSession);
         } catch (error) {
+          setLoadPayRequest(false);
           console.error("Merchant validation error:", error);
           session.abort();
         }
@@ -462,6 +502,7 @@ const CheckoutSummary = forwardRef(
           const result = await response.json();
 
           if (!response.ok || result.error) {
+            setLoadPayRequest(false);
             console.log(error in res, result.error);
             throw new Error(result.error || "Payment failed");
           }
@@ -469,11 +510,17 @@ const CheckoutSummary = forwardRef(
           session.completePayment(ApplePaySession.STATUS_SUCCESS);
           router.push(`/spareParts/confirmation/null?type=marketplace`);
         } catch (error) {
+          setLoadPayRequest(false);
           alert(`Payment failed: ${error.message}`);
           session.completePayment(ApplePaySession.STATUS_FAILURE);
         }
       };
-
+      session.oncancel = (event) => {
+        alert(t.paymentCancelled);
+        setLoadPayRequest(false);
+        setFakeLoader(false);
+        console.log("Apple Pay cancelled:", event);
+      };
       session.begin();
     };
 
@@ -816,8 +863,8 @@ const CheckoutSummary = forwardRef(
             ? receipt?.tax_percentage
             : calculateReceiptResFromMainPage?.tax_percentage) || 0) * 100}
           ٪ {t.vatPercentage} (
-          {calculateReceiptResFromMainPage?.subtotal_tax || 0}{" "}
-          {riyalImgBlack()})
+          {calculateReceiptResFromMainPage?.subtotal_tax || 0} {riyalImgBlack()}
+          )
         </Box>
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />
         {/* rest to pay */}
@@ -901,6 +948,8 @@ const CheckoutSummary = forwardRef(
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);
+                setFakeLoader(false);
+                setLoadPayRequest(false);
                 return;
               }
             }

@@ -21,13 +21,7 @@ import { useRouter } from "next/router";
 import DialogCentered from "@/components/DialogCentered";
 import PaymentMethodLimit from "@/components/PurchaseLimit/PaymentMethodLimit";
 
-function AddAvailablePayMethods({
-  orderDetails = {},
-  tabbyMinLimit = 100,
-  tabbyMaxLimit = 3000,
-  misMinLimit = 145,
-  misMaxLimit = 7500,
-}) {
+function AddAvailablePayMethods({ orderDetails = {}, hidePayment = [] }) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { route } = router;
@@ -156,15 +150,22 @@ function AddAvailablePayMethods({
         <ProductCardSkeleton height={140} />
       ) : (
         availablePayments
-          ?.filter(
-            (d) =>
-              d?.is_active &&
-              (d?.key === PAYMENT_METHODS?.credit ||
-                d?.key === PAYMENT_METHODS?.applePay ||
-                d?.key === PAYMENT_METHODS?.tamara ||
-                d?.key === PAYMENT_METHODS?.tabby ||
-                d?.key === PAYMENT_METHODS?.mis)
-          )
+          ?.filter((d) => {
+            // Skip inactive method
+            if (!d?.is_active) return false;
+
+            // Skip if method is in hidePayment array
+            if (hidePayment.includes(d?.key)) return false;
+
+            // Allow only your listed methods
+            return [
+              PAYMENT_METHODS.credit,
+              PAYMENT_METHODS.applePay,
+              PAYMENT_METHODS.tamara,
+              PAYMENT_METHODS.tabby,
+              PAYMENT_METHODS.mis,
+            ].includes(d?.key);
+          })
           ?.map(
             (pay) =>
               (pay?.key !== PAYMENT_METHODS?.applePay ||

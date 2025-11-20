@@ -525,6 +525,13 @@ const ServiceCheckoutSummary = forwardRef(
         }
       };
 
+      session.oncancel = (event) => {
+        alert(t.paymentCancelled);
+        setLoadPayRequest(false);
+        setFakeLoader(false);
+        console.log("Apple Pay cancelled:", event);
+      };
+
       session.begin();
     };
 
@@ -774,7 +781,7 @@ const ServiceCheckoutSummary = forwardRef(
             {riyalImgBlack()}
           </Box>
         </Box>
-		
+
         {/* pay from wallet balance */}
         <AccordionWalletBalance
           title={t.payFromBlanace}
@@ -813,8 +820,8 @@ const ServiceCheckoutSummary = forwardRef(
           {t.include}{" "}
           {(calculateReceiptResFromMainPage?.tax_percentage || 0) * 100}٪{" "}
           {t.vatPercentage} (
-          {calculateReceiptResFromMainPage?.subtotal_tax || 0}{" "}
-          {riyalImgBlack()})
+          {calculateReceiptResFromMainPage?.subtotal_tax || 0} {riyalImgBlack()}
+          )
         </Box>
 
         <Divider sx={{ background: "#EAECF0", mb: 2 }} />

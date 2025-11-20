@@ -55,7 +55,7 @@ function ServiceStoreSelections({
   return (
     <Box
       sx={{
-        maxHeight: workWithProduct && "60vh",
+        maxHeight: workWithProduct ? "60vh" : "unset",
         overflow: workWithProduct && "auto",
       }}
     >
