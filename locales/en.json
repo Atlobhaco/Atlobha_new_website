@@ -586,5 +586,21 @@
   "giftCardValue": "gift value",
   "quantity": "quantity",
   "anotherValue": "another value",
-  "orderData": "order data"
+  "orderData": "order data",
+  "commonQuestions": "Frequently Asked Questions",
+  "callSupport": "Contact Support",
+  "questions": {
+    "q1": "How do I complete the purchase process?",
+    "a1": "The offer validity period is explained along with the required reservation deposit that must be transferred to the dealership to secure the offer price. The dealership will contact you during the validity period to agree on the appropriate payment method for the reservation deposit, followed by a visit to the dealership to finalize the purchase.",
+    "q2": "What happens if I don't receive any offers?",
+    "a2": "If no offers are received during the request period, you may request a refund of the service fee. We aim to ensure that every request receives suitable price offers, but this option is provided as a precaution for unexpected circumstances.",
+    "q3": "Are there any fees for using the Atlobha feature and what payment methods are available?",
+    "a3": "Yes, there is a small fee for using the Atlobha feature. To enhance your experience and ensure purchase seriousness, we provide multiple payment options including credit cards, Tabby, Tamara, and Apple Pay.",
+    "q4": "What is the refund policy?",
+    "a4": "Within 7 days from the request expiration date:<br/> 1- You may request an extension if you haven't received three offers and none were suitable.<br/> 2- If you did not receive three offers and none were suitable, you may submit a new request for another car without extra fees. <br/>3- You may request a refund if you did not receive three or more offers and did not click Interested in the offer on any received offers."
+  },
+  "howHelpYou": "How can we help you?",
+  "someQuestions": "Here are the answers to the most common questions.",
+  "dontFindAnswer": "Didn't find andswer ?",
+  "communicateWithSupport": "Contact the support team and we will assist you immediately."
 }
