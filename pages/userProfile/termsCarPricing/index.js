@@ -3,19 +3,19 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import BreadCrumb from "@/components/BreadCrumb";
 import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
-import TermsConditionsData from "@/components/userProfile/termsCondition";
+import TermsCarPricingContent from "@/components/userProfile/termsCarPricingContent";
 import dynamic from "next/dynamic";
 
-function TermsCondition() {
+const UserProfile = dynamic(() => import(".."), {
+  ssr: false, // disable SSR if the component uses browser APIs (window, document, etc.)
+  loading: () => <p>...</p>, // optional fallback UI
+});
+
+function TermsCarPricing() {
   const router = useRouter();
   const { mobileScreen, customScreens } = router.query;
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
-
-  const UserProfile = dynamic(() => import(".."), {
-    ssr: false, // disable SSR if the component uses browser APIs (window, document, etc.)
-    loading: () => <p>...</p>, // optional fallback UI
-  });
 
   return (
     <div className="container-fluid">
@@ -32,11 +32,11 @@ function TermsCondition() {
             </div>
           )}
 
-          <TermsConditionsData />
+          <TermsCarPricingContent />
         </div>
       </div>
     </div>
   );
 }
 
-export default TermsCondition;
+export default TermsCarPricing;

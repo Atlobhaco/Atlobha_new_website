@@ -1,14 +1,9 @@
 import BreadCrumb from "@/components/BreadCrumb";
-import useLocalization from "@/config/hooks/useLocalization";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import style from "./commonQuestions.module.scss";
-import { Accordion, AccordionDetails, AccordionSummary } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import Image from "next/image";
-import SharedBtn from "@/components/shared/SharedBtn";
+import React from "react";
+import Questions from "@/components/userProfile/commonQuestions";
 
 const UserProfile = dynamic(() => import(".."), {
   ssr: false, // disable SSR if the component uses browser APIs (window, document, etc.)
@@ -17,34 +12,8 @@ const UserProfile = dynamic(() => import(".."), {
 
 function CommonQuestions() {
   const router = useRouter();
-  const { mobileScreen, customScreens } = router.query;
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
-
-  const [expanded, setExpanded] = useState(false);
-
-  const handleChange = (panel) => (event, isExpanded) => {
-    setExpanded(isExpanded ? panel : false);
-  };
-
-  const pageContent = [
-    {
-      question: t.questions.q1,
-      answer: t.questions.a1,
-    },
-    {
-      question: t.questions.q2,
-      answer: t.questions.a2,
-    },
-    {
-      question: t.questions.q3,
-      answer: t.questions.a3,
-    },
-    {
-      question: t.questions.q4,
-      answer: t.questions.a4,
-    },
-  ];
+  const { mobileScreen, customScreens } = router.query;
 
   return (
     <div className="container-fluid">
@@ -61,92 +30,7 @@ function CommonQuestions() {
             </div>
           )}
 
-          <div className="row mb-4 mt-3">
-            <div className="col-12 mb-4">
-              <div className={`${style["how-to-help"]}`}>
-                <div className={`${style["how-to-help_title"]}`}>
-                  {t.howHelpYou}
-                </div>
-                <div className={`${style["how-to-help_sub-title"]}`}>
-                  {t.someQuestions}
-                </div>
-              </div>
-            </div>
-
-            <div className="col-12">
-              {pageContent?.map((content, index) => (
-                <Accordion
-                  key={content?.question}
-                  expanded={expanded === `panel${index}`}
-                  onChange={handleChange(`panel${index}`)}
-                  className={`${style["accordion"]}`}
-                  sx={{
-                    "&:hover": {
-                      opacity: expanded === `panel${index}` && 1,
-                    },
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={
-                      <ExpandMoreIcon
-                        sx={{
-                          color:
-                            expanded === `panel${index}`
-                              ? "#FFD400"
-                              : "#99A1AF", // yellow when open
-                          transition: "0.3s",
-                        }}
-                      />
-                    }
-                    aria-controls="panel1-content"
-                    id="panel1-header"
-                  >
-                    <div className={`${style["accordion_question"]}`}>
-                      {content?.question}
-                    </div>
-                  </AccordionSummary>
-                  <AccordionDetails
-                    className={style["accordion_answer"]}
-                    dangerouslySetInnerHTML={{ __html: content?.answer }}
-                  />
-                </Accordion>
-              ))}
-            </div>
-
-            <div className="col-12">
-              <div className={`${style["communicate"]}`}>
-                <Image
-                  src="/imgs/question.png"
-                  alt="img"
-                  width={isMobile ? 66 : 84}
-                  height={isMobile ? 66 : 84}
-                />
-                <div className={`${style["communicate_title"]}`}>
-                  {t.dontFindAnswer}
-                </div>
-                <div className={`${style["communicate_sub-title"]}`}>
-                  {t.communicateWithSupport}
-                </div>
-                <SharedBtn
-                  className="big-main-btn"
-                  customClass="w-100"
-                  text="callSupport"
-                  onClick={() => {
-                    window.open(
-                      `https://api.whatsapp.com/send/?phone=966502670094&text&type=phone_number&app_absent=0`,
-                      "_blank",
-                      "noopener,noreferrer"
-                    );
-                    window.webengage.onReady(() => {
-                      webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                        event_status: true,
-                      });
-                    });
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+          <Questions />
         </div>{" "}
       </div>{" "}
     </div>

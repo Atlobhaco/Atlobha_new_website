@@ -1,0 +1,189 @@
+@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
+
+.hint {
+  margin-top: 32px;
+  @include mobile-screen-style {
+    margin-bottom: 40px;
+  }
+}
+
+.heading {
+  font-size: 24px;
+  font-weight: 700;
+  color: #232323;
+  @include mobile-screen-style {
+    font-size: 16px;
+  }
+}
+
+.sub-heading {
+  font-size: 18px;
+  font-weight: 400;
+  color: #1c1c28;
+  @include mobile-screen-style {
+    font-size: 12px;
+  }
+}
+
+.border-bottom {
+  border-bottom: 4px solid #f6f6f6;
+}
+
+.specify-box {
+  display: flex;
+  background-color: #dee2e6;
+  padding: 16px 16px 16px 16px;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  height: 100px;
+  align-items: center;
+  cursor: pointer;
+  &_check {
+    display: flex;
+    height: 80%;
+    align-items: flex-start;
+  }
+  &_labels {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    &-title {
+      color: #252c32;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    &-sub-title {
+      color: #6a7282;
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+}
+
+.active-specify {
+  border: 1px solid #ffd400 !important;
+}
+
+.choose-specify {
+  color: #374151;
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  @include mobile-screen-style {
+    font-size: 14px;
+  }
+}
+.no-select-specify {
+  background: rgba(224, 110, 14, 0.1);
+  padding: 7px 20px;
+  border-radius: 8px;
+  display: flex;
+  font-size: 14px;
+  font-weight: 500;
+  color: #e06e0e;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  width: fit-content;
+  @include mobile-screen-style {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+}
+
+.specify {
+  padding: 14px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  width: fit-content;
+  min-width: 250px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  @include mobile-screen-style {
+    min-width: 100%;
+  }
+}
+
+.groups {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0px 20px;
+  overflow: auto hidden;
+  scrollbar-width: none; /* Firefox */
+  &_headers {
+    min-width: fit-content;
+    margin: 0px 0px 0px 20px;
+    font-weight: 700;
+    color: black;
+    cursor: pointer;
+    &-active {
+      border-bottom: 2px solid black;
+    }
+  }
+}
+
+.groups::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.holder {
+  border: 1px solid #f3f4f6;
+  border-radius: 8px;
+  margin-top: 20px;
+  &-specification {
+    border-bottom: 1px solid #f3f4f6;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+}
+
+.purchase-method {
+  padding: 12px 20px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  min-width: 160px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+  color: #252c32;
+  @include mobile-screen-style {
+    width: 50%;
+    padding: 12px 6px;
+    min-width: unset;
+  }
+}
+
+.purchase-method-active {
+  background-color: #ffd400;
+}
+
+.terms-condition {
+  color: #b0b0b0;
+  margin-top: 15px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.car-info {
+  font-weight: 500;
+  font-size: 16px;
+  color: #232323;
+}
+
+.headers-checkout {
+  font-size: 20px;
+  font-weight: 700;
+  color: #232323;
+  @include mobile-screen-style {
+    font-size: 14px;
+  }
+}

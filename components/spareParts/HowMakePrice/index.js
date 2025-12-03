@@ -12,17 +12,21 @@ const closeHolder = {
   justifyContent: "flex-end",
 };
 
-function HowMakePrice({ setOpenhowPricing }) {
+function HowMakePrice({
+  setOpenhowPricing,
+  heading = false,
+  imgSrc = false,
+  infoSteps = [],
+  infoImgArray = [],
+  customFooter = false,
+}) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
-
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const handleSelect = (selectedIndex) => {
-    setActiveIndex(selectedIndex);
-  };
+  const handleSelect = (i) => setActiveIndex(i);
 
-  const header = {
+  const headerStyle = {
     mt: 2,
     mb: 3,
     display: "flex",
@@ -32,7 +36,8 @@ function HowMakePrice({ setOpenhowPricing }) {
     fontSize: isMobile ? "17px" : "20px",
     color: "black",
   };
-  const contentData = {
+
+  const baseStepStyle = {
     display: "flex",
     gap: "10px",
     alignItems: "center",
@@ -43,122 +48,100 @@ function HowMakePrice({ setOpenhowPricing }) {
     paddingInlineEnd: isMobile ? "0px" : "50px",
   };
 
+  // Steps array
+  const steps = (infoSteps?.length && infoSteps) || [
+    t.addNameNum,
+    t.searchForItems,
+    t.informYouWhenDone,
+    t.ConfirmThePricing,
+  ];
+
   return (
     <Box>
+      {/* Close Button */}
       <Box sx={closeHolder}>
         <Image
           loading="lazy"
           onClick={() => setOpenhowPricing(false)}
-          style={{
-            cursor: "pointer",
-          }}
+          style={{ cursor: "pointer" }}
           src="/icons/close-circle.svg"
           alt="close"
           width={34}
           height={34}
         />
       </Box>
-      <Box sx={header}>
+
+      {/* Header */}
+      <Box sx={headerStyle}>
         <Image
           loading="lazy"
-          style={{
-            cursor: "pointer",
-          }}
-          src="/imgs/how-price.svg"
-          alt="close"
+          style={{ cursor: "pointer" }}
+          src={imgSrc || "/imgs/how-price.svg"}
+          alt="header-img"
           width={53}
           height={37}
         />
-        <Box component="span">{t.whatIsPricing}</Box>
-      </Box>
-      <Box
-        sx={{ ...contentData, fontWeight: activeIndex === 0 ? "700" : "500" }}
-      >
-        <Image
-          loading="lazy"
-          src={`/icons/${
-            activeIndex === 0 ? "yellow-circle" : "white-circle"
-          }-check.svg`}
-          alt="check"
-          width={18}
-          height={18}
-        />
-        {t.addNameNum}
-      </Box>
-      <Box
-        sx={{ ...contentData, fontWeight: activeIndex === 1 ? "700" : "500" }}
-      >
-        <Image
-          loading="lazy"
-          src={`/icons/${
-            activeIndex === 1 ? "yellow-circle" : "white-circle"
-          }-check.svg`}
-          alt="check"
-          width={18}
-          height={18}
-        />
-        {t.searchForItems}
-      </Box>
-      <Box
-        sx={{ ...contentData, fontWeight: activeIndex === 2 ? "700" : "500" }}
-      >
-        <Image
-          loading="lazy"
-          src={`/icons/${
-            activeIndex === 2 ? "yellow-circle" : "white-circle"
-          }-check.svg`}
-          alt="check"
-          width={18}
-          height={18}
-        />
-        {t.informYouWhenDone}
-      </Box>
-      <Box
-        sx={{ ...contentData, fontWeight: activeIndex === 3 ? "700" : "500" }}
-      >
-        <Image
-          loading="lazy"
-          src={`/icons/${
-            activeIndex === 3 ? "yellow-circle" : "white-circle"
-          }-check.svg`}
-          alt="check"
-          width={18}
-          height={18}
-        />
-        {t.ConfirmThePricing}
+        <Box component="span">{heading || t.whatIsPricing}</Box>
       </Box>
 
+      {/*  Steps List */}
+      {steps.map((text, i) => {
+        const active = activeIndex === i;
+        return (
+          <Box
+            key={i}
+            sx={{ ...baseStepStyle, fontWeight: active ? "700" : "500" }}
+          >
+            <Image
+              loading="lazy"
+              src={`/icons/${
+                active ? "yellow-circle" : "white-circle"
+              }-check.svg`}
+              alt="check"
+              width={18}
+              height={18}
+            />
+            {text}
+          </Box>
+        );
+      })}
+
+      {/* Slider */}
       <CarouselHowPricing
         handleSelect={handleSelect}
         activeIndex={activeIndex}
         setActiveIndex={setActiveIndex}
+        infoImgArray={infoImgArray}
       />
 
-      <Box
-        sx={{
-          marginTop: "40px",
-        }}
-      >
-        <SharedBtn
-          className="big-main-btn"
-          customClass="w-100"
-          text="addRequest"
-          onClick={() => setOpenhowPricing(false)}
-        />
-      </Box>
-      <Box
-        onClick={() => setOpenhowPricing(false)}
-        sx={{
-          margin: "20px 0px",
-          textAlign: "center",
-          color: "#6B7280",
-          fontSize: "16px",
-          fontWeight: "500",
-          cursor: "pointer",
-        }}
-      >
-        {t.needMoreInfo}
-      </Box>
+      {customFooter || (
+        <>
+          {/* CTA Button */}
+          <Box sx={{ marginTop: "40px" }}>
+            <SharedBtn
+              className="big-main-btn"
+              customClass="w-100"
+              text="addRequest"
+              onClick={() => setOpenhowPricing(false)}
+            />
+          </Box>
+
+          {/* Close Text */}
+          <Box
+            onClick={() => setOpenhowPricing(false)}
+            sx={{
+              margin: "20px 0px",
+              textAlign: "center",
+              color: "#6B7280",
+              fontSize: "16px",
+              fontWeight: "500",
+              cursor: "pointer",
+            }}
+          >
+            {t.needMoreInfo}
+          </Box>
+        </>
+      )}
     </Box>
   );
 }

@@ -32,6 +32,7 @@ function SharedTextField({
   customHeight = false,
   inputMode = "text", // can be "numeric", "decimal", "tel", "email", etc.
   pattern = null, // optional
+  hint = false,
 }) {
   const { isMobile } = useScreenSize();
   const { locale } = useLocalization();
@@ -177,6 +178,17 @@ function SharedTextField({
           }}
         >
           {error}
+        </Box>
+      )}
+      {!error && hint && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "-23px",
+            color: "#6B7280",
+          }}
+        >
+          {hint}
         </Box>
       )}
     </Box>

@@ -84,3 +84,5 @@ export const IMAGE = "/image";
 export const DOCUMENT = "/document";
 export const VOUCHER_TEMPLATES = "/voucher-templates";
 export const VOUCHER_PURCHASE = "/voucher-purchases";
+export const SPECS = "/specs";
+export const VEHICLE_PRICING_ORDERS = "/vehicle-pricing-orders";

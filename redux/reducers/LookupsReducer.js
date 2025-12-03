@@ -6,7 +6,7 @@ const generateYears = () => {
   return Array.from({ length: currentYear - 1990 + 1 }, (_, i) => {
     const year = 1990 + i;
     return { id: year, name: year };
-  });
+  }).reverse();
 };
 
 const initialState = {

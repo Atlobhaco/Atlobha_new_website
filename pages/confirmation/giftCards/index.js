@@ -5,10 +5,7 @@ import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { toast } from "react-toastify";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import Image from "next/image";
-import {
-  availablePaymentMethodImages,
-  riyalImgBlack,
-} from "@/constants/helpers";
+import { availablePaymentMethodImages } from "@/constants/helpers";
 import { Box } from "@mui/material";
 import SharedBtn from "@/components/shared/SharedBtn";
 import { useRouter } from "next/router";

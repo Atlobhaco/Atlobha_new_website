@@ -14,6 +14,7 @@ function SharedTextArea({
   handleChange,
   error: customError,
   labelFontSize = false,
+  hint = false,
   ...props
 }) {
   const { isMobile } = useScreenSize();
@@ -109,6 +110,19 @@ function SharedTextArea({
           }}
         >
           {error}
+        </Box>
+      )}
+
+      {!error && hint && (
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: "-23px",
+            fontSize: "12px",
+            color: "#6B7280",
+          }}
+        >
+          {hint}
         </Box>
       )}
     </Box>

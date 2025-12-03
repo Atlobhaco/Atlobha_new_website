@@ -1,8 +1,9 @@
 import ComingSoon from "@/components/comingSoon";
+import CarPricing from "@/components/sectionsInfo/carPricing";
 import Services from "@/components/sectionsInfo/services/Services";
 import MetaTags from "@/components/shared/MetaTags";
 import useLocalization from "@/config/hooks/useLocalization";
-import { SERVICES } from "@/constants/enums";
+import { SERVICES, VEHICLE_PRICING } from "@/constants/enums";
 import { Box } from "@mui/material";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -66,6 +67,8 @@ function Sections() {
     switch (secType) {
       case SERVICES:
         return <Services />;
+      case VEHICLE_PRICING:
+        return <CarPricing />;
       default:
         return <ComingSoon />;
     }

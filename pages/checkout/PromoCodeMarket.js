@@ -14,7 +14,12 @@ import Image from "next/image";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
+function PromoCodeMarket({
+  promoCodeId,
+  setPromoCodeId,
+  query,
+  noPadding = false,
+}) {
   const { t, locale } = useLocalization();
   const dispatch = useDispatch();
   const { isMobile } = useScreenSize();
@@ -33,7 +38,7 @@ function PromoCodeMarket({ promoCodeId, setPromoCodeId, query }) {
   };
 
   return (
-    <Box sx={{ padding: "16px 13px" }}>
+    <Box sx={{ padding: noPadding ? "" : "16px 13px" }}>
       <Box
         sx={{
           color: "#232323",

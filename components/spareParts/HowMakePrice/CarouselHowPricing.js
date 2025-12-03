@@ -4,12 +4,17 @@ import Image from "next/image";
 import React, { useState } from "react";
 import Carousel from "react-bootstrap/Carousel";
 
-function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
+function CarouselHowPricing({
+  handleSelect,
+  activeIndex,
+  setActiveIndex,
+  infoImgArray = [],
+}) {
   const { locale } = useLocalization();
   const [hovered, setHovered] = useState(false);
   const [carouselInterval, setCarouselInterval] = useState(1500); // Default interval is 3 seconds
 
-  const slides = [
+  const slides = (infoImgArray?.length && infoImgArray) || [
     {
       src: "/imgs/price-tutorial-1.svg",
       alt: "Slide 1",
@@ -113,14 +118,20 @@ function CarouselHowPricing({ handleSelect, activeIndex, setActiveIndex }) {
             onMouseEnter={() => setHovered(true)} // Pause on hover
             onMouseLeave={() => setHovered(false)} // Resume when hover ends
           >
-            <Image
-              loading="lazy"
-              width={335}
-              height={200}
-              className="d-block w-100"
-              src={slide.src}
-              alt={slide.alt}
-            />
+            <Box
+              sx={{
+                background: "white",
+              }}
+            >
+              <Image
+                loading="lazy"
+                width={335}
+                height={infoImgArray?.length ? 250 : 200}
+                className="d-block w-100"
+                src={slide.src}
+                alt={slide.alt}
+              />
+            </Box>
           </Carousel.Item>
         ))}
       </Carousel>

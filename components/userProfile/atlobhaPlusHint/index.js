@@ -5,7 +5,13 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
+function AtlobhaPlusHint({
+  alwaysHorizontalDesgin = false,
+  title = false,
+  subtitle = false,
+  btnText = false,
+  btnOnClick = () => {},
+}) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
   return (
@@ -66,7 +72,7 @@ function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
                 isMobile || alwaysHorizontalDesgin ? "start" : "center",
             }}
           >
-            {t.wantFreeDelivery}
+            {title || t.wantFreeDelivery}
           </Box>
           <Box
             sx={{
@@ -77,12 +83,20 @@ function AtlobhaPlusHint({ alwaysHorizontalDesgin = false }) {
                 isMobile || alwaysHorizontalDesgin ? "start" : "center",
             }}
           >
-            {t.subscribeNow}
+            {subtitle || t.subscribeNow}
           </Box>
         </Box>
       </Box>
-      <Box>
-        <SharedBtn className="big-main-btn" text="joinNow" />
+      <Box
+        sx={{
+          minWidth: "fit-content",
+        }}
+      >
+        <SharedBtn
+          className="big-main-btn"
+          text={btnText || "joinNow"}
+          onClick={btnOnClick}
+        />
       </Box>
     </Box>
   );
