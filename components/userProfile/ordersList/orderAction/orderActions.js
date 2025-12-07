@@ -63,7 +63,7 @@ function OrderActions({
               <span className={`${style["sub-title"]}`}>
                 {order?.status_updated_at
                   ? moment(order?.status_updated_at)?.format("DD-MM-YYYY")
-                  : null}
+                  : " - "}
               </span>
             </div>
           </div>

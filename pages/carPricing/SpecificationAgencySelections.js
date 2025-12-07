@@ -35,7 +35,7 @@ function SpecificationAgencySelections({
             <div
               key={variant?.name}
               className={`${style["specify"]} ${
-                selectedVariant?.name === variant?.name &&
+                selectedVariant?.variant === variant?.variant &&
                 style["active-specify"]
               }`}
               onClick={() => {

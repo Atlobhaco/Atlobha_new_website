@@ -86,49 +86,56 @@ function CarPricing() {
         hasCloseIcon
         customClass={!isMobile ? "sm-popup-width" : ""}
         content={
-          <HowMakePrice
-            setOpenhowPricing={setOpenhowPricing}
-            heading={t.whatCarPricing}
-            imgSrc="/icons/money.svg"
-            infoSteps={[t.chooseCar, t.checkOffers, t.chooseOffer]}
-            infoImgArray={[
-              { src: "/imgs/choose-car.svg", alt: "Slide 1" },
-              { src: "/imgs/check-offer.svg", alt: "Slide 2" },
-              { src: "/imgs/select-offer.svg", alt: "Slide 3" },
-            ]}
-            customFooter={
-              <>
-                <Box
-                  sx={{
-                    margin: "40px 0px 20px 0px",
-                    textAlign: "center",
-                    color: "#6B7280",
-                    fontSize: "16px",
-                    fontWeight: "500",
-                  }}
-                >
-                  {t.AtlobhaBringIt}
-                </Box>
-                <SharedBtn
-                  className="outline-btn"
-                  customClass="w-100 mb-3"
-                  text="commonQuestions"
-                  onClick={() => {
-                    setOpenhowPricing(false);
-                    setOpenCommonnquestions(true);
-                  }}
-                />
-                <Box>
+          <Box
+            sx={{
+              overflow: "auto",
+              maxHeight: "80vh",
+            }}
+          >
+            <HowMakePrice
+              setOpenhowPricing={setOpenhowPricing}
+              heading={t.whatCarPricing}
+              imgSrc="/icons/money.svg"
+              infoSteps={[t.chooseCar, t.checkOffers, t.chooseOffer]}
+              infoImgArray={[
+                { src: "/imgs/choose-car.svg", alt: "Slide 1" },
+                { src: "/imgs/check-offer.svg", alt: "Slide 2" },
+                { src: "/imgs/select-offer.svg", alt: "Slide 3" },
+              ]}
+              customFooter={
+                <>
+                  <Box
+                    sx={{
+                      margin: "40px 0px 20px 0px",
+                      textAlign: "center",
+                      color: "#6B7280",
+                      fontSize: "16px",
+                      fontWeight: "500",
+                    }}
+                  >
+                    {t.AtlobhaBringIt}
+                  </Box>
                   <SharedBtn
-                    className="big-main-btn"
-                    customClass="w-100"
-                    text="tryServiceNow"
-                    onClick={() => setOpenhowPricing(false)}
+                    className="outline-btn"
+                    customClass="w-100 mb-3"
+                    text="commonQuestions"
+                    onClick={() => {
+                      setOpenhowPricing(false);
+                      setOpenCommonnquestions(true);
+                    }}
                   />
-                </Box>
-              </>
-            }
-          />
+                  <Box>
+                    <SharedBtn
+                      className="big-main-btn"
+                      customClass="w-100"
+                      text="tryServiceNow"
+                      onClick={() => setOpenhowPricing(false)}
+                    />
+                  </Box>
+                </>
+              }
+            />
+          </Box>
         }
       />
 

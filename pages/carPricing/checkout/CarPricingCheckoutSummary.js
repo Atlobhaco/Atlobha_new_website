@@ -2,6 +2,8 @@ import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
 import SharedBtn from "@/components/shared/SharedBtn";
 import {
   CALCULATE_RECEIPT,
+  ORDERS,
+  PAYMENT_FAILED,
   VEHICLE_PRICING_ORDERS,
 } from "@/config/endPoints/endPoints";
 import useLocalization from "@/config/hooks/useLocalization";
@@ -21,7 +23,9 @@ import {
 } from "@/redux/reducers/addSparePartsReducer";
 import { setSelectedPayment } from "@/redux/reducers/selectedPaymentMethod";
 import { Box, CircularProgress, Divider } from "@mui/material";
+import Cookies from "js-cookie";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, {
   forwardRef,
   useEffect,
@@ -56,6 +60,7 @@ const CarPricingCheckoutSummary = forwardRef(
     const [fakeLoader, setFakeLoader] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
+    const router = useRouter();
 
     const merchanteRefrenceRef = useRef(
       `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
@@ -91,7 +96,7 @@ const CarPricingCheckoutSummary = forwardRef(
       fontWeight: "700",
       color: "#232323",
     };
-
+    console.log("carPricing", carPricing);
     const { isFetching: confirmPriceFetch, refetch: callConfirmPricing } =
       useCustomQuery({
         name: "confirmCarPricing",
@@ -104,15 +109,27 @@ const CarPricingCheckoutSummary = forwardRef(
           model_id: carPricing?.model?.id,
           brand_id: carPricing?.brand?.id,
           year: carPricing?.year,
-          variant: carPricing?.variant?.variant || "",
+          variant: carPricing?.variant?.variant || null,
           store_payment_method: carPricing?.purchase?.type,
           job_title: carPricing?.job,
           down_payment: +carPricing?.deposit,
           payment_reference: merchanteRefrence,
           payment_method: selectedPaymentMethod?.key || "CASH",
           promo_code_id: allPromoCodeData?.id || null,
+          custom_variant_specs: carPricing?.importedSpec,
         },
         onSuccess: async (res) => {
+          sessionStorage.setItem("created_order_id", res?.id);
+          Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+          Cookies.set("order_type", "vehicle-pricing-orders", {
+            expires: 1,
+            path: "/",
+          });
+          Cookies.set("payment_method", selectedPaymentMethod?.key, {
+            expires: 1,
+            path: "/",
+          });
+
           const oldData =
             JSON.parse(localStorage.getItem("carPricingDetails")) || {};
 
@@ -186,7 +203,10 @@ const CarPricingCheckoutSummary = forwardRef(
         },
       });
 
-    const { data: calculateReceiptResFromMainPage } = useCustomQuery({
+    const {
+      data: calculateReceiptResFromMainPage,
+      refetch: callCalculateReceipt,
+    } = useCustomQuery({
       name: [
         "calculateReceiptForCarPricing",
         promoCodeId,
@@ -202,6 +222,44 @@ const CarPricingCheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
+        const paymentFailed = Cookies.get("payment_failed");
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+
+        if (paymentFailed === "failed" && orderId) {
+          fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-api-key": "w123",
+                Authorization: `Bearer ${localStorage?.getItem(
+                  "access_token"
+                )}`,
+              },
+            }
+          )
+            .then((res) => {
+              if (!res.ok) throw new Error("Request failed");
+              console.log(
+                "Payment fail (success) status updated for order:",
+                orderId
+              );
+            })
+            .catch((err) => console.error(err))
+            .finally(() => {
+              Cookies.remove("created_order_id");
+              Cookies.remove("payment_failed");
+              Cookies.remove("order_type");
+              Cookies.remove("payment_method");
+              Cookies.remove("url_after_pay_failed");
+              setFakeLoader(false);
+              setLoadPayRequest(false);
+              callCalculateReceipt();
+            });
+        }
+
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
         dispatch(setPromoCodeForSpareParts({ data: "" }));
@@ -542,6 +600,8 @@ const CarPricingCheckoutSummary = forwardRef(
     /*                              MIS payment logic                             */
     /* -------------------------------------------------------------------------- */
     const handleMisPay = async () => {
+      // userTestPhone:520008105
+      // otp:111111
       const res = await fetch("/api/mis/create-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -580,6 +640,28 @@ const CarPricingCheckoutSummary = forwardRef(
         alert("Payment initiation failed");
       }
     };
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method");
+        if (orderId && orderType && paymentMethod) {
+          setTimeout(() => {
+            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          }, 1000);
+          clearInterval(interval);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }, [
+      Cookies.get("created_order_id"),
+      Cookies.get("order_type"),
+      isMobile,
+      router,
+      calculateReceiptResFromMainPage,
+      router.isReady,
+    ]);
 
     return (
       <Box sx={{ pt: 1 }}>

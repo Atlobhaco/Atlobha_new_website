@@ -625,7 +625,7 @@
   "purchaseMethod": "Purchase method",
   "cash": "Cash",
   "depositeValue": "Down payment amount",
-  "depositeHint": "The average down payments in the market range from 20 to 50 %.",
+  "depositeHint": "Down payments in market range from 20 to 50 %.",
   "depositeExample": "Ex : 5000",
   "workAs": "Job title",
   "workAsExample": "Manager, employee, military",

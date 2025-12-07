@@ -186,6 +186,7 @@ function SharedTextField({
             position: "absolute",
             bottom: "-23px",
             color: "#6B7280",
+            fontSize: "12px",
           }}
         >
           {hint}

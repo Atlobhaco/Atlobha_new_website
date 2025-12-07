@@ -21,17 +21,20 @@ export default function PaymentFailChecker() {
       const url_after_pay_failed = Cookies.get("url_after_pay_failed");
 
       if (paymentFailed === "failed" && orderId) {
-        fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-api-key": "w123",
-              Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
-            },
-          }
-        )
+        const path = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${
+          orderType === "vehicle-pricing-orders"
+            ? `/${orderId}`
+            : `${ORDERS}/${orderId}`
+        }${PAYMENT_FAILED}`;
+
+        fetch(`${path}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": "w123",
+            Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
+          },
+        })
           .then((res) => {
             if (!res.ok) throw new Error("Request failed");
             console.log(
