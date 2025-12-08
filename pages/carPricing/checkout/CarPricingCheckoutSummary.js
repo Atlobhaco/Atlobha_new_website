@@ -112,7 +112,7 @@ const CarPricingCheckoutSummary = forwardRef(
           variant: carPricing?.variant?.variant || null,
           store_payment_method: carPricing?.purchase?.type,
           job_title: carPricing?.job,
-          down_payment: +carPricing?.deposit,
+          down_payment: +carPricing?.deposit > 0 ? +carPricing?.deposit : null,
           payment_reference: merchanteRefrence,
           payment_method: selectedPaymentMethod?.key || "CASH",
           promo_code_id: allPromoCodeData?.id || null,

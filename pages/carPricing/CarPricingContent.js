@@ -35,27 +35,27 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
     jobtitle: "",
   });
 
-  //   set data if it saved in local storage
-  useEffect(() => {
-    const data = localStorage.getItem("carPricingDetails");
-    if (data) {
-      const parsedData = JSON.parse(data);
+//   //   set data if it saved in local storage
+//   useEffect(() => {
+//     const data = localStorage.getItem("carPricingDetails");
+//     if (data) {
+//       const parsedData = JSON.parse(data);
 
-      setSelectedCar({
-        brandDetails: parsedData?.brand,
-        modelDetails: parsedData?.model,
-        year: parsedData?.year,
-      });
-      setSelectedSpecify(parsedData?.specify || null);
-      setSelectedVariant(parsedData?.variant || null);
-      setImportedCarSpecification(parsedData?.importedSpec || null);
-      setSelectedPurchase(parsedData?.purchase || null);
-      setPurchaseDetails({
-        depositeValue: parsedData?.deposit || "",
-        jobtitle: parsedData?.job || "",
-      });
-    }
-  }, []);
+//       setSelectedCar({
+//         brandDetails: parsedData?.brand,
+//         modelDetails: parsedData?.model,
+//         year: parsedData?.year,
+//       });
+//       setSelectedSpecify(parsedData?.specify || null);
+//       setSelectedVariant(parsedData?.variant || null);
+//       setImportedCarSpecification(parsedData?.importedSpec || null);
+//       setSelectedPurchase(parsedData?.purchase || null);
+//       setPurchaseDetails({
+//         depositeValue: parsedData?.deposit || "",
+//         jobtitle: parsedData?.job || "",
+//       });
+//     }
+//   }, []);
 
   const checkVaribalesForDisabled = () => {
     if (
