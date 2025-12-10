@@ -76,6 +76,7 @@ function CarPricing() {
       <CarPricingContent
         setOpenhowPricing={setOpenhowPricing}
         setOpenTerms={setOpenTerms}
+        openTerms={openTerms}
       />
 
       {/* popup for how to make price */}
@@ -154,45 +155,6 @@ function CarPricing() {
             }}
           >
             <Questions />
-          </Box>
-        }
-      />
-
-      {/* popup for terms and conditions */}
-      <DialogCentered
-        showTitle={false}
-        open={openTerms ? true : false}
-        setOpen={setOpenTerms}
-        hasCloseIcon
-        content={
-          <Box
-            sx={{
-              maxHeight: "60vh",
-              overflow: "hidden auto",
-              padding: "0px 2px",
-            }}
-          >
-            <TermsCarPricingContent />
-          </Box>
-        }
-        renderCustomBtns={
-          <Box
-            className={`w-100 gap-2  d-flex ${
-              isMobile ? "flex-column" : "flex-row"
-            }`}
-          >
-            <SharedBtn
-              text="common.back"
-              className="btn-outline-red"
-              customClass={`${isMobile ? "w-100" : "w-50"}`}
-              onClick={() => setOpenTerms(false)}
-            />
-            <SharedBtn
-              text="AcceptContinue"
-              className="big-main-btn"
-              customClass={`${isMobile ? "w-100" : "w-50"}`}
-              onClick={() => setOpenTerms(false)}
-            />
           </Box>
         }
       />

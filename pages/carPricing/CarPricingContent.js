@@ -10,13 +10,18 @@ import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box } from "@mui/material";
 import { useRouter } from "next/router";
 import { VEHICLE_PRICING } from "@/constants/enums";
+import { isAuth } from "@/config/hooks/isAuth";
+import LoginModalActions from "@/constants/LoginModalActions/LoginModalActions";
+import Login from "@/components/Login";
+import DialogCentered from "@/components/DialogCentered";
+import TermsCarPricingContent from "@/components/userProfile/termsCarPricingContent";
 
 const CarSpecification = dynamic(() => import("./CarSpecification"), {
   ssr: false,
   loading: () => <div></div>, // Optional loading placeholder
 });
 
-function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
+function CarPricingContent({ setOpenhowPricing, setOpenTerms, openTerms }) {
   const router = useRouter();
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
@@ -34,28 +39,7 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
     depositeValue: "",
     jobtitle: "",
   });
-
-//   //   set data if it saved in local storage
-//   useEffect(() => {
-//     const data = localStorage.getItem("carPricingDetails");
-//     if (data) {
-//       const parsedData = JSON.parse(data);
-
-//       setSelectedCar({
-//         brandDetails: parsedData?.brand,
-//         modelDetails: parsedData?.model,
-//         year: parsedData?.year,
-//       });
-//       setSelectedSpecify(parsedData?.specify || null);
-//       setSelectedVariant(parsedData?.variant || null);
-//       setImportedCarSpecification(parsedData?.importedSpec || null);
-//       setSelectedPurchase(parsedData?.purchase || null);
-//       setPurchaseDetails({
-//         depositeValue: parsedData?.deposit || "",
-//         jobtitle: parsedData?.job || "",
-//       });
-//     }
-//   }, []);
+  const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
 
   const checkVaribalesForDisabled = () => {
     if (
@@ -76,6 +60,9 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
   };
 
   const handleCompleteOrderClicked = () => {
+    if (!isAuth()) {
+      return setOpenLogin(true);
+    }
     const termsOpenedBefore = localStorage.getItem("termsOpenOnce");
     if (termsOpenedBefore) {
       const carPricingDetails = {
@@ -152,6 +139,7 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
         }`}
       >
         <SharedBtn
+          id="completeOrderBtn"
           text="completeOrder"
           className="big-main-btn"
           customClass={`${isMobile ? "w-100" : "w-50"}`}
@@ -168,6 +156,57 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms }) {
           {t.termsAndConditions}
         </div>
       </Box>
+
+      <Login
+        showBtn={!showBtn}
+        open={openLogin}
+        setOpen={setOpenLogin}
+        id="sevenLogin"
+        customIDOtpField="sevenOtpField"
+        customIDLogin="sevenBtnLogin"
+      />
+
+      {/* popup for terms and conditions */}
+      <DialogCentered
+        showTitle={false}
+        open={openTerms ? true : false}
+        setOpen={setOpenTerms}
+        hasCloseIcon
+        content={
+          <Box
+            sx={{
+              maxHeight: "60vh",
+              overflow: "hidden auto",
+              padding: "0px 2px",
+            }}
+          >
+            <TermsCarPricingContent />
+          </Box>
+        }
+        renderCustomBtns={
+          <Box
+            className={`w-100 gap-2  d-flex ${
+              isMobile ? "flex-column" : "flex-row"
+            }`}
+          >
+            <SharedBtn
+              text="common.back"
+              className="btn-outline-red"
+              customClass={`${isMobile ? "w-100" : "w-50"}`}
+              onClick={() => setOpenTerms(false)}
+            />
+            <SharedBtn
+              text="AcceptContinue"
+              className="big-main-btn"
+              customClass={`${isMobile ? "w-100" : "w-50"}`}
+              disabled={checkVaribalesForDisabled()}
+              onClick={() => {
+                handleCompleteOrderClicked();
+              }}
+            />
+          </Box>
+        }
+      />
     </div>
   );
 }

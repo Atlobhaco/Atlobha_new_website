@@ -113,10 +113,9 @@ const CarPricingCheckoutSummary = forwardRef(
           store_payment_method: carPricing?.purchase?.type,
           job_title: carPricing?.job,
           down_payment:
-            carPricing?.purchase?.type !== "INSTALLMENT"
-              ? null
-              : +carPricing?.deposit > 0
-              ? +carPricing?.deposit
+            carPricing?.purchase?.type === "INSTALLMENT" &&
+            +carPricing?.deposit > 0
+              ? +carPricing.deposit
               : null,
           payment_reference: merchanteRefrence,
           payment_method: selectedPaymentMethod?.key || "CASH",

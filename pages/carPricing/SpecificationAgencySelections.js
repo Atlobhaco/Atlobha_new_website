@@ -84,7 +84,7 @@ function SpecificationAgencySelections({
                       : ""
                   }`}
                 >
-                  {group?.name}
+                  {locale === "ar" ? group?.name_ar : group?.name_en}
                 </div>
               ))}
             </div>
@@ -93,7 +93,9 @@ function SpecificationAgencySelections({
                 ?.find((d) => d?.name === selectedHeaderGroup?.name)
                 ?.specifications?.map((specification) => (
                   <div className={`${style["holder-specification"]}`}>
-                    {specification?.label}
+                    {locale === "ar"
+                      ? specification?.label_ar
+                      : specification?.label_en}{" "}
                     <div>{specification?.value}</div>
                   </div>
                 ))}
