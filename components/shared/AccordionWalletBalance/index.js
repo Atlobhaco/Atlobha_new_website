@@ -27,6 +27,12 @@ const AccordionWalletBalance = ({
       ? receipt?.[key]
       : receiptRes?.[key];
 
+  const pickValueWithFallback = (primaryKey, fallbackKey) => {
+    const primary = pickValue(primaryKey);
+    const fallback = pickValue(fallbackKey);
+    return primary || fallback || 0;
+  };
+
   // ✅ Hide component if cashback_and_wallet_payment_value is 0, null, or undefinedg
   const walletPaymentValue = pickValue("cashback_and_wallet_payment_value");
   if (!walletPaymentValue || Number(walletPaymentValue) === 0) return null;
@@ -121,7 +127,11 @@ const AccordionWalletBalance = ({
         >
           <Box>{t.walletBalance}</Box>
           <Box>
-            {pickValue("wallet_payment_value")} {riyalImg && riyalImg()}
+            {pickValueWithFallback(
+              "wallet_payment_value",
+              "service_fee_wallet_payment_value"
+            )}{" "}
+            {riyalImg && riyalImg()}
           </Box>
         </Box>
 
@@ -134,7 +144,11 @@ const AccordionWalletBalance = ({
         >
           <Box>{t.cashbackBalance}</Box>
           <Box>
-            {pickValue("cashback_payment_value")} {riyalImg && riyalImg()}
+            {pickValueWithFallback(
+              "cashback_payment_value",
+              "service_fee_cashback_payment_value"
+            )}{" "}
+            {riyalImg && riyalImg()}
           </Box>
         </Box>
       </AccordionDetails>

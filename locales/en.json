@@ -230,7 +230,8 @@
     "EstimationRequest": "Taqdeer",
     "MaintenanceReservation": "Fixed service",
     "PortableMaintenanceReservation": "Portable service",
-    "VoucherPurchase": "Gift cards"
+    "VoucherPurchase": "Gift cards",
+    "VehiclePricingOrder": "Vehicle pricing"
   },
   "[idOrder]": "Orders details",
   "orderedAt": "Ordered at",
@@ -358,6 +359,7 @@
   "deliveredOn": "Delivered on ",
   "orderCancelledOn": "Order canceled on",
   "orderCanReprice": "order is incomplete. reprice it",
+  "canOrderAgain": "order is incomplete. order again",
   "repriceOrderAgain": "Reprice Order",
   "confirmOrderNow": "Confirm your order!",
   "confimrOrderBtn": "Confirm Your Order",
@@ -639,10 +641,44 @@
   "priceWillBeBack": "Service fee is refundable if no price offers are received.",
   "termsCarPricing": "Terms and conditions",
   "entryForTerms": "Introduction to the Terms of Use Agreement:",
-  "entryTermsInfo": "Our online store welcomes you and informs you that below you will find the terms and conditions governing your use of this store and all legal consequences resulting from your use of the store’s services through the internet via this electronic platform. The use of the store by any person—whether as a consumer of a service, a product, or otherwise—constitutes acceptance and approval from that person, with full legal capacity according to Sharia, regulations, and law, of all the provisions and articles of this agreement. It also confirms your commitment to its terms and what is stated within it. This agreement applies to all types of interactions between the consumer and the store. This agreement becomes valid and enforceable once you approve it and begin registering on the store, in accordance with Article Ten of the Saudi Electronic Transactions Law.",
-  "firstRule": "Article One – Introduction and Definitions:",
-  "oneRule": "The preamble above is considered an integral part of this agreement. Below you will find the terms and definitions of the key phrases used throughout this agreement:",
-  "twoRule": "(The Store): This definition includes all forms of the store on the internet, whether an electronic application, a website on the internet, or a physical retail shop.",
-  "threeRule": "(The Consumer): The person who engages in e-commerce with the intention of obtaining products or services provided by the store through its electronic platform.",
-  "fourRule": "(The Agreement): This term refers to the terms and conditions of this agreement, which govern and regulate the relationship between the parties to this agreement."
+  "carSpecifications": "Car details",
+  "details": "Specification",
+  "agencyCar": "Agency car",
+  "importedCar": "Imported car",
+  "showMoreDetails": "Show more details",
+  "fullCashPay": "Full cash payment",
+  "PayWhenReceive": "Payment will be made after receive the car",
+  "duration": "Duration",
+  "installmentMethod": "Installment method",
+  "bankInstalment": "Bank installment",
+  "bestPrice": "We will find the best price, do not worry, we will price it as soon as possible",
+  "chooseThisOffer": "Choose offer",
+  "confirmOffer": "Confirm offer",
+  "noExtraBenefits": "No extra benefits",
+  "toThisOffer": "To this offer",
+  "availableOffer": "Available offers",
+  "selectOffer": "Choose one of offers",
+  "theSelectedOffer": "Selected offer",
+  "atlobhaOfferTerms": "The 'Atlobha' service provides users with a smooth and efficient way to request new car price quotes.",
+  "requestProcess": {
+    "header": "Request Submission Process:",
+    "step1": "A new request is created and sent to all participating dealerships.",
+    "step2": "Dealerships can add their price offers along with available specifications and colors.",
+    "step3": "The user selects the suitable offer and contacts the dealership after the offer submission period ends.",
+    "step4": "The user's contact information will be shared with the provider of the best (first) offer."
+  },
+  "validityPeriod": {
+    "header": "Offer Validity Period:",
+    "step1": "The validity period of each offer is specified within the offer details.",
+    "step2": "The user must contact the dealership during the validity period to agree on the deposit payment method."
+  },
+  "reservationDeposit": {
+    "header": "Reservation Deposit:",
+    "step1": "The deposit amount is transferred to the dealership to secure the offered price.",
+    "step2": "After agreement, the user must visit the dealership to complete the purchase process."
+  },
+  "refundPolicy": {
+    "header": "Refund Policy:",
+    "step1": "The deposit can be refunded within 7 days from the end of the request period."
+  }
 }

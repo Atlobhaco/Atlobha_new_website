@@ -164,7 +164,6 @@ function CarPricing() {
         open={openTerms ? true : false}
         setOpen={setOpenTerms}
         hasCloseIcon
-        customClass={!isMobile ? "sm-popup-width" : ""}
         content={
           <Box
             sx={{
