@@ -367,6 +367,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
                       padding: isAuth() ? "20px" : "20px",
                       minWidth: isAuth() ? "25vw" : "25vw",
                       borderRadius: "20px  !important",
+                      maxHeight: "calc(100% - 0px)",
                     },
                   }}
                 >

@@ -27,13 +27,7 @@ function BasketItem({
 
   return (
     <div key={data?.id} className="position-relative">
-      <div
-        className={`${style["products-contain"]} ${
-          (!data?.product?.is_active ||
-            data?.product?.marketplace_category?.installed_in_service_center) &&
-          "pb-3"
-        }`}
-      >
+      <div className={`${style["products-contain"]} mt-3 mb-1`}>
         {/* IMAGE + NAME */}
         <div className="d-flex">
           <BasketItemImage

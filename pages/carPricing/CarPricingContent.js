@@ -61,6 +61,7 @@ function CarPricingContent({ setOpenhowPricing, setOpenTerms, openTerms }) {
 
   const handleCompleteOrderClicked = () => {
     if (!isAuth()) {
+      setOpenTerms(false);
       return setOpenLogin(true);
     }
     const termsOpenedBefore = localStorage.getItem("termsOpenOnce");

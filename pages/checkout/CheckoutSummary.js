@@ -42,6 +42,7 @@ const CheckoutSummary = forwardRef(
       phoneAddedForTamara,
       setOpenEditUserModal,
       estimateRes,
+      expressDelivery,
     },
     ref
   ) => {
@@ -251,6 +252,7 @@ const CheckoutSummary = forwardRef(
         selectAddress,
         allPromoCodeData,
         Cookies.get("payment_failed"),
+        expressDelivery,
       ],
       url: "/marketplace/orders/calculate",
       refetchOnWindowFocus: true,
@@ -266,6 +268,7 @@ const CheckoutSummary = forwardRef(
           ?.map((d) => ({ ...d, id: d?.product_id })),
         promo_code: allPromoCodeData ? { id: allPromoCodeData?.id } : null,
         ref_num: null,
+        express_delivery_requested: expressDelivery === "normal" ? false : true,
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
@@ -878,7 +881,7 @@ const CheckoutSummary = forwardRef(
             loadPayRequest ||
             !selectedPaymentMethod?.id ||
             confirmPriceFetch ||
-            //   fetchReceipt ||
+            fetchReceipt ||
             fakeLoader
           }
           className={`${

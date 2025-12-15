@@ -657,6 +657,8 @@
   "noExtraBenefits": "No extra benefits",
   "toThisOffer": "To this offer",
   "availableOffer": "Available offers",
+  "expiredOffer": "Expired offers",
+  "offerEndedValidity": "The following offers have expired",
   "selectOffer": "Choose one of offers",
   "theSelectedOffer": "Selected offer",
   "atlobhaOfferTerms": "The 'Atlobha' service provides users with a smooth and efficient way to request new car price quotes.",
@@ -680,5 +682,11 @@
   "refundPolicy": {
     "header": "Refund Policy:",
     "step1": "The deposit can be refunded within 7 days from the end of the request period."
-  }
+  },
+  "validTo": "valid to",
+  "expressDilvery": "Fast delivery",
+  "deliveryType": "Delivery method",
+  "normalDelivery": "Normal delivery",
+  "expressSameDay": "Fast delivery in same day",
+  "fastSameDay":"Fast delivery is available for this product today"
 }

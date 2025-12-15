@@ -656,6 +656,8 @@
   "noExtraBenefits": "لايوجد مزايا اضافيه",
   "toThisOffer": "لهذا العرض",
   "availableOffer": "العروض المتاحة",
+  "expiredOffer": "العروض المنتهية",
+  "offerEndedValidity": "تم انتهاء صلاحيه العروض التاليه",
   "selectOffer": "اختر احد العروض التالية",
   "theSelectedOffer": "العرض المختار",
   "atlobhaOfferTerms": "توفر ميزة “أطلبها” للمستخدمين طريقة سلسة وفعّالة لطلب عروض أسعار السيارات الجديدة.",
@@ -679,5 +681,11 @@
   "refundPolicy": {
     "header": "سياسة الاسترجاع:",
     "step1": "يمكن استرجاع مبلغ الجدية خلال 7 أيام من وقت انتهاء الطلب."
-  }
+  },
+  "validTo": "صالح حتي",
+  "expressDilvery": "توصيل سريع",
+  "deliveryType": "طريقة التوصيل",
+  "normalDelivery": "توصيل عادي",
+  "expressSameDay": "توصيل سريع في نفس اليوم",
+  "fastSameDay": "التوصيل السريع متاح لهذا المنتج اليوم"
 }
