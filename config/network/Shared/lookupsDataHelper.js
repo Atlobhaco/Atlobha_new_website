@@ -9,10 +9,15 @@ import {
 import { toast } from "react-toastify";
 import useCustomQuery from "../Apiconfig";
 
-export function userBrandsQuery({ setBrands, dispatch }) {
+export function userBrandsQuery({ setBrands, dispatch, queryParams = {} }) {
+  const searchParams = new URLSearchParams(
+    Object.entries(queryParams).filter(
+      ([_, value]) => value !== undefined && value !== null && value !== ""
+    )
+  ).toString();
   return useCustomQuery({
     name: "getBrands",
-    url: `${VEHICLE}${BRANDS}`,
+    url: `${VEHICLE}${BRANDS}${searchParams ? `?${searchParams}` : ""}`,
     refetchOnWindowFocus: false,
     enabled: false,
     select: (res) => res?.data?.data,
@@ -25,10 +30,22 @@ export function userBrandsQuery({ setBrands, dispatch }) {
   });
 }
 
-export function useModelsQuery({ setModels, dispatch, brandId }) {
+export function useModelsQuery({
+  setModels,
+  dispatch,
+  brandId,
+  queryParams = {},
+}) {
+  const searchParams = new URLSearchParams(
+    Object.entries(queryParams).filter(
+      ([_, value]) => value !== undefined && value !== null && value !== ""
+    )
+  ).toString();
   return useCustomQuery({
     name: ["getModels", brandId],
-    url: `${VEHICLE}${BRANDS}/${brandId}${MODELS}`,
+    url: `${VEHICLE}${BRANDS}/${brandId}${MODELS}${
+      searchParams ? `?${searchParams}` : ""
+    }`,
     refetchOnWindowFocus: false,
     enabled: brandId ? true : false,
     select: (res) => res?.data?.data,

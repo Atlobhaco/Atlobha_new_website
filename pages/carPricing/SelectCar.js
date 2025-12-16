@@ -25,11 +25,17 @@ function SelectCar({ selectedCar, setSelectedCar }) {
     brandId: selectedCar?.brandDetails?.id,
     setModels,
     dispatch,
+    queryParams: {
+      subscribed_to_vehicle_pricing: 1,
+    },
   });
 
   const { refetch: callBrands } = userBrandsQuery({
     setBrands,
     dispatch,
+    queryParams: {
+      subscribed_to_vehicle_pricing: 1,
+    },
   });
 
   return (
@@ -46,7 +52,7 @@ function SelectCar({ selectedCar, setSelectedCar }) {
               setSelectedCar({
                 ...selectedCar,
                 brandDetails: brands?.find((b) => +b?.id === +e?.target?.value),
-                model: "",
+                modelDetails: "",
               });
             }}
             value={selectedCar?.brandDetails?.id || ""}

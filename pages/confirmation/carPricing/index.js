@@ -83,7 +83,7 @@ function CarPricingContent() {
       }
     }
   }, [decrypted]);
-  console.log("pricingDetails", pricingDetails);
+
   return (
     <div className={`${style["confirmation"]}`}>
       <div className={`${style["confirmation_thank"]}`}>{t.thankYou}</div>
