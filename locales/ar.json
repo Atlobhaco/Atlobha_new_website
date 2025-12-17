@@ -687,5 +687,13 @@
   "deliveryType": "طريقة التوصيل",
   "normalDelivery": "توصيل عادي",
   "expressSameDay": "توصيل سريع في نفس اليوم",
-  "fastSameDay": "التوصيل السريع متاح لهذا المنتج اليوم"
+  "fastSameDay": "التوصيل السريع متاح لهذا المنتج اليوم",
+  "confirmationDetails": "بيانات تاكيد الطلب",
+  "confirmedOffer": "العرض المؤكد",
+  "storeDetails": "بيانات المعرض",
+  "offerConfirmedWithDeposit": "تم تاكيد العرض ودفع مقدم حجز السيارة يمكنك التوجه الي المعرض لاستكمال اجراءات الشراء و استلام السيارة",
+  "extraFees": "رسوم إضافية",
+  "percentageForDesposit": "نسبة الدفعة المطلوبة الآن",
+  "WillPayRest": "سيتم دفع باقي المبلغ في المعرض عند استلام السيارة",
+  "ServicePrice": "سعر الخدمة"
 }

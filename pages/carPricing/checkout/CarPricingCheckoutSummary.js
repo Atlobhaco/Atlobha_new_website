@@ -672,7 +672,7 @@ const CarPricingCheckoutSummary = forwardRef(
         <Box sx={header}>{t.orderSummary}</Box>
         {/* service price */}
         <Box className="d-flex justify-content-between mb-2">
-          <Box sx={text}>{t.priceWithoutVat}</Box>
+          <Box sx={text}>{t.ServicePrice}</Box>
           <Box sx={text}>
             {calculateReceiptResFromMainPage?.service_fee} {riyalImgBlack()}
           </Box>
@@ -688,13 +688,13 @@ const CarPricingCheckoutSummary = forwardRef(
           </Box>
         )}
         {/* delivery fees */}
-        <Box className="d-flex justify-content-between mb-2">
+        {/* <Box className="d-flex justify-content-between mb-2">
           <Box sx={text}>{t.deliveryFees}</Box>
           <Box sx={text}>
             {calculateReceiptResFromMainPage?.delivery_fees_with_tax}{" "}
             {riyalImgBlack()}
           </Box>
-        </Box>
+        </Box> */}
 
         {/* pay from wallet balance */}
         <AccordionWalletBalance

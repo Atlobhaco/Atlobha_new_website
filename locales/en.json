@@ -688,5 +688,13 @@
   "deliveryType": "Delivery method",
   "normalDelivery": "Normal delivery",
   "expressSameDay": "Fast delivery in same day",
-  "fastSameDay":"Fast delivery is available for this product today"
+  "fastSameDay": "Fast delivery is available for this product today",
+  "confirmationDetails": "Order confirmation details",
+  "confirmedOffer": "Confirmed offer",
+  "storeDetails": "Store details",
+  "offerConfirmedWithDeposit": "The offer has been confirmed and a deposit for the vehicle has been paid. You can proceed to the showroom to complete the purchase procedures and receive the vehicle.",
+  "extraFees": "Extra fees",
+  "percentageForDesposit": "Deposit percentage",
+  "WillPayRest": "The remaining amount will be paid at the showroom upon vehicle pickup.",
+  "ServicePrice": "Service price"
 }
