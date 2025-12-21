@@ -54,16 +54,16 @@ function CheckoutData({
   ];
 
   useCustomQuery({
-    name: ["validate-express", basket],
+    name: ["validate-express", basket, selectAddress],
     url: `${CART}${VALIDATE_EXPRESS_DELIVERY}`,
     method: "post",
-    body: { products: basket },
+    body: { products: basket, address_id: selectAddress?.id },
     refetchOnWindowFocus: true,
     select: (res) =>
-      res?.data?.products?.some(
+      res?.data?.data?.products?.some(
         (item) => item.express_delivery_applicable === true
       ),
-    enabled: basket?.length ? true : false,
+    enabled: basket?.length && selectAddress?.id ? true : false,
     onSuccess: (res) => setExpressResponse(res),
   });
 

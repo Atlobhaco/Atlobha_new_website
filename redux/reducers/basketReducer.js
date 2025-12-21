@@ -26,20 +26,89 @@ const requestHandler = async (method, endpoint, data = {}) => {
   });
 };
 
+const validateExpressDelivery = async (basket, addressId) => {
+  return requestHandler("post", "/validate-express-delivery", {
+    products: basket,
+    address_id: addressId,
+  });
+};
+
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
-  async (_, { rejectWithValue }) => {
-    if (isAuth()) {
-      try {
-        const response = await requestHandler("get", "");
-        const data = response.data;
-        latestUpdatedCart(data?.data);
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data || "Failed to fetch cart");
+  async (_, { getState, rejectWithValue }) => {
+    if (!isAuth()) {
+      return rejectWithValue("No logged in user");
+    }
+
+    try {
+      // 1️⃣ Fetch cart
+      const response = await requestHandler("get", "");
+      const cartItems = response.data?.data || [];
+
+      // 2️⃣ Get selected address from state store
+      const state = getState();
+      const addressId = state?.selectedAddress?.defaultAddress?.id
+        ? state?.selectedAddress?.defaultAddress?.id
+        : state?.selectedAddress?.selectedAddress?.id;
+
+      let updatedCart = cartItems;
+      // validate express delivvery every time fetch cart is called
+      // 3️⃣ Validate express delivery if address exists
+      if (addressId) {
+        const validateResponse = await validateExpressDelivery(
+          cartItems.map((item) => ({
+            product_id: item.product.id,
+            quantity: item.quantity,
+          })),
+          addressId
+        );
+
+        const validationResult = validateResponse.data?.data || [];
+
+        /**
+         * Expected example:
+         * validationResult = [
+         *   { product_id: 340738, express_delivery_applicable: true },
+         *   { product_id: 299208, express_delivery_applicable: false }
+         * ]
+         */
+
+        updatedCart = cartItems.map((item) => {
+          const validation = validationResult.find(
+            (v) => v.product_id === item.product.id
+          );
+          // merge old labels with express-delivery if endpoint return
+          // express_delivery_applicable by true
+          const mergeExpressLabel = (labels = [], isExpress) => {
+            if (isExpress) {
+              return labels.includes("express-delivery")
+                ? labels
+                : [...labels, "express-delivery"];
+            }
+            return labels.filter((l) => l !== "express-delivery");
+          };
+
+          return {
+            ...item,
+            product: {
+              ...item.product,
+              labels: mergeExpressLabel(
+                item.product.labels,
+                validation?.express_delivery_applicable
+              ),
+            },
+          };
+        });
       }
-    } else {
-      return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
+
+      latestUpdatedCart(updatedCart);
+
+      return {
+        ...response.data,
+        data: updatedCart,
+      };
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "Failed to fetch cart");
     }
   }
 );
