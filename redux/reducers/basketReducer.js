@@ -33,6 +33,24 @@ const validateExpressDelivery = async (basket, addressId) => {
   });
 };
 
+// export const fetchCartAsync = createAsyncThunk(
+//   "basket/fetchCartAsync",
+//   async (_, { rejectWithValue }) => {
+//     if (isAuth()) {
+//       try {
+//         const response = await requestHandler("get", "");
+//         const data = response.data;
+//         latestUpdatedCart(data?.data);
+//         return data;
+//       } catch (error) {
+//         return rejectWithValue(error.response?.data || "Failed to fetch cart");
+//       }
+//     } else {
+//       return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
+//     }
+//   }
+// );
+
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
   async (_, { getState, rejectWithValue }) => {
@@ -41,20 +59,20 @@ export const fetchCartAsync = createAsyncThunk(
     }
 
     try {
-      // 1️⃣ Fetch cart
+      // 1️⃣ Fetch cart (source of truth)
       const response = await requestHandler("get", "");
       const cartItems = response.data?.data || [];
 
-      // 2️⃣ Get selected address from state store
+      // 2️⃣ Get selected address
       const state = getState();
-      const addressId = state?.selectedAddress?.defaultAddress?.id
-        ? state?.selectedAddress?.defaultAddress?.id
-        : state?.selectedAddress?.selectedAddress?.id;
+      const addressId =
+        state?.selectedAddress?.defaultAddress?.id ||
+        state?.selectedAddress?.selectedAddress?.id;
 
       let updatedCart = cartItems;
-      // validate express delivvery every time fetch cart is called
-      // 3️⃣ Validate express delivery if address exists
-      if (addressId) {
+
+      // 3️⃣ Call express validation & REPLACE labels
+      if (addressId && cartItems.length) {
         const validateResponse = await validateExpressDelivery(
           cartItems.map((item) => ({
             product_id: item.product.id,
@@ -62,43 +80,20 @@ export const fetchCartAsync = createAsyncThunk(
           })),
           addressId
         );
+        const expressProducts = validateResponse?.data?.data?.products || [];
 
-        const validationResult = validateResponse.data?.data || [];
-
-        /**
-         * Expected example:
-         * validationResult = [
-         *   { product_id: 340738, express_delivery_applicable: true },
-         *   { product_id: 299208, express_delivery_applicable: false }
-         * ]
-         */
-
-        updatedCart = cartItems.map((item) => {
-          const validation = validationResult.find(
-            (v) => v.product_id === item.product.id
-          );
-          // merge old labels with express-delivery if endpoint return
-          // express_delivery_applicable by true
-          const mergeExpressLabel = (labels = [], isExpress) => {
-            if (isExpress) {
-              return labels.includes("express-delivery")
-                ? labels
-                : [...labels, "express-delivery"];
-            }
-            return labels.filter((l) => l !== "express-delivery");
-          };
-
-          return {
-            ...item,
-            product: {
-              ...item.product,
-              labels: mergeExpressLabel(
-                item.product.labels,
-                validation?.express_delivery_applicable
-              ),
-            },
-          };
-        });
+        // 🔑 Build lookup map
+        const expressMap = new Map(
+          expressProducts.map((p) => [p.product_id, p.labels || []])
+        );
+        updatedCart = cartItems.map((item) => ({
+          ...item,
+          product: {
+            ...item.product,
+            // ✅ REPLACE labels from express response
+            labels: expressMap.get(item.product.id) || [],
+          },
+        }));
       }
 
       latestUpdatedCart(updatedCart);
@@ -108,7 +103,7 @@ export const fetchCartAsync = createAsyncThunk(
         data: updatedCart,
       };
     } catch (error) {
-      return rejectWithValue(error.response?.data || "Failed to fetch cart");
+      return rejectWithValue(error?.response?.data || "Failed to fetch cart");
     }
   }
 );
