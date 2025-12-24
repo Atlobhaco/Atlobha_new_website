@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import AddRemoveBtn from "@/components/AddRemoveBtnProd";
 import { riyalImgOrange, riyalImgRed } from "@/constants/helpers";
 import Image from "next/image";
+import ExpressDelivery from "@/components/expressDelivery";
 
 // Memoize the ProductCard component to optimize performance
 const ProductCard = React.memo(({ product, preventOnClick = false }) => {
@@ -15,6 +16,7 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
     return Array.from(doc.body.childNodes).some((node) => node.nodeType === 1);
   };
 
+  const hasExpressDelivery = product?.labels?.includes("express-delivery");
   return (
     <Box
       className={`${style["prod"]}`}
@@ -92,17 +94,21 @@ const ProductCard = React.memo(({ product, preventOnClick = false }) => {
           {product?.price_before_discount ? riyalImgRed() : riyalImgOrange()}
         </Box>
 
-        {!!product?.price_before_discount && (
-          <Box className={`${style["prod-disc_percentage"]}`}>
+        {/* 🔴 Show discount ONLY if NO express delivery */}
+        {!!product?.price_before_discount && !hasExpressDelivery && (
+          <Box className={style["prod-disc_percentage"]}>
             {(
-              ((product?.price_before_discount -
-                (product?.offer_price || product?.price)) /
-                product?.price_before_discount) *
+              ((product.price_before_discount -
+                (product.offer_price || product.price)) /
+                product.price_before_discount) *
               100
-            )?.toFixed(0)}
+            ).toFixed(0)}
             %
           </Box>
         )}
+
+        {/* 🟢 Always show express delivery if exists */}
+        {hasExpressDelivery && <ExpressDelivery />}
 
         {product?.name && (
           <Box className={`${style["prod-info-wrapper_describe"]}`}>

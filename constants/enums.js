@@ -1,8 +1,9 @@
-export const MARKETPLACE = "marketplace";
-export const SPAREPARTS = "spare-parts";
+export const FIXED = "fixed";
 export const SERVICES = "services";
 export const PORTABLE = "portable";
-export const FIXED = "fixed";
+export const SPAREPARTS = "spare-parts";
+export const MARKETPLACE = "marketplace";
+export const VEHICLE_PRICING = "vehicle-pricing";
 
 export const UrlsSpecific = ["userProfile"];
 

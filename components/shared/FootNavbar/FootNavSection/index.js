@@ -17,13 +17,13 @@ function FootNavSection({
 
   const numStyle = {
     position: "absolute",
-    top: "-9px",
-    ...(locale === "ar" ? { left: "-15px" } : { right: "-15px" }),
+    top: "-5px",
+    ...(locale === "ar" ? { left: "-11px" } : { right: "-11px" }),
     background: activeTab ? "#f9dd4b" : "black",
     borderRadius: "50%",
     fontSize: "11px",
     fontWeight: "bold",
-    color: activeTab ? "black" :"white",
+    color: activeTab ? "black" : "white",
     width: "20px",
     height: "20px",
     display: "flex",

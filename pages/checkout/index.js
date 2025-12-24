@@ -44,6 +44,7 @@ function Checkout() {
   const dispatch = useDispatch();
   const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
   const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
+  const [expressDelivery, setExpressDelivery] = useState("normal");
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -119,6 +120,8 @@ function Checkout() {
                 setPromoCodeId={setPromoCodeId}
                 loadDate={loadDate}
                 estimateRes={estimateRes}
+                setExpressDelivery={setExpressDelivery}
+                expressDelivery={expressDelivery}
               />
             </div>
             <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
@@ -132,6 +135,7 @@ function Checkout() {
                   ref={tamaraRef}
                   setOpenEditUserModal={setOpenEditUserModal}
                   estimateRes={estimateRes}
+                  expressDelivery={expressDelivery}
                 />
               )}
             </div>

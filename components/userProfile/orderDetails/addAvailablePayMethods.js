@@ -21,7 +21,11 @@ import { useRouter } from "next/router";
 import DialogCentered from "@/components/DialogCentered";
 import PaymentMethodLimit from "@/components/PurchaseLimit/PaymentMethodLimit";
 
-function AddAvailablePayMethods({ orderDetails = {}, hidePayment = [] }) {
+function AddAvailablePayMethods({
+  orderDetails = {},
+  hidePayment = [],
+  noPadding = false,
+}) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { route } = router;
@@ -117,7 +121,7 @@ function AddAvailablePayMethods({ orderDetails = {}, hidePayment = [] }) {
   return (
     <Box
       sx={{
-        padding: "16px 13px",
+        padding: noPadding ? "" : "16px 13px",
       }}
     >
       <Box

@@ -32,6 +32,7 @@ function Basket() {
     delivery_free_price: 0,
     minimum_order_fee: 0,
   });
+  const userAddress = selectedAddress?.id ? selectedAddress : defaultAddress;
   const totalOfBasket = basket
     ?.filter((item) => item?.product?.is_active)
     ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
@@ -72,29 +73,31 @@ function Basket() {
   //   }, [endpointCalledAddress]);
 
   useEffect(() => {
-    dispatch(fetchCartAsync());
+    if (userAddress?.id) {
+      dispatch(fetchCartAsync());
 
-    const totalPriceBasket = basket
-      ?.filter((item) => item?.product?.is_active)
-      ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
-      ?.toFixed(2);
+      const totalPriceBasket = basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.reduce((sum, item) => sum + item.quantity * item.product.price, 0)
+        ?.toFixed(2);
 
-    const itemsMaping = basket
-      ?.filter((item) => item?.product?.is_active)
-      ?.map((bas) => ({
-        Id: bas?.product?.id || "",
-        Title: bas?.product?.name || "",
-        Price: bas?.product?.price || "",
-        Quantity: bas?.quantity || "",
-        Image: bas?.product?.image || "",
-      }));
+      const itemsMaping = basket
+        ?.filter((item) => item?.product?.is_active)
+        ?.map((bas) => ({
+          Id: bas?.product?.id || "",
+          Title: bas?.product?.name || "",
+          Price: bas?.product?.price || "",
+          Quantity: bas?.quantity || "",
+          Image: bas?.product?.image || "",
+        }));
 
-    window.webengage.onReady(() => {
-      webengage.track("CART_VIEWED", {
-        total: totalPriceBasket || 0,
-        number_of_products:
-          basket?.filter((item) => item?.product?.is_active)?.length || 0,
-        line_items: itemsMaping || [],
+      window.webengage.onReady(() => {
+        webengage.track("CART_VIEWED", {
+          total: totalPriceBasket || 0,
+          number_of_products:
+            basket?.filter((item) => item?.product?.is_active)?.length || 0,
+          line_items: itemsMaping || [],
+        });
       });
       window.gtag("event", "CART_VIEWED", {
         total: totalPriceBasket || 0,
@@ -102,10 +105,10 @@ function Basket() {
           basket?.filter((item) => item?.product?.is_active)?.length || 0,
         line_items: itemsMaping || [],
       });
-    });
 
-    latestUpdatedCart(basket);
-  }, []);
+      latestUpdatedCart(basket);
+    }
+  }, [userAddress]);
 
   return (
     <div className="container">

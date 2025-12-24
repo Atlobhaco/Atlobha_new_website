@@ -26,20 +26,84 @@ const requestHandler = async (method, endpoint, data = {}) => {
   });
 };
 
+const validateExpressDelivery = async (basket, addressId) => {
+  return requestHandler("post", "/validate-express-delivery", {
+    products: basket,
+    address_id: addressId,
+  });
+};
+
+// export const fetchCartAsync = createAsyncThunk(
+//   "basket/fetchCartAsync",
+//   async (_, { rejectWithValue }) => {
+//     if (isAuth()) {
+//       try {
+//         const response = await requestHandler("get", "");
+//         const data = response.data;
+//         latestUpdatedCart(data?.data);
+//         return data;
+//       } catch (error) {
+//         return rejectWithValue(error.response?.data || "Failed to fetch cart");
+//       }
+//     } else {
+//       return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
+//     }
+//   }
+// );
+
 export const fetchCartAsync = createAsyncThunk(
   "basket/fetchCartAsync",
-  async (_, { rejectWithValue }) => {
-    if (isAuth()) {
-      try {
-        const response = await requestHandler("get", "");
-        const data = response.data;
-        latestUpdatedCart(data?.data);
-        return data;
-      } catch (error) {
-        return rejectWithValue(error.response?.data || "Failed to fetch cart");
+  async (_, { getState, rejectWithValue }) => {
+    if (!isAuth()) {
+      return rejectWithValue("No logged in user");
+    }
+
+    try {
+      // 1️⃣ Fetch cart (source of truth)
+      const response = await requestHandler("get", "");
+      const cartItems = response.data?.data || [];
+
+      // 2️⃣ Get selected address
+      const state = getState();
+      const addressId =
+        state?.selectedAddress?.defaultAddress?.id ||
+        state?.selectedAddress?.selectedAddress?.id;
+
+      let updatedCart = cartItems;
+
+      // 3️⃣ Call express validation & REPLACE labels
+      if (addressId && cartItems.length) {
+        const validateResponse = await validateExpressDelivery(
+          cartItems.map((item) => ({
+            product_id: item.product.id,
+            quantity: item.quantity,
+          })),
+          addressId
+        );
+        const expressProducts = validateResponse?.data?.data?.products || [];
+
+        // 🔑 Build lookup map
+        const expressMap = new Map(
+          expressProducts.map((p) => [p.product_id, p.labels || []])
+        );
+        updatedCart = cartItems.map((item) => ({
+          ...item,
+          product: {
+            ...item.product,
+            // ✅ REPLACE labels from express response
+            labels: expressMap.get(item.product.id) || [],
+          },
+        }));
       }
-    } else {
-      return rejectWithValue("No logged in user"); // 🛠️ also fix this error reference
+
+      latestUpdatedCart(updatedCart);
+
+      return {
+        ...response.data,
+        data: updatedCart,
+      };
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "Failed to fetch cart");
     }
   }
 );

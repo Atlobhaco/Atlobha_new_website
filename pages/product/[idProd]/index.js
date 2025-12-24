@@ -19,6 +19,7 @@ import Head from "next/head";
 import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttributes";
 import ProdImages from "@/components/ProductDetails/ProdImages";
 import ServiceCenterInstallment from "@/components/ProductDetails/ServiceCenterInstallment";
+import ExpressDelivery from "@/components/expressDelivery";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -29,6 +30,7 @@ function ProductDetails() {
 
   const [cityDelivery, setCityDelivery] = useState(14);
   const { isMobile } = useScreenSize();
+
   const {
     data,
     isFetching: ProdDetailsFetch,
@@ -143,6 +145,11 @@ function ProductDetails() {
                   cityDelivery={cityDelivery}
                   setCityDelivery={setCityDelivery}
                 />
+                {data?.labels?.includes("express-delivery") && (
+                  <Box sx={{ mb: 2 }}>
+                    <ExpressDelivery text={t.fastSameDay} />
+                  </Box>
+                )}
               </Box>
               <Box sx={{ mb: 3 }}>
                 <CompatibleWith prod={data} />
