@@ -115,8 +115,6 @@ function HintPricedParts({ sectionInfo }) {
         },
       },
     ],
-    beforeChange: (e) => console.log(e),
-    // afterChange: () => setTimeout(() => setIsDragging(false), 500),
   };
 
   const renderBoxes = (data) => {
