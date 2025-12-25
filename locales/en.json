@@ -77,7 +77,7 @@
   "home": "Home",
   "anotherName": "Another name",
   "addressDetails": "Address details",
-  "addressDetailsHolder": "Apartment No. / Building Name / Street Address",
+  "addressDetailsHolder": "national address code",
   "noAddressAdded": "No Addresses added yet",
   "addOwnAddress": "You can add your own address with all the details",
   "[idAddress]": "Edit address",
@@ -696,5 +696,12 @@
   "extraFees": "Extra fees",
   "percentageForDesposit": "Deposit percentage",
   "WillPayRest": "The remaining amount will be paid at the showroom upon vehicle pickup.",
-  "ServicePrice": "Service price"
+  "ServicePrice": "Service price",
+  "forConfirmOrder": "To confirm the offer, you must pay",
+  "FromCarPrice": "of the vehicle price as a down payment, in order to reserve the vehicle and complete the remaining procedures at the showroom.",
+  "totalDepositNow": "Total amount due now",
+  "depositConfirmed": "The offer has been confirmed and a deposit for the vehicle has been paid. You may proceed to the showroom to complete the purchase procedures and receive the vehicle.",
+  "nationalAddress": "National Address",
+  "addressCodeEx": "national address code RSFA1234",
+  "nationalCodeError": "Please make sure to use your correct national address code (e.g. RSFA1234)"
 }

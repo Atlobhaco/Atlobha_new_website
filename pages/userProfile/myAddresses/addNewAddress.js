@@ -28,7 +28,7 @@ function AddNewAddressProfile() {
     type: "Home",
     cutomName: "",
   });
-  const [manualAddress, setManualAddress] = useState(null);
+  const [nationalAddressCode, setNationalAddressCode] = useState(null);
 
   const { refetch: callUserAddresses } = usersAddressesQuery({
     setAllAddresses,
@@ -44,7 +44,7 @@ function AddNewAddressProfile() {
       name: addressNameOrCustom?.cutomName || addressNameOrCustom?.type,
       ...lngLatLocation,
       address: `${locationInfo?.formattedAddress} ${locationInfo?.route}`,
-      manual_address: manualAddress,
+      national_address_code: nationalAddressCode,
     },
     callUserAddresses,
     redirect: () => router.push("/userProfile/myAddresses"),
@@ -76,8 +76,8 @@ function AddNewAddressProfile() {
                 locationInfo={locationInfo}
                 setAddressNameOrCustom={setAddressNameOrCustom}
                 addressNameOrCustom={addressNameOrCustom}
-                setManualAddress={setManualAddress}
-                manualAddress={manualAddress}
+                setNationalAddressCode={setNationalAddressCode}
+                nationalAddressCode={nationalAddressCode}
                 lngLatLocation={lngLatLocation}
                 callAddNewAddress={callAddNewAddress}
               />

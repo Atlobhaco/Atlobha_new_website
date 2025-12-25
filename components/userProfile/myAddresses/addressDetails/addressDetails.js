@@ -10,8 +10,8 @@ function AddressDetails({
   locationInfo,
   addressNameOrCustom,
   setAddressNameOrCustom,
-  manualAddress,
-  setManualAddress,
+  nationalAddressCode,
+  setNationalAddressCode,
   lngLatLocation,
   callAddNewAddress = () => {},
   hideSaveBtn = false,
@@ -37,9 +37,11 @@ function AddressDetails({
 
   const disableSave = () => {
     if (
-      !manualAddress ||
+      !nationalAddressCode ||
+      nationalAddressCode?.length < 8 ||
       (addressNameOrCustom?.type === "custom" &&
-        addressNameOrCustom?.cutomName?.length < 3) ||
+        (addressNameOrCustom?.cutomName?.length < 3 ||
+          !addressNameOrCustom?.cutomName)) ||
       !lngLatLocation?.lng ||
       !locationInfo
     ) {
@@ -147,12 +149,13 @@ function AddressDetails({
       <Box sx={{ mb: 2 }}>
         <SharedTextField
           id="addressDetailsField"
-          label={t.addressDetails}
+          label={t.nationalAddress}
           placeholder={t.addressDetailsHolder}
           showAstrick={true}
           imgIcon={false}
-          value={manualAddress}
-          handleChange={(e) => setManualAddress(e?.target?.value)}
+          value={nationalAddressCode}
+          handleChange={(e) => setNationalAddressCode(e?.target?.value)}
+          hint={t.addressCodeEx}
         />
       </Box>
       {!hideSaveBtn && (
