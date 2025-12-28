@@ -40,7 +40,7 @@ function Products() {
     const idParamValue = isTag ? tagId : segmentID;
 
     const baseParams = `page=${page}&per_page=${
-      isMobile ? 12 : 16
+      isMobile ? 12 : 18
     }&${idParamName}=${idParamValue}${`&${getFilterParams(filters)}`}`;
 
     // if (selectedCar?.model?.id || defaultCar?.model?.id) {

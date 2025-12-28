@@ -8,14 +8,14 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 
-function PaymentMethodOrder({ orderDetails = {} }) {
+function PaymentMethodOrder({ orderDetails = {}, noPadding = false }) {
   const { t } = useLocalization();
   const { isMobile } = useScreenSize();
 
   return (
     <Box
       sx={{
-        padding: "16px 13px",
+        padding: noPadding ? "" : "16px 13px",
       }}
     >
       <Box

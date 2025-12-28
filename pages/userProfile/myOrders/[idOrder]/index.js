@@ -12,6 +12,7 @@ import {
   SPARE_PARTS,
   USERS,
   VEHICLES,
+  VEHICLE_PRICING_ORDERS,
   VOUCHER_PURCHASE,
 } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
@@ -24,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { setAllCars, setDefaultCar } from "@/redux/reducers/selectedCarReducer";
 import { setPromoCodeAllData } from "@/redux/reducers/addSparePartsReducer";
 import GiftCardOrderDetails from "@/components/userProfile/orderDetails/giftCardOrderDetails";
+import VehiclePricingDetails from "@/components/userProfile/orderDetails/vehiclePricingDetails";
 
 function OrderDetails() {
   const router = useRouter();
@@ -74,6 +76,8 @@ function OrderDetails() {
         return `${PORTABLE_MAINTENANCE_RESERVATIONS}/${idOrder}`;
       case ORDERSENUM?.gift:
         return `${VOUCHER_PURCHASE}/${idOrder}`;
+      case ORDERSENUM?.vehiclePricing:
+        return `${VEHICLE_PRICING_ORDERS}/${idOrder}`;
       default:
         return type;
     }
@@ -163,6 +167,13 @@ function OrderDetails() {
           <GiftCardOrderDetails
             orderDetails={data}
             callSingleOrder={callSingleOrder}
+            orderDetailsFetching={orderDetailsFetching}
+          />
+        );
+      case ORDERSENUM?.vehiclePricing:
+        return (
+          <VehiclePricingDetails
+            orderDetails={data}
             orderDetailsFetching={orderDetailsFetching}
           />
         );

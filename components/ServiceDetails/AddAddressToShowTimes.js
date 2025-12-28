@@ -4,7 +4,7 @@ import { Box } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
 
-function AddAddressToShowTimes() {
+function AddAddressToShowTimes({ text = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
 
@@ -34,7 +34,7 @@ function AddAddressToShowTimes() {
           width: isMobile ? 15 : "auto",
         }}
       />
-      {t.addAddressFirst}
+      {text || t.addAddressFirst}
     </Box>
   );
 }

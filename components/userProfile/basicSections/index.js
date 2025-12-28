@@ -37,7 +37,7 @@ function BasicSections({
   };
   const numStyle = {
     background: router?.pathname?.includes(path) ? "#232323" : "#FFD400",
-    padding: "2px 6px",
+    padding: "2px 6px 1px 6px",
     borderRadius: "50%",
     color: "#fff",
     minWidth: isMobile ? "20px" : "25px",

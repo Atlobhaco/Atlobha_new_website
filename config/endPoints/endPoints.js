@@ -88,3 +88,4 @@ export const SPECS = "/specs";
 export const VEHICLE_PRICING_ORDERS = "/vehicle-pricing-orders";
 export const OFFERS = "/offers";
 export const VALIDATE_EXPRESS_DELIVERY = "/validate-express-delivery";
+export const PAY_DEPOSIT = "/pay-deposit";

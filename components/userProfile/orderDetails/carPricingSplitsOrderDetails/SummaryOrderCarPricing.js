@@ -36,7 +36,7 @@ import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
 
-function SummaryOrder({
+function SummaryOrderCarPricing({
   orderDetails: { receipt = {} } = {},
   orderDetails = {},
   callSingleOrder = () => {},
@@ -50,7 +50,6 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
-  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
@@ -306,7 +305,6 @@ function SummaryOrder({
     language: locale,
     currency: "SAR",
     customer_email: "user@example.com",
-    // return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}/${orderDetails?.id}/?type=${type}&status=CREDIT`,
     return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}?order_id=${orderDetails?.id}&type=${type}&status=CREDIT`,
   };
 
@@ -757,6 +755,16 @@ function SummaryOrder({
       {orderDetails?.status === STATUS?.incomplete &&
         type !== ORDERSENUM.vehiclePricing && (
           <>
+            {/* <Box className="d-flex justify-content-between mb-2">
+            <Box sx={boldText}>{t.total}</Box>
+            <Box sx={boldText}>
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {riyalImgBlack()}
+            </Box>
+          </Box> */}
             <SharedBtn
               className="big-main-btn"
               customClass="w-100"
@@ -804,6 +812,16 @@ function SummaryOrder({
       {/* logic for delivered */}
       {orderDetails?.status === STATUS?.delivered && (
         <>
+          {/* <Box className="d-flex justify-content-between mb-2">
+            <Box sx={boldText}>{t.total}</Box>
+            <Box sx={boldText}>
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {riyalImgBlack()}
+            </Box>
+          </Box> */}
           <SharedBtn
             className="black-btn"
             customClass="w-100"
@@ -814,6 +832,16 @@ function SummaryOrder({
       {/* logic for priced order */}
       {orderDetails?.status === STATUS?.priced && (
         <>
+          {/* <Box className="d-flex justify-content-between mb-2">
+            <Box sx={boldText}>{t.total}</Box>
+            <Box sx={boldText}>
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {riyalImgBlack()}
+            </Box>
+          </Box> */}
           <SharedBtn
             disabled={
               !selectedPaymentMethod?.id ||
@@ -869,4 +897,4 @@ function SummaryOrder({
   );
 }
 
-export default SummaryOrder;
+export default SummaryOrderCarPricing;
