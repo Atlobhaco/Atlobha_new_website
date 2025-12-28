@@ -25,10 +25,16 @@ const AddNewAddressFromNavbar = forwardRef(
   ({ setCanAddAddress, setOpenAddNewAddress }, ref) => {
     // called from the parent component
     const childFunction = () => {
+      const regex = /^[A-Z]{4}\d{4}$/;
+      if (!regex.test(nationalAddressCode)) {
+        return toast.error(`${t.nationalCodeError}`);
+      }
       if (
-        !manualAddress ||
+        !nationalAddressCode ||
+        nationalAddressCode?.length < 8 ||
         (addressNameOrCustom?.type === "custom" &&
-          addressNameOrCustom?.cutomName?.length < 3) ||
+          (addressNameOrCustom?.cutomName?.length < 3 ||
+            !addressNameOrCustom?.cutomName)) ||
         !lngLatLocation?.lng ||
         !locationInfo
       ) {
@@ -51,7 +57,7 @@ const AddNewAddressFromNavbar = forwardRef(
         type: "Home",
         cutomName: "",
       });
-      setManualAddress("");
+      setNationalAddressCode("");
     };
 
     // Expose the function to the parent using useImperativeHandle
@@ -68,7 +74,7 @@ const AddNewAddressFromNavbar = forwardRef(
     const { isMobile } = useScreenSize();
 
     const [locationInfo, setLocationInfo] = useState(null);
-    const [manualAddress, setManualAddress] = useState(null);
+    const [nationalAddressCode, setNationalAddressCode] = useState(null);
     const [lngLatLocation, setLngLatLocation] = useState(null);
     const [addressNameOrCustom, setAddressNameOrCustom] = useState({
       type: "Home",
@@ -98,10 +104,13 @@ const AddNewAddressFromNavbar = forwardRef(
       user,
       dispatch,
       body: {
-        name: addressNameOrCustom?.cutomName || addressNameOrCustom?.type,
+        name:
+          addressNameOrCustom?.type === "custom"
+            ? addressNameOrCustom?.cutomName
+            : addressNameOrCustom?.type,
         ...lngLatLocation,
         address: `${locationInfo?.formattedAddress} ${locationInfo?.route}`,
-        manual_address: manualAddress,
+        national_address_code: nationalAddressCode,
       },
       callUserAddresses,
       redirect: () => {
@@ -121,16 +130,18 @@ const AddNewAddressFromNavbar = forwardRef(
           type: "Home",
           cutomName: "",
         });
-        setManualAddress("");
+        setNationalAddressCode("");
       },
     });
 
     //   check can click save or no
     useEffect(() => {
       if (
-        !manualAddress ||
+        !nationalAddressCode ||
+        nationalAddressCode?.length < 8 ||
         (addressNameOrCustom?.type === "custom" &&
-          addressNameOrCustom?.cutomName?.length < 3) ||
+          (addressNameOrCustom?.cutomName?.length < 3 ||
+            !addressNameOrCustom?.cutomName)) ||
         !lngLatLocation?.lng ||
         !locationInfo
       ) {
@@ -138,7 +149,7 @@ const AddNewAddressFromNavbar = forwardRef(
       } else {
         setCanAddAddress(false);
       }
-    }, [manualAddress, addressNameOrCustom, lngLatLocation, locationInfo]);
+    }, [nationalAddressCode, addressNameOrCustom, lngLatLocation, locationInfo]);
 
     return (
       <div className="container">
@@ -156,8 +167,8 @@ const AddNewAddressFromNavbar = forwardRef(
               locationInfo={locationInfo}
               setAddressNameOrCustom={setAddressNameOrCustom}
               addressNameOrCustom={addressNameOrCustom}
-              setManualAddress={setManualAddress}
-              manualAddress={manualAddress}
+              setNationalAddressCode={setNationalAddressCode}
+              nationalAddressCode={nationalAddressCode}
               lngLatLocation={lngLatLocation}
               callAddNewAddress={() => {}}
               hideSaveBtn={true}

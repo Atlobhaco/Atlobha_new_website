@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import HeaderSection from "../HeaderSection";
 import useLocalization from "@/config/hooks/useLocalization";
 import Slider from "react-slick";
@@ -16,6 +16,7 @@ function PackageOffers({ sectionInfo }) {
   const router = useRouter();
   const [isDragging, setIsDragging] = useState(false);
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
+  const isFirstRun = useRef(true);
 
   const returnUrlDependOnCar = () => {
     if (selectedCar?.model?.id || defaultCar?.model?.id) {
@@ -83,8 +84,8 @@ function PackageOffers({ sectionInfo }) {
         },
       },
     ],
-    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
-    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
+    onSwipe: () => setIsDragging(true),
+    afterChange: () => setIsDragging(false),
   };
 
   return !sectionInfo?.is_active || !featuredProducts?.data?.length ? null : (

@@ -113,8 +113,12 @@ function ManufactureDetails() {
           <Head>
             <title>
               {locale === "en"
-                ? `Atlobha- ${manufactureInfo?.seo?.title_en}`
-                : `اطلبها- ${manufactureInfo?.seo?.title_ar}`}
+                ? `Atlobha- ${
+                    manufactureInfo?.seo?.title_en || manufactureInfo?.name
+                  }`
+                : `اطلبها- ${
+                    manufactureInfo?.seo?.title_ar || manufactureInfo?.name
+                  }`}
             </title>
             <meta
               name="description"

@@ -93,6 +93,11 @@ function DropDownAddress() {
     }
   }, [selectedAddress?.id, defaultAddress?.id]);
 
+  const handleCloseAddNewAddress = () => {
+    if (childRef.current) {
+      childRef.current.triggerEmptyFields();
+    }
+  };
   return (
     <Box
       id="openAddAddressModalProgramatically"
@@ -214,6 +219,9 @@ function DropDownAddress() {
         open={openAddNewAddress}
         setOpen={setOpenAddNewAddress}
         hasCloseIcon
+        actionsWhenClose={() => {
+          handleCloseAddNewAddress();
+        }}
         content={
           <AddNewAddressFromNavbar
             // key={addressModalKey}
@@ -239,7 +247,7 @@ function DropDownAddress() {
               text="addAddress"
               className="big-main-btn"
               customClass={`${isMobile ? "w-100" : ""}`}
-              //   disabled={canAddAddress}
+              disabled={canAddAddress}
               onClick={() => {
                 handleClick();
               }}
@@ -251,6 +259,7 @@ function DropDownAddress() {
                 className="outline-btn"
                 onClick={() => {
                   setOpenAddNewAddress(false);
+                  handleCloseAddNewAddress();
                 }}
               />
             )}

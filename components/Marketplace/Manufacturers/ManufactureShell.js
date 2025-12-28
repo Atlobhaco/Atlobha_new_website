@@ -98,8 +98,8 @@ function ManufactureShell({ sectionInfo }) {
         },
       },
     ],
-    beforeChange: () => setIsDragging(true),
-    afterChange: () => setTimeout(() => setIsDragging(false), 500),
+    onSwipe: () => setIsDragging(true),
+    afterChange: () => setIsDragging(false),
   };
 
   // useCallback to prevent unnecessary re-renders on click

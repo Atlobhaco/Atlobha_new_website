@@ -121,10 +121,11 @@ function StoreData({
           }}
         >
           <Image
-            src="/imgs/no-prod-img.svg"
+            src={store?.cover_image || "/imgs/no-prod-img.svg"}
             width={isMobile ? 50 : 60}
             height={isMobile ? 50 : 60}
             alt="store-img"
+            onError={(e) => (e.target.srcset = "/imgs/no-img-holder.svg")} // Fallback to default image
           />
           <Box>
             <Box
@@ -206,7 +207,9 @@ function StoreData({
             onClick={(e) => {
               e?.preventDefault();
               e?.stopPropagation();
-              window.location.href = `tel:${store?.phone}`;
+              window.location.href = `tel:${
+                store?.phone || store?.manager?.phone
+              }`;
             }}
           >
             <Image

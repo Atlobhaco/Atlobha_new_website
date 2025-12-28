@@ -74,8 +74,8 @@ function AtlobhaPartners({ sectionInfo }) {
         },
       },
     ],
-    beforeChange: () => setIsDragging(true), // Set dragging to true when slide changes
-    afterChange: () => setTimeout(() => setIsDragging(false), 100), // Reset dragging state
+    onSwipe: () => setIsDragging(true),
+    afterChange: () => setIsDragging(false),
   };
 
   function chunkArray(array, size) {
