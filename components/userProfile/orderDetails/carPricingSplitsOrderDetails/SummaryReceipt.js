@@ -41,9 +41,9 @@ function SummaryReceipt({ orderDetails, selectedOffer, setSteps = () => {} }) {
       }}
     >
       <Box sx={header}>{t.orderSummary}</Box>
-      {/* products price */}
+      {/* service price */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.productsPrice}</Box>
+        <Box sx={text}>{t.ServicePrice}</Box>
         <Box sx={text}>
           {orderDetails?.receipt?.service_fee}
           {riyalImgBlack()}
@@ -67,14 +67,6 @@ function SummaryReceipt({ orderDetails, selectedOffer, setSteps = () => {} }) {
           </Box>
         </Box>
       )}
-      {/* delivery fees */}
-      <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.deliveryFees}</Box>
-        <Box sx={text}>
-          {orderDetails?.receipt?.delivery_fees_with_tax}
-          {riyalImgBlack()}
-        </Box>
-      </Box>
 
       {/* pay from wallet balance */}
       <AccordionWalletBalance

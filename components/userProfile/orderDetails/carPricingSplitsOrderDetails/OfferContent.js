@@ -128,7 +128,7 @@ function OfferContent({
             ))}
           </Box>
         ) : (
-          <Box textAlign="center" p={2} height="150px" alignContent="center">
+          <Box textAlign="center" p={2} alignContent="center">
             <Box color="#1C1C28" fontSize="20px" fontWeight="500" mb={1}>
               {t.noExtraBenefits}
             </Box>
@@ -163,7 +163,6 @@ function OfferContent({
             text="chooseThisOffer"
             onClick={() => {
               setSelectedOffer(offer);
-              setSteps(2);
             }}
             className={`${
               selectedOffer?.id === offer?.id ? "big-main-btn" : "black-btn"

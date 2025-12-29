@@ -86,6 +86,9 @@ function CheckoutCarPricingOrder({ selectedOffer, setSteps, orderDetails }) {
             },
           }}
           hidePayment={["CASH"]}
+          queryParams={{
+            exclude_cash: true,
+          }}
         />
       </Box>
       <Box

@@ -703,5 +703,8 @@
   "depositConfirmed": "The offer has been confirmed and a deposit for the vehicle has been paid. You may proceed to the showroom to complete the purchase procedures and receive the vehicle.",
   "nationalAddress": "National Address",
   "addressCodeEx": "national address code RSFA1234",
-  "nationalCodeError": "Please make sure to use your correct national address code (e.g. RSFA1234)"
+  "nationalCodeError": "Please make sure to use your correct national address code (e.g. RSFA1234)",
+  "notFound": "Not found",
+  "found": "Found",
+  "fullVehiclePricing": "Full vehicle pricing"
 }

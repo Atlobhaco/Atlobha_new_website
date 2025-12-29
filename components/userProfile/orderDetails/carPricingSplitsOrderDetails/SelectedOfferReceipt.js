@@ -510,9 +510,9 @@ function SelectedOfferReceipt({
   return (
     <Box>
       <Box sx={header}>{t.orderSummary}</Box>
-      {/* products price */}
+      {/* vehicle price */}
       <Box className="d-flex justify-content-between mb-2">
-        <Box sx={text}>{t.productsPrice}</Box>
+        <Box sx={text}>{t.fullVehiclePricing}</Box>
         <Box sx={text}>
           {receipt?.vehicle_price}
           {riyalImgBlack()}
