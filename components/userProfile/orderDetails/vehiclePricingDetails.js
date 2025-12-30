@@ -70,6 +70,9 @@ function VehiclePricingDetails({
   };
   const returnDivider = () => <Divider sx={{ background: "#EAECF0", mb: 2 }} />;
 
+  const acceptedOfferProcessingOrConfirmed =
+    orderDetails?.accepted_offer ||
+    orderDetails?.offers?.find((d) => d?.deposit_paid_at);
   // first step for pricing
   // page of confirmed and new order
   return steps === 1 ? (
@@ -91,7 +94,8 @@ function VehiclePricingDetails({
       </Box>
       {returnDivider()}
 
-      {orderDetails?.status === STATUS?.confirmed && (
+      {(orderDetails?.status === STATUS?.confirmed ||
+        orderDetails?.status === STATUS?.processing) && (
         <>
           <Box display="flex" gap={1} my={2} alignItems="center">
             <Image
@@ -110,8 +114,8 @@ function VehiclePricingDetails({
           </Box>{" "}
           {/* selected offer */}
           <OfferContent
-            offer={orderDetails?.accepted_offer}
-            selectedOffer={orderDetails?.accepted_offer}
+            offer={acceptedOfferProcessingOrConfirmed}
+            selectedOffer={acceptedOfferProcessingOrConfirmed}
             hideButton={true}
             actionButton={
               <SharedBtn
@@ -136,26 +140,28 @@ function VehiclePricingDetails({
               />
             }
           />
+          {returnDivider()}
         </>
       )}
 
       {(orderDetails?.status === STATUS?.new ||
         orderDetails?.status === STATUS?.priced) && (
-        <Box mb={3}>
-          {orderDetails?.status === STATUS?.new && (
-            <AddAddressToShowTimes text={t.bestPrice} />
-          )}
-          {orderDetails?.status === STATUS?.priced && (
-            <OffersPricing
-              setSteps={setSteps}
-              selectedOffer={selectedOffer}
-              setSelectedOffer={setSelectedOffer}
-            />
-          )}
-        </Box>
+        <>
+          <Box mb={3}>
+            {orderDetails?.status === STATUS?.new && (
+              <AddAddressToShowTimes text={t.bestPrice} />
+            )}
+            {orderDetails?.status === STATUS?.priced && (
+              <OffersPricing
+                setSteps={setSteps}
+                selectedOffer={selectedOffer}
+                setSelectedOffer={setSelectedOffer}
+              />
+            )}
+          </Box>
+          {returnDivider()}
+        </>
       )}
-
-      {returnDivider()}
 
       {orderDetails?.status === STATUS?.confirmed && (
         <>
@@ -250,7 +256,7 @@ function VehiclePricingDetails({
             <Box sx={{ mb: 4 }}>
               <StoreData
                 prod={{}}
-                store={orderDetails?.accepted_offer?.store}
+                store={acceptedOfferProcessingOrConfirmed?.store}
                 selectedStore={null}
                 setSelectedStore={() => {}}
                 setOpenAppointments={() => {}}
@@ -277,7 +283,7 @@ function VehiclePricingDetails({
             {returnDivider()}
 
             <SelectedOfferReceipt
-              receipt={orderDetails?.accepted_offer?.store_receipt}
+              receipt={acceptedOfferProcessingOrConfirmed?.store_receipt}
             />
           </Box>
         }

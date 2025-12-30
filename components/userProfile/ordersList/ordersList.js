@@ -95,7 +95,7 @@ function OrdersList({ order, callOrders }) {
         <div className={`${style["info"]}`}>
           <div className={`${style["flex"]}`}>
             <div className={`${style["title"]}`}>
-              {t.orderNum} <span>#{order?.id}</span>
+              {t.orderNum} <span>#{order?.reference_code}</span>
             </div>
             <div className={`${style["title"]}`}>
               {t.orderType} <span>{orderType(order)}</span>

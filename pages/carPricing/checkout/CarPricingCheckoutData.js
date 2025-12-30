@@ -114,6 +114,9 @@ function CarPricingCheckoutData({ promoCodeId, setPromoCodeId, carPricing }) {
             status: "new",
           }}
           noPadding={true}
+          queryParams={{
+            exclude_cash: true,
+          }}
         />
       </div>
 

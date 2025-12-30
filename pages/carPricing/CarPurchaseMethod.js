@@ -71,7 +71,7 @@ function CarPurchaseMethod({
               handleChange={(e) => {
                 const value = e.target.value;
                 // Allow only digits (0–9)
-                if (/^\d{0,4}$/.test(value)) {
+                if (/^\d{0,5}$/.test(value)) {
                   setPurchaseDetails({
                     ...purchaseDetails,
                     depositeValue: value,

@@ -161,7 +161,7 @@ function AddressDetails({
       {!hideSaveBtn && (
         <SharedBtn
           className="big-main-btn"
-          customClass="w-100"
+          customClass="w-100 mt-3"
           text={t.common.save}
           disabled={disableSave()}
           onClick={() => callAddNewAddress()}

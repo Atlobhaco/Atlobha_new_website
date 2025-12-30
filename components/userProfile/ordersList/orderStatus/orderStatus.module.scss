@@ -12,7 +12,7 @@
   opacity: 0.8;
   @include mobile-screen-style {
     height: 25px;
-	padding: 5.458px 6px;
+	padding: 5.458px 5px;
   }
 }
 
@@ -21,6 +21,10 @@
   font-style: normal;
   font-weight: 700;
   margin-top: 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .svg {
