@@ -17,12 +17,12 @@ import { makeStyles } from "@mui/styles";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SharedBtn from "../shared/SharedBtn";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(({ isMobile }) => ({
   centerDesign: {
     bottom: "0px",
     minWidth: "60vw",
     maxHeight: "60vh",
-	minHeight: "fit-content",
+    minHeight: "fit-content",
     margin: "auto",
     borderRadius: "10px !important",
   },
@@ -35,9 +35,8 @@ const useStyles = makeStyles(() => ({
   title: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-between",
-    fontSize: "20px",
-    fontWeight: 700,
+    fontSize: isMobile ? "20px" : "20px",
+    fontWeight: isMobile ? "700" : "500",
   },
   dragHandle: {
     width: 60,
@@ -95,10 +94,21 @@ function DialogCentered({
         {/* Title */}
         {showTitle && (
           <Box px={2} pb={1}>
-            <Box className={classes.title}>
+            <Box
+              className={classes.title}
+              sx={{
+                justifyContent: !title ? "flex-end" : "space-between",
+              }}
+            >
               {title}
               {hasCloseIcon && (
-                <IconButton onClick={handleClose}>
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  className={classes.closeButton}
+                  aria-label="close"
+                  onClick={handleClose}
+                >
                   <CloseIcon />
                 </IconButton>
               )}
