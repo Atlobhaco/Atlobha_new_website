@@ -11,11 +11,12 @@ import Image from "next/image";
 import useLocalization from "@/config/hooks/useLocalization";
 import OfferContent from "./OfferContent";
 
-function ExpiredOffers({ offers }) {
+function ExpiredOffers({ offers, defaultExpanded = false }) {
   const { t } = useLocalization();
 
   return (
     <Accordion
+      defaultExpanded={defaultExpanded}
       sx={{
         boxShadow: "none",
         backgroundColor: "transparent",

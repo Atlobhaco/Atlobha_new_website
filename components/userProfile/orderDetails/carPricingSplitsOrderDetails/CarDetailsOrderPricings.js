@@ -22,9 +22,12 @@ function CarDetailsOrderPricings({ style, orderDetails, cololredBoxStyle }) {
     select: (res) =>
       res?.data?.data?.find(
         (d) =>
-          d?.variant?.toLowerCase() === orderDetails?.variant?.toLowerCase()
+          d?.variant?.toLowerCase() === orderDetails?.variant?.toLowerCase() ||
+          d?.field?.toLowerCase() === orderDetails?.variant?.toLowerCase()
       ),
-    onSuccess: (res) => setSelectedHeaderGroup(res?.group[0]),
+    onSuccess: (res) => {
+      setSelectedHeaderGroup(res?.group[0]);
+    },
   });
 
   return (
@@ -113,10 +116,16 @@ function CarDetailsOrderPricings({ style, orderDetails, cololredBoxStyle }) {
         content={
           <Box
             sx={{
-              maxHeight: "70vh",
+              height: "70vh",
+              overflow: "auto",
             }}
           >
-            <div className={`${style["groups"]}`}>
+            <div
+              className={`${style["groups"]}`}
+              style={{
+                minHeight: "35px",
+              }}
+            >
               {carVariantRes?.group?.map((group) => (
                 <div
                   key={group?.name}

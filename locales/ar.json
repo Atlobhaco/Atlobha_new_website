@@ -705,5 +705,9 @@
   "nationalCodeError": "برجاء التحقق من إدخال كود العنوان الوطني بشكل صحيح (مثال: RSFA1234)",
   "notFound": "غير متوفر",
   "found": "متوفر",
-  "fullVehiclePricing": "سعر السيارة بالكامل"
+  "fullVehiclePricing": "سعر السيارة بالكامل",
+  "newOrder": "طلب جديد",
+  "refundOrder": "طلب استرداد",
+  "refundMoney": "استرداد أموال طلب التسعير",
+  "willSendRefund": "سيتم إرسال طلب استرداد الأموال بعد التأكيد."
 }

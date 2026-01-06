@@ -129,7 +129,7 @@ function OfferContent({
           </Box>
         ) : (
           <Box textAlign="center" p={2} alignContent="center">
-            <Box color="#1C1C28" fontSize="20px" fontWeight="500" mb={1}>
+            <Box color="#1C1C28" fontSize="20px" fontWeight="500">
               {t.noExtraBenefits}
             </Box>
             <Box color="#0F172A" fontSize="13px" fontWeight="400">
@@ -139,7 +139,12 @@ function OfferContent({
         )}
 
         {/* validation date */}
-        <Box my="5px" borderBottom="1px solid #E5E7EB">
+        <Box
+          my="5px"
+          borderBottom={`${
+            hideButton && !actionButton ? "none" : "1px solid #E5E7EB"
+          }`}
+        >
           <Image
             src="/imgs/validity.svg"
             alt="validity"

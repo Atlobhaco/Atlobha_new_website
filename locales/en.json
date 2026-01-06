@@ -706,5 +706,9 @@
   "nationalCodeError": "Please make sure to use your correct national address code (e.g. RSFA1234)",
   "notFound": "Not found",
   "found": "Found",
-  "fullVehiclePricing": "Full vehicle pricing"
+  "fullVehiclePricing": "Full vehicle pricing",
+  "newOrder": "new order",
+  "refundOrder": "refund order",
+  "refundMoney": "Refund of the pricing request amount",
+  "willSendRefund": "The refund request will be sent after confirmation."
 }

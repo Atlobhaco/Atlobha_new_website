@@ -23,10 +23,12 @@ import DialogCentered from "@/components/DialogCentered";
 import StoreData from "@/components/ServiceDetails/StoreData";
 import styleSpareParts from "../../../pages/spareParts/confirmation/confirmation.module.scss";
 import SelectedOfferReceipt from "./carPricingSplitsOrderDetails/SelectedOfferReceipt";
+import ActionsOrderPricing from "./carPricingSplitsOrderDetails/ActionsOrderPricing";
 
 function VehiclePricingDetails({
   orderDetails = {},
   orderDetailsFetching = false,
+  callSingleOrder = () => {},
 }) {
   if (orderDetailsFetching) {
     return (
@@ -71,7 +73,7 @@ function VehiclePricingDetails({
   const returnDivider = () => <Divider sx={{ background: "#EAECF0", mb: 2 }} />;
 
   const acceptedOfferProcessingOrConfirmed =
-    orderDetails?.accepted_offer ||
+    orderDetails?.offers?.find((d) => d?.is_confirmed) ||
     orderDetails?.offers?.find((d) => d?.deposit_paid_at);
   // first step for pricing
   // page of confirmed and new order
@@ -163,12 +165,18 @@ function VehiclePricingDetails({
         </>
       )}
 
-      {orderDetails?.status === STATUS?.confirmed && (
+      {(orderDetails?.status === STATUS?.confirmed ||
+        orderDetails?.status === STATUS?.incomplete ||
+        orderDetails?.status === STATUS?.cancelled) && (
         <>
           <ExpiredOffers
             offers={orderDetails?.offers?.filter(
-              (d) => d?.status === "rejected"
+              (d) => d?.is_rejected || d?.is_expired
             )}
+            defaultExpanded={
+              orderDetails?.status === STATUS?.incomplete ||
+              orderDetails?.status === STATUS?.cancelled
+            }
           />
           {returnDivider()}
         </>
@@ -189,10 +197,14 @@ function VehiclePricingDetails({
       />
       {returnDivider()}
 
-      <Box mb={3}>
-        <PaymentMethodOrder orderDetails={orderDetails} noPadding={true} />
-      </Box>
-      {returnDivider()}
+      {orderDetails?.payment_method && (
+        <>
+          <Box mb={3}>
+            <PaymentMethodOrder orderDetails={orderDetails} noPadding={true} />
+          </Box>
+          {returnDivider()}
+        </>
+      )}
 
       {/* if  order is priced i want to add receipt for the selected order */}
       <SummaryReceipt
@@ -200,6 +212,14 @@ function VehiclePricingDetails({
         selectedOffer={selectedOffer}
         setSteps={setSteps}
       />
+
+      {(orderDetails?.status === STATUS?.incomplete ||
+        orderDetails?.status === STATUS?.cancelled) && (
+        <ActionsOrderPricing
+          orderDetails={orderDetails}
+          callSingleOrder={callSingleOrder}
+        />
+      )}
 
       {/* show details of accepted offer */}
       <DialogCentered

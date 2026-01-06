@@ -175,6 +175,7 @@ function OrderDetails() {
           <VehiclePricingDetails
             orderDetails={data}
             orderDetailsFetching={orderDetailsFetching}
+			callSingleOrder={callSingleOrder}
           />
         );
       default:
