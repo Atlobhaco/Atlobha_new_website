@@ -141,7 +141,7 @@ function SharedDropDown({
                 border: "1px solid #E6E6E6", // Example: add border to Paper
                 boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)", // Add box shadow to Paper
                 borderRadius: "8px",
-                minWidth: "250px !important",
+                // minWidth: "250px !important",
                 "& .MuiMenuItem-root:last-child": {
                   borderBottom: "none", // Remove the bottom border for the last menu item
                 },

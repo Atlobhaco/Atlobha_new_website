@@ -70,7 +70,8 @@ function SpecificationAgencySelections({
         content={
           <Box
             sx={{
-              maxHeight: "70vh",
+              maxHeight: "60vh",
+              overflow: "auto",
             }}
           >
             <div className={`${style["groups"]}`}>

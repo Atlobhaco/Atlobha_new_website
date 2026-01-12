@@ -153,10 +153,21 @@ function DialogCentered({
     >
       {showTitle && (
         <DialogTitle>
-          <Box className={classes.title}>
+          <Box
+            className={classes.title}
+            sx={{
+              justifyContent: !title ? "flex-end" : "space-between",
+            }}
+          >
             {title}
             {hasCloseIcon && (
-              <IconButton onClick={handleClose}>
+              <IconButton
+                edge="end"
+                color="inherit"
+                className={classes.closeButton}
+                aria-label="close"
+                onClick={handleClose}
+              >
                 <CloseIcon />
               </IconButton>
             )}
