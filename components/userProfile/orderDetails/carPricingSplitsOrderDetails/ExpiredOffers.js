@@ -67,9 +67,9 @@ function ExpiredOffers({ offers, defaultExpanded = false }) {
               key={singleOffer?.id} // ✅ important
               offer={singleOffer}
               selectedOffer={singleOffer}
-              setSteps={() => {}}
               hideButton={true}
               customBorder="2px solid #EB3C24"
+              ExpiredOffer={true}
             />
           ))
         ) : (

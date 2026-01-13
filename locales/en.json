@@ -710,5 +710,6 @@
   "newOrder": "new order",
   "refundOrder": "refund order",
   "refundMoney": "Refund of the pricing request amount",
-  "willSendRefund": "The refund request will be sent after confirmation."
+  "willSendRefund": "The refund request will be sent after confirmation.",
+  "expired": "Expired"
 }

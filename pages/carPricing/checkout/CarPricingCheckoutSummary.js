@@ -109,7 +109,7 @@ const CarPricingCheckoutSummary = forwardRef(
           model_id: carPricing?.model?.id,
           brand_id: carPricing?.brand?.id,
           year: carPricing?.year,
-          variant: carPricing?.variant?.variant || null,
+          variant: carPricing?.variant?.field || null,
           store_payment_method: carPricing?.purchase?.type,
           job_title: carPricing?.job,
           down_payment:

@@ -11,10 +11,10 @@ function OfferContent({
   offer,
   selectedOffer,
   setSelectedOffer = () => {},
-  setSteps = () => {},
   hideButton = false,
   customBorder = false,
   actionButton = null,
+  ExpiredOffer = false,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -158,7 +158,9 @@ function OfferContent({
             fontSize="14px"
             fontWeight="700"
           >
-            {t.validTo} {moment(offer?.expire_at).format("D MMMM YYYY")}
+            {!ExpiredOffer
+              ? `${t.validTo} ${moment(offer?.expire_at).format("D MMMM YYYY")}`
+              : t.expired}
           </Typography>
         </Box>
 

@@ -16,7 +16,7 @@ function OffersPricing({ setSteps, selectedOffer, setSelectedOffer }) {
     name: ["offers-for-cars", idOrder],
     url: `${VEHICLE_PRICING_ORDERS}/${idOrder}${OFFERS}`,
     refetchOnWindowFocus: false,
-    select: (res) => res?.data?.data,
+    select: (res) => res?.data?.data?.filter?.((d) => !d?.is_expired),
   });
 
   return (

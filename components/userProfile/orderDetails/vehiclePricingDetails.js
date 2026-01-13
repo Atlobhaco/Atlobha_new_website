@@ -167,20 +167,23 @@ function VehiclePricingDetails({
 
       {(orderDetails?.status === STATUS?.confirmed ||
         orderDetails?.status === STATUS?.incomplete ||
-        orderDetails?.status === STATUS?.cancelled) && (
-        <>
-          <ExpiredOffers
-            offers={orderDetails?.offers?.filter(
-              (d) => d?.is_rejected || d?.is_expired
-            )}
-            defaultExpanded={
-              orderDetails?.status === STATUS?.incomplete ||
-              orderDetails?.status === STATUS?.cancelled
-            }
-          />
-          {returnDivider()}
-        </>
-      )}
+        orderDetails?.status === STATUS?.cancelled ||
+        orderDetails?.status === STATUS?.priced) &&
+        orderDetails?.offers?.filter((d) => d?.is_rejected || d?.is_expired)
+          ?.length && (
+          <>
+            <ExpiredOffers
+              offers={orderDetails?.offers?.filter(
+                (d) => d?.is_rejected || d?.is_expired
+              )}
+              defaultExpanded={
+                orderDetails?.status === STATUS?.incomplete ||
+                orderDetails?.status === STATUS?.cancelled
+              }
+            />
+            {returnDivider()}
+          </>
+        )}
 
       {/* show car details */}
       <CarDetailsOrderPricings
