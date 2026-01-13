@@ -277,7 +277,8 @@ function CarPricingContent() {
             {availablePaymentMethodImages(
               {
                 payment_method:
-                  pricingDetails?.created_order_car_res?.payment_method,
+                  pricingDetails?.created_order_car_res?.payment_method ||
+                  "CASH",
               },
               isMobile
             )}

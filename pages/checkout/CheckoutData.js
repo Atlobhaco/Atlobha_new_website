@@ -11,6 +11,8 @@ import AtlobhaPlusHint from "@/components/userProfile/atlobhaPlusHint";
 import { useSelector } from "react-redux";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { CART, VALIDATE_EXPRESS_DELIVERY } from "@/config/endPoints/endPoints";
+import AddAddressToShowTimes from "@/components/ServiceDetails/AddAddressToShowTimes";
+import { ExpressDeliveryReasonsLocalized } from "@/constants/enums";
 
 function CheckoutData({
   selectAddress,
@@ -23,9 +25,10 @@ function CheckoutData({
   expressDelivery,
 }) {
   const { isMobile } = useScreenSize();
-  const { t } = useLocalization();
+  const { t, locale } = useLocalization();
   const { basket } = useSelector((state) => state.basket);
   const [expressResponse, setExpressResponse] = useState(false);
+  const [expressReason, setExpressReason] = useState(false);
 
   const deliveryDate = () => {
     return estimateRes?.estimated_delivery_date_from &&
@@ -53,18 +56,38 @@ function CheckoutData({
     },
   ];
 
+  const getFirstFailedCondition = (products = []) => {
+    const targetProduct = products.find(
+      (product) => product.express_delivery_applicable === true
+    );
+
+    if (!targetProduct) return null;
+
+    if (targetProduct.meets_all_criteria === true) {
+      return null;
+    }
+
+    const failedEntry = Object.entries(targetProduct.conditions || {}).find(
+      ([_, value]) => value === false
+    );
+
+    return failedEntry ? failedEntry[0] : null;
+  };
+
   useCustomQuery({
     name: ["validate-express", basket, selectAddress],
     url: `${CART}${VALIDATE_EXPRESS_DELIVERY}`,
     method: "post",
     body: { products: basket, address_id: selectAddress?.id },
     refetchOnWindowFocus: true,
-    select: (res) =>
-      res?.data?.data?.products?.some(
-        (item) => item.express_delivery_applicable === true
-      ),
+    select: (res) => res?.data?.data,
     enabled: basket?.length && selectAddress?.id ? true : false,
-    onSuccess: (res) => setExpressResponse(res),
+    onSuccess: (res) => {
+      setExpressResponse(
+        res?.products?.some((item) => item.express_delivery_applicable === true)
+      );
+      setExpressReason(getFirstFailedCondition(res.products));
+    },
   });
 
   return (
@@ -128,75 +151,90 @@ function CheckoutData({
 
       {/* express normal delivery selection */}
       {expressResponse && (
-        <Box
-          sx={{
-            padding: isMobile ? "16px 13px" : "16px 0px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          <Box>
-            <Image
-              loading="lazy"
-              src="/icons/express-van-2.svg"
-              width={isMobile ? 25 : 35}
-              height={isMobile ? 25 : 35}
-              alt="express"
-            />
-          </Box>
-          <Box>
-            <Box
-              sx={{
-                color: "#232323",
-                fontSize: isMobile ? "14px" : "20px",
-                fontWeight: "700",
-                lineHeight: "30px",
-              }}
-            >
-              {t.deliveryType}
+        <>
+          {" "}
+          <Box
+            sx={{
+              padding: isMobile ? "16px 13px" : "16px 0px",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <Box>
+              <Image
+                loading="lazy"
+                src="/icons/express-van-2.svg"
+                width={isMobile ? 25 : 35}
+                height={isMobile ? 25 : 35}
+                alt="express"
+              />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                gap: isMobile ? "10px" : "20px",
-                flexWrap: "wrap",
-              }}
-            >
-              {deliveryType?.map((type) => (
-                <Box
-                  onClick={() => setExpressDelivery(type?.value)}
-                  sx={{
-                    cursor: "pointer",
-                    padding: isMobile ? "10px 5px" : "10px 17px",
-                    border:
-                      expressDelivery === type?.value
-                        ? "1px solid #FFD400"
-                        : "1px solid  #F0F0F0",
-                    background:
-                      expressDelivery === type?.value ? "#FFD400" : "#ffffff",
-                    borderRadius: "8px",
-                    color: "#232323",
-                    fontSize: isMobile ? "10px" : "14px",
-                    fontWeight: "500",
-                  }}
-                  key={type?.id}
-                >
-                  {type?.text}{" "}
-                  <Image
-                    src={type?.imgSrc}
-                    alt="label"
-                    width={isMobile ? 18 : 24}
-                    height={isMobile ? 18 : 24}
-                    style={{
-                      marginInlineStart: "5px",
+            <Box>
+              <Box
+                sx={{
+                  color: "#232323",
+                  fontSize: isMobile ? "14px" : "20px",
+                  fontWeight: "700",
+                  lineHeight: "30px",
+                }}
+              >
+                {t.deliveryType}
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: isMobile ? "10px" : "20px",
+                  flexWrap: "wrap",
+                }}
+              >
+                {deliveryType?.map((type) => (
+                  <Box
+                    onClick={() => {
+                      if (!expressReason) {
+                        setExpressDelivery(type?.value);
+                      }
                     }}
-                  />
-                </Box>
-              ))}
+                    sx={{
+                      cursor: expressReason ? "normal" : "pointer",
+                      padding: isMobile ? "10px 5px" : "10px 17px",
+                      border:
+                        expressDelivery === type?.value
+                          ? "1px solid #FFD400"
+                          : "1px solid  #F0F0F0",
+                      background:
+                        expressDelivery === type?.value ? "#FFD400" : "#ffffff",
+                      borderRadius: "8px",
+                      color: "#232323",
+                      fontSize: isMobile ? "10px" : "14px",
+                      fontWeight: "500",
+                    }}
+                    key={type?.id}
+                  >
+                    {type?.text}{" "}
+                    <Image
+                      src={type?.imgSrc}
+                      alt="label"
+                      width={isMobile ? 18 : 24}
+                      height={isMobile ? 18 : 24}
+                      style={{
+                        marginInlineStart: "5px",
+                      }}
+                    />
+                  </Box>
+                ))}
+              </Box>
             </Box>
           </Box>
-        </Box>
+          <Box>
+            {expressReason && (
+              <AddAddressToShowTimes
+                imgSrc="/imgs/orange-bell.svg"
+                text={ExpressDeliveryReasonsLocalized[expressReason][locale]}
+              />
+            )}
+          </Box>
+        </>
       )}
 
       {/* payment methods */}

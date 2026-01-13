@@ -146,21 +146,30 @@ const CarPricingCheckoutSummary = forwardRef(
             "carPricingDetails",
             JSON.stringify(updatedData)
           );
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             payFortForm.submit();
             setTimeout(() => {
               setFakeLoader(false);
             }, 12000);
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             return;
           }
           if (selectedPaymentMethod?.key === PAYMENT_METHODS?.cash) {
             router.push(`/confirmation/carPricing/?secType=${VEHICLE_PRICING}`);
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handlePayWithTamara();
             } else {
@@ -168,7 +177,10 @@ const CarPricingCheckoutSummary = forwardRef(
             }
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handlePayWithTabby();
             } else {
@@ -177,7 +189,10 @@ const CarPricingCheckoutSummary = forwardRef(
             return;
           }
 
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.mis) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handleMisPay();
               setTimeout(() => {
@@ -268,8 +283,8 @@ const CarPricingCheckoutSummary = forwardRef(
         // when come from another checkout saved before
         dispatch(setPromoCodeForSpareParts({ data: "" }));
         dispatch(setPromoCodeAllData({ data: null }));
-        if (+res?.amount_to_pay === 0)
-          dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
+        // if (+res?.amount_to_pay === 0)
+        //   dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
       },
       onError: (err) => {
         toast.error(
@@ -806,6 +821,8 @@ const CarPricingCheckoutSummary = forwardRef(
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);
+                setFakeLoader(false);
+                setLoadPayRequest(false);
                 return;
               }
             }
