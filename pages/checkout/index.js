@@ -49,6 +49,7 @@ function Checkout() {
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
       setSelectAddress(selectedAddress?.id ? selectedAddress : defaultAddress);
+      setExpressDelivery("normal");
     }
   }, [selectedAddress, defaultAddress]);
 
@@ -70,6 +71,7 @@ function Checkout() {
 
   const handleChangeAddress = (data) => {
     setSelectAddress(data);
+    setExpressDelivery("normal");
   };
 
   const triggerChildPayment = () => {

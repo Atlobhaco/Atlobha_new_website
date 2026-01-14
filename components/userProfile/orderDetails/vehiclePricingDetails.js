@@ -170,7 +170,7 @@ function VehiclePricingDetails({
         orderDetails?.status === STATUS?.cancelled ||
         orderDetails?.status === STATUS?.priced) &&
         orderDetails?.offers?.filter((d) => d?.is_rejected || d?.is_expired)
-          ?.length && (
+          ?.length > 0 && (
           <>
             <ExpiredOffers
               offers={orderDetails?.offers?.filter(
