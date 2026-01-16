@@ -146,7 +146,6 @@ function CarPricingCheckoutData({ promoCodeId, setPromoCodeId, carPricing }) {
           <Box
             sx={{
               maxHeight: "70vh",
-              overflow: "hidden auto",
             }}
           >
             <Questions />

@@ -62,7 +62,8 @@ function ActionsOrderPricing({ orderDetails, callSingleOrder }) {
         />
       </div>
       {orderDetails?.status === STATUS?.incomplete &&
-        orderDetails?.able_to_refund && (
+        orderDetails?.able_to_refund &&
+        !orderDetails?.refund_requested_at && (
           <div className="col-md-auto col-6">
             <SharedBtn
               className="big-main-btn"
