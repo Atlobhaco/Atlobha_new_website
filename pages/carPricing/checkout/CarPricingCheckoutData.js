@@ -143,11 +143,7 @@ function CarPricingCheckoutData({ promoCodeId, setPromoCodeId, carPricing }) {
         setOpen={setOpenCommonnquestions}
         hasCloseIcon
         content={
-          <Box
-            sx={{
-              maxHeight: "70vh",
-            }}
-          >
+          <Box>
             <Questions />
           </Box>
         }
