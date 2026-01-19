@@ -50,7 +50,7 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = () => {
-    webengage.track("USER_LOGOUT");
+    // webengage.track("USER_LOGOUT");
     setUser(null);
     localStorage.removeItem("user");
     localStorage.clear();

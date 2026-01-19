@@ -291,13 +291,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 
           {isMobile ? (
             <Link
-              onClick={() =>
-                window.webengage.onReady(() => {
-                  webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                    event_status: true,
-                  });
-                })
-              }
+              //   onClick={() =>
+              //     window.webengage.onReady(() => {
+              //       webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //         event_status: true,
+              //       });
+              //     })
+              //   }
               href="https://wa.me/966502670094"
               target="_blank"
             >

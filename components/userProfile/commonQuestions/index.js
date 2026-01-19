@@ -107,11 +107,11 @@ function Questions() {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                  event_status: true,
-                });
-              });
+              //   window.webengage.onReady(() => {
+              //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //       event_status: true,
+              //     });
+              //   });
             }}
           />
         </div>

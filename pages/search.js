@@ -252,11 +252,11 @@ function Search() {
                         <div
                           className="col-md-4 col-4 mb-3 px-0 d-flex justify-content-center"
                           key={prod?.id}
-                          onClick={() =>
-                            window.webengage.onReady(() => {
-                              webengage.track("SEARCH_PRODUCTS_CLICKED");
-                            })
-                          }
+                          //   onClick={() =>
+                          //     window.webengage.onReady(() => {
+                          //       webengage.track("SEARCH_PRODUCTS_CLICKED");
+                          //     })
+                          //   }
                         >
                           <ProductCard product={prod} />
                         </div>

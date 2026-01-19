@@ -62,13 +62,13 @@ function MyAddresses() {
 
   useEffect(() => {
     if (allAddresses?.length) {
-      webengage.track("LOGIN", {
-        addresses: allAddresses?.map((address) => ({
-          id: address?.id || "",
-          Address: address?.address || "",
-          Type: address?.name || "",
-        })),
-      });
+      //   webengage.track("LOGIN", {
+      //     addresses: allAddresses?.map((address) => ({
+      //       id: address?.id || "",
+      //       Address: address?.address || "",
+      //       Type: address?.name || "",
+      //     })),
+      //   });
     }
   }, [allAddresses]);
 

@@ -45,8 +45,8 @@ export const authSlice = createSlice({
         localStorage.setItem("searchHistory", history);
       }
       window.location.reload();
-      webengage.user.logout();
-      webengage.track("USER_LOGOUT");
+      //   webengage.user.logout();
+      //   webengage.track("USER_LOGOUT");
     },
     setUser: (state, action) => {
       state.user = action.payload;

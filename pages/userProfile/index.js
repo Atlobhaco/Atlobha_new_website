@@ -97,11 +97,11 @@ function UserProfile({ recallUserData = false }) {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                  event_status: true,
-                });
-              });
+              //   window.webengage.onReady(() => {
+              //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //       event_status: true,
+              //     });
+              //   });
             },
             path: "",
           },
@@ -121,9 +121,9 @@ function UserProfile({ recallUserData = false }) {
             iconSrc: <Languages />,
             text: t.language,
             onClick: () => {
-              webengage.track("LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
+              //   webengage.track("LANGUAGE_SELECTED", {
+              //     language: locale === "ar" ? "Arabic" : "English",
+              //   });
               router
                 .push(router.pathname, router.asPath, {
                   locale: locale === "ar" ? "en" : "ar",
@@ -148,9 +148,9 @@ function UserProfile({ recallUserData = false }) {
             iconSrc: <Languages />,
             text: t.language,
             onClick: () => {
-              webengage.track("LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
+              //   webengage.track("LANGUAGE_SELECTED", {
+              //     language: locale === "ar" ? "Arabic" : "English",
+              //   });
               router
                 .push(router.pathname, router.asPath, {
                   locale: locale === "ar" ? "en" : "ar",
@@ -171,11 +171,11 @@ function UserProfile({ recallUserData = false }) {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                  event_status: true,
-                });
-              });
+              //   window.webengage.onReady(() => {
+              //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //       event_status: true,
+              //     });
+              //   });
             },
             path: "",
           },
@@ -316,10 +316,10 @@ function UserProfile({ recallUserData = false }) {
           path: "myCars",
         },
       ]);
-      window.webengage.onReady(() => {
-        webengage.user.setAttribute("total_cars", res?.vehicles_count || 0);
-        webengage.user.setAttribute("total_orders", res?.order_count || 0);
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.user.setAttribute("total_cars", res?.vehicles_count || 0);
+      //     webengage.user.setAttribute("total_orders", res?.order_count || 0);
+      //   });
     },
     onError: () => {},
   });

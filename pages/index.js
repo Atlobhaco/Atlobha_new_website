@@ -55,11 +55,11 @@ export default function Home() {
   });
 
   useEffect(() => {
-    window.webengage.onReady(() => {
-      webengage.track("APP_SECTION_VIEWED", {
-        app_section: "Home",
-      });
-    });
+    // window.webengage.onReady(() => {
+    //   webengage.track("APP_SECTION_VIEWED", {
+    //     app_section: "Home",
+    //   });
+    // });
   }, []);
 
   return isLoading ? (

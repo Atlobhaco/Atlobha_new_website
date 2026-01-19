@@ -155,11 +155,11 @@ function Footer() {
           <div className={`${style["footer-help"]}`}>{t.helpCenter}</div>
           <div
             onClick={() => {
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                  event_status: true,
-                });
-              });
+              //   window.webengage.onReady(() => {
+              //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //       event_status: true,
+              //     });
+              //   });
               router.push("mailto:info@atlobha.com");
             }}
             className={`${style["footer-help_info"]}`}
@@ -180,11 +180,11 @@ function Footer() {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                  event_status: true,
-                });
-              });
+              //   window.webengage.onReady(() => {
+              //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //       event_status: true,
+              //     });
+              //   });
             }}
             className={`${style["footer-help_info"]}`}
           >
@@ -268,13 +268,13 @@ function Footer() {
             </Link>
 
             <Link
-              onClick={() =>
-                window.webengage.onReady(() => {
-                  webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-                    event_status: true,
-                  });
-                })
-              }
+              //   onClick={() =>
+              //     window.webengage.onReady(() => {
+              //       webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              //         event_status: true,
+              //       });
+              //     })
+              //   }
               href="https://wa.me/966502670094"
               target="_blank"
             >

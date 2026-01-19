@@ -139,13 +139,13 @@ function Category() {
   useEffect(() => {
     if (allCategories?.length) {
       const selected = allCategories.find((d) => +d.id === +idCategory);
-      window.webengage.onReady(() => {
-        webengage.track("FEATURED_PRODUCT_VIEWED", {
-          category_name: selected?.name || "",
-          category_id: selected?.id || "",
-          category_url: router?.asPath || "",
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("FEATURED_PRODUCT_VIEWED", {
+      //       category_name: selected?.name || "",
+      //       category_id: selected?.id || "",
+      //       category_url: router?.asPath || "",
+      //     });
+      //   });
     }
   }, [allCategories]);
 
@@ -311,17 +311,17 @@ function Category() {
                   {prodInfo?.data?.map((prod) => (
                     <Box
                       className="col-md-4 col-4 mb-3 px-0"
-                      onClick={() =>
-                        window.webengage.onReady(() => {
-                          webengage.track("PRODUCT_CATEGORY_VIEWED", {
-                            category_id: Number(idCategory),
-                            category_name:
-                              allCategories.find((d) => +d.id === +idCategory)
-                                ?.name || "",
-                            category_url: router?.asPath || "",
-                          });
-                        })
-                      }
+                      //   onClick={() =>
+                      //     window.webengage.onReady(() => {
+                      //       webengage.track("PRODUCT_CATEGORY_VIEWED", {
+                      //         category_id: Number(idCategory),
+                      //         category_name:
+                      //           allCategories.find((d) => +d.id === +idCategory)
+                      //             ?.name || "",
+                      //         category_url: router?.asPath || "",
+                      //       });
+                      //     })
+                      //   }
                     >
                       <ProductCard product={prod} />
                     </Box>

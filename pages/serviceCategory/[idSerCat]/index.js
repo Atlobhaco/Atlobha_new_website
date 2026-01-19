@@ -168,14 +168,14 @@ function ServiceCategory() {
 
   useEffect(() => {
     if (window?.webengage && idSerCat && allServiceCategory?.length) {
-      window.webengage.onReady(() => {
-        webengage.track("SERVICE_CATEGORY_VIEWED", {
-          category_id: Number(idSerCat),
-          category_name:
-            allServiceCategory.find((d) => +d.id === +idSerCat)?.name || "N/A",
-          category_url: router?.asPath || "",
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("SERVICE_CATEGORY_VIEWED", {
+      //       category_id: Number(idSerCat),
+      //       category_name:
+      //         allServiceCategory.find((d) => +d.id === +idSerCat)?.name || "N/A",
+      //       category_url: router?.asPath || "",
+      //     });
+      //   });
     }
   }, [idSerCat, allServiceCategory]);
 
@@ -275,18 +275,18 @@ function ServiceCategory() {
                     <Box
                       className="col-12 mb-3 px-0"
                       key={prod?.id}
-                      onClick={() =>
-                        window.webengage.onReady(() => {
-                          webengage.track("SERVICE_CATEGORY_VIEWED", {
-                            category_id: Number(idSerCat),
-                            category_name:
-                              allServiceCategory.find(
-                                (d) => +d.id === +idSerCat
-                              )?.name || "",
-                            category_url: router?.asPath || "",
-                          });
-                        })
-                      }
+                      //   onClick={() =>
+                      //     window.webengage.onReady(() => {
+                      //       webengage.track("SERVICE_CATEGORY_VIEWED", {
+                      //         category_id: Number(idSerCat),
+                      //         category_name:
+                      //           allServiceCategory.find(
+                      //             (d) => +d.id === +idSerCat
+                      //           )?.name || "",
+                      //         category_url: router?.asPath || "",
+                      //       });
+                      //     })
+                      //   }
                     >
                       <ServiceDataInfo product={prod} key={prod?.id} />
 

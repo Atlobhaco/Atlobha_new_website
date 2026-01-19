@@ -528,21 +528,21 @@ export const addRemoveFromCartEngage = ({
     }
   };
 
-  window.webengage.onReady(() => {
-    webengage.track(actions(), {
-      product_name: prod?.name || "",
-      product_image: prod?.image?.url || "N/A",
-      product_id: prod?.id || "",
-      price: Number(prod?.price) || "",
-      car_brand: prod?.brand?.name || "",
-      car_model: prod?.model?.name || "",
-      car_year: +prod?.year_from || Number("1990"),
-      reference_number: prod?.ref_num || "",
-      category: prod?.marketplace_category?.name || "",
-      quantity: qty() || 0,
-      product_url: `/product/${prod?.id}` || "",
-    });
-  });
+  //   window.webengage.onReady(() => {
+  //     webengage.track(actions(), {
+  //       product_name: prod?.name || "",
+  //       product_image: prod?.image?.url || "N/A",
+  //       product_id: prod?.id || "",
+  //       price: Number(prod?.price) || "",
+  //       car_brand: prod?.brand?.name || "",
+  //       car_model: prod?.model?.name || "",
+  //       car_year: +prod?.year_from || Number("1990"),
+  //       reference_number: prod?.ref_num || "",
+  //       category: prod?.marketplace_category?.name || "",
+  //       quantity: qty() || 0,
+  //       product_url: `/product/${prod?.id}` || "",
+  //     });
+  //   });
 };
 
 /* -------------------------------------------------------------------------- */
@@ -563,16 +563,16 @@ export const latestUpdatedCart = (basket = []) => {
     Image: item?.product?.image || "",
   }));
 
-  if (typeof window.webengage === "undefined") return;
+  //   if (typeof window.webengage === "undefined") return;
 
-  window.webengage?.onReady(() => {
-    webengage.track("CART_UPDATED", {
-      //   total: Number(+totalOfBasket),
-      total_price: Number(+totalOfBasket),
-      number_of_products: activeItems.length,
-      line_items: itemsMapping,
-    });
-  });
+  //   window.webengage?.onReady(() => {
+  //     webengage.track("CART_UPDATED", {
+  //       //   total: Number(+totalOfBasket),
+  //       total_price: Number(+totalOfBasket),
+  //       number_of_products: activeItems.length,
+  //       line_items: itemsMapping,
+  //     });
+  //   });
 };
 
 /* -------------------------------------------------------------------------- */
@@ -580,12 +580,12 @@ export const latestUpdatedCart = (basket = []) => {
 /* -------------------------------------------------------------------------- */
 
 export const partnerClickedWebengage = (name, id) => {
-  window.webengage?.onReady(() => {
-    webengage.track("ATLOBHA_PARTNER_CLICKED", {
-      partner_name: name,
-      partner_id: id,
-    });
-  });
+  //   window.webengage?.onReady(() => {
+  //     webengage.track("ATLOBHA_PARTNER_CLICKED", {
+  //       partner_name: name,
+  //       partner_id: id,
+  //     });
+  //   });
 };
 
 /* -------------------------------------------------------------------------- */
@@ -599,15 +599,15 @@ export const filterCategoriesEngage = ({
   category,
   sub_category,
 }) => {
-  window.webengage.onReady(() => {
-    webengage.track("FILTER_APPLIED", {
-      car_brand: brand || "N/A",
-      car_model: model || "N/A",
-      car_year: year || 0,
-      category: category || "N/A",
-      sub_category: sub_category || "N/A",
-    });
-  });
+  //   window.webengage.onReady(() => {
+  //     webengage.track("FILTER_APPLIED", {
+  //       car_brand: brand || "N/A",
+  //       car_model: model || "N/A",
+  //       car_year: year || 0,
+  //       category: category || "N/A",
+  //       sub_category: sub_category || "N/A",
+  //     });
+  //   });
 };
 
 /* -------------------------------------------------------------------------- */
@@ -624,19 +624,19 @@ export const payInitiateEngage = ({
   promo_code,
   comment,
 }) => {
-  window.webengage.onReady(() => {
-    webengage.track("PAYMENT_INITIATED", {
-      order_items: order_items || [],
-      total_price: total_price || 0,
-      number_of_products: number_of_products || 1,
-      checkout_url: checkout_url,
-      expected_delivery_date: expected_delivery_date,
-      shipping_address: shipping_address,
-      payment_method: payment_method,
-      promo_code: promo_code,
-      comment: comment,
-    });
-  });
+  //   window.webengage.onReady(() => {
+  //     webengage.track("PAYMENT_INITIATED", {
+  //       order_items: order_items || [],
+  //       total_price: total_price || 0,
+  //       number_of_products: number_of_products || 1,
+  //       checkout_url: checkout_url,
+  //       expected_delivery_date: expected_delivery_date,
+  //       shipping_address: shipping_address,
+  //       payment_method: payment_method,
+  //       promo_code: promo_code,
+  //       comment: comment,
+  //     });
+  //   });
 };
 
 /* -------------------------------------------------------------------------- */

@@ -549,14 +549,14 @@ const CheckoutSummary = forwardRef(
           Quantity: bas?.quantity || "",
           Image: bas?.product?.image || "",
         }));
-      window.webengage.onReady(() => {
-        webengage.track("CART_CHECKOUT_CLICKED", {
-          total_price: +total,
-          number_of_products:
-            basket?.filter((item) => item?.product?.is_active)?.length || 0,
-          line_items: itemsMaping || [],
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("CART_CHECKOUT_CLICKED", {
+      //       total_price: +total,
+      //       number_of_products:
+      //         basket?.filter((item) => item?.product?.is_active)?.length || 0,
+      //       line_items: itemsMaping || [],
+      //     });
+      //   });
     };
 
     /* -------------------------------------------------------------------------- */

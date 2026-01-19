@@ -763,34 +763,34 @@ function SummaryOrder({
               text="repeatPricing"
               onClick={() => {
                 callRepeatPricing();
-                window.webengage.onReady(() => {
-                  webengage.track("ORDER_SPAREPARTS_REPRICE", {
-                    car_brand: orderDetails?.vehicle?.brand?.name || "",
-                    car_model: orderDetails?.vehicle?.model?.name || "",
-                    car_year: orderDetails?.vehicle?.year || Number("1990"),
-                    order_items:
-                      orderDetails?.parts?.map((part) => ({
-                        Part_Name_or_Number: part?.name || part?.id || "",
-                        Quantity: part?.quantity || 0,
-                        Image: part?.image || "",
-                      })) || [],
-                    shipping_address: orderDetails?.address?.address || "",
-                    promo_code: orderDetails?.promo_code?.code || "",
-                    comment: orderDetails?.notes || "",
-                    order_number: orderDetails?.id || "",
-                    creation_date: orderDetails?.created_at
-                      ? new Date(
-                          orderDetails?.created_at?.replace(" ", "T") + "Z"
-                        )
-                      : new Date().toISOString(),
-                    status: orderDetails?.status || "",
-                    order_url: router?.asPath || "",
-                    total_price:
-                      calculateReceiptResFromMainPage?.total_price ||
-                      receipt?.total_price ||
-                      0,
-                  });
-                });
+                // window.webengage.onReady(() => {
+                //   webengage.track("ORDER_SPAREPARTS_REPRICE", {
+                //     car_brand: orderDetails?.vehicle?.brand?.name || "",
+                //     car_model: orderDetails?.vehicle?.model?.name || "",
+                //     car_year: orderDetails?.vehicle?.year || Number("1990"),
+                //     order_items:
+                //       orderDetails?.parts?.map((part) => ({
+                //         Part_Name_or_Number: part?.name || part?.id || "",
+                //         Quantity: part?.quantity || 0,
+                //         Image: part?.image || "",
+                //       })) || [],
+                //     shipping_address: orderDetails?.address?.address || "",
+                //     promo_code: orderDetails?.promo_code?.code || "",
+                //     comment: orderDetails?.notes || "",
+                //     order_number: orderDetails?.id || "",
+                //     creation_date: orderDetails?.created_at
+                //       ? new Date(
+                //           orderDetails?.created_at?.replace(" ", "T") + "Z"
+                //         )
+                //       : new Date().toISOString(),
+                //     status: orderDetails?.status || "",
+                //     order_url: router?.asPath || "",
+                //     total_price:
+                //       calculateReceiptResFromMainPage?.total_price ||
+                //       receipt?.total_price ||
+                //       0,
+                //   });
+                // });
               }}
               disabled={repeatPriceFetch}
               comAfterText={

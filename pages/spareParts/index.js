@@ -101,11 +101,11 @@ function SpareParts() {
       dispatch(addOrUpdateSparePart(sparePartProducts));
     }
 
-    window.webengage.onReady(() => {
-      webengage.track("SPAREPARTS_VIEWED", {
-        event_status: true,
-      });
-    });
+    // window.webengage.onReady(() => {
+    //   webengage.track("SPAREPARTS_VIEWED", {
+    //     event_status: true,
+    //   });
+    // });
   }, []);
 
   useEffect(() => {

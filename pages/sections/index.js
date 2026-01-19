@@ -18,18 +18,18 @@ function Sections() {
 
   useEffect(() => {
     if (secType === "maintenance-reservation") {
-      window.webengage.onReady(() => {
-        webengage.track("PERIODIC_MAITAINCE_VIEWED", {
-          event_status: true,
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("PERIODIC_MAITAINCE_VIEWED", {
+      //       event_status: true,
+      //     });
+      //   });
     }
     if (secType === "najm-and-estimation") {
-      window.webengage.onReady(() => {
-        webengage.track("TAQDEER_SERVICE_VIEWED", {
-          event_status: true,
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("TAQDEER_SERVICE_VIEWED", {
+      //       event_status: true,
+      //     });
+      //   });
     }
   }, [secType]);
 

@@ -97,12 +97,12 @@ function OrderDetails() {
     cacheTime: 0,
     staleTime: 0,
     onSuccess: (res) => {
-      window.webengage.onReady(() => {
-        webengage.track("BILL_VIEWED", {
-          order_number: idOrder?.toString() || "",
-          order_id: Number(idOrder) || "",
-        });
-      });
+      //   window.webengage.onReady(() => {
+      //     webengage.track("BILL_VIEWED", {
+      //       order_number: idOrder?.toString() || "",
+      //       order_id: Number(idOrder) || "",
+      //     });
+      //   });
       // if there is promo code
       // show it in desgin
       if (
@@ -175,7 +175,7 @@ function OrderDetails() {
           <VehiclePricingDetails
             orderDetails={data}
             orderDetailsFetching={orderDetailsFetching}
-			callSingleOrder={callSingleOrder}
+            callSingleOrder={callSingleOrder}
           />
         );
       default:
