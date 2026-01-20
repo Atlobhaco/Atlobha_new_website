@@ -313,11 +313,11 @@ function SelectedOfferReceipt({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         shipping_address: {
-          city: userAddress?.city?.name,
-          country_code: userAddress?.city?.country?.code,
+          city: userAddress?.city?.name || "Riyadh",
+          country_code: userAddress?.city?.country?.code || "SA",
           first_name: userDataProfile?.name,
           last_name: "",
-          line1: userAddress?.address,
+          line1: userAddress?.address || "Riyadh",
         },
         description: `order-car-confirmed-for-user-with-id=${userDataProfile?.id}`,
         order_reference_id: merchanteRefrence,
@@ -381,8 +381,8 @@ function SelectedOfferReceipt({
       name: userDataProfile?.name,
     };
     const shippingDetails = {
-      city: userAddress?.city?.name,
-      address: userAddress?.address,
+      city: userAddress?.city?.name || "Riyadh",
+      address: userAddress?.address || "Riyadh",
       zip: "12345",
     };
 

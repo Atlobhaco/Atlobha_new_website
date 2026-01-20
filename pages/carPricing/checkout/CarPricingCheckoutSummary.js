@@ -485,11 +485,11 @@ const CarPricingCheckoutSummary = forwardRef(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           shipping_address: {
-            city: selectAddress?.city?.name,
-            country_code: selectAddress?.city?.country?.code,
+            city: selectAddress?.city?.name || "Riyadh",
+            country_code: selectAddress?.city?.country?.code || "SA",
             first_name: userDataProfile?.name,
             last_name: "",
-            line1: selectAddress?.address,
+            line1: selectAddress?.address || "Riyadh",
           },
           description: `car-pricing-for-user-with-id=${userDataProfile?.id}`,
           order_reference_id: merchanteRefrence,
@@ -555,8 +555,8 @@ const CarPricingCheckoutSummary = forwardRef(
         name: userDataProfile?.name,
       };
       const shippingDetails = {
-        city: selectAddress?.city?.name,
-        address: selectAddress?.address,
+        city: selectAddress?.city?.name || "Riyadh",
+        address: selectAddress?.address || "Riyadh",
         zip: "12345",
       };
 

@@ -457,11 +457,11 @@ function SummaryOrderCarPricing({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         shipping_address: {
-          city: orderDetails?.address?.city?.name,
-          country_code: orderDetails?.address?.city?.country?.code,
+          city: orderDetails?.address?.city?.name || "Riyadh",
+          country_code: orderDetails?.address?.city?.country?.code || "SA",
           first_name: userDataProfile?.name,
           last_name: "",
-          line1: orderDetails?.address?.address,
+          line1: orderDetails?.address?.address || "Riyadh",
         },
         description: `spare-part-order-for-user-with-id=${orderDetails?.user?.id}`,
         order_reference_id: merchanteRefrence,
@@ -525,8 +525,8 @@ function SummaryOrderCarPricing({
       name: userDataProfile?.name,
     };
     const shippingDetails = {
-      city: orderDetails?.address?.city?.name,
-      address: orderDetails?.address?.address,
+      city: orderDetails?.address?.city?.name || "Riyadh",
+      address: orderDetails?.address?.address || "Riyadh",
       zip: "12345",
     };
 
