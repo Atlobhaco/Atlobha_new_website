@@ -10,6 +10,8 @@ import { EffectFade, Navigation, Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { MARKETPLACE } from "@/constants/enums";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function MainCarousel({ sectionInfo, setHasAds = () => {} }) {
   const { isMobile } = useScreenSize();
@@ -80,14 +82,14 @@ function MainCarousel({ sectionInfo, setHasAds = () => {} }) {
               }}
               onClick={() => {
                 if (img?.link) {
-                  window.webengage.onReady(() => {
-                    webengage.track("ADS_SECTION_VIEWED", {
+                  if (analytics) {
+                    logEvent(analytics, "ADS_SECTION_VIEWED", {
                       ads_id: Number(img?.id),
                       ads_type: img?.type,
                       product_id: Number(img?.id),
                       product_name: "prod",
                     });
-                  });
+                  }
                   window.open(img.link, "_blank");
                 }
               }}

@@ -24,6 +24,8 @@ import { useDispatch } from "react-redux";
 import { setAllCars, setDefaultCar } from "@/redux/reducers/selectedCarReducer";
 import { setPromoCodeAllData } from "@/redux/reducers/addSparePartsReducer";
 import GiftCardOrderDetails from "@/components/userProfile/orderDetails/giftCardOrderDetails";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function OrderDetails() {
   const router = useRouter();
@@ -93,12 +95,13 @@ function OrderDetails() {
     cacheTime: 0,
     staleTime: 0,
     onSuccess: (res) => {
-      window.webengage.onReady(() => {
-        webengage.track("BILL_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "BILL_VIEWED", {
           order_number: idOrder?.toString() || "",
           order_id: Number(idOrder) || "",
         });
-      });
+      }
+
       // if there is promo code
       // show it in desgin
       if (

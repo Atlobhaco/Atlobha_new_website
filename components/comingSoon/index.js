@@ -8,6 +8,8 @@ import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { checkApplePayAvailability } from "@/constants/helpers";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function ComingSoon() {
   const { t } = useLocalization();
@@ -100,14 +102,16 @@ function ComingSoon() {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              if (analytics) {
+                logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
-              });
-              window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
-                event_status: true,
-              });
+              }
+              if (window.gtag) {
+                window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
+                  event_status: true,
+                });
+              }
             }}
           />
         </Box>
@@ -156,16 +160,18 @@ function ComingSoon() {
         </Link>
 
         <Link
-          onClick={() =>
-            window.webengage.onReady(() => {
-              webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+          onClick={() => {
+            if (analytics) {
+              logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                 event_status: true,
               });
+            }
+            if (window.gtag) {
               window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                 event_status: true,
               });
-            })
-          }
+            }
+          }}
           href="https://wa.me/966502670094"
           target="_blank"
         >

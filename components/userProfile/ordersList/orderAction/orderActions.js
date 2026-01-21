@@ -7,6 +7,8 @@ import moment from "moment";
 import useLocalization from "@/config/hooks/useLocalization";
 import { useRouter } from "next/router";
 import { CircularProgress } from "@mui/material";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function OrderActions({
   order,
@@ -181,8 +183,8 @@ function OrderActions({
                   e?.preventDefault();
                   e?.stopPropagation();
                   setOrderDetailsRePrice(order);
-                  window.webengage.onReady(() => {
-                    webengage.track("ORDER_SPAREPARTS_REPRICE", {
+                  if (analytics) {
+                    logEvent(analytics, "ORDER_SPAREPARTS_REPRICE", {
                       car_brand: order?.vehicle?.brand?.name || "",
                       car_model: order?.vehicle?.model?.name || "",
                       car_year: order?.vehicle?.year || Number("1990"),
@@ -203,7 +205,8 @@ function OrderActions({
                       order_url: router?.asPath || "",
                       total_price: order?.receipt?.total_price || 0,
                     });
-
+                  }
+                  if (window.gtag) {
                     window.gtag("event", "ORDER_SPAREPARTS_REPRICE", {
                       car_brand: order?.vehicle?.brand?.name || "",
                       car_model: order?.vehicle?.model?.name || "",
@@ -223,7 +226,7 @@ function OrderActions({
                       order_url: router?.asPath || "",
                       total_price: order?.receipt?.total_price || 0,
                     });
-                  });
+                  }
                 }}
               />
             </div>

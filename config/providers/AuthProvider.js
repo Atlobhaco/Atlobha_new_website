@@ -2,6 +2,8 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { loginSuccess } from "@/redux/reducers/authReducer";
 import { useDispatch } from "react-redux";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const AuthContext = createContext();
 
@@ -50,7 +52,9 @@ const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = () => {
-    webengage.track("USER_LOGOUT");
+    if (analytics) {
+      logEvent(analytics, "USER_LOGOUT");
+    }
     setUser(null);
     localStorage.removeItem("user");
     localStorage.clear();

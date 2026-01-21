@@ -31,6 +31,8 @@ import Image from "next/image";
 import DialogCentered from "@/components/DialogCentered";
 import SharedBtn from "@/components/shared/SharedBtn";
 import useResetPageOnFilterChange from "@/config/hooks/useResetPageOnFilterChange";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function Category() {
   const router = useRouter();
@@ -139,18 +141,20 @@ function Category() {
   useEffect(() => {
     if (allCategories?.length) {
       const selected = allCategories.find((d) => +d.id === +idCategory);
-      window.webengage.onReady(() => {
-        webengage.track("FEATURED_PRODUCT_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "FEATURED_PRODUCT_VIEWED", {
           category_name: selected?.name || "",
           category_id: selected?.id || "",
           category_url: router?.asPath || "",
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "FEATURED_PRODUCT_VIEWED", {
           category_name: selected?.name || "",
           category_id: selected?.id || "",
           category_url: router?.asPath || "",
         });
-      });
+      }
     }
   }, [allCategories]);
 
@@ -316,17 +320,17 @@ function Category() {
                   {prodInfo?.data?.map((prod) => (
                     <Box
                       className="col-md-4 col-4 mb-3 px-0"
-                      onClick={() =>
-                        window.webengage.onReady(() => {
-                          webengage.track("PRODUCT_CATEGORY_VIEWED", {
+                      onClick={() => {
+                        if (analytics) {
+                          logEvent(analytics, "PRODUCT_CATEGORY_VIEWED", {
                             category_id: Number(idCategory),
                             category_name:
                               allCategories.find((d) => +d.id === +idCategory)
                                 ?.name || "",
                             category_url: router?.asPath || "",
                           });
-                        })
-                      }
+                        }
+                      }}
                     >
                       <ProductCard product={prod} />
                     </Box>

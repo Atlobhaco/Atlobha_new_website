@@ -36,6 +36,8 @@ import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function SummaryOrder({
   orderDetails: { receipt = {} } = {},
@@ -772,8 +774,8 @@ function SummaryOrder({
             text="repeatPricing"
             onClick={() => {
               callRepeatPricing();
-              window.webengage.onReady(() => {
-                webengage.track("ORDER_SPAREPARTS_REPRICE", {
+              if (analytics) {
+                logEvent(analytics, "ORDER_SPAREPARTS_REPRICE", {
                   car_brand: orderDetails?.vehicle?.brand?.name || "",
                   car_model: orderDetails?.vehicle?.model?.name || "",
                   car_year: orderDetails?.vehicle?.year || Number("1990"),
@@ -799,6 +801,8 @@ function SummaryOrder({
                     receipt?.total_price ||
                     0,
                 });
+              }
+              if (window.gtag) {
                 window.gtag("event", "ORDER_SPAREPARTS_REPRICE", {
                   car_brand: orderDetails?.vehicle?.brand?.name || "",
                   car_model: orderDetails?.vehicle?.model?.name || "",
@@ -821,7 +825,7 @@ function SummaryOrder({
                     receipt?.total_price ||
                     0,
                 });
-              });
+              }
             }}
             disabled={repeatPriceFetch}
             comAfterText={

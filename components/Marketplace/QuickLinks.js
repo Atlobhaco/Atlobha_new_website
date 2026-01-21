@@ -6,7 +6,8 @@ import { QUICK_LINKS } from "@/config/endPoints/endPoints";
 import { MARKETPLACE } from "@/constants/enums";
 import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
   const { isMobile } = useScreenSize();
@@ -71,12 +72,12 @@ function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
               backgroundSize: "cover",
             }}
             onClick={() => {
-              window.webengage.onReady(() => {
-                webengage.track("QUICK_LINK_ITEM_CLICKED", {
+              if (analytics) {
+                logEvent(analytics, "QUICK_LINK_ITEM_CLICKED", {
                   quick_link_url: item?.link,
                   quick_link_name: item?.title,
                 });
-              });
+              }
               router.push(item?.link);
             }}
           >

@@ -24,6 +24,8 @@ import AddAvailablePayMethods from "./addAvailablePayMethods";
 import { useRouter } from "next/router";
 import PromocodeSpareOrders from "./PromoCodeSpareOrders";
 import { useSelector } from "react-redux";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function SparePartsOrderDetails({
   orderDetails = {},
@@ -117,10 +119,10 @@ function SparePartsOrderDetails({
   }, [allPromoCodeData?.id, voucherCode]);
 
   useEffect(() => {
-    if (orderDetails?.id && router?.asPath && window?.webengage) {
+    if (orderDetails?.id && router?.asPath) {
       if (type === ORDERSENUM?.spareParts) {
-        window.webengage.onReady(() => {
-          webengage.track("ORDER_SPAREPARTS_VIEWED", {
+        if (analytics) {
+          logEvent(analytics, "ORDER_SPAREPARTS_VIEWED", {
             car_brand: orderDetails?.vehicle?.brand?.name || "",
             car_model: orderDetails?.vehicle?.model?.name || "",
             car_year: orderDetails?.vehicle?.year || "",
@@ -140,6 +142,8 @@ function SparePartsOrderDetails({
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
           });
+        }
+        if (window.gtag) {
           window.gtag("event", "ORDER_SPAREPARTS_VIEWED", {
             car_brand: orderDetails?.vehicle?.brand?.name || "",
             car_model: orderDetails?.vehicle?.model?.name || "",
@@ -160,13 +164,13 @@ function SparePartsOrderDetails({
             status: orderDetails?.status || "",
             order_url: router?.asPath || "",
           });
-        });
+        }
       }
       /* -------------------------------------------------------------------------- */
       /*                           order viewed webengege                           */
       /* -------------------------------------------------------------------------- */
-      window.webengage.onReady(() => {
-        webengage.track("ORDER_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
             ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")
@@ -185,6 +189,8 @@ function SparePartsOrderDetails({
           order_type: type || "",
           order_url: router?.asPath || "",
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
@@ -204,7 +210,7 @@ function SparePartsOrderDetails({
           order_type: type || "",
           order_url: router?.asPath || "",
         });
-      });
+      }
     }
   }, [orderDetails?.id, router]);
 

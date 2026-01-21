@@ -29,6 +29,8 @@ import ContentForBasket from "./ContentForBasketPopup";
 import AutoCompleteInput from "@/components/AutoCompleteInput";
 import Link from "next/link";
 import { setUserData } from "@/redux/reducers/quickSectionsProfile";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const firstPartStyle = {
   display: "flex",
@@ -291,13 +293,13 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
 
           {isMobile ? (
             <Link
-              onClick={() =>
-                window.webengage.onReady(() => {
-                  webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              onClick={() => {
+                if (analytics) {
+                  logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                     event_status: true,
                   });
-                })
-              }
+                }
+              }}
               href="https://wa.me/966502670094"
               target="_blank"
             >

@@ -41,6 +41,9 @@ import { logout } from "@/redux/reducers/authReducer";
 import CommunicationSection from "@/components/userProfile/communicationSection";
 import GuestMobileView from "./GuestMobileView";
 import { isAuth } from "@/config/hooks/isAuth";
+import { setUserProperties } from "@/lib/firebase";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function UserProfile({ recallUserData = false }) {
   const router = useRouter();
@@ -97,14 +100,16 @@ function UserProfile({ recallUserData = false }) {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              if (analytics) {
+                logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
+              }
+              if (window.gtag) {
                 window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
-              });
+              }
             },
             path: "",
           },
@@ -124,12 +129,16 @@ function UserProfile({ recallUserData = false }) {
             iconSrc: <Languages />,
             text: t.language,
             onClick: () => {
-              webengage.track("LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
-              window.gtag("event", "LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
+              if (analytics) {
+                logEvent(analytics, "LANGUAGE_SELECTED", {
+                  language: locale === "ar" ? "Arabic" : "English",
+                });
+              }
+              if (window.gtag) {
+                window.gtag("event", "LANGUAGE_SELECTED", {
+                  language: locale === "ar" ? "Arabic" : "English",
+                });
+              }
               router
                 .push(router.pathname, router.asPath, {
                   locale: locale === "ar" ? "en" : "ar",
@@ -154,12 +163,16 @@ function UserProfile({ recallUserData = false }) {
             iconSrc: <Languages />,
             text: t.language,
             onClick: () => {
-              webengage.track("LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
-              window.gtag("event", "LANGUAGE_SELECTED", {
-                language: locale === "ar" ? "Arabic" : "English",
-              });
+              if (analytics) {
+                logEvent(analytics, "LANGUAGE_SELECTED", {
+                  language: locale === "ar" ? "Arabic" : "English",
+                });
+              }
+              if (window.gtag) {
+                window.gtag("event", "LANGUAGE_SELECTED", {
+                  language: locale === "ar" ? "Arabic" : "English",
+                });
+              }
               router
                 .push(router.pathname, router.asPath, {
                   locale: locale === "ar" ? "en" : "ar",
@@ -180,14 +193,16 @@ function UserProfile({ recallUserData = false }) {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              if (analytics) {
+                logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
+              }
+              if (window.gtag) {
                 window.gtag("event", "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
-              });
+              }
             },
             path: "",
           },
@@ -328,9 +343,9 @@ function UserProfile({ recallUserData = false }) {
           path: "myCars",
         },
       ]);
-      window.webengage.onReady(() => {
-        webengage.user.setAttribute("total_cars", res?.vehicles_count || 0);
-        webengage.user.setAttribute("total_orders", res?.order_count || 0);
+      setUserProperties({
+        total_cars: res?.vehicles_count || 0,
+        total_orders: res?.order_count || 0,
       });
     },
     onError: () => {},

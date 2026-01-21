@@ -21,6 +21,8 @@ import ErrorIcon from "@mui/icons-material/Error";
 import useLocalization from "@/config/hooks/useLocalization";
 import ServiceDataInfo from "./ServiceDataInfo";
 import NoServiceInsideSections from "@/components/sectionsInfo/NoServiceInsideSections";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function ServiceCategory() {
   const { t } = useLocalization();
@@ -167,15 +169,15 @@ function ServiceCategory() {
   }, [idSerCat, allServiceCategory, router]);
 
   useEffect(() => {
-    if (window?.webengage && idSerCat && allServiceCategory?.length) {
-      window.webengage.onReady(() => {
-        webengage.track("SERVICE_CATEGORY_VIEWED", {
+    if (idSerCat && allServiceCategory?.length) {
+      if (analytics) {
+        logEvent(analytics, "SERVICE_CATEGORY_VIEWED", {
           category_id: Number(idSerCat),
           category_name:
             allServiceCategory.find((d) => +d.id === +idSerCat)?.name || "N/A",
           category_url: router?.asPath || "",
         });
-      });
+      }
     }
   }, [idSerCat, allServiceCategory]);
 
@@ -275,18 +277,18 @@ function ServiceCategory() {
                     <Box
                       className="col-12 mb-3 px-0"
                       key={prod?.id}
-                      onClick={() =>
-                        window.webengage.onReady(() => {
-                          webengage.track("SERVICE_CATEGORY_VIEWED", {
+                      onClick={() => {
+                        if (analytics) {
+                          logEvent(analytics, "SERVICE_CATEGORY_VIEWED", {
                             category_id: Number(idSerCat),
                             category_name:
                               allServiceCategory.find(
                                 (d) => +d.id === +idSerCat
-                              )?.name || "",
+                              )?.name || "N/A",
                             category_url: router?.asPath || "",
                           });
-                        })
-                      }
+                        }
+                      }}
                     >
                       <ServiceDataInfo product={prod} key={prod?.id} />
 

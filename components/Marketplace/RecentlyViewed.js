@@ -11,6 +11,8 @@ import HeaderSection from "../HeaderSection";
 import ProductCard from "../shared/ProductCard";
 import PaginateComponent from "../Pagination";
 import { isAuth } from "@/config/hooks/isAuth";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function RecentlyViewed({ sectionInfo }) {
   const { isMobile } = useScreenSize();
@@ -64,18 +66,20 @@ function RecentlyViewed({ sectionInfo }) {
         {recentlyViewed?.data?.map((prod) => (
           <Box
             onClick={() => {
-              window.webengage.onReady(() => {
-                webengage.track("FEATURED_PRODUCT_VIEWED", {
+              if (analytics) {
+                logEvent(analytics, "FEATURED_PRODUCT_VIEWED", {
                   product_name: prod?.name || "",
                   product_id: prod?.id || "",
                   product_url: `/product/${prod?.id}` || "",
                 });
+              }
+              if (window.gtag) {
                 window.gtag("event", "FEATURED_PRODUCT_VIEWED", {
                   product_name: prod?.name || "",
                   product_id: prod?.id || "",
                   product_url: `/product/${prod?.id}` || "",
                 });
-              });
+              }
             }}
           >
             <ProductCard product={prod} hasNum={prod?.image} />

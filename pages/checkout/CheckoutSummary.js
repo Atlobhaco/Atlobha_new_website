@@ -31,6 +31,8 @@ import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
 import { ORDERS, PAYMENT_FAILED } from "@/config/endPoints/endPoints";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const CheckoutSummary = forwardRef(
   (
@@ -549,20 +551,23 @@ const CheckoutSummary = forwardRef(
           Quantity: bas?.quantity || "",
           Image: bas?.product?.image || "",
         }));
-      window.webengage.onReady(() => {
-        webengage.track("CART_CHECKOUT_CLICKED", {
+
+      if (analytics) {
+        logEvent(analytics, "CART_CHECKOUT_CLICKED", {
           total_price: +total,
           number_of_products:
             basket?.filter((item) => item?.product?.is_active)?.length || 0,
           line_items: itemsMaping || [],
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "CART_CHECKOUT_CLICKED", {
           total_price: total,
           number_of_products:
             basket?.filter((item) => item?.product?.is_active)?.length || 0,
           line_items: itemsMaping || [],
         });
-      });
+      }
     };
 
     /* -------------------------------------------------------------------------- */

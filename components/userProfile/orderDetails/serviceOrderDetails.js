@@ -19,6 +19,8 @@ import { openInGoogleMaps } from "@/constants/helpers";
 import OrderFieldMultiSelect from "./orderFieldMultiSelect";
 import OrderDetailsFiles from "./orderDetailsFiles";
 import OrderDetailsText from "./orderDetailsText";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function ServiceOrderDetails({
   orderDetails = {},
@@ -64,12 +66,12 @@ function ServiceOrderDetails({
   };
 
   useEffect(() => {
-    if (orderDetails?.id && router?.asPath && window?.webengage) {
+    if (orderDetails?.id && router?.asPath) {
       /* -------------------------------------------------------------------------- */
       /*                           order viewed webengege                           */
       /* -------------------------------------------------------------------------- */
-      window.webengage.onReady(() => {
-        webengage.track("ORDER_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
             ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")
@@ -88,7 +90,7 @@ function ServiceOrderDetails({
           order_type: type || "",
           order_url: router?.asPath || "",
         });
-      });
+      }
     }
   }, [orderDetails?.id, router]);
 

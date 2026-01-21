@@ -9,6 +9,8 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function Sections() {
   const { t, locale } = useLocalization();
@@ -18,24 +20,28 @@ function Sections() {
 
   useEffect(() => {
     if (secType === "maintenance-reservation") {
-      window.webengage.onReady(() => {
-        webengage.track("PERIODIC_MAITAINCE_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "PERIODIC_MAITAINCE_VIEWED", {
           event_status: true,
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "PERIODIC_MAITAINCE_VIEWED", {
           event_status: true,
         });
-      });
+      }
     }
     if (secType === "najm-and-estimation") {
-      window.webengage.onReady(() => {
-        webengage.track("TAQDEER_SERVICE_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "TAQDEER_SERVICE_VIEWED", {
           event_status: true,
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "TAQDEER_SERVICE_VIEWED", {
           event_status: true,
         });
-      });
+      }
     }
   }, [secType]);
 

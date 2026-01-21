@@ -2,6 +2,9 @@ import { AUTH, LOGIN, OTP } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import useCustomQuery from "../Apiconfig";
 import { loginSuccess } from "@/redux/reducers/authReducer";
+import { setUserProperties } from "@/lib/firebase";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 export function useRequestOtp({
   setOtpView,
@@ -60,24 +63,23 @@ export function useLoginUser({
       setOtpView(false);
       setOpen(false);
       dispatch(loginSuccess({ data: res }));
-      window.webengage.onReady(() => {
-        webengage.user.login(res?.user?.id);
-        webengage.user.setAttribute("User ID", res?.user?.id);
-        webengage.user.setAttribute("we_email", res?.user?.email || "");
-        webengage.user.setAttribute(
-          "we_birth_date",
-          res?.user?.birthdate || ""
-        );
-        webengage.user.setAttribute("we_first_name", res?.user?.name || "");
-        webengage.user.setAttribute("we_phone", res?.user?.phone || "");
-        // custom event for login here
-        webengage.track("LOGIN", {
+      if (analytics) {
+        logEvent(analytics, "LOGIN", {
           email: res?.user?.email || "",
           mobile_number: res?.user?.phone || "",
           user_name: res?.user?.name || "",
           number_of_orders: res?.user?.order_count,
           user_id: res?.user?.id,
         });
+      }
+      setUserProperties({
+        we_phone: res?.user?.phone || "",
+        User_ID: res?.user?.id,
+        we_email: res?.user?.email || "",
+        we_birth_date: res?.user?.birthdate || "",
+        we_first_name: res?.user?.name || "",
+      });
+      if (window.gtag) {
         window.gtag("event", "LOGIN", {
           email: res?.user?.email || "",
           mobile_number: res?.user?.phone || "",
@@ -85,7 +87,7 @@ export function useLoginUser({
           number_of_orders: res?.user?.order_count,
           user_id: res?.user?.id,
         });
-      });
+      }
     },
     onError: (err) => {
       toast.error(

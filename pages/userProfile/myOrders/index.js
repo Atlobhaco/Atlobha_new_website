@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 import SectionsNav from "@/components/shared/Navbar/SectionsNav";
 import { getFilterParams, orderEnumArray } from "@/constants/helpers";
 import { useRouter } from "next/router";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function MyOrders() {
   const router = useRouter();
@@ -69,14 +71,16 @@ function MyOrders() {
   };
 
   useEffect(() => {
-    window.webengage.onReady(() => {
-      webengage.track("APP_SECTION_VIEWED", {
+    if (analytics) {
+      logEvent(analytics, "APP_SECTION_VIEWED", {
         app_section: "My Orders",
       });
-      window.gtag("event", "APP_SECTION_VIEWED", {
-        app_section: "My Orders",
-      });
-    });
+      if (window.gtag) {
+        window.gtag("event", "APP_SECTION_VIEWED", {
+          app_section: "My Orders",
+        });
+      }
+    }
   }, []);
 
   // ✅ Sync state -> URL

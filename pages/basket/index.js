@@ -17,6 +17,8 @@ import { isAuth } from "@/config/hooks/isAuth";
 import { fetchCartAsync } from "@/redux/reducers/basketReducer";
 import ProgressBarMinFreeDeliery from "@/components/Basket/ProgressBarMinFreeDeliery";
 import RecentlyViewed from "@/components/Marketplace/RecentlyViewed";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function Basket() {
   const { isMobile } = useScreenSize();
@@ -91,20 +93,22 @@ function Basket() {
           Image: bas?.product?.image || "",
         }));
 
-      window.webengage.onReady(() => {
-        webengage.track("CART_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "CART_VIEWED", {
           total: totalPriceBasket || 0,
           number_of_products:
             basket?.filter((item) => item?.product?.is_active)?.length || 0,
           line_items: itemsMaping || [],
         });
-      });
-      window.gtag("event", "CART_VIEWED", {
-        total: totalPriceBasket || 0,
-        number_of_products:
-          basket?.filter((item) => item?.product?.is_active)?.length || 0,
-        line_items: itemsMaping || [],
-      });
+      }
+      if (window.gtag) {
+        window.gtag("event", "CART_VIEWED", {
+          total: totalPriceBasket || 0,
+          number_of_products:
+            basket?.filter((item) => item?.product?.is_active)?.length || 0,
+          line_items: itemsMaping || [],
+        });
+      }
 
       latestUpdatedCart(basket);
     }

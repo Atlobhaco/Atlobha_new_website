@@ -12,6 +12,8 @@ import OrderAddress from "./orderAddress";
 import DeliveryDateOrder from "./deliveryDateOrder";
 import PaymentMethodOrder from "./paymentMethodOrder";
 import SummaryOrder from "./summaryOrder";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function MarketplaceOrderDetails({
   orderDetails = {},
@@ -68,12 +70,12 @@ function MarketplaceOrderDetails({
   //   });
 
   useEffect(() => {
-    if (orderDetails?.id && router?.asPath && window?.webengage) {
+    if (orderDetails?.id && router?.asPath) {
       /* -------------------------------------------------------------------------- */
       /*                           order viewed webengege                           */
       /* -------------------------------------------------------------------------- */
-      window.webengage.onReady(() => {
-        webengage.track("ORDER_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
             ? new Date(orderDetails?.created_at?.replace(" ", "T") + "Z")
@@ -92,6 +94,8 @@ function MarketplaceOrderDetails({
           order_type: type || "",
           order_url: router?.asPath || "",
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "ORDER_VIEWED", {
           order_number: orderDetails?.id ? String(orderDetails.id) : "",
           creation_date: orderDetails?.created_at
@@ -111,7 +115,7 @@ function MarketplaceOrderDetails({
           order_type: type || "",
           order_url: router?.asPath || "",
         });
-      });
+      }
     }
   }, [orderDetails?.id, router]);
 

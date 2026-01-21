@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const initialState = {
   user: null,
@@ -45,8 +47,9 @@ export const authSlice = createSlice({
         localStorage.setItem("searchHistory", history);
       }
       window.location.reload();
-      webengage.user.logout();
-      webengage.track("USER_LOGOUT");
+      if (analytics) {
+        logEvent(analytics, "USER_LOGOUT");
+      }
     },
     setUser: (state, action) => {
       state.user = action.payload;

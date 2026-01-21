@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import React, { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function ManufactureShell({ sectionInfo }) {
   const { t, locale } = useLocalization();
@@ -126,12 +128,12 @@ function ManufactureShell({ sectionInfo }) {
   );
 
   const redirectToManufacturePage = () => {
-    window.webengage.onReady(() => {
-      webengage.track("HIGHLIGHTED_MANUFACTRER_VIEWED", {
+    if (analytics) {
+      logEvent(analytics, "HIGHLIGHTED_MANUFACTRER_VIEWED", {
         manufactrer_name: `${sectionInfo?.manufacturer?.name_ar}`,
         manufactrer_url: `/manufacture/${sectionInfo?.manufacturer?.id}`,
       });
-    });
+    }
     router.push({
       pathname: `/manufacture/${sectionInfo?.manufacturer?.id}`,
       query: {

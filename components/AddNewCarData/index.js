@@ -16,6 +16,8 @@ import SharedBtn from "../shared/SharedBtn";
 import { useRouter } from "next/router";
 import { userDefaultCar } from "@/config/network/Shared/SetDataHelper";
 import LimitedSupportCar from "../LimitedSupportCar/LimitedSupportCar";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function AddNewCarData({
   formikRef,
@@ -102,14 +104,14 @@ function AddNewCarData({
     retry: 0,
     onSuccess: (res) => {
       if (res) {
-        window.webengage.onReady(() => {
-          webengage.track("NEW_CAR_ADDED", {
+        if (analytics) {
+          logEvent(analytics, "NEW_CAR_ADDED", {
             car_brand: res?.brand?.name || "",
             car_model: res?.model?.name || "",
             car_year: res?.year || "",
             vin_number: res?.chassis_no || "",
           });
-        });
+        }
         if (window.gtag) {
           window.gtag("event", "NEW_CAR_ADDED", {
             car_brand: res?.brand?.name || "",

@@ -19,6 +19,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import UserProfile from "..";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const flexBox = {
   display: "flex",
@@ -62,20 +64,24 @@ function MyAddresses() {
 
   useEffect(() => {
     if (allAddresses?.length) {
-      webengage.track("LOGIN", {
-        addresses: allAddresses?.map((address) => ({
-          id: address?.id || "",
-          Address: address?.address || "",
-          Type: address?.name || "",
-        })),
-      });
-      window.gtag("event", "LOGIN", {
-        addresses: allAddresses?.map((address) => ({
-          id: address?.id || "",
-          Address: address?.address || "",
-          Type: address?.name || "",
-        })),
-      });
+      if (analytics) {
+        logEvent(analytics, "LOGIN", {
+          addresses: allAddresses?.map((address) => ({
+            id: address?.id || "",
+            Address: address?.address || "",
+            Type: address?.name || "",
+          })),
+        });
+      }
+      if (window.gtag) {
+        window.gtag("event", "LOGIN", {
+          addresses: allAddresses?.map((address) => ({
+            id: address?.id || "",
+            Address: address?.address || "",
+            Type: address?.name || "",
+          })),
+        });
+      }
     }
   }, [allAddresses]);
 

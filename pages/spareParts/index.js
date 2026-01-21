@@ -41,6 +41,8 @@ import LimitedCarDontShowAgain from "@/components/LimitedSupportCar/LimitedCarDo
 import { SPAREPARTS } from "@/constants/enums";
 import Head from "next/head";
 import axios from "axios";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const style = {
   marginTop: "32px",
@@ -100,14 +102,14 @@ function SpareParts() {
     if (sparePartProducts && sparePartProducts?.length) {
       dispatch(addOrUpdateSparePart(sparePartProducts));
     }
+    if (analytics) {
+      logEvent(analytics, "SPAREPARTS_VIEWED", {
+        event_status: true,
+      });
+    }
 
-    window.webengage.onReady(() => {
-      webengage.track("SPAREPARTS_VIEWED", {
-        event_status: true,
-      });
-      window.gtag("event", "SPAREPARTS_VIEWED", {
-        event_status: true,
-      });
+    window?.gtag("event", "SPAREPARTS_VIEWED", {
+      event_status: true,
     });
   }, []);
 

@@ -6,6 +6,8 @@ import SharedBtn from "@/components/shared/SharedBtn";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Image from "next/image";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function Questions() {
   const { t } = useLocalization();
@@ -107,11 +109,11 @@ function Questions() {
                 "_blank",
                 "noopener,noreferrer"
               );
-              window.webengage.onReady(() => {
-                webengage.track("CUSTOMER_SUPPORT_CLICKED", {
+              if (analytics) {
+                logEvent(analytics, "CUSTOMER_SUPPORT_CLICKED", {
                   event_status: true,
                 });
-              });
+              }
             }}
           />
         </div>

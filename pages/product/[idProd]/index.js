@@ -20,6 +20,8 @@ import ConditionalAttributes from "@/components/ProductDetails/ConditionalAttrib
 import ProdImages from "@/components/ProductDetails/ProdImages";
 import ServiceCenterInstallment from "@/components/ProductDetails/ServiceCenterInstallment";
 import ExpressDelivery from "@/components/expressDelivery";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function ProductDetails() {
   const { t, locale } = useLocalization();
@@ -48,24 +50,23 @@ function ProductDetails() {
 
   useEffect(() => {
     if (idProd && data?.name) {
-      window.webengage.onReady(() => {
-        webengage.track("PRODUCT_VIEWED", {
+      if (analytics) {
+        logEvent(analytics, "PRODUCT_VIEWED", {
           product_id: data?.id || "",
           product_name: data?.name || "",
-          product_image: data?.image?.url || "",
+          product_image: data?.image || "",
           price: data?.price || "",
           car_brand: data?.brand?.name || "",
           car_model: data?.model?.name || "",
-          car_year: Number(data?.year_from) || Number("1990"),
+          car_year: data?.year_from || "",
           reference_number: data?.ref_num || "",
           product_details: data?.desc || "",
-          installation_available: true || "",
+          installation_available: false || "",
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
-          tags: data?.combined_tags?.map((d) => d?.name) || [],
-          manufactrer_name: data?.manufacturer?.name?.toString() || "N/A",
-          manufactrer_id: Number(data?.manufacturer?.id) || 0,
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "PRODUCT_VIEWED", {
           product_id: data?.id || "",
           product_name: data?.name || "",
@@ -80,7 +81,7 @@ function ProductDetails() {
           category: data?.marketplace_category?.name || "",
           product_url: `/product/${idProd}` || "",
         });
-      });
+      }
     }
   }, [idProd, data]);
 

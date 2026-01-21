@@ -1,5 +1,7 @@
+"use client";
+
 import { Box, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import useCustomQuery from "@/config/network/Apiconfig";
 import { useDispatch, useSelector } from "react-redux";
 import { APP_SECTIONS, HOME_SECTIONS } from "@/config/endPoints/endPoints";
@@ -23,6 +25,8 @@ import CategoriesServices from "@/components/sectionsInfo/services/CategoriesSer
 import SponserAds from "@/components/Marketplace/SponserAds";
 import FindMoreSegments from "@/components/Marketplace/FindMoreSegments";
 import useBranch from "./useBranch";
+import { analytics } from "@/lib/firebase"; // your firebase init file
+import { logEvent } from "firebase/analytics";
 
 export default function Home() {
   // useBranch user for deep  links
@@ -55,16 +59,17 @@ export default function Home() {
   });
 
   useEffect(() => {
-    window.webengage.onReady(() => {
-      webengage.track("APP_SECTION_VIEWED", {
+    if (analytics) {
+      logEvent(analytics, "APP_SECTION_VIEWED", {
         app_section: "Home",
       });
+    }
+    if (window.gtag) {
       window.gtag("event", "APP_SECTION_VIEWED", {
         app_section: "Home",
       });
-    });
+    }
   }, []);
-
   return isLoading ? (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       <CircularProgress

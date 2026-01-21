@@ -2,18 +2,24 @@ import { useRouter } from "next/router";
 import style from "./Switcher.module.scss";
 import Image from "next/image";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const LanguageSwitcher = () => {
   const router = useRouter();
   const { isMobile } = useScreenSize();
 
   const switchLocale = (locale) => {
-    webengage.track("LANGUAGE_SELECTED", {
-      language: locale === "ar" ? "Arabic" : "English",
-    });
-    window.gtag("event", "LANGUAGE_SELECTED", {
-      language: locale === "ar" ? "Arabic" : "English",
-    });
+    if (analytics) {
+      logEvent(analytics, "LANGUAGE_SELECTED", {
+        language: locale === "ar" ? "Arabic" : "English",
+      });
+    }
+    if (window.gtag) {
+      window.gtag("event", "LANGUAGE_SELECTED", {
+        language: locale === "ar" ? "Arabic" : "English",
+      });
+    }
     router.push(router.pathname, router.asPath, { locale }).then(() => {
       router.reload();
     });

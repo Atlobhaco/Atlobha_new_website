@@ -23,6 +23,8 @@ import { useRouteTracker } from "@/config/providers/RouteTracker";
 import { isAuth } from "@/config/hooks/isAuth";
 import { SERVICES } from "@/constants/enums";
 import ServiceDataInfo from "./serviceCategory/[idSerCat]/ServiceDataInfo";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 function Search() {
   const router = useRouter();
@@ -252,11 +254,11 @@ function Search() {
                         <div
                           className="col-md-4 col-4 mb-3 px-0 d-flex justify-content-center"
                           key={prod?.id}
-                          onClick={() =>
-                            window.webengage.onReady(() => {
-                              webengage.track("SEARCH_PRODUCTS_CLICKED");
-                            })
-                          }
+                          onClick={() => {
+                            if (analytics) {
+                              logEvent(analytics, "SEARCH_PRODUCTS_CLICKED");
+                            }
+                          }}
                         >
                           <ProductCard product={prod} />
                         </div>

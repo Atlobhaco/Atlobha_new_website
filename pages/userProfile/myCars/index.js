@@ -22,6 +22,8 @@ import { USERS, VEHICLES } from "@/config/endPoints/endPoints";
 import { toast } from "react-toastify";
 import SingleCarItem from "@/components/userProfile/myCars/singleCarItem";
 import UserProfile from "..";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 const flexBox = {
   display: "flex",
@@ -74,8 +76,8 @@ function MyCars() {
 
   useEffect(() => {
     if (allCars?.length) {
-      window.webengage.onReady(() => {
-        webengage.track("LOGIN", {
+      if (analytics) {
+        logEvent(analytics, "LOGIN", {
           cars: allCars?.map((car) => ({
             id: car?.id || "",
             Brand: car?.brand?.name || "",
@@ -83,6 +85,8 @@ function MyCars() {
             year: car?.year || "",
           })),
         });
+      }
+      if (window.gtag) {
         window.gtag("event", "LOGIN", {
           cars: allCars?.map((car) => ({
             id: car?.id || "",
@@ -91,7 +95,7 @@ function MyCars() {
             year: car?.year || "",
           })),
         });
-      });
+      }
     }
   }, [allCars]);
 

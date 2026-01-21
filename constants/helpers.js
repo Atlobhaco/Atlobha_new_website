@@ -5,6 +5,8 @@ import crypto from "crypto";
 import { ORDERSENUM, PAYMENT_METHODS, PRODUCT_TYPES, STATUS } from "./enums";
 import { useEffect, useRef } from "react";
 import isEqual from "lodash.isequal";
+import { analytics } from "@/lib/firebase";
+import { logEvent } from "firebase/analytics";
 
 export const checkApplePayAvailability = () => {
   // Check if Apple Pay is available and apple OS
@@ -501,7 +503,7 @@ export const prodTypeArray = () => {
   }));
 };
 /* -------------------------------------------------------------------------- */
-/*                       webengage add remove from cart                       */
+/*                       firebase  add remove from cart                       */
 /* -------------------------------------------------------------------------- */
 export const addRemoveFromCartEngage = ({
   prod,
@@ -528,8 +530,8 @@ export const addRemoveFromCartEngage = ({
     }
   };
 
-  window.webengage.onReady(() => {
-    webengage.track(actions(), {
+  if (analytics) {
+    logEvent(analytics, actions(), {
       product_name: prod?.name || "",
       product_image: prod?.image?.url || "N/A",
       product_id: prod?.id || "",
@@ -542,11 +544,11 @@ export const addRemoveFromCartEngage = ({
       quantity: qty() || 0,
       product_url: `/product/${prod?.id}` || "",
     });
-  });
+  }
 };
 
 /* -------------------------------------------------------------------------- */
-/*                        latest updated cart webengage                       */
+/*                        latest updated cart firebase                        */
 /* -------------------------------------------------------------------------- */
 
 export const latestUpdatedCart = (basket = []) => {
@@ -563,34 +565,33 @@ export const latestUpdatedCart = (basket = []) => {
     Image: item?.product?.image || "",
   }));
 
-  if (typeof window.webengage === "undefined") return;
-
-  window.webengage?.onReady(() => {
-    webengage.track("CART_UPDATED", {
-      //   total: Number(+totalOfBasket),
+  if (analytics) {
+    logEvent(analytics, "CART_UPDATED", {
       total_price: Number(+totalOfBasket),
       number_of_products: activeItems.length,
       line_items: itemsMapping,
     });
+  }
+  if (window.gtag) {
     window.gtag("event", "CART_UPDATED", {
       total: totalOfBasket,
       number_of_products: activeItems.length,
       line_items: itemsMapping,
     });
-  });
+  }
 };
 
 /* -------------------------------------------------------------------------- */
-/*                     atlobha partners clicked webengage                     */
+/*                     atlobha partners clicked firebase                      */
 /* -------------------------------------------------------------------------- */
 
 export const partnerClickedWebengage = (name, id) => {
-  window.webengage?.onReady(() => {
-    webengage.track("ATLOBHA_PARTNER_CLICKED", {
+  if (analytics) {
+    logEvent(analytics, "ATLOBHA_PARTNER_CLICKED", {
       partner_name: name,
       partner_id: id,
     });
-  });
+  }
 };
 
 /* -------------------------------------------------------------------------- */
@@ -604,15 +605,15 @@ export const filterCategoriesEngage = ({
   category,
   sub_category,
 }) => {
-  window.webengage.onReady(() => {
-    webengage.track("FILTER_APPLIED", {
+  if (analytics) {
+    logEvent(analytics, "FILTER_APPLIED", {
       car_brand: brand || "N/A",
       car_model: model || "N/A",
       car_year: year || 0,
       category: category || "N/A",
       sub_category: sub_category || "N/A",
     });
-  });
+  }
 };
 
 /* -------------------------------------------------------------------------- */
@@ -629,8 +630,8 @@ export const payInitiateEngage = ({
   promo_code,
   comment,
 }) => {
-  window.webengage.onReady(() => {
-    webengage.track("PAYMENT_INITIATED", {
+  if (analytics) {
+    logEvent(analytics, "PAYMENT_INITIATED", {
       order_items: order_items || [],
       total_price: total_price || 0,
       number_of_products: number_of_products || 1,
@@ -641,7 +642,7 @@ export const payInitiateEngage = ({
       promo_code: promo_code,
       comment: comment,
     });
-  });
+  }
 };
 
 /* -------------------------------------------------------------------------- */
