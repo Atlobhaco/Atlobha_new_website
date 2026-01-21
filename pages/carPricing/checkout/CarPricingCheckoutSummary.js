@@ -236,6 +236,7 @@ const CarPricingCheckoutSummary = forwardRef(
       url: `${VEHICLE_PRICING_ORDERS}${CALCULATE_RECEIPT}`,
       method: "post",
       refetchOnWindowFocus: true,
+      refetchInterval: 5000,
       body: {
         promo_code_id: allPromoCodeData?.id || null,
       },
