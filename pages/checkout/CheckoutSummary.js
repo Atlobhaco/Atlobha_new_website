@@ -63,9 +63,12 @@ const CheckoutSummary = forwardRef(
     const router = useRouter();
     const { user } = useAuth();
     const merchanteRefrenceRef = useRef(
-      `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
+      `${user?.data?.user?.id}${Math.floor(
+        1000000000 + Math.random() * 9000000000
+      )}`
     );
     const merchanteRefrence = merchanteRefrenceRef.current;
+    console.log("merchanteRefrence", merchanteRefrence);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
