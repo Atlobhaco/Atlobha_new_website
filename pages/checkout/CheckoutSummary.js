@@ -68,7 +68,6 @@ const CheckoutSummary = forwardRef(
       )}`
     );
     const merchanteRefrence = merchanteRefrenceRef.current;
-    console.log("merchanteRefrence", merchanteRefrence);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -249,39 +248,39 @@ const CheckoutSummary = forwardRef(
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
 
-        if (paymentFailed === "failed" && orderId) {
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": "w123",
-                Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
-                )}`,
-              },
-            }
-          )
-            .then((res) => {
-              if (!res.ok) throw new Error("Request failed");
-              console.log(
-                "Payment fail (success) status updated for order:",
-                orderId
-              );
-            })
-            .catch((err) => console.error(err))
-            .finally(() => {
-              Cookies.remove("created_order_id");
-              Cookies.remove("payment_failed");
-              Cookies.remove("order_type");
-              Cookies.remove("payment_method");
-              Cookies.remove("url_after_pay_failed");
-              setFakeLoader(false);
-              setLoadPayRequest(false);
-              callCalculateReceipt();
-            });
-        }
+        // if (paymentFailed === "failed" && orderId) {
+        //   fetch(
+        //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         "x-api-key": "w123",
+        //         Authorization: `Bearer ${localStorage?.getItem(
+        //           "access_token"
+        //         )}`,
+        //       },
+        //     }
+        //   )
+        //     .then((res) => {
+        //       if (!res.ok) throw new Error("Request failed");
+        //       console.log(
+        //         "Payment fail (success) status updated for order:",
+        //         orderId
+        //       );
+        //     })
+        //     .catch((err) => console.error(err))
+        //     .finally(() => {
+        //       Cookies.remove("created_order_id");
+        //       Cookies.remove("payment_failed");
+        //       Cookies.remove("order_type");
+        //       Cookies.remove("payment_method");
+        //       Cookies.remove("url_after_pay_failed");
+        //       setFakeLoader(false);
+        //       setLoadPayRequest(false);
+        //       callCalculateReceipt();
+        //     });
+        // }
 
         if (+res?.amount_to_pay === 0) {
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
@@ -335,18 +334,18 @@ const CheckoutSummary = forwardRef(
     }, []);
 
     useEffect(() => {
-      const interval = setInterval(() => {
-        const orderId = Cookies.get("created_order_id");
-        const orderType = Cookies.get("order_type");
-        const paymentMethod = Cookies.get("payment_method");
-        if (orderId && orderType && paymentMethod) {
-          setTimeout(() => {
-            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-          }, 1000);
-          clearInterval(interval);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
+      //   const interval = setInterval(() => {
+      const orderId = Cookies.get("created_order_id");
+      const orderType = Cookies.get("order_type");
+      const paymentMethod = Cookies.get("payment_method");
+
+      if (orderId && orderType && paymentMethod) {
+        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+        //   setTimeout(() => {}, 1000);
+        //   clearInterval(interval);
+      }
+      //   }, 1000);
+      //   return () => clearInterval(interval);
     }, [
       Cookies.get("created_order_id"),
       Cookies.get("order_type"),
@@ -697,7 +696,7 @@ const CheckoutSummary = forwardRef(
 
     return (
       <Box sx={{ pt: 1 }}>
-        {/* <PaymentFailChecker /> */}
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
