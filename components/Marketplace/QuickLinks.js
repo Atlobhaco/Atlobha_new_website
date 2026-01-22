@@ -71,12 +71,6 @@ function QuickLinks({ sectionInfo, setHasQuickLinks = () => {} }) {
               backgroundSize: "cover",
             }}
             onClick={() => {
-              //   window.webengage.onReady(() => {
-              //     webengage.track("QUICK_LINK_ITEM_CLICKED", {
-              //       quick_link_url: item?.link,
-              //       quick_link_name: item?.title,
-              //     });
-              //   });
               router.push(item?.link);
             }}
           >

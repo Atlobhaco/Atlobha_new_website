@@ -100,12 +100,6 @@ function SpareParts() {
     if (sparePartProducts && sparePartProducts?.length) {
       dispatch(addOrUpdateSparePart(sparePartProducts));
     }
-
-    // window.webengage.onReady(() => {
-    //   webengage.track("SPAREPARTS_VIEWED", {
-    //     event_status: true,
-    //   });
-    // });
   }, []);
 
   useEffect(() => {

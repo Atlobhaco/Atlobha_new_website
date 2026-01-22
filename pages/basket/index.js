@@ -91,15 +91,6 @@ function Basket() {
           Image: bas?.product?.image || "",
         }));
 
-      //   window.webengage.onReady(() => {
-      //     webengage.track("CART_VIEWED", {
-      //       total: totalPriceBasket || 0,
-      //       number_of_products:
-      //         basket?.filter((item) => item?.product?.is_active)?.length || 0,
-      //       line_items: itemsMaping || [],
-      //     });
-      //   });
-
       latestUpdatedCart(basket);
     }
   }, [userAddress]);

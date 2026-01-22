@@ -73,14 +73,6 @@ function MyOrders() {
     }
   };
 
-  useEffect(() => {
-    // window.webengage.onReady(() => {
-    //   webengage.track("APP_SECTION_VIEWED", {
-    //     app_section: "My Orders",
-    //   });
-    // });
-  }, []);
-
   // ✅ Sync state -> URL
   useEffect(() => {
     const query = {

@@ -72,21 +72,6 @@ function MyCars() {
     },
   });
 
-  useEffect(() => {
-    if (allCars?.length) {
-      //   window.webengage.onReady(() => {
-      //     webengage.track("LOGIN", {
-      //       cars: allCars?.map((car) => ({
-      //         id: car?.id || "",
-      //         Brand: car?.brand?.name || "",
-      //         Model: car?.model?.name || "",
-      //         year: car?.year || "",
-      //       })),
-      //     });
-      //   });
-    }
-  }, [allCars]);
-
   return (
     <div className="container-fluid">
       <div className="row">

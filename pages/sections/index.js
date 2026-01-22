@@ -16,23 +16,6 @@ function Sections() {
   const { secTitle, secType } = router.query;
   const { sectionsSeo } = useSelector((state) => state.homeSectionsData);
 
-  useEffect(() => {
-    if (secType === "maintenance-reservation") {
-      //   window.webengage.onReady(() => {
-      //     webengage.track("PERIODIC_MAITAINCE_VIEWED", {
-      //       event_status: true,
-      //     });
-      //   });
-    }
-    if (secType === "najm-and-estimation") {
-      //   window.webengage.onReady(() => {
-      //     webengage.track("TAQDEER_SERVICE_VIEWED", {
-      //       event_status: true,
-      //     });
-      //   });
-    }
-  }, [secType]);
-
   const renderMetaTagsDependOnSecType = () => {
     const selectedSection = sectionsSeo?.find((d) => d?.type === secType)?.seo;
     if (!selectedSection || !["test-drive", SERVICES].includes(secType))

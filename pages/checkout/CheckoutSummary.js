@@ -6,7 +6,6 @@ import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
-  payInitiateEngage,
   riyalImgBlack,
   riyalImgRed,
   useArrayChangeDetector,
@@ -130,35 +129,6 @@ const CheckoutSummary = forwardRef(
           expires: 1,
           path: "/",
         });
-
-        if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.cash) {
-          payInitiateEngage({
-            order_items: basket
-              ?.filter((item) => item?.product?.is_active)
-              ?.map((d) => ({
-                id: d?.id,
-                quantity: d?.quantity || 0,
-                image: d?.product?.image?.url || "N/A",
-                name: d?.product?.name || "N/A",
-                price: d?.product?.price || "N/A",
-              })),
-            total_price: Number(calculateReceiptResFromMainPage?.total_price),
-            number_of_products: Number(
-              basket?.filter((item) => item?.product?.is_active)?.length
-            ),
-            checkout_url: router?.asPath || "N/A",
-            expected_delivery_date: new Date(
-              moment
-                .unix(estimateRes.estimated_delivery_date_to)
-                .format("YYYY-MM-DD HH:mm:ss")
-                .replace(" ", "T") + "Z"
-            ),
-            shipping_address: selectAddress?.address?.toString() || "N/A",
-            payment_method: selectedPaymentMethod?.Key || "N/A",
-            promo_code: allPromoCodeData?.code?.toString() || "N/A",
-            comment: "N/A",
-          });
-        }
 
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -527,38 +497,6 @@ const CheckoutSummary = forwardRef(
       session.begin();
     };
 
-    const handleWebengageCheckoutClicked = () => {
-      const total =
-        basket
-          ?.filter((item) => item?.product?.is_active)
-          ?.map((d) => ({
-            total_price: d?.quantity * d?.product?.price,
-          }))
-          ?.reduce(
-            (accumulator, current) => accumulator + current.total_price,
-            0
-          )
-          ?.toFixed(2) || 0;
-
-      const itemsMaping = basket
-        ?.filter((item) => item?.product?.is_active)
-        ?.map((bas) => ({
-          Id: bas?.product?.id || "",
-          Title: bas?.product?.name || "",
-          Price: bas?.product?.price || "",
-          Quantity: bas?.quantity || "",
-          Image: bas?.product?.image || "",
-        }));
-      //   window.webengage.onReady(() => {
-      //     webengage.track("CART_CHECKOUT_CLICKED", {
-      //       total_price: +total,
-      //       number_of_products:
-      //         basket?.filter((item) => item?.product?.is_active)?.length || 0,
-      //       line_items: itemsMaping || [],
-      //     });
-      //   });
-    };
-
     /* -------------------------------------------------------------------------- */
     /*                            tamara payment logic                            */
     /* -------------------------------------------------------------------------- */
@@ -911,7 +849,6 @@ const CheckoutSummary = forwardRef(
             ) : null
           }
           onClick={() => {
-            handleWebengageCheckoutClicked();
             setFakeLoader(true);
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;

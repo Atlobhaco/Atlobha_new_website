@@ -100,11 +100,6 @@ function ComingSoon() {
                 "_blank",
                 "noopener,noreferrer"
               );
-            //   window.webengage.onReady(() => {
-            //     webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-            //       event_status: true,
-            //     });
-            //   });
             }}
           />
         </Box>
@@ -152,17 +147,7 @@ function ComingSoon() {
           />
         </Link>
 
-        <Link
-          onClick={() =>
-            window.webengage.onReady(() => {
-            //   webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-            //     event_status: true,
-            //   });
-            })
-          }
-          href="https://wa.me/966502670094"
-          target="_blank"
-        >
+        <Link href="https://wa.me/966502670094" target="_blank">
           <Image
             alt="whatsapp"
             src="/icons/social/whatsapp.svg"

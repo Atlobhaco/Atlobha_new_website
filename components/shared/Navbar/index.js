@@ -290,17 +290,7 @@ function Navbar({ setOpenCategories, hideNavbarInUrls }) {
           <LanguageSwitcher />
 
           {isMobile ? (
-            <Link
-              //   onClick={() =>
-              //     window.webengage.onReady(() => {
-              //       webengage.track("CUSTOMER_SUPPORT_CLICKED", {
-              //         event_status: true,
-              //       });
-              //     })
-              //   }
-              href="https://wa.me/966502670094"
-              target="_blank"
-            >
+            <Link href="https://wa.me/966502670094" target="_blank">
               <Image
                 alt="whatsapp"
                 src="/icons/social/whats.svg"

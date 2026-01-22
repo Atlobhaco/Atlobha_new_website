@@ -13,7 +13,6 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import {
   generateSignature,
   generateSignatureApplePay,
-  payInitiateEngage,
   riyalImgBlack,
   riyalImgRed,
 } from "@/constants/helpers";
@@ -152,35 +151,6 @@ function SummaryOrderCarPricing({
         expires: 1,
         path: "/",
       });
-
-      if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.cash) {
-        payInitiateEngage({
-          order_items:
-            orderDetails?.parts?.map((d) => ({
-              id: d?.id,
-              quantity: d?.quantity || 0,
-              image: d?.product?.image || "N/A",
-              name: d?.name || "N/A",
-              price: d?.total_price || 0,
-            })) || [],
-          total_price: Number(orderDetails?.receip?.total_price),
-          number_of_products: Number(orderDetails?.parts?.length),
-          checkout_url: router?.asPath || "N/A",
-          expected_delivery_date: new Date(
-            moment()
-              .add(2, "days")
-              .format("YYYY-MM-DD HH:mm:ss")
-              .replace(" ", "T") + "Z"
-          ),
-          shipping_address: orderDetails?.address?.address?.toString() || "N/A",
-          payment_method: selectedPaymentMethod?.Key || "N/A",
-          promo_code:
-            allPromoCodeData?.code?.toString() ||
-            orderDetails?.promo_code?.code?.toString() ||
-            "N/A",
-          comment: "N/A",
-        });
-      }
 
       if (
         selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -771,34 +741,6 @@ function SummaryOrderCarPricing({
               text="repeatPricing"
               onClick={() => {
                 callRepeatPricing();
-                // window.webengage.onReady(() => {
-                //   webengage.track("ORDER_SPAREPARTS_REPRICE", {
-                //     car_brand: orderDetails?.vehicle?.brand?.name || "",
-                //     car_model: orderDetails?.vehicle?.model?.name || "",
-                //     car_year: orderDetails?.vehicle?.year || Number("1990"),
-                //     order_items:
-                //       orderDetails?.parts?.map((part) => ({
-                //         Part_Name_or_Number: part?.name || part?.id || "",
-                //         Quantity: part?.quantity || 0,
-                //         Image: part?.image || "",
-                //       })) || [],
-                //     shipping_address: orderDetails?.address?.address || "",
-                //     promo_code: orderDetails?.promo_code?.code || "",
-                //     comment: orderDetails?.notes || "",
-                //     order_number: orderDetails?.id || "",
-                //     creation_date: orderDetails?.created_at
-                //       ? new Date(
-                //           orderDetails?.created_at?.replace(" ", "T") + "Z"
-                //         )
-                //       : new Date().toISOString(),
-                //     status: orderDetails?.status || "",
-                //     order_url: router?.asPath || "",
-                //     total_price:
-                //       calculateReceiptResFromMainPage?.total_price ||
-                //       receipt?.total_price ||
-                //       0,
-                //   });
-                // });
               }}
               disabled={repeatPriceFetch}
               comAfterText={

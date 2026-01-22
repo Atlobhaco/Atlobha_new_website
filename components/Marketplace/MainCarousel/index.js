@@ -80,14 +80,6 @@ function MainCarousel({ sectionInfo, setHasAds = () => {} }) {
               }}
               onClick={() => {
                 if (img?.link) {
-                //   window.webengage.onReady(() => {
-                //     webengage.track("ADS_SECTION_VIEWED", {
-                //       ads_id: Number(img?.id),
-                //       ads_type: img?.type,
-                //       product_id: Number(img?.id),
-                //       product_name: "prod",
-                //     });
-                //   });
                   window.open(img.link, "_blank");
                 }
               }}

@@ -185,29 +185,6 @@ function OrderActions({
                     e?.preventDefault();
                     e?.stopPropagation();
                     setOrderDetailsRePrice(order);
-                    // window.webengage.onReady(() => {
-                    //   webengage.track("ORDER_SPAREPARTS_REPRICE", {
-                    //     car_brand: order?.vehicle?.brand?.name || "",
-                    //     car_model: order?.vehicle?.model?.name || "",
-                    //     car_year: order?.vehicle?.year || Number("1990"),
-                    //     order_items:
-                    //       order?.parts?.map((part) => ({
-                    //         Part_Name_or_Number: part?.name || part?.id || "",
-                    //         Quantity: part?.quantity || 0,
-                    //         Image: part?.image || "",
-                    //       })) || [],
-                    //     shipping_address: order?.address?.address || "",
-                    //     promo_code: order?.promo_code?.code || "",
-                    //     comment: order?.notes || "",
-                    //     order_number: order?.id ? String(order.id) : "",
-                    //     creation_date: order?.created_at
-                    //       ? new Date(order?.created_at?.replace(" ", "T") + "Z")
-                    //       : new Date().toISOString(),
-                    //     status: order?.status || "",
-                    //     order_url: router?.asPath || "",
-                    //     total_price: order?.receipt?.total_price || 0,
-                    //   });
-                    // });
                   }}
                 />
               </div>

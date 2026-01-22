@@ -87,27 +87,6 @@ function ServiceDetails() {
           return setTabValue(FIXED);
         }
       }
-      //   window.webengage.onReady(() => {
-      //     webengage.track("SERVICE_VIEWED", {
-      //       serivce_id: data?.id?.toString() || "",
-      //       serivce_name: data?.name || "",
-      //       price:
-      //         Number(
-      //           servicePrice({
-      //             service: data,
-      //             userCar: selectedCar?.id ? selectedCar : defaultCar,
-      //           })
-      //         ) || "",
-      //       car_brand: data?.brand?.name || "",
-      //       car_model: data?.model?.name || "",
-      //       car_year: Number(data?.year_from) || Number("1990"),
-      //       reference_number: data?.id?.toString(),
-      //       service_details: data?.description || "",
-      //       service_url: `/service/${idService}` || "",
-      //       category: data?.category?.name || "",
-      //       tags: data?.combined_tags?.map((d) => d?.name) || [],
-      //     });
-      //   });
     }
   }, [data]);
 

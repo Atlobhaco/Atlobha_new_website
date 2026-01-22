@@ -101,16 +101,6 @@ function AddNewCarData({
     body: addPayload,
     retry: 0,
     onSuccess: (res) => {
-      if (res) {
-        // window.webengage.onReady(() => {
-        //   webengage.track("NEW_CAR_ADDED", {
-        //     car_brand: res?.brand?.name || "",
-        //     car_model: res?.model?.name || "",
-        //     car_year: res?.year || "",
-        //     vin_number: res?.chassis_no || "",
-        //   });
-        // });
-      }
       if (
         router?.pathname === "/userProfile/myCars/addNewCarProfile" ||
         editableCar?.id
