@@ -341,6 +341,8 @@ const CheckoutSummary = forwardRef(
 
       if (orderId && orderType && paymentMethod) {
         Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+        setLoadPayRequest(false);
+        setFakeLoader(false);
         //   setTimeout(() => {}, 1000);
         //   clearInterval(interval);
       }
