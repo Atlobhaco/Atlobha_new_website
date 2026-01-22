@@ -242,43 +242,43 @@ const CarPricingCheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        const paymentFailed = Cookies.get("payment_failed");
-        const orderId = Cookies.get("created_order_id");
-        const orderType = Cookies.get("order_type");
+        // const paymentFailed = Cookies.get("payment_failed");
+        // const orderId = Cookies.get("created_order_id");
+        // const orderType = Cookies.get("order_type");
 
-        if (paymentFailed === "failed" && orderId) {
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": "w123",
-                Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
-                )}`,
-              },
-            }
-          )
-            .then((res) => {
-              if (!res.ok) throw new Error("Request failed");
-              console.log(
-                "Payment fail (success) status updated for order:",
-                orderId
-              );
-            })
-            .catch((err) => console.error(err))
-            .finally(() => {
-              Cookies.remove("created_order_id");
-              Cookies.remove("payment_failed");
-              Cookies.remove("order_type");
-              Cookies.remove("payment_method");
-              Cookies.remove("url_after_pay_failed");
-              setFakeLoader(false);
-              setLoadPayRequest(false);
-              callCalculateReceipt();
-            });
-        }
+        // if (paymentFailed === "failed" && orderId) {
+        //   fetch(
+        //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         "x-api-key": "w123",
+        //         Authorization: `Bearer ${localStorage?.getItem(
+        //           "access_token"
+        //         )}`,
+        //       },
+        //     }
+        //   )
+        //     .then((res) => {
+        //       if (!res.ok) throw new Error("Request failed");
+        //       console.log(
+        //         "Payment fail (success) status updated for order:",
+        //         orderId
+        //       );
+        //     })
+        //     .catch((err) => console.error(err))
+        //     .finally(() => {
+        //       Cookies.remove("created_order_id");
+        //       Cookies.remove("payment_failed");
+        //       Cookies.remove("order_type");
+        //       Cookies.remove("payment_method");
+        //       Cookies.remove("url_after_pay_failed");
+        //       setFakeLoader(false);
+        //       setLoadPayRequest(false);
+        //       callCalculateReceipt();
+        //     });
+        // }
 
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
