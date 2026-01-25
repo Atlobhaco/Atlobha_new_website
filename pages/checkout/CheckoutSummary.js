@@ -125,14 +125,12 @@ const CheckoutSummary = forwardRef(
       },
       onSuccess: async (res) => {
         sessionStorage.setItem("created_order_id", res?.id);
-        setTimeout(() => {
-          Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
-          Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
-          Cookies.set("payment_method", selectedPaymentMethod?.key, {
-            expires: 1,
-            path: "/",
-          });
-        }, 1000);
+        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+        Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
+        Cookies.set("payment_method", selectedPaymentMethod?.key, {
+          expires: 1,
+          path: "/",
+        });
 
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -334,30 +332,6 @@ const CheckoutSummary = forwardRef(
         setPayfortForm(form);
       }
     }, []);
-
-    useEffect(() => {
-      //   const interval = setInterval(() => {
-      const orderId = Cookies.get("created_order_id");
-      const orderType = Cookies.get("order_type");
-      const paymentMethod = Cookies.get("payment_method");
-
-      if (orderId && orderType && paymentMethod) {
-        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-        setLoadPayRequest(false);
-        setFakeLoader(false);
-        //   setTimeout(() => {}, 1000);
-        //   clearInterval(interval);
-      }
-      //   }, 1000);
-      //   return () => clearInterval(interval);
-    }, [
-      Cookies.get("created_order_id"),
-      Cookies.get("order_type"),
-      isMobile,
-      router,
-      calculateReceiptResFromMainPage,
-      router.isReady,
-    ]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -706,14 +680,21 @@ const CheckoutSummary = forwardRef(
       const orderType = Cookies.get("order_type");
       const paytmentMethod = Cookies.get("payment_method");
 
-      if (orderId && orderType && paytmentMethod) {
+      if (router.isReady && orderId && orderType && paytmentMethod) {
         Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
         setTimeout(() => {
-          setRedirectToPayfort(false);
+          setFakeLoader(false);
           setLoadPayRequest(false);
         }, 12000);
       }
-    }, []);
+    }, [
+      Cookies.get("created_order_id"),
+      Cookies.get("order_type"),
+      isMobile,
+      router,
+      calculateReceiptResFromMainPage,
+      router.isReady,
+    ]);
 
     return (
       <Box sx={{ pt: 1 }}>
