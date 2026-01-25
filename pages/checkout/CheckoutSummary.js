@@ -125,12 +125,14 @@ const CheckoutSummary = forwardRef(
       },
       onSuccess: async (res) => {
         sessionStorage.setItem("created_order_id", res?.id);
-        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
-        Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
-        Cookies.set("payment_method", selectedPaymentMethod?.key, {
-          expires: 1,
-          path: "/",
-        });
+        setTimeout(() => {
+          Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+          Cookies.set("order_type", MARKETPLACE, { expires: 1, path: "/" });
+          Cookies.set("payment_method", selectedPaymentMethod?.key, {
+            expires: 1,
+            path: "/",
+          });
+        }, 1000);
 
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
