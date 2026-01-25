@@ -58,10 +58,10 @@ function OrderNumCopyWhatsapp({ orderDetails = {}, handleCopy = () => {} }) {
             fontWeight: 500,
           }}
         >
-          {t.orderNum} #{orderDetails?.id}{" "}
+          {t.orderNum} #{orderDetails?.reference_code}{" "}
           <ContentCopyIcon
             sx={{ cursor: "pointer", width: "17px", color: "grey" }}
-            onClick={() => handleCopy(orderDetails?.id)} // Add onClick handler
+            onClick={() => handleCopy(orderDetails?.reference_code)} // Add onClick handler
           />
         </Box>
         <Box sx={{ color: "#6B7280", fontSize: "10px", fontWeight: 500 }}>

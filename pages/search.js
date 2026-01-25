@@ -4,11 +4,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import ProductCard from "@/components/shared/ProductCard";
 import { MARKETPLACE, PRODUCTS } from "@/config/endPoints/endPoints";
 import useCustomQuery from "@/config/network/Apiconfig";
-import {
-  filterCategoriesEngage,
-  getFilterParams,
-  hasAnyFilterValue,
-} from "@/constants/helpers";
+import { getFilterParams, hasAnyFilterValue } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, Divider } from "@mui/material";
 import { useRouter } from "next/router";
@@ -91,13 +87,6 @@ function Search() {
         ...filters,
       };
       localStorage.setItem("globalSearch", JSON.stringify(globalSearchData));
-      filterCategoriesEngage({
-        brand: filters?.brand?.toString(),
-        model: filters?.model?.toString(),
-        year: Number(filters?.year),
-        category: filters?.category?.toString(),
-        sub_category: idSub?.toString(),
-      });
     }
   }, [filters, canSavefilters, keyword]);
 

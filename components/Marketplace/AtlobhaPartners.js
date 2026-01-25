@@ -9,7 +9,6 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import Slider from "react-slick";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import { partnerClickedWebengage } from "@/constants/helpers";
 
 function AtlobhaPartners({ sectionInfo }) {
   const { isMobile } = useScreenSize();
@@ -129,7 +128,6 @@ function AtlobhaPartners({ sectionInfo }) {
                   }}
                   onClick={() => {
                     if (!isDragging) {
-                      partnerClickedWebengage(part?.name, part?.id);
                       router.push(`/manufacture/${part?.id}`);
                     }
                   }}
@@ -195,7 +193,6 @@ function AtlobhaPartners({ sectionInfo }) {
                     <Image
                       onClick={() => {
                         if (!isDragging) {
-                          partnerClickedWebengage(part?.name, part?.id);
                           router.push(`/manufacture/${part?.id}`);
                         }
                       }}

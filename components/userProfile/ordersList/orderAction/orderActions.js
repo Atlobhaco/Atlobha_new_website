@@ -162,7 +162,9 @@ function OrderActions({
                 className={`${style["svg"]}`}
               />
               <span className={`${style["orange-sub-title"]}`}>
-                {t.orderCanReprice}
+                {order?.class !== ORDERSENUM?.vehiclePricing
+                  ? t.orderCanReprice
+                  : t.canOrderAgain}
               </span>
             </div>
             <div className={`${style["text"]}`}>
@@ -256,14 +258,6 @@ function OrderActions({
         return (
           <div className={`${style["new"]}`}>
             <div className={`${style["title"]}`}>{t.orderUnderReview}</div>
-            {/* <div className={`${style["text"]}`}>
-					<SharedBtn
-					  text="cancelOrder"
-					  className="outline-btn"
-					  id="cancelOrder"
-					  customClass={`${style["btn-style"]}`}
-					/>
-				  </div> */}
           </div>
         );
 

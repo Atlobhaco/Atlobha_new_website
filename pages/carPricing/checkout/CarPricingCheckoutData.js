@@ -114,6 +114,9 @@ function CarPricingCheckoutData({ promoCodeId, setPromoCodeId, carPricing }) {
             status: "new",
           }}
           noPadding={true}
+          queryParams={{
+            exclude_cash: true,
+          }}
         />
       </div>
 
@@ -142,8 +145,7 @@ function CarPricingCheckoutData({ promoCodeId, setPromoCodeId, carPricing }) {
         content={
           <Box
             sx={{
-              maxHeight: "70vh",
-              overflow: "hidden auto",
+              maxHeight: isMobile ? "unset" : "70vh",
             }}
           >
             <Questions />

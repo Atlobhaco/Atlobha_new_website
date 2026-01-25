@@ -1,65 +1,52 @@
 import * as React from "react";
-import { Box, Slide } from "@mui/material";
+import {
+  Box,
+  Slide,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  IconButton,
+  Button,
+  SwipeableDrawer,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/router";
 import { makeStyles } from "@mui/styles";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import SharedBtn from "../shared/SharedBtn";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  const { locale } = useRouter();
-  const { isMobile } = useScreenSize();
-
-  return <Slide direction={"up"} ref={ref} {...props} />;
-});
-
-const useStyles = makeStyles(({ isMobile, title }) => ({
+const useStyles = makeStyles(({ isMobile }) => ({
   centerDesign: {
     bottom: "0px",
     minWidth: "60vw",
-    // maxWidth: "inh",
     maxHeight: "60vh",
     minHeight: "fit-content",
-    left: "0",
-    right: "0",
-    margin: "auto 0",
+    margin: "auto",
     borderRadius: "10px !important",
   },
   paperMobile: {
-    position: "absolute !important",
-    bottom: "0px",
-    minWidth: "100vw",
-    maxHeight: "85vh !important",
     minHeight: "30vh",
-    left: "0",
-    right: "0",
-    margin: "auto 0 !important",
-    borderTopLeftRadius: "20px !important",
-    borderTopRightRadius: "20px !important",
+    maxHeight: "85vh !important",
+    borderTopLeftRadius: "20px",
+    borderTopRightRadius: "20px",
   },
-  container: (props) => ({
-    display: "flex",
-    flexDirection: "column",
-    position: "relative",
-  }),
   title: {
     display: "flex",
     alignItems: "center",
     fontSize: isMobile ? "20px" : "20px",
     fontWeight: isMobile ? "700" : "500",
   },
-  subTitle: {
-    fontSize: isMobile ? "1.2rem" : "16rem",
-    fontWeight: "500",
+  dragHandle: {
+    width: 60,
+    height: 6,
+    backgroundColor: "#D9D9D9",
+    borderRadius: 3,
+    margin: "8px auto",
   },
 }));
+
 function DialogCentered({
   open = true,
   setOpen,
@@ -77,52 +64,95 @@ function DialogCentered({
   actionsWhenClose = () => {},
 }) {
   const { isMobile } = useScreenSize();
-  const classes = useStyles({ isMobile, title });
-  const { locale, t } = useRouter();
+  const classes = useStyles();
 
   const handleClose = () => {
     setOpen(false);
     actionsWhenClose();
+    closeAction();
   };
 
+  /* =======================
+     MOBILE → SwipeableDrawer
+     ======================= */
+  if (isMobile) {
+    return (
+      <SwipeableDrawer
+        anchor="bottom"
+        open={open}
+        onClose={handleClose}
+        onOpen={() => setOpen(true)}
+        PaperProps={{
+          className: `${classes.paperMobile} ${customClass}`,
+        }}
+        disableBackdropTransition={false}
+        disableDiscovery={false}
+      >
+        {/* Drag Handle */}
+        <Box className={classes.dragHandle} />
+
+        {/* Title */}
+        {showTitle && (
+          <Box px={2} pb={1}>
+            <Box
+              className={classes.title}
+              sx={{
+                justifyContent: !title ? "flex-end" : "space-between",
+              }}
+            >
+              {title}
+              {hasCloseIcon && (
+                <IconButton
+                  edge="end"
+                  color="inherit"
+                  className={classes.closeButton}
+                  aria-label="close"
+                  onClick={handleClose}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </Box>
+            {subtitle && <Box mt={1}>{subtitle}</Box>}
+          </Box>
+        )}
+
+        {/* Content */}
+        <Box px={2} pb={2}>
+          {content}
+        </Box>
+
+        {/* Actions */}
+        {showBtns ? (
+          <Box px={2} pb={2} display="flex" gap={2}>
+            <SharedBtn
+              text={cancelBtnText}
+              className="big-main-btn"
+              onClick={handleClose}
+            />
+            <Button onClick={() => {}}>{saveBtnText}</Button>
+          </Box>
+        ) : (
+          <Box px={2} pb={2}>
+            {renderCustomBtns}
+          </Box>
+        )}
+      </SwipeableDrawer>
+    );
+  }
+
+  /* =====================
+     DESKTOP → Dialog
+     ===================== */
   return (
     <Dialog
-      classes={{
-        paper: `${
-          isMobile ? classes.paperMobile : classes.centerDesign
-        } ${customClass}`,
-      }}
       open={open}
-      //   TransitionComponent={Transition}
+      onClose={handleClose}
+      classes={{ paper: `${classes.centerDesign} ${customClass}` }}
       keepMounted
-      onClose={() => {
-        handleClose();
-        closeAction();
-      }}
-      aria-describedby={title || subtitle || "general-dialog"}
-      aria-labelledby={title || subtitle || "dialog-title"}
     >
-      {/* {isMobile && (
-        <Box className="d-flex align-items-center justify-content-center">
-          <Box
-            sx={{
-              width: "60px",
-              height: "5px",
-              background: "#D9D9D9",
-              borderRadius: "10px",
-              borderRadius: "8px",
-              marginTop: "5px",
-            }}
-          ></Box>
-        </Box>
-      )} */}
       {showTitle && (
-        <DialogTitle
-          sx={{
-            padding: !title ? "5px 24px" : "16px 24px",
-          }}
-          className={classes.container}
-        >
+        <DialogTitle>
           <Box
             className={classes.title}
             sx={{
@@ -135,35 +165,28 @@ function DialogCentered({
                 edge="end"
                 color="inherit"
                 className={classes.closeButton}
-                onClick={() => {
-                  handleClose();
-                  closeAction();
-                }}
                 aria-label="close"
+                onClick={handleClose}
               >
                 <CloseIcon />
               </IconButton>
             )}
           </Box>
-          {subtitle && <div className={classes.subTitle}>{subtitle}</div>}
+          {subtitle && <Box mt={1}>{subtitle}</Box>}
         </DialogTitle>
       )}
 
       <DialogContent>
-        <DialogContentText id="general-dialog">{content}</DialogContentText>
+        <DialogContentText>{content}</DialogContentText>
       </DialogContent>
+
       {showBtns ? (
         <DialogActions>
           <SharedBtn
-            text="vinNumHint"
+            text={cancelBtnText}
             className="big-main-btn"
-            onClick={() => {
-              handleClose();
-              closeAction();
-            }}
-          >
-            {cancelBtnText}
-          </SharedBtn>
+            onClick={handleClose}
+          />
           <Button onClick={() => {}}>{saveBtnText}</Button>
         </DialogActions>
       ) : (

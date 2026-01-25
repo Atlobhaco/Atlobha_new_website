@@ -25,6 +25,7 @@ function AddAvailablePayMethods({
   orderDetails = {},
   hidePayment = [],
   noPadding = false,
+  queryParams = {},
 }) {
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -67,13 +68,29 @@ function AddAvailablePayMethods({
     };
   });
 
+  const buildQueryString = (params = {}) => {
+    const searchParams = new URLSearchParams();
+
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== "") {
+        searchParams.append(key, value);
+      }
+    });
+
+    return searchParams.toString();
+  };
+  const extraQuery = buildQueryString(queryParams);
+
   const { data: availablePayments, isFetching } = useCustomQuery({
     name: [
       "getPaymentsMethods",
       orderDetails?.address?.lat,
       orderDetails?.address?.lng,
+      queryParams,
     ],
-    url: `${PAYMENT}?lat=${orderDetails?.address?.lat}&lng=${orderDetails?.address?.lng}`,
+    url: `${PAYMENT}?lat=${orderDetails?.address?.lat}&lng=${
+      orderDetails?.address?.lng
+    }${extraQuery ? `&${extraQuery}` : ""}`,
     refetchOnWindowFocus: false,
     enabled:
       orderDetails?.address?.lat && orderDetails?.address?.lng ? true : false,

@@ -34,10 +34,8 @@ import Cookies from "js-cookie";
 import PaymentFailChecker from "@/components/PaymentFailChecker";
 import moment from "moment";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
-import { analytics } from "@/lib/firebase";
-import { logEvent } from "firebase/analytics";
 
-function SummaryOrder({
+function SummaryOrderCarPricing({
   orderDetails: { receipt = {} } = {},
   orderDetails = {},
   callSingleOrder = () => {},
@@ -51,7 +49,6 @@ function SummaryOrder({
   const { selectedPaymentMethod } = useSelector(
     (state) => state.selectedPaymentMethod
   );
-  const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
   const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
   const hasRun = useRef(false);
@@ -278,7 +275,6 @@ function SummaryOrder({
     language: locale,
     currency: "SAR",
     customer_email: "user@example.com",
-    // return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}/${orderDetails?.id}/?type=${type}&status=CREDIT`,
     return_url: `${process.env.NEXT_PUBLIC_PAYFORT_RETURN_URL}?order_id=${orderDetails?.id}&type=${type}&status=CREDIT`,
   };
 
@@ -431,11 +427,11 @@ function SummaryOrder({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         shipping_address: {
-          city: orderDetails?.address?.city?.name,
-          country_code: orderDetails?.address?.city?.country?.code,
+          city: orderDetails?.address?.city?.name || "Riyadh",
+          country_code: orderDetails?.address?.city?.country?.code || "SA",
           first_name: userDataProfile?.name,
           last_name: "",
-          line1: orderDetails?.address?.address,
+          line1: orderDetails?.address?.address || "Riyadh",
         },
         description: `spare-part-order-for-user-with-id=${orderDetails?.user?.id}`,
         order_reference_id: merchanteRefrence,
@@ -499,8 +495,8 @@ function SummaryOrder({
       name: userDataProfile?.name,
     };
     const shippingDetails = {
-      city: orderDetails?.address?.city?.name,
-      address: orderDetails?.address?.address,
+      city: orderDetails?.address?.city?.name || "Riyadh",
+      address: orderDetails?.address?.address || "Riyadh",
       zip: "12345",
     };
 
@@ -726,7 +722,37 @@ function SummaryOrder({
         </Box>
       </Box>
       {/* logic for incomplete */}
-      {orderDetails?.status === STATUS?.incomplete && (
+      {orderDetails?.status === STATUS?.incomplete &&
+        type !== ORDERSENUM.vehiclePricing && (
+          <>
+            {/* <Box className="d-flex justify-content-between mb-2">
+            <Box sx={boldText}>{t.total}</Box>
+            <Box sx={boldText}>
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {riyalImgBlack()}
+            </Box>
+          </Box> */}
+            <SharedBtn
+              className="big-main-btn"
+              customClass="w-100"
+              text="repeatPricing"
+              onClick={() => {
+                callRepeatPricing();
+              }}
+              disabled={repeatPriceFetch}
+              comAfterText={
+                repeatPriceFetch ? (
+                  <CircularProgress color="inherit" size={15} />
+                ) : null
+              }
+            />
+          </>
+        )}
+      {/* logic for delivered */}
+      {orderDetails?.status === STATUS?.delivered && (
         <>
           {/* <Box className="d-flex justify-content-between mb-2">
             <Box sx={boldText}>{t.total}</Box>
@@ -739,77 +765,6 @@ function SummaryOrder({
             </Box>
           </Box> */}
           <SharedBtn
-            className="big-main-btn"
-            customClass="w-100"
-            text="repeatPricing"
-            onClick={() => {
-              callRepeatPricing();
-              if (analytics) {
-                logEvent(analytics, "ORDER_SPAREPARTS_REPRICE", {
-                  car_brand: orderDetails?.vehicle?.brand?.name || "",
-                  car_model: orderDetails?.vehicle?.model?.name || "",
-                  car_year: orderDetails?.vehicle?.year || Number("1990"),
-                  order_items:
-                    orderDetails?.parts?.map((part) => ({
-                      Part_Name_or_Number: part?.name || part?.id || "",
-                      Quantity: part?.quantity || 0,
-                      Image: part?.image || "",
-                    })) || [],
-                  shipping_address: orderDetails?.address?.address || "",
-                  promo_code: orderDetails?.promo_code?.code || "",
-                  comment: orderDetails?.notes || "",
-                  order_number: orderDetails?.id || "",
-                  creation_date: orderDetails?.created_at
-                    ? new Date(
-                        orderDetails?.created_at?.replace(" ", "T") + "Z"
-                      )
-                    : new Date().toISOString(),
-                  status: orderDetails?.status || "",
-                  order_url: router?.asPath || "",
-                  total_price:
-                    calculateReceiptResFromMainPage?.total_price ||
-                    receipt?.total_price ||
-                    0,
-                });
-              }
-              if (window.gtag) {
-                window.gtag("event", "ORDER_SPAREPARTS_REPRICE", {
-                  car_brand: orderDetails?.vehicle?.brand?.name || "",
-                  car_model: orderDetails?.vehicle?.model?.name || "",
-                  car_year: orderDetails?.vehicle?.year || "",
-                  order_items:
-                    orderDetails?.parts?.map((part) => ({
-                      Part_Name_or_Number: part?.name || part?.id || "",
-                      Quantity: part?.quantity || 0,
-                      Image: part?.image || "",
-                    })) || [],
-                  shipping_address: orderDetails?.address?.address || "",
-                  promo_code: orderDetails?.promo_code?.code || "",
-                  comment: orderDetails?.notes || "",
-                  order_number: orderDetails?.id || "",
-                  creation_date: orderDetails?.created_at || "",
-                  status: orderDetails?.status || "",
-                  order_url: router?.asPath || "",
-                  total_price:
-                    calculateReceiptResFromMainPage?.total_price ||
-                    receipt?.total_price ||
-                    0,
-                });
-              }
-            }}
-            disabled={repeatPriceFetch}
-            comAfterText={
-              repeatPriceFetch ? (
-                <CircularProgress color="inherit" size={15} />
-              ) : null
-            }
-          />
-        </>
-      )}
-      {/* logic for delivered */}
-      {orderDetails?.status === STATUS?.delivered && (
-        <>
-          <SharedBtn
             className="black-btn"
             customClass="w-100"
             text="orderAgain"
@@ -819,6 +774,16 @@ function SummaryOrder({
       {/* logic for priced order */}
       {orderDetails?.status === STATUS?.priced && (
         <>
+          {/* <Box className="d-flex justify-content-between mb-2">
+            <Box sx={boldText}>{t.total}</Box>
+            <Box sx={boldText}>
+              {(calculateReceiptResFromMainPage?.total_price ??
+                receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
+              {riyalImgBlack()}
+            </Box>
+          </Box> */}
           <SharedBtn
             disabled={
               !selectedPaymentMethod?.id ||
@@ -874,4 +839,4 @@ function SummaryOrder({
   );
 }
 
-export default SummaryOrder;
+export default SummaryOrderCarPricing;

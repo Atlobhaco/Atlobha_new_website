@@ -1,4 +1,4 @@
-import { VEHICLE_PRICING } from "@/constants/enums";
+import { ORDERSENUM, VEHICLE_PRICING } from "@/constants/enums";
 /* -------------------------------------------------------------------------- */
 /*                   work for gift and car pricing services                   */
 /* -------------------------------------------------------------------------- */
@@ -25,20 +25,53 @@ export default function handler(req, res) {
       }
     }
     // logic for car pricing redirect failure and success
+    // happen in car pricing checkout or order details priced order pay deposit
   } else {
-    if (
-      req?.body?.status === "00" ||
-      req?.body?.status === "13" ||
-      req?.body?.status === "10"
-    ) {
-      res.redirect(302, `/carPricing/checkout/?secType=${VEHICLE_PRICING}`);
-      return;
-    }
+    if (req.query.orderDetailsId) {
+      if (
+        req?.body?.status === "00" ||
+        req?.body?.status === "13" ||
+        req?.body?.status === "10"
+      ) {
+        res.redirect(
+          302,
+          `/userProfile/myOrders/${req.query.orderDetailsId}/?type=${ORDERSENUM?.vehiclePricing}`
+        );
+        return;
+      }
 
-    if (req.method === "GET") {
-      res.redirect(302, `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`);
+      if (req.method === "GET") {
+        res.redirect(
+          302,
+          `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+        );
+      } else {
+        res.redirect(
+          302,
+          `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+        );
+      }
     } else {
-      res.redirect(302, `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`);
+      if (
+        req?.body?.status === "00" ||
+        req?.body?.status === "13" ||
+        req?.body?.status === "10"
+      ) {
+        res.redirect(302, `/carPricing/checkout/?secType=${VEHICLE_PRICING}`);
+        return;
+      }
+
+      if (req.method === "GET") {
+        res.redirect(
+          302,
+          `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+        );
+      } else {
+        res.redirect(
+          302,
+          `/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+        );
+      }
     }
   }
 }

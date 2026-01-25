@@ -6,7 +6,6 @@ import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
-  payInitiateEngage,
   riyalImgBlack,
   riyalImgRed,
   useArrayChangeDetector,
@@ -66,7 +65,9 @@ const CheckoutSummary = forwardRef(
     const router = useRouter();
     const { user } = useAuth();
     const merchanteRefrenceRef = useRef(
-      `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
+      `${user?.data?.user?.id}${Math.floor(
+        1000000000 + Math.random() * 9000000000
+      )}`
     );
     const merchanteRefrence = merchanteRefrenceRef.current;
     const [loadPayRequest, setLoadPayRequest] = useState(false);
@@ -132,35 +133,6 @@ const CheckoutSummary = forwardRef(
           expires: 1,
           path: "/",
         });
-
-        if (selectedPaymentMethod?.key !== PAYMENT_METHODS?.cash) {
-          payInitiateEngage({
-            order_items: basket
-              ?.filter((item) => item?.product?.is_active)
-              ?.map((d) => ({
-                id: d?.id,
-                quantity: d?.quantity || 0,
-                image: d?.product?.image?.url || "N/A",
-                name: d?.product?.name || "N/A",
-                price: d?.product?.price || "N/A",
-              })),
-            total_price: Number(calculateReceiptResFromMainPage?.total_price),
-            number_of_products: Number(
-              basket?.filter((item) => item?.product?.is_active)?.length
-            ),
-            checkout_url: router?.asPath || "N/A",
-            expected_delivery_date: new Date(
-              moment
-                .unix(estimateRes.estimated_delivery_date_to)
-                .format("YYYY-MM-DD HH:mm:ss")
-                .replace(" ", "T") + "Z"
-            ),
-            shipping_address: selectAddress?.address?.toString() || "N/A",
-            payment_method: selectedPaymentMethod?.Key || "N/A",
-            promo_code: allPromoCodeData?.code?.toString() || "N/A",
-            comment: "N/A",
-          });
-        }
 
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -274,42 +246,16 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        const paymentFailed = Cookies.get("payment_failed");
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
 
-        if (paymentFailed === "failed" && orderId) {
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": "w123",
-                Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
-                )}`,
-              },
-            }
-          )
-            .then((res) => {
-              if (!res.ok) throw new Error("Request failed");
-              console.log(
-                "Payment fail (success) status updated for order:",
-                orderId
-              );
-            })
-            .catch((err) => console.error(err))
-            .finally(() => {
-              Cookies.remove("created_order_id");
-              Cookies.remove("payment_failed");
-              Cookies.remove("order_type");
-              Cookies.remove("payment_method");
-              Cookies.remove("url_after_pay_failed");
-              setFakeLoader(false);
-              setLoadPayRequest(false);
-              callCalculateReceipt();
-            });
+        // happen when browser cache the page and not make reload when user back from gateway
+        // so that payment failure can trigger the key and call the failure endpoint
+        if (orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
         }
 
         if (+res?.amount_to_pay === 0) {
@@ -362,28 +308,6 @@ const CheckoutSummary = forwardRef(
         setPayfortForm(form);
       }
     }, []);
-
-    useEffect(() => {
-      const interval = setInterval(() => {
-        const orderId = Cookies.get("created_order_id");
-        const orderType = Cookies.get("order_type");
-        const paymentMethod = Cookies.get("payment_method");
-        if (orderId && orderType && paymentMethod) {
-          setTimeout(() => {
-            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-          }, 1000);
-          clearInterval(interval);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [
-      Cookies.get("created_order_id"),
-      Cookies.get("order_type"),
-      isMobile,
-      router,
-      calculateReceiptResFromMainPage,
-      router.isReady,
-    ]);
 
     useEffect(() => {
       if (typeof window === "undefined") return;
@@ -765,9 +689,58 @@ const CheckoutSummary = forwardRef(
       }
     };
 
+    /* -------------------------------------------------------------------------- */
+    /*             if user come back browser from any payment gateway             */
+    /* -------------------------------------------------------------------------- */
+    useEffect(() => {
+      let intervalId = null;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      const checkAndHandlePaymentReturn = () => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
+
+        // Only proceed if all required cookies exist and router is ready
+        if (router.isReady && orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
+
+          // Clear interval since condition is met
+          if (intervalId) clearInterval(intervalId);
+          return true;
+        }
+
+        return false;
+      };
+
+      // Initial check
+      if (checkAndHandlePaymentReturn()) {
+        return; // Success on first try — no need to poll
+      }
+
+      // Start polling every 5 seconds, max 3 attempts
+      intervalId = setInterval(() => {
+        attempts++;
+
+        const success = checkAndHandlePaymentReturn();
+
+        if (success || attempts >= maxAttempts) {
+          clearInterval(intervalId);
+        }
+      }, 5000);
+
+      // Cleanup on unmount
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }, [router.isReady]); // Only depend on router readiness
+
     return (
       <Box sx={{ pt: 1 }}>
-        {/* <PaymentFailChecker /> */}
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
@@ -900,16 +873,17 @@ const CheckoutSummary = forwardRef(
               ? "black-btn"
               : "big-main-btn"
           }`}
-          // customClass="w-100"
           customClass={`${isMobile && "data-over-foot-nav"} w-100`}
           text={
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
               ? ""
               : "payAndConfirm"
           }
-          // || fetchReceipt
           comAfterText={
-            confirmPriceFetch || fakeLoader || loadPayRequest ? (
+            fetchReceipt ||
+            confirmPriceFetch ||
+            fakeLoader ||
+            loadPayRequest ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
@@ -922,7 +896,6 @@ const CheckoutSummary = forwardRef(
             ) : null
           }
           onClick={() => {
-            handleWebengageCheckoutClicked();
             setFakeLoader(true);
 
             const amount = +calculateReceiptResFromMainPage?.amount_to_pay;

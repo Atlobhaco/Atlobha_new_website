@@ -3,8 +3,9 @@ import ErrorIcon from "@mui/icons-material/Error";
 import { Box } from "@mui/material";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import useLocalization from "@/config/hooks/useLocalization";
+import Image from "next/image";
 
-function AddAddressToShowTimes() {
+function AddAddressToShowTimes({ text = false, imgSrc = false }) {
   const { isMobile } = useScreenSize();
   const { t } = useLocalization();
 
@@ -28,13 +29,27 @@ function AddAddressToShowTimes() {
         gap: "8px",
       }}
     >
-      <ErrorIcon
-        sx={{
-          color: "#E06E0E",
-          width: isMobile ? 15 : "auto",
-        }}
-      />
-      {t.addAddressFirst}
+      {imgSrc ? (
+        <Image
+          src={imgSrc}
+          alt={imgSrc}
+          width={20}
+          height={20}
+          style={{
+            width: 23,
+            height: "auto",
+          }}
+        />
+      ) : (
+        <ErrorIcon
+          sx={{
+            color: "#E06E0E",
+            width: isMobile ? 15 : "auto",
+          }}
+        />
+      )}
+
+      {text || t.addAddressFirst}
     </Box>
   );
 }

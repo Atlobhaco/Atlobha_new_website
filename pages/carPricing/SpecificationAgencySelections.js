@@ -70,7 +70,8 @@ function SpecificationAgencySelections({
         content={
           <Box
             sx={{
-              maxHeight: "70vh",
+              maxHeight: "60vh",
+              overflow: "auto",
             }}
           >
             <div className={`${style["groups"]}`}>
@@ -96,7 +97,13 @@ function SpecificationAgencySelections({
                     {locale === "ar"
                       ? specification?.label_ar
                       : specification?.label_en}{" "}
-                    <div>{specification?.value}</div>
+                    <div>
+                      {specification?.value?.length
+                        ? specification?.value
+                        : specification?.value
+                        ? t.found
+                        : t.notFound}
+                    </div>
                   </div>
                 ))}
             </div>

@@ -109,7 +109,7 @@ const CarPricingCheckoutSummary = forwardRef(
           model_id: carPricing?.model?.id,
           brand_id: carPricing?.brand?.id,
           year: carPricing?.year,
-          variant: carPricing?.variant?.variant || null,
+          variant: carPricing?.variant?.field || null,
           store_payment_method: carPricing?.purchase?.type,
           job_title: carPricing?.job,
           down_payment:
@@ -146,21 +146,30 @@ const CarPricingCheckoutSummary = forwardRef(
             "carPricingDetails",
             JSON.stringify(updatedData)
           );
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             payFortForm.submit();
             setTimeout(() => {
               setFakeLoader(false);
             }, 12000);
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             return;
           }
           if (selectedPaymentMethod?.key === PAYMENT_METHODS?.cash) {
             router.push(`/confirmation/carPricing/?secType=${VEHICLE_PRICING}`);
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.tamara &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handlePayWithTamara();
             } else {
@@ -168,7 +177,10 @@ const CarPricingCheckoutSummary = forwardRef(
             }
             return;
           }
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.tabby &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handlePayWithTabby();
             } else {
@@ -177,7 +189,10 @@ const CarPricingCheckoutSummary = forwardRef(
             return;
           }
 
-          if (selectedPaymentMethod?.key === PAYMENT_METHODS?.mis) {
+          if (
+            selectedPaymentMethod?.key === PAYMENT_METHODS?.mis &&
+            +calculateReceiptResFromMainPage?.amount_to_pay > 0
+          ) {
             if (userDataProfile?.phone?.length) {
               handleMisPay();
               setTimeout(() => {
@@ -221,55 +236,56 @@ const CarPricingCheckoutSummary = forwardRef(
       url: `${VEHICLE_PRICING_ORDERS}${CALCULATE_RECEIPT}`,
       method: "post",
       refetchOnWindowFocus: true,
+      refetchInterval: 10000,
       body: {
         promo_code_id: allPromoCodeData?.id || null,
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        const paymentFailed = Cookies.get("payment_failed");
-        const orderId = Cookies.get("created_order_id");
-        const orderType = Cookies.get("order_type");
+        // const paymentFailed = Cookies.get("payment_failed");
+        // const orderId = Cookies.get("created_order_id");
+        // const orderType = Cookies.get("order_type");
 
-        if (paymentFailed === "failed" && orderId) {
-          fetch(
-            `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-api-key": "w123",
-                Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
-                )}`,
-              },
-            }
-          )
-            .then((res) => {
-              if (!res.ok) throw new Error("Request failed");
-              console.log(
-                "Payment fail (success) status updated for order:",
-                orderId
-              );
-            })
-            .catch((err) => console.error(err))
-            .finally(() => {
-              Cookies.remove("created_order_id");
-              Cookies.remove("payment_failed");
-              Cookies.remove("order_type");
-              Cookies.remove("payment_method");
-              Cookies.remove("url_after_pay_failed");
-              setFakeLoader(false);
-              setLoadPayRequest(false);
-              callCalculateReceipt();
-            });
-        }
+        // if (paymentFailed === "failed" && orderId) {
+        //   fetch(
+        //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
+        //     {
+        //       method: "POST",
+        //       headers: {
+        //         "Content-Type": "application/json",
+        //         "x-api-key": "w123",
+        //         Authorization: `Bearer ${localStorage?.getItem(
+        //           "access_token"
+        //         )}`,
+        //       },
+        //     }
+        //   )
+        //     .then((res) => {
+        //       if (!res.ok) throw new Error("Request failed");
+        //       console.log(
+        //         "Payment fail (success) status updated for order:",
+        //         orderId
+        //       );
+        //     })
+        //     .catch((err) => console.error(err))
+        //     .finally(() => {
+        //       Cookies.remove("created_order_id");
+        //       Cookies.remove("payment_failed");
+        //       Cookies.remove("order_type");
+        //       Cookies.remove("payment_method");
+        //       Cookies.remove("url_after_pay_failed");
+        //       setFakeLoader(false);
+        //       setLoadPayRequest(false);
+        //       callCalculateReceipt();
+        //     });
+        // }
 
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
         dispatch(setPromoCodeForSpareParts({ data: "" }));
         dispatch(setPromoCodeAllData({ data: null }));
-        if (+res?.amount_to_pay === 0)
-          dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
+        // if (+res?.amount_to_pay === 0)
+        //   dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
       },
       onError: (err) => {
         toast.error(
@@ -470,11 +486,11 @@ const CarPricingCheckoutSummary = forwardRef(
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           shipping_address: {
-            city: selectAddress?.city?.name,
-            country_code: selectAddress?.city?.country?.code,
+            city: selectAddress?.city?.name || "Riyadh",
+            country_code: selectAddress?.city?.country?.code || "SA",
             first_name: userDataProfile?.name,
             last_name: "",
-            line1: selectAddress?.address,
+            line1: selectAddress?.address || "Riyadh",
           },
           description: `car-pricing-for-user-with-id=${userDataProfile?.id}`,
           order_reference_id: merchanteRefrence,
@@ -540,8 +556,8 @@ const CarPricingCheckoutSummary = forwardRef(
         name: userDataProfile?.name,
       };
       const shippingDetails = {
-        city: selectAddress?.city?.name,
-        address: selectAddress?.address,
+        city: selectAddress?.city?.name || "Riyadh",
+        address: selectAddress?.address || "Riyadh",
         zip: "12345",
       };
 
@@ -806,6 +822,8 @@ const CarPricingCheckoutSummary = forwardRef(
                 method !== PAYMENT_METHODS.mis
               ) {
                 setOpenEditUserModal(true);
+                setFakeLoader(false);
+                setLoadPayRequest(false);
                 return;
               }
             }

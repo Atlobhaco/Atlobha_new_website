@@ -12,6 +12,7 @@ import {
   SPARE_PARTS,
   USERS,
   VEHICLES,
+  VEHICLE_PRICING_ORDERS,
   VOUCHER_PURCHASE,
 } from "@/config/endPoints/endPoints";
 import SparePartsOrderDetails from "@/components/userProfile/orderDetails/sparePartsOrderDetails";
@@ -76,6 +77,8 @@ function OrderDetails() {
         return `${PORTABLE_MAINTENANCE_RESERVATIONS}/${idOrder}`;
       case ORDERSENUM?.gift:
         return `${VOUCHER_PURCHASE}/${idOrder}`;
+      case ORDERSENUM?.vehiclePricing:
+        return `${VEHICLE_PRICING_ORDERS}/${idOrder}`;
       default:
         return type;
     }
@@ -167,6 +170,14 @@ function OrderDetails() {
             orderDetails={data}
             callSingleOrder={callSingleOrder}
             orderDetailsFetching={orderDetailsFetching}
+          />
+        );
+      case ORDERSENUM?.vehiclePricing:
+        return (
+          <VehiclePricingDetails
+            orderDetails={data}
+            orderDetailsFetching={orderDetailsFetching}
+            callSingleOrder={callSingleOrder}
           />
         );
       default:

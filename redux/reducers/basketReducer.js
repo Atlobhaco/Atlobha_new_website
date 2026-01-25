@@ -91,7 +91,8 @@ export const fetchCartAsync = createAsyncThunk(
           product: {
             ...item.product,
             // ✅ REPLACE labels from express response
-            labels: expressMap.get(item.product.id) || [],
+            // labels: expressMap.get(item.product.id) || [],
+            labels: item?.product?.labels || [],
           },
         }));
       }

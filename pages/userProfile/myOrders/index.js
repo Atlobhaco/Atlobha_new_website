@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import UserProfile from "..";
+import dynamic from "next/dynamic";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import BreadCrumb from "@/components/BreadCrumb";
 import { Box, CircularProgress } from "@mui/material";
@@ -15,6 +15,11 @@ import { getFilterParams, orderEnumArray } from "@/constants/helpers";
 import { useRouter } from "next/router";
 import { analytics } from "@/lib/firebase";
 import { logEvent } from "firebase/analytics";
+
+const UserProfile = dynamic(() => import(".."), {
+  ssr: false, // disable SSR if the component uses browser APIs (window, document, etc.)
+  loading: () => <p></p>, // optional fallback UI
+});
 
 function MyOrders() {
   const router = useRouter();
@@ -185,7 +190,7 @@ function MyOrders() {
                 fontSize="14px"
                 arrayData={[
                   { id: "all", name: t.showAll },
-                  ...orderEnumArray()?.filter((d, index) => index <= 4),
+                  ...orderEnumArray()?.filter((d, index) => index <= 5),
                 ]}
                 handleClick={(data) => {
                   setPage(1);

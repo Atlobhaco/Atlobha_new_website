@@ -182,6 +182,7 @@ function ServiceStoreSelections({
           sx={{
             fontWeight: "bold",
             mx: 1,
+            py: 1,
           }}
         >
           {!isFetching && t.noResultsFound}

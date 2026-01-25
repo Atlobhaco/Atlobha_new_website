@@ -78,10 +78,12 @@ function HowMakePrice({
           style={{ cursor: "pointer" }}
           src={imgSrc || "/imgs/how-price.svg"}
           alt="header-img"
-          width={53}
-          height={37}
+          width={isMobile ? 45 : 53}
+          height={isMobile ? 30 : 37}
         />
-        <Box component="span">{heading || t.whatIsPricing}</Box>
+        <Box component="span" fontSize={isMobile ? "14px" : "17px"}>
+          {heading || t.whatIsPricing}
+        </Box>
       </Box>
 
       {/*  Steps List */}
