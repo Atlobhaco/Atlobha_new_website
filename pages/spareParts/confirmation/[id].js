@@ -98,7 +98,7 @@ function Confirmation() {
     name: ["getDataforPricing", id, orderId],
     url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
-    enabled: id || orderId ? true : false,
+    enabled: +id || orderId ? true : false,
     select: (res) => res?.data?.data,
     onSuccess: (res) => {
       if (!res?.estimated_packaging_date && !res?.estimated_delivery_date) {
@@ -109,6 +109,12 @@ function Confirmation() {
       }
       sessionStorage.removeItem("created_order_id");
       sessionStorage.removeItem("service_type");
+      setTimeout(() => {
+        Cookies.remove("created_order_id");
+        Cookies.remove("payment_failed");
+        Cookies.remove("order_type");
+        Cookies.remove("payment_method");
+      }, 10000);
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
