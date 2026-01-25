@@ -696,9 +696,25 @@ const CheckoutSummary = forwardRef(
       }
     };
 
+    /* -------------------------------------------------------------------------- */
+    /*             if user come back browser from any payment gateway             */
+    /* -------------------------------------------------------------------------- */
+    useEffect(() => {
+      const orderId = Cookies.get("created_order_id");
+      const orderType = Cookies.get("order_type");
+      const paytmentMethod = Cookies.get("payment_method");
+
+      if (orderId && orderType && paytmentMethod) {
+        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+        setTimeout(() => {
+          setRedirectToPayfort(false);
+          setLoadPayRequest(false);
+        }, 12000);
+      }
+    }, []);
+
     return (
       <Box sx={{ pt: 1 }}>
-        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">
