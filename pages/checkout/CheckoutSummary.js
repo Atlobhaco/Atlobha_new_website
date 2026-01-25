@@ -676,25 +676,50 @@ const CheckoutSummary = forwardRef(
     /*             if user come back browser from any payment gateway             */
     /* -------------------------------------------------------------------------- */
     useEffect(() => {
-      const orderId = Cookies.get("created_order_id");
-      const orderType = Cookies.get("order_type");
-      const paytmentMethod = Cookies.get("payment_method");
+      let intervalId = null;
+      let attempts = 0;
+      const maxAttempts = 3;
 
-      if (router.isReady && orderId && orderType && paytmentMethod) {
-        Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-        setTimeout(() => {
+      const checkAndHandlePaymentReturn = () => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
+
+        // Only proceed if all required cookies exist and router is ready
+        if (router.isReady && orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           setFakeLoader(false);
           setLoadPayRequest(false);
-        }, 12000);
+
+          // Clear interval since condition is met
+          if (intervalId) clearInterval(intervalId);
+          return true;
+        }
+
+        return false;
+      };
+
+      // Initial check
+      if (checkAndHandlePaymentReturn()) {
+        return; // Success on first try — no need to poll
       }
-    }, [
-      Cookies.get("created_order_id"),
-      Cookies.get("order_type"),
-      isMobile,
-      router,
-      calculateReceiptResFromMainPage,
-      router.isReady,
-    ]);
+
+      // Start polling every 5 seconds, max 3 attempts
+      intervalId = setInterval(() => {
+        attempts++;
+
+        const success = checkAndHandlePaymentReturn();
+
+        if (success || attempts >= maxAttempts) {
+          clearInterval(intervalId);
+        }
+      }, 5000);
+
+      // Cleanup on unmount
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }, [router.isReady]); // Only depend on router readiness
 
     return (
       <Box sx={{ pt: 1 }}>
