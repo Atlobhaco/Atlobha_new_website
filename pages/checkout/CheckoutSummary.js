@@ -244,43 +244,16 @@ const CheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        const paymentFailed = Cookies.get("payment_failed");
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
 
-        // if (paymentFailed === "failed" && orderId) {
-        //   fetch(
-        //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${ORDERS}/${orderId}${PAYMENT_FAILED}`,
-        //     {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         "x-api-key": "w123",
-        //         Authorization: `Bearer ${localStorage?.getItem(
-        //           "access_token"
-        //         )}`,
-        //       },
-        //     }
-        //   )
-        //     .then((res) => {
-        //       if (!res.ok) throw new Error("Request failed");
-        //       console.log(
-        //         "Payment fail (success) status updated for order:",
-        //         orderId
-        //       );
-        //     })
-        //     .catch((err) => console.error(err))
-        //     .finally(() => {
-        //       Cookies.remove("created_order_id");
-        //       Cookies.remove("payment_failed");
-        //       Cookies.remove("order_type");
-        //       Cookies.remove("payment_method");
-        //       Cookies.remove("url_after_pay_failed");
-        //       setFakeLoader(false);
-        //       setLoadPayRequest(false);
-        //       callCalculateReceipt();
-        //     });
-        // }
+        // Only proceed if all required cookies exist
+        if (orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
+        }
 
         if (+res?.amount_to_pay === 0) {
           dispatch(setSelectedPayment({ data: { id: 1, key: "CASH" } }));
