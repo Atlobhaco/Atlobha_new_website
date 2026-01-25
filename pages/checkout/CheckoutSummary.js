@@ -248,7 +248,8 @@ const CheckoutSummary = forwardRef(
         const orderType = Cookies.get("order_type");
         const paymentMethod = Cookies.get("payment_method"); // fixed typo
 
-        // Only proceed if all required cookies exist
+        // happen when browser cache the page and not make reload when user back from gateway
+        // so that payment failure can trigger the key and call the failure endpoint
         if (orderId && orderType && paymentMethod) {
           Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
           setFakeLoader(false);
@@ -829,16 +830,17 @@ const CheckoutSummary = forwardRef(
               ? "black-btn"
               : "big-main-btn"
           }`}
-          // customClass="w-100"
           customClass={`${isMobile && "data-over-foot-nav"} w-100`}
           text={
             selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay
               ? ""
               : "payAndConfirm"
           }
-          // || fetchReceipt
           comAfterText={
-            confirmPriceFetch || fakeLoader || loadPayRequest ? (
+            fetchReceipt ||
+            confirmPriceFetch ||
+            fakeLoader ||
+            loadPayRequest ? (
               <CircularProgress color="inherit" size={15} />
             ) : selectedPaymentMethod?.key === PAYMENT_METHODS?.applePay ? (
               <Image
