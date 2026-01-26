@@ -230,7 +230,8 @@
     "MaintenanceReservation": "خدمة ثابتة",
     "PortableMaintenanceReservation": "خدمة متنقلة",
     "VoucherPurchase": "بطاقات الهدايا",
-    "VehiclePricingOrder": "تسعير السيارات"
+    "VehiclePricingOrder": "تسعير السيارات",
+    "TestDriveReservation": "تجربة القيادة"
   },
   "[idOrder]": "تفاصيل الطلب",
   "orderedAt": "تم الطلب في",

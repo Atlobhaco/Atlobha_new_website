@@ -231,7 +231,8 @@
     "MaintenanceReservation": "Fixed service",
     "PortableMaintenanceReservation": "Portable service",
     "VoucherPurchase": "Gift cards",
-    "VehiclePricingOrder": "Vehicle pricing"
+    "VehiclePricingOrder": "Vehicle pricing",
+    "TestDriveReservation": "Test drive"
   },
   "[idOrder]": "Orders details",
   "orderedAt": "Ordered at",
