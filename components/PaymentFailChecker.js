@@ -5,7 +5,7 @@ import { ORDERS, PAYMENT_FAILED } from "@/config/endPoints/endPoints";
 
 // used to call failed endpoint for marketplace or spare parts to change the status of
 // order if the payment failed or cancelled work with key called payment_failed
-// it saved in cookies after any payment failed escept MIS pay different flow
+// it saved in cookies after any payment failed except MIS pay different flow
 export default function PaymentFailChecker() {
   const hasRun = useRef(false);
   const paymentFailed = Cookies.get("payment_failed");

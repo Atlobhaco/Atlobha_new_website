@@ -1,3 +1,4 @@
+import PaymentFailChecker from "@/components/PaymentFailChecker";
 import AccordionWalletBalance from "@/components/shared/AccordionWalletBalance";
 import SharedBtn from "@/components/shared/SharedBtn";
 import {
@@ -242,44 +243,17 @@ const CarPricingCheckoutSummary = forwardRef(
       },
       select: (res) => res?.data?.data,
       onSuccess: (res) => {
-        // const paymentFailed = Cookies.get("payment_failed");
-        // const orderId = Cookies.get("created_order_id");
-        // const orderType = Cookies.get("order_type");
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
 
-        // if (paymentFailed === "failed" && orderId) {
-        //   fetch(
-        //     `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}/${orderId}${PAYMENT_FAILED}`,
-        //     {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //         "x-api-key": "w123",
-        //         Authorization: `Bearer ${localStorage?.getItem(
-        //           "access_token"
-        //         )}`,
-        //       },
-        //     }
-        //   )
-        //     .then((res) => {
-        //       if (!res.ok) throw new Error("Request failed");
-        //       console.log(
-        //         "Payment fail (success) status updated for order:",
-        //         orderId
-        //       );
-        //     })
-        //     .catch((err) => console.error(err))
-        //     .finally(() => {
-        //       Cookies.remove("created_order_id");
-        //       Cookies.remove("payment_failed");
-        //       Cookies.remove("order_type");
-        //       Cookies.remove("payment_method");
-        //       Cookies.remove("url_after_pay_failed");
-        //       setFakeLoader(false);
-        //       setLoadPayRequest(false);
-        //       callCalculateReceipt();
-        //     });
-        // }
-
+        // happen when browser cache the page and not make reload when user back from gateway
+        // so that payment failure can trigger the key and call the failure endpoint
+        if (orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
+        }
         // remove promo code in fixed service (free delivery)
         // when come from another checkout saved before
         dispatch(setPromoCodeForSpareParts({ data: "" }));
@@ -661,30 +635,58 @@ const CarPricingCheckoutSummary = forwardRef(
       }
     };
 
+    /* -------------------------------------------------------------------------- */
+    /*             if user come back browser from any payment gateway             */
+    /* -------------------------------------------------------------------------- */
     useEffect(() => {
-      const interval = setInterval(() => {
+      let intervalId = null;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      const checkAndHandlePaymentReturn = () => {
         const orderId = Cookies.get("created_order_id");
         const orderType = Cookies.get("order_type");
-        const paymentMethod = Cookies.get("payment_method");
-        if (orderId && orderType && paymentMethod) {
-          setTimeout(() => {
-            Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
-          }, 1000);
-          clearInterval(interval);
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
+
+        // Only proceed if all required cookies exist and router is ready
+        if (router.isReady && orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
+
+          // Clear interval since condition is met
+          if (intervalId) clearInterval(intervalId);
+          return true;
         }
-      }, 1000);
-      return () => clearInterval(interval);
-    }, [
-      Cookies.get("created_order_id"),
-      Cookies.get("order_type"),
-      isMobile,
-      router,
-      calculateReceiptResFromMainPage,
-      router.isReady,
-    ]);
+
+        return false;
+      };
+
+      // Initial check
+      if (checkAndHandlePaymentReturn()) {
+        return; // Success on first try — no need to poll
+      }
+
+      // Start polling every 5 seconds, max 3 attempts
+      intervalId = setInterval(() => {
+        attempts++;
+
+        const success = checkAndHandlePaymentReturn();
+
+        if (success || attempts >= maxAttempts) {
+          clearInterval(intervalId);
+        }
+      }, 5000);
+
+      // Cleanup on unmount
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }, [router.isReady]); // Only depend on router readiness
 
     return (
       <Box sx={{ pt: 1 }}>
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* service price */}
         <Box className="d-flex justify-content-between mb-2">
