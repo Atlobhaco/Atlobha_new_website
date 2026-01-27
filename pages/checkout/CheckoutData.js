@@ -58,7 +58,7 @@ function CheckoutData({
 
   const getFirstFailedCondition = (products = []) => {
     const targetProduct = products.find(
-      (product) => product.express_delivery_applicable === true
+      (product) => product.express_delivery_applicable === true,
     );
 
     if (!targetProduct) return null;
@@ -68,7 +68,7 @@ function CheckoutData({
     }
 
     const failedEntry = Object.entries(targetProduct.conditions || {}).find(
-      ([_, value]) => value === false
+      ([_, value]) => value === false,
     );
 
     return failedEntry ? failedEntry[0] : null;
@@ -79,12 +79,15 @@ function CheckoutData({
     url: `${CART}${VALIDATE_EXPRESS_DELIVERY}`,
     method: "post",
     body: { products: basket, address_id: selectAddress?.id },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
+    refetchInterval: 6000,
     select: (res) => res?.data?.data,
     enabled: basket?.length && selectAddress?.id ? true : false,
     onSuccess: (res) => {
       setExpressResponse(
-        res?.products?.some((item) => item.express_delivery_applicable === true)
+        res?.products?.some(
+          (item) => item.express_delivery_applicable === true,
+        ),
       );
       setExpressReason(getFirstFailedCondition(res.products));
     },
