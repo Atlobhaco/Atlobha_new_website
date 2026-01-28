@@ -49,7 +49,7 @@ function SummaryOrder({
   const { idOrder, type, status } = router.query;
   const { user } = useAuth();
   const { selectedPaymentMethod } = useSelector(
-    (state) => state.selectedPaymentMethod
+    (state) => state.selectedPaymentMethod,
   );
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ function SummaryOrder({
       dispatch(
         setUserData({
           data: res,
-        })
+        }),
       );
     },
   });
@@ -287,7 +287,7 @@ function SummaryOrder({
   // Generate Signature
   requestData.signature = generateSignature(
     requestData,
-    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
   );
 
   // Create a form and submit it
@@ -336,7 +336,7 @@ function SummaryOrder({
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`, // Include if needed
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -628,14 +628,14 @@ function SummaryOrder({
               ? orderDetails?.parts
                   ?.reduce(
                     (accumulator, current) => accumulator + current.total_price,
-                    0
+                    0,
                   )
                   ?.toFixed(2)
               : orderDetails?.products
                   ?.reduce(
                     (accumulator, current) =>
                       accumulator + current.price * current?.quantity,
-                    0
+                    0,
                   )
                   ?.toFixed(2)}{" "}
             {riyalImgBlack()}

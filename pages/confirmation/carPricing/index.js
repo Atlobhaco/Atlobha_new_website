@@ -15,6 +15,7 @@ import { Box, Typography } from "@mui/material";
 import StoreData from "@/components/ServiceDetails/StoreData";
 import OfferContent from "@/components/userProfile/orderDetails/carPricingSplitsOrderDetails/OfferContent";
 import SelectedOfferReceipt from "@/components/userProfile/orderDetails/carPricingSplitsOrderDetails/SelectedOfferReceipt";
+import Cookies from "js-cookie";
 
 function CarPricingContent() {
   const router = useRouter();
@@ -35,6 +36,12 @@ function CarPricingContent() {
     return () => {
       if (typeof window !== "undefined") {
         localStorage.removeItem("carPricingDetails");
+        setTimeout(() => {
+          Cookies.remove("created_order_id");
+          Cookies.remove("payment_failed");
+          Cookies.remove("order_type");
+          Cookies.remove("payment_method");
+        }, 10000);
       }
     };
   }, []);

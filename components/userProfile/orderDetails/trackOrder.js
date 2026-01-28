@@ -221,14 +221,14 @@ function TrackOrder({ orderDetails = {}, handleCopy = () => {} }) {
             }}
             component="span"
           >
-            #{orderDetails?.id}
+            #{orderDetails?.reference_code}{" "}
             <ContentCopyIcon
               sx={{
                 cursor: "pointer",
                 width: isMobile ? "17px" : "20px",
                 color: "grey",
               }}
-              onClick={() => handleCopy(orderDetails?.id)} // Add onClick handler
+              onClick={() => handleCopy(orderDetails?.reference_code)} // Add onClick handler
             />
           </Typography>{" "}
         </Box>

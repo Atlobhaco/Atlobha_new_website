@@ -27,6 +27,9 @@ import { setPromoCodeAllData } from "@/redux/reducers/addSparePartsReducer";
 import GiftCardOrderDetails from "@/components/userProfile/orderDetails/giftCardOrderDetails";
 import { analytics } from "@/lib/firebase";
 import { logEvent } from "firebase/analytics";
+import VehiclePricingDetails from "@/components/userProfile/orderDetails/vehiclePricingDetails";
+import ComingSoon from "@/components/comingSoon";
+import { orderEnumArray } from "@/constants/helpers";
 
 function OrderDetails() {
   const router = useRouter();
@@ -84,6 +87,11 @@ function OrderDetails() {
     }
   };
 
+  // working on valid type ids except last index
+  const VALID_ORDER_TYPE_IDS = orderEnumArray()
+    ?.filter((d, index) => index <= 5)
+    .map((item) => item.id);
+
   const {
     data,
     isFetching: orderDetailsFetching,
@@ -92,7 +100,10 @@ function OrderDetails() {
     name: ["singleOrderData", idOrder, type, rendered],
     url: renderUrlDependOnType(),
     refetchOnWindowFocus: false,
-    enabled: !!idOrder,
+    enabled:
+      !!idOrder &&
+      typeof type === "string" &&
+      VALID_ORDER_TYPE_IDS.includes(type),
     select: (res) => res?.data?.data,
     refetchOnMount: true,
     cacheTime: 0,
@@ -181,7 +192,7 @@ function OrderDetails() {
           />
         );
       default:
-        return type;
+        return <ComingSoon />;
     }
   };
   //   to prevent hydration error

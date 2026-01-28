@@ -50,7 +50,7 @@ function Confirmation() {
       () => {
         toast.success(`${t.copySuccess}, ${id}`);
       },
-      (err) => {}
+      (err) => {},
     );
   };
 
@@ -109,12 +109,11 @@ function Confirmation() {
       }
       sessionStorage.removeItem("created_order_id");
       sessionStorage.removeItem("service_type");
-      setTimeout(() => {
-        Cookies.remove("created_order_id");
-        Cookies.remove("payment_failed");
-        Cookies.remove("order_type");
-        Cookies.remove("payment_method");
-      }, 10000);
+      Cookies.remove("created_order_id");
+      Cookies.remove("payment_failed");
+      Cookies.remove("order_type");
+      Cookies.remove("payment_method");
+      Cookies.remove("url_after_pay_failed");
     },
     onError: (err) => {
       toast.error(err?.response?.data?.first_error);
@@ -138,7 +137,7 @@ function Confirmation() {
         return `${t.todayAtTime} ${dateStart.format("H:mm")}`;
       } else {
         return `${moment(dateStart).format("h:mm")} (${dateStart.format(
-          locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
+          locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY",
         )})`;
       }
     }
@@ -207,7 +206,7 @@ function Confirmation() {
       const secret = process.env.NEXT_PUBLIC_MIS_API_KEY;
       const dec = decryptAES(
         Buffer.from(enc, "base64").toString("utf8"),
-        secret
+        secret,
       );
       setDecrypted(dec);
     } catch (e) {
@@ -244,13 +243,13 @@ function Confirmation() {
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
             },
-          }
+          },
         )
           .then((res) => {
             if (!res.ok) throw new Error("Request failed");
             console.log(
               "Payment fail (success) status updated for order:",
-              orderId
+              orderId,
             );
           })
           .catch((err) => console.error(err))
@@ -383,7 +382,7 @@ function Confirmation() {
             <div className={`${style["deliverySec_address-location"]}`}>
               {availablePaymentMethodImages(
                 { payment_method: data?.payment_method },
-                isMobile
+                isMobile,
               )}
             </div>
           </div>
