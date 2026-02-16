@@ -5,7 +5,7 @@ import React from "react";
 function LogoLoader() {
   return (
     <>
-      <span class="loader-logo">
+      <span className="loader-logo">
         <Image
           src={`/logo/new-atlob-logo.svg`}
           alt="loader-logo"

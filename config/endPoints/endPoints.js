@@ -90,3 +90,6 @@ export const OFFERS = "/offers";
 export const VALIDATE_EXPRESS_DELIVERY = "/validate-express-delivery";
 export const PAY_DEPOSIT = "/pay-deposit";
 export const REQUEST_REFUND = "/request-refund";
+export const TRIVIA = "/trivia";
+export const DAILY_QUESTION = "/daily-question";
+export const ASNWERS = "/answers";
