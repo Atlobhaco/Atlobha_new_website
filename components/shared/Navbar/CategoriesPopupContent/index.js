@@ -18,7 +18,7 @@ import ProductCardSkeleton from "@/components/cardSkeleton";
 import { setSectionsSeo } from "@/redux/reducers/homeSectionsReducer";
 
 const active = {
-//   border: "1px solid #F9DD4B",
+  //   border: "1px solid #F9DD4B",
 };
 
 const coloredBox = {
@@ -233,7 +233,7 @@ function CategoriesPopupcontent({
                     }
                     setActiveSection(sec?.type === MARKETPLACE ? false : true);
                     router.push(
-                      sec?.type === MARKETPLACE ? "/" : "/spareParts"
+                      sec?.type === MARKETPLACE ? "/" : "/spareParts",
                     );
                     setTimeout(() => {
                       setOpenCategories(false);
@@ -284,7 +284,7 @@ function CategoriesPopupcontent({
                   <Box
                     onClick={() => {
                       router.push(
-                        `/sections?secTitle=${sec?.title}&secType=${sec?.type}`
+                        `/sections?secTitle=${sec?.title}&secType=${sec?.type}`,
                       );
                       setTimeout(() => {
                         setOpenCategories(false);
@@ -293,9 +293,11 @@ function CategoriesPopupcontent({
                     sx={{
                       ...sectionService,
                       background: `url(${
-                        returnImgDependOnId(sec?.id) || "/imgs/remote-car.svg"
+                        sec?.image ||
+                        returnImgDependOnId(sec?.id) ||
+                        "/imgs/remote-car.svg"
                       })`,
-                      backgroundSize: "cover",
+                      backgroundSize: "contain",
                       backgroundRepeat: "no-repeat",
                       backgroundPosition: "center",
                       backgroundColor:
