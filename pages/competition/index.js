@@ -98,13 +98,16 @@ export default function Competition() {
     >
       <Box
         sx={{
-          backgroundImage: `url("/imgs/ramadan-pattern.svg")`,
+          backgroundImage: `url("/imgs/theme-ramadan.jpeg")`,
           width: "100%",
           height: "220px",
           position: "relative",
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
         }}
       >
-        <Box
+        {/* <Box
           sx={{
             background: "#ffffff",
             width: "100%",
@@ -113,8 +116,8 @@ export default function Competition() {
             position: "absolute",
             zIndex: "0",
           }}
-        ></Box>
-        <Box
+        ></Box> */}
+        {/* <Box
           sx={{
             zIndex: "1",
             position: "relative",
@@ -162,7 +165,7 @@ export default function Competition() {
           >
             تحدي رمضان
           </Box>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         sx={{
