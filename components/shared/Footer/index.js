@@ -192,11 +192,11 @@ function Footer() {
               <Image
                 src="/icons/Brand.png"
                 alt="at-email"
-                width={20}
-                height={20}
+                width={23}
+                height={23}
                 style={{
-                  width: "auto",
-                  height: "auto",
+                  width: "23px",
+                  height: "23px",
                 }}
                 loading="lazy"
               />

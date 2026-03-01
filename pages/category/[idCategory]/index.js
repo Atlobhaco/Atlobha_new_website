@@ -90,7 +90,7 @@ function Category() {
     const params = new URLSearchParams();
 
     params.set("page", page);
-    params.set("per_page", isMobile ? 15 : 16);
+    params.set("per_page", isMobile ? 15 : 18);
     params.set("subcategory_id", subCatId);
 
     if (filters?.year) params.append("years[]", filters.year);
@@ -126,12 +126,16 @@ function Category() {
       (!isAuth() && subCatId)
     ),
     onSuccess: (res) => {
-      //   const element = document.getElementById("categroy_id");
-      //   if (element) {
-      //     const y =
-      //       element?.getBoundingClientRect()?.top + window.pageYOffset - 80;
-      //     window?.scrollTo({ top: y, behavior: "smooth" });
-      //   }
+      const element = document.getElementById("categroy_id");
+      if (element) {
+        const y =
+          element?.getBoundingClientRect()?.top + window.pageYOffset - 80;
+        const currentY = window.scrollY || window.pageYOffset;
+        // scroll only if currently below the section
+        if (currentY > y + 100) {
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
+      }
       setProdInfo(res);
     },
   });
