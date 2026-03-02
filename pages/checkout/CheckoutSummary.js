@@ -6,6 +6,7 @@ import { MARKETPLACE, PAYMENT_METHODS } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
   riyalImgRed,
   useArrayChangeDetector,
@@ -22,6 +23,7 @@ import React, {
   useImperativeHandle,
   forwardRef,
   useRef,
+  useMemo,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -43,31 +45,31 @@ const CheckoutSummary = forwardRef(
       estimateRes,
       expressDelivery,
     },
-    ref
+    ref,
   ) => {
     useImperativeHandle(ref, () => ({
       triggerTamaraPayment: handlePayWithTamara,
     }));
     const { voucherCode, allPromoCodeData } = useSelector(
-      (state) => state.addSpareParts
+      (state) => state.addSpareParts,
     );
     const [fakeLoader, setFakeLoader] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
     const { basket } = useSelector((state) => state.basket);
     const { selectedPaymentMethod } = useSelector(
-      (state) => state.selectedPaymentMethod
+      (state) => state.selectedPaymentMethod,
     );
     const { t, locale } = useLocalization();
     const { isMobile } = useScreenSize();
     const dispatch = useDispatch();
     const router = useRouter();
     const { user } = useAuth();
-    const merchanteRefrenceRef = useRef(
-      `${user?.data?.user?.id}${Math.floor(
-        1000000000 + Math.random() * 9000000000
-      )}`
-    );
-    const merchanteRefrence = merchanteRefrenceRef.current;
+    // const merchanteRefrenceRef = useRef(
+    //   `${user?.data?.user?.id}${Math.floor(
+    //     1000000000 + Math.random() * 9000000000,
+    //   )}`,
+    // );
+    const merchanteRefrence = useMemo(generateUUID, []);
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const [payFortForm, setPayfortForm] = useState(false);
     const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -292,7 +294,7 @@ const CheckoutSummary = forwardRef(
     // Generate Signature
     requestData.signature = generateSignature(
       requestData,
-      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
     );
 
     /* -------------------------------------------------------------------------- */
@@ -367,10 +369,10 @@ const CheckoutSummary = forwardRef(
                 "Content-Type": "application/json",
                 "x-api-key": "w123",
                 Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
+                  "access_token",
                 )}`, // Include if needed
               },
-            }
+            },
           );
 
           if (!response.ok) throw new Error("Merchant validation failed");
@@ -769,7 +771,7 @@ const CheckoutSummary = forwardRef(
                 receipt?.offers_discount) === receipt?.offers_discount
                 ? receipt?.offers_discount?.toFixed(2)
                 : calculateReceiptResFromMainPage?.offers_discount?.toFixed(
-                    2
+                    2,
                   )}{" "}
               {riyalImgRed()}
             </Box>
@@ -787,9 +789,9 @@ const CheckoutSummary = forwardRef(
                   +calculateReceiptResFromMainPage?.delivery_fees_with_tax
                 )?.toFixed(2)
               : (calculateReceiptResFromMainPage?.total_price ??
-                  receipt?.total_price) === receipt?.total_price
-              ? receipt?.total_price
-              : calculateReceiptResFromMainPage?.total_price}{" "}
+                    receipt?.total_price) === receipt?.total_price
+                ? receipt?.total_price
+                : calculateReceiptResFromMainPage?.total_price}{" "}
             {riyalImgBlack()}
           </Box>
         </Box>
@@ -897,6 +899,6 @@ const CheckoutSummary = forwardRef(
         />
       </Box>
     );
-  }
+  },
 );
 export default CheckoutSummary;

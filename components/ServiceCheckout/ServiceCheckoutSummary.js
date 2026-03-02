@@ -21,6 +21,7 @@ import React, {
   useImperativeHandle,
   forwardRef,
   useRef,
+  useMemo,
 } from "react";
 import { useRouter } from "next/router";
 import { setSelectedPayment } from "@/redux/reducers/selectedPaymentMethod";
@@ -31,6 +32,7 @@ import SharedBtn from "../shared/SharedBtn";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
   riyalImgRed,
   servicePrice,
@@ -58,17 +60,17 @@ const ServiceCheckoutSummary = forwardRef(
       selectedFields,
       checkoutRes,
     },
-    ref
+    ref,
   ) => {
     useImperativeHandle(ref, () => ({
       triggerTamaraPayment: handlePayWithTamara,
     }));
     const router = useRouter();
     const { voucherCode, allPromoCodeData } = useSelector(
-      (state) => state.addSpareParts
+      (state) => state.addSpareParts,
     );
     const { selectedPaymentMethod } = useSelector(
-      (state) => state.selectedPaymentMethod
+      (state) => state.selectedPaymentMethod,
     );
     const { user } = useAuth();
     const dispatch = useDispatch();
@@ -76,12 +78,13 @@ const ServiceCheckoutSummary = forwardRef(
     const { t, locale } = useLocalization();
     const { userDataProfile } = useSelector((state) => state.quickSection);
     const { selectedCar, defaultCar } = useSelector(
-      (state) => state.selectedCar
+      (state) => state.selectedCar,
     );
-    const merchanteRefrenceRef = useRef(
-      `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
-    );
-    const merchanteRefrence = merchanteRefrenceRef.current;
+
+    // const merchanteRefrenceRef = useRef(
+    //   `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`,
+    // );
+    const merchanteRefrence = useMemo(generateUUID, []);
 
     const [payFortForm, setPayfortForm] = useState(false);
     const [oldAmountToPay, setOldAmountToPay] = useState(false);
@@ -218,7 +221,7 @@ const ServiceCheckoutSummary = forwardRef(
           +oldAmountToPay > 0
         ) {
           router.push(
-            `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`
+            `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`,
           );
           return;
         }
@@ -261,7 +264,7 @@ const ServiceCheckoutSummary = forwardRef(
         }
 
         router.push(
-          `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`
+          `/spareParts/confirmation/${res?.id}?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`,
         );
         setTimeout(() => {
           toast.success(t.successPayOrder);
@@ -275,7 +278,7 @@ const ServiceCheckoutSummary = forwardRef(
         toast.error(
           err?.response?.data?.first_error ||
             err?.response?.data?.message ||
-            t.someThingWrong
+            t.someThingWrong,
         );
       },
     });
@@ -338,7 +341,7 @@ const ServiceCheckoutSummary = forwardRef(
           err?.response?.data?.message?.includes("ServiceCenterSlot_not_found")
         ) {
           router?.push(
-            `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`
+            `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
           );
           return;
         }
@@ -352,7 +355,7 @@ const ServiceCheckoutSummary = forwardRef(
           toast.error(
             err?.response?.data?.first_error ||
               err?.response?.data?.message ||
-              t.someThingWrong
+              t.someThingWrong,
           );
         }
       },
@@ -375,7 +378,7 @@ const ServiceCheckoutSummary = forwardRef(
     // Generate Signature
     requestData.signature = generateSignature(
       requestData,
-      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
     );
 
     /* -------------------------------------------------------------------------- */
@@ -450,10 +453,10 @@ const ServiceCheckoutSummary = forwardRef(
                 "Content-Type": "application/json",
                 "x-api-key": "w123",
                 Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
+                  "access_token",
                 )}`, // Include if needed
               },
-            }
+            },
           );
 
           if (!response.ok) throw new Error("Merchant validation failed");
@@ -517,7 +520,7 @@ const ServiceCheckoutSummary = forwardRef(
 
           session.completePayment(ApplePaySession.STATUS_SUCCESS);
           router.push(
-            `/spareParts/confirmation/null?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`
+            `/spareParts/confirmation/null?type=${SERVICES}&secType=${SERVICES}&serviceType=${checkoutServiceDetails?.type}`,
           );
         } catch (error) {
           alert(`Payment failed: ${error.message}`);
@@ -700,7 +703,7 @@ const ServiceCheckoutSummary = forwardRef(
         {
           expires: 1,
           path: "/",
-        }
+        },
       );
 
       const res = await fetch("/api/mis/create-order", {
@@ -913,7 +916,7 @@ const ServiceCheckoutSummary = forwardRef(
         />
       </Box>
     );
-  }
+  },
 );
 
 export default ServiceCheckoutSummary;

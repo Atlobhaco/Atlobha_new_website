@@ -13,9 +13,11 @@ import useLocalization from "@/config/hooks/useLocalization";
 import ProductCard from "../shared/ProductCard";
 import { isAuth } from "@/config/hooks/isAuth";
 import PaginateComponent from "../Pagination";
+import { useRouter } from "next/router";
 
 function ExpressDelivery({ sectionInfo }) {
   const { t } = useLocalization();
+  const router = useRouter();
   const { isMobile, isTablet } = useScreenSize();
   const [page, setPage] = useState(1);
   const [allData, setAllData] = useState([]);
@@ -49,7 +51,12 @@ function ExpressDelivery({ sectionInfo }) {
           px: isMobile ? 1 : "unset",
         }}
       >
-        <HeaderSection title={sectionInfo?.title} />
+        <HeaderSection
+          title={sectionInfo?.title}
+          showArrow={true}
+          subtitle={t.showAll}
+          onClick={() => router.push("/productsExpress")}
+        />
       </Box>
       <Box
         sx={{

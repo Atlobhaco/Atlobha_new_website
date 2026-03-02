@@ -11,12 +11,13 @@ import { PAYMENT_METHODS, STATUS, VEHICLE_PRICING } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
 } from "@/constants/helpers";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAllAddresses,
@@ -36,13 +37,14 @@ function SelectedOfferReceipt({
   const dispatch = useDispatch();
   const router = useRouter();
   const { idOrder } = router.query;
-  const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  // const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  const merchanteRefrence = useMemo(generateUUID, []);
   const { selectedPaymentMethod } = useSelector(
-    (state) => state.selectedPaymentMethod
+    (state) => state.selectedPaymentMethod,
   );
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const userAddress = selectedAddress?.id ? selectedAddress : defaultAddress;
   const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -171,7 +173,7 @@ function SelectedOfferReceipt({
   // Generate Signature
   requestData.signature = generateSignature(
     requestData,
-    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
   );
 
   // Create a form and submit it
@@ -223,7 +225,7 @@ function SelectedOfferReceipt({
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`,
             },
-          }
+          },
         );
 
         if (!response.ok) throw new Error("Merchant validation failed");
@@ -285,7 +287,7 @@ function SelectedOfferReceipt({
 
         session.completePayment(ApplePaySession.STATUS_SUCCESS);
         router.push(
-          `${process.env.NEXT_PUBLIC_WEBSITE_URL}/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+          `${process.env.NEXT_PUBLIC_WEBSITE_URL}/confirmation/carPricing/?secType=${VEHICLE_PRICING}`,
         );
       } catch (error) {
         alert(`Payment failed: ${error.message}`);

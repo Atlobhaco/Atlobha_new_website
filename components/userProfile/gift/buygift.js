@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import useScreenSize from "@/constants/screenSize/useScreenSize";
@@ -8,6 +8,7 @@ import { Box, CircularProgress } from "@mui/material";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
 } from "@/constants/helpers";
 import SharedBtn from "@/components/shared/SharedBtn";
@@ -52,27 +53,27 @@ export default function BuyGift({
   const [phoneAddedForTamara, setPhoneAddedForTamara] = useState(false);
 
   const { selectedPaymentMethod } = useSelector(
-    (state) => state.selectedPaymentMethod
+    (state) => state.selectedPaymentMethod,
   );
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const { userDataProfile } = useSelector((state) => state.quickSection);
 
-  const merchanteRefrenceRef = useRef(
-    `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
-  );
-  const merchanteRefrence = merchanteRefrenceRef.current;
+  // const merchanteRefrenceRef = useRef(
+  //   `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`,
+  // );
+  const merchanteRefrence = useMemo(generateUUID, []);
 
   const orderAddress = defaultAddress?.id
     ? defaultAddress
     : selectedAddress?.id
-    ? selectedAddress
-    : {
-        lat: 24.7136,
-        lng: 46.6753,
-        city: { name: "riyadh", country: { code: "SA" } },
-      };
+      ? selectedAddress
+      : {
+          lat: 24.7136,
+          lng: 46.6753,
+          city: { name: "riyadh", country: { code: "SA" } },
+        };
 
   //   call user  addresses
   usersAddressesQuery({
@@ -93,7 +94,7 @@ export default function BuyGift({
       dispatch(
         setUserData({
           data: res,
-        })
+        }),
       );
     },
   });
@@ -148,7 +149,7 @@ export default function BuyGift({
           price: selectedPrice?.price,
           selectedGift: selectedGift,
           reference_code: res?.reference_code,
-        })
+        }),
       );
       if (selectedPaymentMethod?.key === PAYMENT_METHODS?.credit) {
         payFortForm.submit();
@@ -225,7 +226,7 @@ export default function BuyGift({
   // Generate Signature
   requestData.signature = generateSignature(
     requestData,
-    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
   );
 
   /* -------------------------------------------------------------------------- */
@@ -297,7 +298,7 @@ export default function BuyGift({
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`, // Include if needed
             },
-          }
+          },
         );
 
         if (!response.ok) throw new Error("Merchant validation failed");
@@ -707,8 +708,8 @@ export default function BuyGift({
           migrationStep === 1
             ? t.addPhoneNum
             : migrationStep === 2
-            ? t.mergeAccount
-            : t.confirmPhone
+              ? t.mergeAccount
+              : t.confirmPhone
         }
         subtitle={false}
         open={openAddMobile}
