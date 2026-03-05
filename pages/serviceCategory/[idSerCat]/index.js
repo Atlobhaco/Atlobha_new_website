@@ -65,7 +65,7 @@ function ServiceCategory() {
         brand_id: selectedCar?.brand?.id || res?.brand?.id || "",
         model_id: selectedCar?.model?.id || res?.model?.id || "",
         year: selectedCar?.year || res?.year || "",
-        has_active_offer: false,
+        has_express_delivery: false,
         category_id: idSerCat,
       });
     },
@@ -77,7 +77,7 @@ function ServiceCategory() {
         brand_id: selectedCar?.brand?.id || "",
         model_id: selectedCar?.model?.id || "",
         year: selectedCar?.year || "",
-        has_active_offer: false,
+        has_express_delivery: false,
         category_id: idSerCat,
       });
     }

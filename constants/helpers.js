@@ -553,7 +553,7 @@ export const latestUpdatedCart = (basket = []) => {
 /* -------------------------------------------------------------------------- */
 export const hasAnyFilterValue = ({
   filters = {},
-  excludeKeys = ["category_id", "has_active_offer"],
+  excludeKeys = ["category_id"],
 } = {}) => {
   if (!filters) return false;
   return Object.entries(filters).some(([key, value]) => {
@@ -588,7 +588,7 @@ export const updateQueryParams = ({ filters = {}, router }) => {
     brand_id: filters.brand_id || undefined,
     model_id: filters.model_id || undefined,
     year: filters.year || undefined,
-    has_active_offer: filters.has_active_offer || undefined,
+    has_express_delivery: filters.has_express_delivery || undefined,
     category_id: filters.category_id || undefined,
     manufacturer_id: filters.manufacturer_id || undefined,
     conditionalAttributes: filters.conditionalAttributes
@@ -617,8 +617,8 @@ export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
   if ("brand" in filters) newQuery.brand = filters.brand || undefined;
   if ("model" in filters) newQuery.model = filters.model || undefined;
   if ("year" in filters) newQuery.year = filters.year || undefined;
-  if ("has_active_offer" in filters)
-    newQuery.has_active_offer = filters.has_active_offer
+  if ("has_express_delivery" in filters)
+    newQuery.has_express_delivery = filters.has_express_delivery
       ? true
       : false || undefined;
   if ("category" in filters) newQuery.category = filters.category || undefined;

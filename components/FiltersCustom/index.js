@@ -18,7 +18,7 @@ function FiltersCustom({
     brand: 3,
     model: 280,
     year: 2024,
-    has_active_offer: false,
+    has_express_delivery: false,
     category: 11,
     conditionalAttributes: {},
     manufacturer: null,
@@ -34,7 +34,7 @@ function FiltersCustom({
 
   const defaultShowHideFilters = {
     carFilter: true,
-    toggleProductsOffer: true,
+    toggleExpressProducts: true,
     categoryFilter: true,
     conditionsAttributes: true,
     manufacturerFilter: true,
@@ -73,7 +73,7 @@ function FiltersCustom({
         query: newQuery,
       },
       undefined,
-      { shallow: true }
+      { shallow: true },
     );
   };
   return (
@@ -97,6 +97,7 @@ function FiltersCustom({
         returnPageIntoOriginal={returnPageIntoOriginal}
       />
 
+      {/* need to change component to express delivery prodycts */}
       {/* <ToogleProductsOfferCustom
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
