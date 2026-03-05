@@ -28,6 +28,11 @@ const arrayForRedirect = [
   },
   {
     ...defaultProps,
+    $link_title: "ExpressDelivery",
+    routeToRedirect: "/productsExpress",
+  },
+  {
+    ...defaultProps,
     $link_title: "Gifts",
     routeToRedirect: "/userProfile/gift",
     mustAuthenticated: true,
@@ -104,7 +109,7 @@ const useBranch = () => {
           } else {
             setBranchData(data || null);
           }
-        }
+        },
       );
 
       // Safari sometimes delays branch.data()
@@ -143,14 +148,15 @@ const useBranch = () => {
     if (!branchData) return;
 
     const parsed = branchData?.data_parsed;
+
     if (!parsed) return;
 
     const redirectItemOrderDetails = arrayForRedirect.find(
-      (item) => item.$deeplink_path === parsed?.$deeplink_path
+      (item) => item.$deeplink_path === parsed?.$deeplink_path,
     );
 
     const redirectItem = arrayForRedirect.find(
-      (item) => item.$link_title === parsed?.$link_title
+      (item) => item.$link_title === parsed?.$link_title,
     );
 
     // SAFARI FIX: ensure router is ready
@@ -167,7 +173,7 @@ const useBranch = () => {
         redirectItemOrderDetails.$deeplink_path === "SparePartsOrder"
       ) {
         router.push(
-          `/userProfile/myOrders/${parsed?.id}?type=${parsed?.$deeplink_path}`
+          `/userProfile/myOrders/${parsed?.id}?type=${parsed?.$deeplink_path}`,
         );
         return;
       }
@@ -188,7 +194,7 @@ const useBranch = () => {
             parsed?.id
           }/?portableService=no-info&secType=${SERVICES}&name=${
             parsed?.$og_title || ""
-          }`
+          }`,
         );
         return;
       }
@@ -220,7 +226,7 @@ const useBranch = () => {
           ?.find((item) => item?.type === redirectItem.nameInsideGroup);
 
         router.push(
-          `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`
+          `/sections?secTitle=${findSectionData?.title}&&secType=${findSectionData?.type}`,
         );
       }
     }
