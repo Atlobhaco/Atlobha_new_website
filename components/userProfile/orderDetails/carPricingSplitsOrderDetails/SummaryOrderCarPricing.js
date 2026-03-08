@@ -13,6 +13,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
   riyalImgRed,
 } from "@/constants/helpers";
@@ -25,7 +26,7 @@ import {
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
@@ -47,10 +48,11 @@ function SummaryOrderCarPricing({
   const { idOrder, type, status } = router.query;
   const { user } = useAuth();
   const { selectedPaymentMethod } = useSelector(
-    (state) => state.selectedPaymentMethod
+    (state) => state.selectedPaymentMethod,
   );
   const dispatch = useDispatch();
-  const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  // const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  const merchanteRefrence = useMemo(generateUUID, []);
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { userDataProfile } = useSelector((state) => state.quickSection);
@@ -67,7 +69,7 @@ function SummaryOrderCarPricing({
       dispatch(
         setUserData({
           data: res,
-        })
+        }),
       );
     },
   });
@@ -283,7 +285,7 @@ function SummaryOrderCarPricing({
   // Generate Signature
   requestData.signature = generateSignature(
     requestData,
-    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+    process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
   );
 
   // Create a form and submit it
@@ -332,7 +334,7 @@ function SummaryOrderCarPricing({
               "x-api-key": "w123",
               Authorization: `Bearer ${localStorage?.getItem("access_token")}`, // Include if needed
             },
-          }
+          },
         );
 
         if (!response.ok) {
@@ -624,14 +626,14 @@ function SummaryOrderCarPricing({
               ? orderDetails?.parts
                   ?.reduce(
                     (accumulator, current) => accumulator + current.total_price,
-                    0
+                    0,
                   )
                   ?.toFixed(2)
               : orderDetails?.products
                   ?.reduce(
                     (accumulator, current) =>
                       accumulator + current.price * current?.quantity,
-                    0
+                    0,
                   )
                   ?.toFixed(2)}{" "}
             {riyalImgBlack()}

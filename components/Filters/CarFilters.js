@@ -59,7 +59,7 @@ function CarFilters({
 
   //   sync only in mobile screen
   useEffect(() => {
-    if ((isMobile, hasDefaultValues)) {
+    if (isMobile && hasDefaultValues) {
       const resolvedBrandId =
         filters?.brand_id ||
         selectedCar?.brand?.id ||

@@ -27,6 +27,7 @@ import FindMoreSegments from "@/components/Marketplace/FindMoreSegments";
 import useBranch from "./useBranch";
 import { analytics } from "@/lib/firebase"; // your firebase init file
 import { logEvent } from "firebase/analytics";
+import ExpressDelivery from "@/components/Marketplace/ExpressDelivery";
 
 export default function Home() {
   // useBranch user for deep  links
@@ -37,10 +38,10 @@ export default function Home() {
   const { allGroups } = useSelector((state) => state.appGroups);
   const [hasAds, setHasAds] = useState(false);
   const { allhomeSections, sectionsSeo } = useSelector(
-    (state) => state.homeSectionsData
+    (state) => state.homeSectionsData,
   );
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const { data, isLoading } = useCustomQuery({
     name: ["app-home-sections", allGroups?.length, isAuth()],
@@ -218,6 +219,18 @@ export default function Home() {
                 </div>
               </div>
             );
+          // express delivery
+          case "express_delivery":
+            return (
+              <div className="container" key={item?.id}>
+                <div className="row">
+                  <div className={`col-12 ${isMobile ? "mt-3 px-0" : "mt-5"}`}>
+                    <ExpressDelivery sectionInfo={item} />
+                  </div>
+                </div>
+              </div>
+            );
+
           case "featured-products":
             return (
               <div className="container" key={item?.id}>

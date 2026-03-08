@@ -13,6 +13,7 @@ import { useAuth } from "@/config/providers/AuthProvider";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
   riyalImgRed,
 } from "@/constants/helpers";
@@ -25,7 +26,7 @@ import {
 import useScreenSize from "@/constants/screenSize/useScreenSize";
 import { Box, CircularProgress, Divider } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import EditUserInfoDialog from "@/components/editUserInfoDialog";
@@ -53,7 +54,8 @@ function SummaryOrder({
   );
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const dispatch = useDispatch();
-  const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  // const merchanteRefrence = `${user?.data?.user?.id}_${idOrder}`;
+  const merchanteRefrence = useMemo(generateUUID, []);
   const hasRun = useRef(false);
   const [redirectToPayfort, setRedirectToPayfort] = useState(false);
   const { userDataProfile } = useSelector((state) => state.quickSection);

@@ -32,7 +32,9 @@ function SharedToggle({
           fontWeight: "500",
           fontSize: "16px",
           color: "#374151",
+          cursor: "pointer !important",
         }}
+        onClick={handleChange}
       >
         {label}
         {showAstrick && (

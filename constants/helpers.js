@@ -34,9 +34,9 @@ export const getUserCurrentLocation = () => {
         },
         (err) => {
           reject(
-            "Unable to retrieve location. Please enable location services."
+            "Unable to retrieve location. Please enable location services.",
           );
-        }
+        },
       );
     });
   } else {
@@ -143,7 +143,7 @@ export const statusArray = () => {
 /* -------------------------------------------------------------------------- */
 export const availablePaymentMethodImages = (
   orderDetails = {},
-  isMobile = false
+  isMobile = false,
 ) => {
   // return (
   //   <Image
@@ -276,7 +276,7 @@ export const availablePaymentMethodImages = (
 export const availablePaymentMethodText = (
   orderDetails = {},
   t = () => {},
-  isMobile = false
+  isMobile = false,
 ) => {
   // return (
   //   <Image
@@ -650,7 +650,7 @@ export const payInitiateEngage = ({
 /* -------------------------------------------------------------------------- */
 export const hasAnyFilterValue = ({
   filters = {},
-  excludeKeys = ["category_id", "has_active_offer"],
+  excludeKeys = ["category_id"],
 } = {}) => {
   if (!filters) return false;
   return Object.entries(filters).some(([key, value]) => {
@@ -670,7 +670,7 @@ export const hasAnyFilterValue = ({
 
     if (typeof value === "object" && !Array.isArray(value)) {
       return Object.values(value || {}).some(
-        (v) => v !== undefined && v !== null && v !== "" && v !== false
+        (v) => v !== undefined && v !== null && v !== "" && v !== false,
       );
     }
 
@@ -685,7 +685,7 @@ export const updateQueryParams = ({ filters = {}, router }) => {
     brand_id: filters.brand_id || undefined,
     model_id: filters.model_id || undefined,
     year: filters.year || undefined,
-    has_active_offer: filters.has_active_offer || undefined,
+    has_express_delivery: filters.has_express_delivery || undefined,
     category_id: filters.category_id || undefined,
     manufacturer_id: filters.manufacturer_id || undefined,
     conditionalAttributes: filters.conditionalAttributes
@@ -698,7 +698,7 @@ export const updateQueryParams = ({ filters = {}, router }) => {
       query,
     },
     undefined,
-    { shallow: true }
+    { shallow: true },
   );
 };
 
@@ -714,8 +714,8 @@ export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
   if ("brand" in filters) newQuery.brand = filters.brand || undefined;
   if ("model" in filters) newQuery.model = filters.model || undefined;
   if ("year" in filters) newQuery.year = filters.year || undefined;
-  if ("has_active_offer" in filters)
-    newQuery.has_active_offer = filters.has_active_offer
+  if ("has_express_delivery" in filters)
+    newQuery.has_express_delivery = filters.has_express_delivery
       ? true
       : false || undefined;
   if ("category" in filters) newQuery.category = filters.category || undefined;
@@ -736,7 +736,7 @@ export const updateUrlForGlobalSearch = ({ filters = {}, router }) => {
       query: newQuery,
     },
     undefined,
-    { shallow: true }
+    { shallow: true },
   );
 };
 
@@ -748,8 +748,8 @@ export const servicePrice = ({ service, userCar }) => {
     service?.products_price > 0
       ? service?.products_price
       : service?.price > 0
-      ? service?.price
-      : null;
+        ? service?.price
+        : null;
 
   if (directPrice !== null) return directPrice.toFixed(2);
 
@@ -766,4 +766,20 @@ export const servicePrice = ({ service, userCar }) => {
 export const openInGoogleMaps = (lat, lng) => {
   const url = `https://www.google.com/maps?q=${lat},${lng}`;
   window?.open(url, "_blank");
+};
+/* -------------------------------------------------------------------------- */
+/*                    return unique id for payment gateways                   */
+/* -------------------------------------------------------------------------- */
+export const generateUUID = () => {
+  // Modern browsers (Chrome 92+, Firefox 95+, Safari 15.4+) & Node.js 15.6+
+  if (typeof crypto !== "undefined" && crypto.randomUUID) {
+    return crypto.randomUUID();
+  }
+
+  // Fallback for older environments (cryptographically weak but UUID-compliant)
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
 };

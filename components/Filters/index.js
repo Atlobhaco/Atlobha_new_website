@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useLocalization from "@/config/hooks/useLocalization";
 import CarFilters from "./CarFilters";
-import ToogleProductsOffer from "./ToogleProductsOffer";
+import ToogleExpressProducts from "./ToogleExpressProducts";
 import CategoryFilter from "./CategoryFilter";
 import ConditionalAttributesFilter from "./ConditionalAttributesFilter";
 import ManufactrurerFilter from "./ManufactrurerFilter";
@@ -12,7 +12,7 @@ function Filters({
     brand_id: 3,
     model_id: 280,
     year: 2024,
-    has_active_offer: false,
+    has_express_delivery: false,
     category_id: 11,
     conditionalAttributes: {},
     manufacturer_id: null,
@@ -25,7 +25,7 @@ function Filters({
   const { isMobile } = useScreenSize();
   const defaultShowHideFilters = {
     carFilter: true,
-    toggleProductsOffer: true,
+    toggleExpressProducts: true,
     categoryFilter: true,
     conditionsAttributes: true,
     manufacturerFilter: true,
@@ -78,14 +78,14 @@ function Filters({
         yearId={yearId}
         setYearId={setYearId}
         colorHeaders={colorHeaders}
-		hasDefaultValues={hasDefaultValues}
+        hasDefaultValues={hasDefaultValues}
       />
 
-      {/* <ToogleProductsOffer
+      <ToogleExpressProducts
         mergedShowHideFilters={mergedShowHideFilters}
         filters={filters}
         setFilters={setFilters}
-      /> */}
+      />
 
       <CategoryFilter
         filters={filters}

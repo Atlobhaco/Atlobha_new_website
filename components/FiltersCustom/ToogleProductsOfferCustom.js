@@ -7,15 +7,15 @@ function ToogleProductsOfferCustom({ mergedShowHideFilters, filters, setFilters 
   const { t } = useLocalization();
 
   return (
-    mergedShowHideFilters?.toggleProductsOffer && (
+    mergedShowHideFilters?.toggleExpressProducts && (
       <Box sx={{ mt: 2 }}>
         <SharedToggle
           label={t.OnlyProductsOffer}
-          value={filters?.has_active_offer}
+          value={filters?.has_express_delivery}
           handleChange={() =>
             setFilters((prev) => ({
               ...prev,
-              has_active_offer: !prev?.has_active_offer,
+              has_express_delivery: !prev?.has_express_delivery,
             }))
           }
         />

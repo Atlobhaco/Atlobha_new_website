@@ -14,6 +14,7 @@ import { PAYMENT_METHODS, VEHICLE_PRICING } from "@/constants/enums";
 import {
   generateSignature,
   generateSignatureApplePay,
+  generateUUID,
   riyalImgBlack,
   riyalImgRed,
 } from "@/constants/helpers";
@@ -31,6 +32,7 @@ import React, {
   forwardRef,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react";
@@ -47,7 +49,7 @@ const CarPricingCheckoutSummary = forwardRef(
       carPricing,
       selectAddress,
     },
-    ref
+    ref,
   ) => {
     // Expose methods to parent
     useImperativeHandle(ref, () => ({
@@ -63,15 +65,15 @@ const CarPricingCheckoutSummary = forwardRef(
     const [loadPayRequest, setLoadPayRequest] = useState(false);
     const router = useRouter();
 
-    const merchanteRefrenceRef = useRef(
-      `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`
-    );
-    const merchanteRefrence = merchanteRefrenceRef.current;
+    // const merchanteRefrenceRef = useRef(
+    //   `${user?.data?.user?.id}_${Math.floor(1000 + Math.random() * 9000)}`,
+    // );
+    const merchanteRefrence = useMemo(generateUUID, []);
     const { voucherCode, allPromoCodeData } = useSelector(
-      (state) => state.addSpareParts
+      (state) => state.addSpareParts,
     );
     const { selectedPaymentMethod } = useSelector(
-      (state) => state.selectedPaymentMethod
+      (state) => state.selectedPaymentMethod,
     );
     const { userDataProfile } = useSelector((state) => state.quickSection);
 
@@ -145,7 +147,7 @@ const CarPricingCheckoutSummary = forwardRef(
 
           localStorage.setItem(
             "carPricingDetails",
-            JSON.stringify(updatedData)
+            JSON.stringify(updatedData),
           );
           if (
             selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
@@ -218,7 +220,7 @@ const CarPricingCheckoutSummary = forwardRef(
           toast.error(
             err?.response?.data?.first_error ||
               err?.response?.data?.message ||
-              t.someThingWrong
+              t.someThingWrong,
           );
         },
       });
@@ -265,7 +267,7 @@ const CarPricingCheckoutSummary = forwardRef(
         toast.error(
           err?.response?.data?.first_error ||
             err?.response?.data?.message ||
-            t.someThingWrong
+            t.someThingWrong,
         );
       },
     });
@@ -290,7 +292,7 @@ const CarPricingCheckoutSummary = forwardRef(
     // Generate Signature
     requestData.signature = generateSignature(
       requestData,
-      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE
+      process.env.NEXT_PUBLIC_PAYFORT_REQ_PHRASE,
     );
     /* -------------------------------------------------------------------------- */
     /*                   to fix the reference error for document                  */
@@ -364,10 +366,10 @@ const CarPricingCheckoutSummary = forwardRef(
                 "Content-Type": "application/json",
                 "x-api-key": "w123",
                 Authorization: `Bearer ${localStorage?.getItem(
-                  "access_token"
+                  "access_token",
                 )}`,
               },
-            }
+            },
           );
 
           if (!response.ok) throw new Error("Merchant validation failed");
@@ -431,7 +433,7 @@ const CarPricingCheckoutSummary = forwardRef(
 
           session.completePayment(ApplePaySession.STATUS_SUCCESS);
           router.push(
-            `${process.env.NEXT_PUBLIC_WEBSITE_URL}/confirmation/carPricing/?secType=${VEHICLE_PRICING}`
+            `${process.env.NEXT_PUBLIC_WEBSITE_URL}/confirmation/carPricing/?secType=${VEHICLE_PRICING}`,
           );
         } catch (error) {
           alert(`Payment failed: ${error.message}`);
@@ -835,7 +837,7 @@ const CarPricingCheckoutSummary = forwardRef(
         />
       </Box>
     );
-  }
+  },
 );
 
 export default CarPricingCheckoutSummary;

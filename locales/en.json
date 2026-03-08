@@ -712,5 +712,6 @@
   "refundOrder": "refund order",
   "refundMoney": "Refund of the pricing request amount",
   "willSendRefund": "The refund request will be sent after confirmation.",
-  "expired": "Expired"
+  "expired": "Expired",
+  "showExpressProd": "show express products"
 }

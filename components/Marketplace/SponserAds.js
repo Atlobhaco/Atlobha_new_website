@@ -21,6 +21,7 @@ function SponserAds({ sectionInfo }) {
         margin: "auto",
         maxHeight: isMobile ? "100px" : "350px",
         minHeight: isMobile ? "100px" : "400px",
+        cursor: sectionInfo?.sponsored_ad?.link ? "pointer" : "default",
       }}
       onClick={() => {
         if (sectionInfo?.sponsored_ad?.link) {
