@@ -41,7 +41,7 @@ function ServiceCheckoutData({
     const startFrom = checkoutServiceDetails?.serviceTimeFixedOrPortable?.start;
     const endAt = checkoutServiceDetails?.serviceTimeFixedOrPortable?.end;
     const dateStart = moment(
-      checkoutServiceDetails?.serviceTimeFixedOrPortable?.start
+      checkoutServiceDetails?.serviceTimeFixedOrPortable?.start,
     );
     const today = moment();
 
@@ -49,12 +49,12 @@ function ServiceCheckoutData({
       dateStart.isSame(today, "day")
         ? `${t.todayAtTime} ${dateStart.format("h:mm a")}`
         : startFrom === endAt
-        ? `${moment(startFrom).format("h:mm a")}`
-        : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
-            "h:mm a"
-          )} (${dateStart.format(
-            locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY"
-          )})`
+          ? `${moment(startFrom).format("h:mm a")}`
+          : `${moment(startFrom).format("h:mm a")} - ${moment(endAt).format(
+              "h:mm a",
+            )} (${dateStart.format(
+              locale === "ar" ? "YYYY/MM/DD" : "DD/MM/YYYY",
+            )})`
     }`;
   };
 

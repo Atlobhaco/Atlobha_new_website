@@ -22,11 +22,18 @@ export default function PaymentFailChecker() {
         const url_after_pay_failed = Cookies.get("url_after_pay_failed");
 
         if (paymentFailed === "failed" && orderId) {
-          const path = `${process.env.NEXT_PUBLIC_API_BASE_URL}/${orderType}${
-            orderType === "vehicle-pricing-orders"
-              ? `/${orderId}`
-              : `${ORDERS}/${orderId}`
-          }${PAYMENT_FAILED}`;
+          const SIMPLIFIED_PATH_TYPES = [
+            "vehicle-pricing-orders",
+            "maintenance-reservations",
+            "portable-maintenance-reservations",
+          ];
+
+          // Build path based on order type pattern
+          const basePath = SIMPLIFIED_PATH_TYPES.includes(orderType)
+            ? `/${orderType}/${orderId}`
+            : `/${orderType}${ORDERS}/${orderId}`;
+
+          const path = `${process.env.NEXT_PUBLIC_API_BASE_URL}${basePath}${PAYMENT_FAILED}`;
 
           fetch(path, {
             method: "POST",

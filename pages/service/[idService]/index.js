@@ -91,24 +91,29 @@ function ServiceDetails() {
   }, [data]);
 
   //   check if the checkout service failed in pay then do the logic
-  useEffect(() => {
-    if (router.query.servicePayFailed === "true" && !shownRef.current) {
-      shownRef.current = true; // ✅ prevent duplicate
-      toast.error(t.paymentCancelled);
+  // useEffect(() => {
+  //   if (router.query.servicePayFailed === "true" && !shownRef.current) {
+  //     // console.log(router);
+  //     // use the created order id from the session storage
+  //     // created_order_id
+  //     // service_type
 
-      const updatedQuery = { ...router.query };
-      delete updatedQuery.servicePayFailed;
+  //     // shownRef.current = true; // ✅ prevent duplicate
+  //     // toast.error(t.paymentCancelled);
 
-      router.replace(
-        { pathname: router.pathname, query: updatedQuery },
-        undefined,
-        { shallow: true }
-      );
-      setTimeout(() => {
-        shownRef.current = false;
-      }, 2000);
-    }
-  }, [router.query.servicePayFailed]);
+  //     // const updatedQuery = { ...router.query };
+  //     // delete updatedQuery.servicePayFailed;
+
+  //     // router.replace(
+  //     //   { pathname: router.pathname, query: updatedQuery },
+  //     //   undefined,
+  //     //   { shallow: true }
+  //     // );
+  //     // setTimeout(() => {
+  //     //   shownRef.current = false;
+  //     // }, 2000);
+  //   }
+  // }, [router.query.servicePayFailed]);
 
   return (
     <Box>

@@ -36,7 +36,7 @@ function CheckoutService() {
   const [selectAddress, setSelectAddress] = useState(false);
   const [selectDeliveryAddress, setSelectDeliveryAddress] = useState(false);
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const userCar = selectedCar?.id ? selectedCar : defaultCar;
@@ -76,7 +76,7 @@ function CheckoutService() {
       dispatch(
         setUserData({
           data: res,
-        })
+        }),
       );
     },
   });
@@ -98,25 +98,43 @@ function CheckoutService() {
     },
   });
 
+  // check this code work fine or not aftrer pay failed
   useEffect(() => {
-    if (query?.serviceDetails) {
+    if (!query?.serviceDetails) return;
+
+    try {
+      // ✅ DOUBLE DECODE for ALL JSON parameters
+      const safeParse = (param) => {
+        if (!param) return null;
+        try {
+          // First decode: %25 → %
+          let decoded = decodeURIComponent(param);
+          // Second decode: %7B → {
+          if (decoded.startsWith("%")) {
+            decoded = decodeURIComponent(decoded);
+          }
+          return JSON.parse(decoded);
+        } catch (e) {
+          console.warn("Failed to parse param:", param, e);
+          return null;
+        }
+      };
+
       setCheckoutServiceDetails({
-        serviceDetails: JSON.parse(decodeURIComponent(serviceDetails || {})),
-        serviceTimeFixedOrPortable: JSON.parse(
-          decodeURIComponent(serviceTimeFixedOrPortable || {})
-        ),
-        serviceDatePortable: JSON.parse(
-          decodeURIComponent(serviceDatePortable || {})
-        ),
-        serviceDatefixed: JSON.parse(
-          decodeURIComponent(serviceDatefixed || {})
-        ),
-        type: type,
-        selectedStore: JSON.parse(decodeURIComponent(selectedStore || {})),
-        requires_dropoff_address: JSON.parse(
-          decodeURIComponent(serviceDetails || {})
-        )?.requires_dropoff_address,
+        serviceDetails: safeParse(query.serviceDetails) || {},
+        serviceTimeFixedOrPortable:
+          safeParse(query.serviceTimeFixedOrPortable) || false,
+        serviceDatePortable: safeParse(query.serviceDatePortable) || null,
+        serviceDatefixed: safeParse(query.serviceDatefixed) || false,
+        type: query.type || "fixed",
+        selectedStore: safeParse(query.selectedStore) || {},
+        requires_dropoff_address:
+          safeParse(query.serviceDetails)?.requires_dropoff_address || false,
       });
+    } catch (error) {
+      console.error("Critical error parsing checkout params:", error);
+      // Fallback: redirect to service selection
+      router.push("/");
     }
   }, [query?.serviceDetails]);
 
@@ -128,7 +146,7 @@ function CheckoutService() {
           +c.model.id === +userCar?.model?.id &&
           +c.model?.vehicle_brand?.id === +userCar?.brand?.id &&
           +userCar?.year >= +c.year_from &&
-          +userCar?.year <= +c.year_to
+          +userCar?.year <= +c.year_to,
       );
   const triggerChildPayment = () => {
     tamaraRef.current?.triggerTamaraPayment();
@@ -148,13 +166,13 @@ function CheckoutService() {
           if (typeKey === "text") {
             // Text: must have non-empty value
             const textValue = selected.find(
-              (s) => s.checkoutFieldId === req.checkout_field.id
+              (s) => s.checkoutFieldId === req.checkout_field.id,
             )?.value;
             return textValue && textValue.trim() !== "";
           } else {
             // file or multi-select with multiple values (if ever)
             return selected.some(
-              (s) => s.checkoutFieldId === req.checkout_field.id
+              (s) => s.checkoutFieldId === req.checkout_field.id,
             );
           }
         });
@@ -214,8 +232,8 @@ function CheckoutService() {
           migrationStep === 1
             ? t.addPhoneNum
             : migrationStep === 2
-            ? t.mergeAccount
-            : t.confirmPhone
+              ? t.mergeAccount
+              : t.confirmPhone
         }
         subtitle={false}
         open={openAddMobile}
