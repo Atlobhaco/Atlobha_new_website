@@ -44,6 +44,7 @@ const CheckoutSummary = forwardRef(
       setOpenEditUserModal,
       estimateRes,
       expressDelivery,
+      notes,
     },
     ref,
   ) => {
@@ -112,7 +113,7 @@ const CheckoutSummary = forwardRef(
       method: "post",
       body: {
         address: selectAddress,
-        notes: null,
+        notes: notes,
         payment_reference: merchanteRefrence,
         payment_method: selectedPaymentMethod?.key,
         products: basket

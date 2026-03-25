@@ -13,6 +13,7 @@ import useCustomQuery from "@/config/network/Apiconfig";
 import { CART, VALIDATE_EXPRESS_DELIVERY } from "@/config/endPoints/endPoints";
 import AddAddressToShowTimes from "@/components/ServiceDetails/AddAddressToShowTimes";
 import { ExpressDeliveryReasonsLocalized } from "@/constants/enums";
+import AddCommentMarketplace from "@/components/checkoutMarketplace/AddCommentMarketplace";
 
 function CheckoutData({
   selectAddress,
@@ -23,6 +24,8 @@ function CheckoutData({
   loadDate,
   setExpressDelivery,
   expressDelivery,
+  notes,
+  setNotes,
 }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
@@ -284,6 +287,7 @@ function CheckoutData({
           order_type: "marketplace-order",
         }}
       />
+      <AddCommentMarketplace notes={notes} setNotes={setNotes} />
       <AtlobhaPlusHint alwaysHorizontalDesgin={true} />
     </>
   );
