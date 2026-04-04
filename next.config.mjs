@@ -6,6 +6,15 @@ const nextConfig = {
     defaultLocale: "ar",
     localeDetection: false,
   },
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/spareParts",
+        permanent: false, // 301 redirect
+      },
+    ];
+  },
   trailingSlash: false,
   images: {
     remotePatterns: [
@@ -35,20 +44,11 @@ const nextConfig = {
     return config;
   },
 
-//   async rewrites() {
-//     return [
-//       {
-//         source: "/site-map-test.xml",
-//         destination: "https://www.w3schools.com/xml/note.xml",
-//       },
-//     ];
-//   },
-  //   async redirects() {
+  //   async rewrites() {
   //     return [
   //       {
-  //         source: "/",
-  //         destination: "/spareParts",
-  //         permanent: false, // Set to true if it's a permanent redirect
+  //         source: "/site-map-test.xml",
+  //         destination: "https://www.w3schools.com/xml/note.xml",
   //       },
   //     ];
   //   },
