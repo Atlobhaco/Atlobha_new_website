@@ -37,6 +37,7 @@ export default function Home() {
   const { t, locale } = useLocalization();
   const { allGroups } = useSelector((state) => state.appGroups);
   const [hasAds, setHasAds] = useState(false);
+  const [hasPackages, setHasPackages] = useState(false);
   const { allhomeSections, sectionsSeo } = useSelector(
     (state) => state.homeSectionsData,
   );
@@ -233,12 +234,18 @@ export default function Home() {
 
           case "featured-products":
             return (
-              <div className="container" key={item?.id}>
+              <div
+                className="container"
+                key={item?.id}
+                style={{
+                  display: hasPackages ? "block" : "none",
+                }}
+              >
                 <div className="row">
                   <div
                     className={`col-12 ${isMobile ? "mt-4 mb-1 px-0" : "mt-5"}`}
                   >
-                    <PackageOffers sectionInfo={item} />
+                    <PackageOffers sectionInfo={item} setHasPackages={setHasPackages} />
                   </div>
                 </div>
               </div>

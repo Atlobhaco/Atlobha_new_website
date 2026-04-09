@@ -10,7 +10,7 @@ import { isAuth } from "@/config/hooks/isAuth";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
-function PackageOffers({ sectionInfo }) {
+function PackageOffers({ sectionInfo, setHasPackages = () => {} }) {
   const { isMobile } = useScreenSize();
   const { t, locale } = useLocalization();
   const router = useRouter();
@@ -40,6 +40,9 @@ function PackageOffers({ sectionInfo }) {
       ? isAuth() && sectionInfo?.is_active
       : sectionInfo?.is_active,
     select: (res) => res?.data,
+    onSuccess: (res) => {
+      setHasPackages(res?.data?.length);
+    },
   });
 
   var settings = {
@@ -149,8 +152,8 @@ function PackageOffers({ sectionInfo }) {
                 width: isMobile
                   ? "95%"
                   : +featuredProducts?.data?.length === 1
-                  ? "280px"
-                  : "99%",
+                    ? "280px"
+                    : "99%",
                 borderRadius: "10px",
               }}
             ></Box>
