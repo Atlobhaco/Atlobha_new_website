@@ -55,7 +55,7 @@ function SpareParts() {
   const [openHowPricing, setOpenhowPricing] = useState(false);
   const [openPricingDialog, setOpenPricingDialog] = useState(false);
   const { selectedParts, isLoading } = useSelector(
-    (state) => state.addSpareParts
+    (state) => state.addSpareParts,
   );
   const [fetchMedia, setFetchMedia] = useState(false);
   const { setOpenLogin, showBtn, openLogin } = LoginModalActions();
@@ -66,16 +66,16 @@ function SpareParts() {
   const [otpCode, setOtpCode] = useState("");
   const [phoneNum, setPhoneNum] = useState(false);
   const { selectedCar, defaultCar, allCars } = useSelector(
-    (state) => state.selectedCar
+    (state) => state.selectedCar,
   );
   const userCar = selectedCar?.id ? selectedCar : defaultCar;
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const { sectionsSeo } = useSelector((state) => state.homeSectionsData);
 
   const [finalPartsAfterImgUpload, setFinalPartsAfterImageUpload] = useState(
-    []
+    [],
   );
   const [openLimitSupport, setOpenLimitSupport] = useState(false);
   const [openLimitDontShow, setOpenLimitDontShow] = useState(false);
@@ -95,7 +95,7 @@ function SpareParts() {
     }
     // check if sparePartsProducts saved in localStorage for reload happen in (social login)
     const sparePartProducts = JSON.parse(
-      localStorage.getItem("sparePartsProducts")
+      localStorage.getItem("sparePartsProducts"),
     );
     if (sparePartProducts && sparePartProducts?.length) {
       dispatch(addOrUpdateSparePart(sparePartProducts));
@@ -164,6 +164,7 @@ function SpareParts() {
         image_path: part?.image_id || part?.image_id || part?.image_path || "",
         image_id: part?.image_id || part?.image_id || part?.image_path || "",
         imgBase64: "",
+        number: null,
       })),
       promo_code: {
         id: promoCodeId,
@@ -174,7 +175,7 @@ function SpareParts() {
     onSuccess: (res) => {
       router.push(`/spareParts/confirmation/${res?.id}`);
       selectedParts?.map((singlePart) =>
-        dispatch(addOrUpdateSparePart({ ...singlePart, delete: true }))
+        dispatch(addOrUpdateSparePart({ ...singlePart, delete: true })),
       );
       dispatch(setPromoCodeForSpareParts({ data: null }));
       dispatch(clearSpareParts());
@@ -186,7 +187,7 @@ function SpareParts() {
       toast.error(
         err?.response?.data?.first_error ||
           err?.response?.data?.error ||
-          t.someThingWrong
+          t.someThingWrong,
       );
     },
   });
@@ -266,7 +267,7 @@ function SpareParts() {
     }
     const checkImgForBe = selectedParts?.some((d) => !d?.image_id && d?.imgSrc);
     const imgWithoutPathBe = selectedParts?.filter(
-      (d) => !d?.image_id && d?.imgSrc
+      (d) => !d?.image_id && d?.imgSrc,
     );
 
     if (checkImgForBe) {
@@ -288,10 +289,10 @@ function SpareParts() {
                   "Content-Type": "multipart/form-data",
                   "x-api-key": "w123",
                   Authorization: `Bearer ${localStorage?.getItem(
-                    "access_token"
+                    "access_token",
                   )}`,
                 },
-              }
+              },
             );
 
             // ✅ store both id and index for correct mapping later
@@ -312,7 +313,7 @@ function SpareParts() {
             selectedParts.map((part, index) => {
               if (true) {
                 const uploadedItem = uploadedResponses.find(
-                  (u) => u.index === indexThatWillMerge.indexOf(index)
+                  (u) => u.index === indexThatWillMerge.indexOf(index),
                 );
                 return {
                   ...part,
@@ -323,7 +324,7 @@ function SpareParts() {
                 ...part,
                 image_id: "",
               };
-            })
+            }),
           );
         } catch (error) {
           console.error("Error uploading media:", error);
@@ -499,8 +500,8 @@ function SpareParts() {
           migrationStep === 1
             ? t.addPhoneNum
             : migrationStep === 2
-            ? t.mergeAccount
-            : t.confirmPhone
+              ? t.mergeAccount
+              : t.confirmPhone
         }
         subtitle={false}
         open={openAddMobile}
