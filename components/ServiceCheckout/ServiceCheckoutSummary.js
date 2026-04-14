@@ -43,6 +43,7 @@ import {
 } from "@/redux/reducers/addSparePartsReducer";
 import Cookies from "js-cookie";
 import AccordionWalletBalance from "../shared/AccordionWalletBalance";
+import PaymentFailChecker from "../PaymentFailChecker";
 
 const ServiceCheckoutSummary = forwardRef(
   (
@@ -200,6 +201,26 @@ const ServiceCheckoutSummary = forwardRef(
       onSuccess: async (res) => {
         sessionStorage.setItem("created_order_id", res?.id);
         sessionStorage.setItem("service_type", checkoutServiceDetails?.type);
+        Cookies.set("url_after_pay_failed", router?.asPath, {
+          expires: 1,
+          path: "/",
+        });
+        Cookies.set(
+          "order_type",
+          checkoutServiceDetails?.type === PORTABLE
+            ? "portable-maintenance-reservations"
+            : "maintenance-reservations",
+          {
+            expires: 1,
+            path: "/",
+          },
+        );
+        Cookies.set("created_order_id", res?.id, { expires: 1, path: "/" });
+        Cookies.set("payment_method", selectedPaymentMethod?.key, {
+          expires: 1,
+          path: "/",
+        });
+
         if (
           selectedPaymentMethod?.key === PAYMENT_METHODS?.credit &&
           +oldAmountToPay > 0
@@ -337,6 +358,7 @@ const ServiceCheckoutSummary = forwardRef(
       },
       onError: (err) => {
         // redirect to service details if browser back from payment gateway
+        // if the endpoint return slot not found
         if (
           err?.response?.data?.message?.includes("ServiceCenterSlot_not_found")
         ) {
@@ -563,8 +585,8 @@ const ServiceCheckoutSummary = forwardRef(
           }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
             checkoutServiceDetails?.type
           }`,
-          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
-          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+          cancelUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/checkout/?secType=${SERVICES}&portableService=${router?.query?.portableService}&selectedStore=${router?.query?.selectedStore}&serviceDatePortable=${router?.query?.serviceDatePortable}&serviceDatefixed=${router?.query?.serviceDatefixed}&serviceDetails=${router?.query?.serviceDetails}&serviceTimeFixedOrPortable=${router?.query?.serviceTimeFixedOrPortable}&type=${router?.query?.type}`,
+          failureUrl: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/checkout/?secType=${SERVICES}&portableService=${router?.query?.portableService}&selectedStore=${router?.query?.selectedStore}&serviceDatePortable=${router?.query?.serviceDatePortable}&serviceDatefixed=${router?.query?.serviceDatefixed}&serviceDetails=${router?.query?.serviceDetails}&serviceTimeFixedOrPortable=${router?.query?.serviceTimeFixedOrPortable}&type=${router?.query?.type}`,
           customer: {
             first_name: userDataProfile?.name,
             last_name: "",
@@ -672,8 +694,8 @@ const ServiceCheckoutSummary = forwardRef(
           lang: locale,
           merchant_code: "Atolbha",
           merchant_urls: {
-            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
-            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+            cancel: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/checkout/?secType=${SERVICES}&portableService=${router?.query?.portableService}&selectedStore=${router?.query?.selectedStore}&serviceDatePortable=${router?.query?.serviceDatePortable}&serviceDatefixed=${router?.query?.serviceDatefixed}&serviceDetails=${router?.query?.serviceDetails}&serviceTimeFixedOrPortable=${router?.query?.serviceTimeFixedOrPortable}&type=${router?.query?.type}`,
+            failure: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/checkout/?secType=${SERVICES}&portableService=${router?.query?.portableService}&selectedStore=${router?.query?.selectedStore}&serviceDatePortable=${router?.query?.serviceDatePortable}&serviceDatefixed=${router?.query?.serviceDatefixed}&serviceDetails=${router?.query?.serviceDetails}&serviceTimeFixedOrPortable=${router?.query?.serviceTimeFixedOrPortable}&type=${router?.query?.type}`,
             success: `${
               process.env.NEXT_PUBLIC_WEBSITE_URL
             }/spareParts/confirmation/${null}?type=${SERVICES}&secType=${SERVICES}&serviceType=${
@@ -699,7 +721,7 @@ const ServiceCheckoutSummary = forwardRef(
     const handleMisPay = async () => {
       Cookies.set(
         "url_after_pay_failed",
-        `/service/${checkoutServiceDetails?.serviceDetails?.id}/?portableService=${router?.query?.portableService}&secType=${router?.query?.secType}&type=${router?.query?.type}&servicePayFailed=true`,
+        `${process.env.NEXT_PUBLIC_WEBSITE_URL}/service/checkout/?secType=${SERVICES}&portableService=${router?.query?.portableService}&selectedStore=${router?.query?.selectedStore}&serviceDatePortable=${router?.query?.serviceDatePortable}&serviceDatefixed=${router?.query?.serviceDatefixed}&serviceDetails=${router?.query?.serviceDetails}&serviceTimeFixedOrPortable=${router?.query?.serviceTimeFixedOrPortable}&type=${router?.query?.type}`,
         {
           expires: 1,
           path: "/",
@@ -752,8 +774,58 @@ const ServiceCheckoutSummary = forwardRef(
       }
     };
 
+    /* -------------------------------------------------------------------------- */
+    /*             if user come back browser from any payment gateway             */
+    /* -------------------------------------------------------------------------- */
+    useEffect(() => {
+      let intervalId = null;
+      let attempts = 0;
+      const maxAttempts = 3;
+
+      const checkAndHandlePaymentReturn = () => {
+        const orderId = Cookies.get("created_order_id");
+        const orderType = Cookies.get("order_type");
+        const paymentMethod = Cookies.get("payment_method"); // fixed typo
+
+        // Only proceed if all required cookies exist and router is ready
+        if (router.isReady && orderId && orderType && paymentMethod) {
+          Cookies.set("payment_failed", "failed", { expires: 1, path: "/" });
+          setFakeLoader(false);
+          setLoadPayRequest(false);
+
+          // Clear interval since condition is met
+          if (intervalId) clearInterval(intervalId);
+          return true;
+        }
+
+        return false;
+      };
+
+      // Initial check
+      if (checkAndHandlePaymentReturn()) {
+        return; // Success on first try — no need to poll
+      }
+
+      // Start polling every 5 seconds, max 3 attempts
+      intervalId = setInterval(() => {
+        attempts++;
+
+        const success = checkAndHandlePaymentReturn();
+
+        if (success || attempts >= maxAttempts) {
+          clearInterval(intervalId);
+        }
+      }, 5000);
+
+      // Cleanup on unmount
+      return () => {
+        if (intervalId) clearInterval(intervalId);
+      };
+    }, [router.isReady]); // Only depend on router readiness
+
     return (
       <Box sx={{ pt: 1 }}>
+        <PaymentFailChecker />
         <Box sx={header}>{t.orderSummary}</Box>
         {/* products price */}
         <Box className="d-flex justify-content-between mb-2">

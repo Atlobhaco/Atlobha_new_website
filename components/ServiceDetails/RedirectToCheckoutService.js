@@ -25,7 +25,7 @@ function RedirectToCheckoutService({
   const { isMobile } = useScreenSize();
   const { selectedCar, defaultCar } = useSelector((state) => state.selectedCar);
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const portableAreaId =
     selectedAddress?.portable_service_area?.id ||
@@ -55,22 +55,42 @@ function RedirectToCheckoutService({
         return;
       }
     }
+
     router.push({
       pathname: "/service/checkout",
       query: {
         secType: router?.query?.secType,
-        serviceDetails: encodeURIComponent(JSON.stringify(prod)), // encode it
+        serviceDetails: encodeURIComponent(
+          JSON.stringify({
+            id: prod?.id,
+            name: prod?.name,
+            price: prod?.price,
+            category: prod?.category,
+            slots_disabled: prod?.slots_disabled,
+          }),
+        ), // encode it
         serviceTimeFixedOrPortable: selectedPortableTime
           ? encodeURIComponent(JSON.stringify(selectedPortableTime))
-          : encodeURIComponent(JSON.stringify(selectedStoreTime)),
+          : encodeURIComponent(
+              JSON.stringify(
+                selectedStoreTime || selectedStore?.next_available_slot,
+              ),
+            ),
         serviceDatePortable: encodeURIComponent(
-          JSON.stringify(selectedDatePortable)
+          JSON.stringify(selectedDatePortable),
         ),
         serviceDatefixed: encodeURIComponent(
-          JSON.stringify(userConfirmStoreDate)
+          JSON.stringify(userConfirmStoreDate),
         ),
         type: tabValue,
-        selectedStore: encodeURIComponent(JSON.stringify(selectedStore)),
+        selectedStore: encodeURIComponent(
+          JSON.stringify({
+            id: selectedStore?.id,
+            next_available_slot: selectedStore?.next_available_slot,
+            address: selectedStore?.address,
+            store: selectedStore?.store,
+          }),
+        ),
         portableService: router?.query?.portableService,
       },
     });
@@ -145,7 +165,7 @@ function RedirectToCheckoutService({
                   ((prod?.price_before_discount?.toFixed(2) -
                     prod?.price?.toFixed(2)) /
                     prod?.price_before_discount?.toFixed(2)) *
-                    100
+                    100,
                 )}
                 % {t.discount}
               </Box>

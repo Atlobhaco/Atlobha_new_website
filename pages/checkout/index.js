@@ -30,7 +30,7 @@ function Checkout() {
   const { isMobile } = useScreenSize();
   const { basket } = useSelector((state) => state.basket);
   const { selectedAddress, defaultAddress } = useSelector(
-    (state) => state.selectedAddress
+    (state) => state.selectedAddress,
   );
   const [selectAddress, setSelectAddress] = useState(false);
   const [promoCodeId, setPromoCodeId] = useState(false);
@@ -45,6 +45,7 @@ function Checkout() {
   const [recallUserDataAgain, setRecallUserDataAgain] = useState(false);
   const tomorrow = moment().add(1, "day").locale("en").format("YYYY-MM-DD");
   const [expressDelivery, setExpressDelivery] = useState("normal");
+  const [notes, setNotes] = useState(null);
 
   useEffect(() => {
     if (selectedAddress?.id || defaultAddress?.id) {
@@ -64,7 +65,7 @@ function Checkout() {
       dispatch(
         setUserData({
           data: res,
-        })
+        }),
       );
     },
   });
@@ -124,6 +125,8 @@ function Checkout() {
                 estimateRes={estimateRes}
                 setExpressDelivery={setExpressDelivery}
                 expressDelivery={expressDelivery}
+                notes={notes}
+                setNotes={setNotes}
               />
             </div>
             <div className={`col-md-4 col-12 mb-4 ${isMobile && "mt-3"}`}>
@@ -138,6 +141,7 @@ function Checkout() {
                   setOpenEditUserModal={setOpenEditUserModal}
                   estimateRes={estimateRes}
                   expressDelivery={expressDelivery}
+                  notes={notes}
                 />
               )}
             </div>
@@ -152,8 +156,8 @@ function Checkout() {
           migrationStep === 1
             ? t.addPhoneNum
             : migrationStep === 2
-            ? t.mergeAccount
-            : t.confirmPhone
+              ? t.mergeAccount
+              : t.confirmPhone
         }
         subtitle={false}
         open={openAddMobile}

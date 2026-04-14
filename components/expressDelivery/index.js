@@ -18,15 +18,15 @@ function ExpressDelivery({ text }) {
         position: "relative",
         left: "0px",
         right: "0px",
-        fontSize: isMobile ? "10px" : "13px",
+        fontSize: isMobile ? "9px" : "13px",
       }}
       className={`${style["prod-label"]}`}
     >
       <Image
         src="/icons/express-delivery.svg"
         alt="express"
-        width={isMobile ? 15 : 20}
-        height={isMobile ? 15 : 20}
+        width={isMobile ? 14 : 20}
+        height={isMobile ? 14 : 20}
         style={{
           marginInlineEnd: isMobile ? "3px" : "5px",
         }}
