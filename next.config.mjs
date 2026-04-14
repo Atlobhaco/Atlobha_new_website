@@ -6,15 +6,6 @@ const nextConfig = {
     defaultLocale: "ar",
     localeDetection: false,
   },
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "/spareParts",
-        permanent: false, // 301 redirect
-      },
-    ];
-  },
   trailingSlash: false,
   images: {
     remotePatterns: [
